@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillViewport="true"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:gravity="center_horizontal" android:orientation="vertical">
+
+        <!-- menu_account_user_manager -->
+        <RelativeLayout android:id="@+id/menu_account_user_manager"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/setting_margin_left" android:layout_marginRight="20dip"
+            android:background="@drawable/abs__list_selector_holo_light"
+            android:minHeight="@dimen/setting_item_eight"
+            android:clickable="true">
+
+            <ImageView android:id="@+id/pref_account_setting_img"
+                android:layout_width="wrap_content" android:layout_height="36dp"
+                android:layout_centerVertical="true" android:layout_marginLeft="20dip"
+                android:visibility="visible" android:src="@drawable/logo"/>
+
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dip" android:layout_toRightOf="@+id/pref_account_setting_img"
+                android:text="@string/action_account_user_manager" android:textColor="?attr/textColorItemSidebar"/>
+
+        </RelativeLayout>
+        <ImageView android:src="@drawable/dialog_divider_horizontal_light"
+            android:layout_width="fill_parent" android:layout_height="1dp"/>
+
+        <!-- menu_search -->
+        <RelativeLayout android:id="@+id/menu_search"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/setting_margin_left" android:layout_marginRight="20dip"
+            android:background="@drawable/abs__list_selector_holo_light"
+            android:minHeight="@dimen/setting_item_eight"
+            android:clickable="true">
+
+            <ImageView android:id="@+id/pref_account_setting_img"
+                android:layout_width="wrap_content" android:layout_height="36dp"
+                android:layout_centerVertical="true" android:layout_marginLeft="20dip"
+                android:visibility="visible" android:src="@drawable/logo"/>
+
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dip" android:layout_toRightOf="@+id/pref_account_setting_img"
+                android:text="@string/action_search" android:textColor="?attr/textColorItemSidebar"/>
+
+        </RelativeLayout>
+        <ImageView android:src="@drawable/dialog_divider_horizontal_light"
+            android:layout_width="fill_parent" android:layout_height="1dp"/>
+
+        <!-- menu_home_user -->
+        <RelativeLayout android:id="@+id/menu_home_user"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/setting_margin_left" android:layout_marginRight="20dip"
+            android:background="@drawable/abs__list_selector_holo_light"
+            android:minHeight="@dimen/setting_item_eight"
+            android:clickable="true" android:visibility="gone">
+
+            <ImageView android:id="@+id/pref_account_setting_img"
+                android:layout_width="wrap_content" android:layout_height="36dp"
+                android:layout_centerVertical="true" android:layout_marginLeft="20dip"
+                android:visibility="visible" android:src="@drawable/logo"/>
+
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dip" android:layout_toRightOf="@+id/pref_account_setting_img"
+                android:text="@string/action_home_user" android:textColor="?attr/textColorItemSidebar"/>
+
+        </RelativeLayout>
+        <ImageView android:src="@drawable/dialog_divider_horizontal_light"
+            android:layout_width="fill_parent" android:layout_height="1dp"/>
+
+        <!-- menu_at_author -->
+        <RelativeLayout android:id="@+id/menu_at_author"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/setting_margin_left" android:layout_marginRight="20dip"
+            android:background="@drawable/abs__list_selector_holo_light"
+            android:minHeight="@dimen/setting_item_eight"
+            android:clickable="true">
+
+            <ImageView android:id="@+id/pref_account_setting_img"
+                android:layout_width="wrap_content" android:layout_height="36dp"
+                android:layout_centerVertical="true" android:layout_marginLeft="20dip"
+                android:visibility="visible" android:src="@drawable/logo"/>
+
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dip" android:layout_toRightOf="@+id/pref_account_setting_img"
+                android:text="@string/action_at_author" android:textColor="?attr/textColorItemSidebar"/>
+
+        </RelativeLayout>
+        <ImageView android:src="@drawable/dialog_divider_horizontal_light"
+            android:layout_width="fill_parent" android:layout_height="1dp"/>
+
+        <!-- menu_pref -->
+        <RelativeLayout android:id="@+id/menu_pref"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/setting_margin_left" android:layout_marginRight="20dip"
+            android:background="@drawable/abs__list_selector_holo_light"
+            android:minHeight="@dimen/setting_item_eight"
+            android:clickable="true">
+
+            <ImageView android:id="@+id/pref_account_setting_img"
+                android:layout_width="wrap_content" android:layout_height="36dp"
+                android:layout_centerVertical="true" android:layout_marginLeft="20dip"
+                android:visibility="visible" android:src="@drawable/logo"/>
+
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dip" android:layout_toRightOf="@+id/pref_account_setting_img"
+                android:text="@string/action_pref" android:textColor="?attr/textColorItemSidebar"/>
+
+        </RelativeLayout>
+        <ImageView android:src="@drawable/dialog_divider_horizontal_light"
+            android:layout_width="fill_parent" android:layout_height="1dp"/>
+
+        <!-- menu_logout -->
+        <RelativeLayout android:id="@+id/menu_logout"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/setting_margin_left" android:layout_marginRight="20dip"
+            android:background="@drawable/abs__list_selector_holo_light"
+            android:minHeight="@dimen/setting_item_eight"
+            android:clickable="true">
+
+            <ImageView android:id="@+id/pref_account_setting_img"
+                android:layout_width="wrap_content" android:layout_height="36dp"
+                android:layout_centerVertical="true" android:layout_marginLeft="20dip"
+                android:visibility="visible" android:src="@drawable/logo"/>
+
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dip" android:layout_toRightOf="@+id/pref_account_setting_img"
+                android:text="@string/action_logout" android:textColor="?attr/textColorItemSidebar"/>
+
+        </RelativeLayout>
+        <ImageView android:src="@drawable/dialog_divider_horizontal_light"
+            android:layout_width="fill_parent" android:layout_height="1dp"/>
+
+        <!-- menu_update -->
+        <RelativeLayout android:id="@+id/menu_update"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/setting_margin_left" android:layout_marginRight="20dip"
+            android:background="@drawable/abs__list_selector_holo_light"
+            android:minHeight="@dimen/setting_item_eight"
+            android:clickable="true" android:visibility="gone">
+
+            <ImageView android:id="@+id/pref_account_setting_img"
+                android:layout_width="wrap_content" android:layout_height="36dp"
+                android:layout_centerVertical="true" android:layout_marginLeft="20dip"
+                android:visibility="visible" android:src="@drawable/logo"/>
+
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dip" android:layout_toRightOf="@+id/pref_account_setting_img"
+                android:text="@string/action_update" android:textColor="?attr/textColorItemSidebar"/>
+
+        </RelativeLayout>
+        <ImageView android:src="@drawable/dialog_divider_horizontal_light"
+            android:layout_width="fill_parent" android:layout_height="1dp"/>
+
+        <!-- menu_exit -->
+        <RelativeLayout android:id="@+id/menu_exit"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/setting_margin_left" android:layout_marginRight="20dip"
+            android:background="@drawable/abs__list_selector_holo_light"
+            android:minHeight="@dimen/setting_item_eight"
+            android:clickable="true">
+
+            <ImageView android:id="@+id/pref_account_setting_img"
+                android:layout_width="wrap_content" android:layout_height="36dp"
+                android:layout_centerVertical="true" android:layout_marginLeft="20dip"
+                android:visibility="visible" android:src="@drawable/logo"/>
+
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dip" android:layout_toRightOf="@+id/pref_account_setting_img"
+                android:text="@string/action_exit" android:textColor="?attr/textColorItemSidebar"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</ScrollView>
+

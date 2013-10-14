@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:divider="?android:listDivider"
+        android:dividerPadding="12.0dip"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:showDividers="middle">
+
+        <ImageButton android:visibility="gone"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/holo_selector"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/av_repeat_dark"/>
+
+        <ImageButton
+            android:id="@+id/menu_refresh"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/holo_selector"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/navigation_refresh_dark"/>
+
+        <ImageButton
+            android:id="@+id/menu_stop"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/holo_selector"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@android:drawable/ic_delete"/>
+
+        <ImageButton
+            android:id="@+id/menu_back"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/holo_selector"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/navigation_back_dark"/>
+
+        <ImageButton
+            android:id="@+id/menu_forward"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/holo_selector"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/navigation_forward_dark"/>
+    </LinearLayout>
+
+</RelativeLayout>

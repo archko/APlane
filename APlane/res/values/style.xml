@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="RedButton">
+        <!--<item name="android:background">@drawable/actionbar_btn</item>-->
+        <!--<item name="android:background">@drawable/abs__btn_cab_done_holo_dark</item>-->
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+        <!--<item name="android:textColor">@color/black</item>-->
+        <!--<item name="android:textColor">?attr/textColorPrimary</item>-->
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:paddingTop">0dip</item>
+        <item name="android:paddingBottom">0dip</item>
+        <item name="android:paddingLeft">4dip</item>
+        <item name="android:paddingRight">4dip</item>
+    </style>
+
+    <style name="SearchTabs" parent="Widget">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/bottom_action_bar_height2</item>
+        <!--<item name="android:background">@drawable/abs__tab_indicator_ab_holo</item>-->
+        <item name="android:gravity">center</item>
+        <item name="android:paddingBottom">@dimen/peak_meter_padding_bottom</item>
+        <!--<item name="android:paddingLeft">@dimen/tab_padding_left_right</item>
+        <item name="android:paddingRight">@dimen/tab_padding_left_right</item>-->
+        <item name="android:paddingTop">@dimen/peak_meter_padding_bottom</item>
+        <item name="android:textColor">@color/search_tab_text_holo</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:selectAllOnFocus">false</item>
+    </style>
+
+    <style name="MidEditText" parent="@android:style/TextAppearance">
+        <item name="android:paddingTop">0dip</item>
+        <item name="android:paddingBottom">0dip</item>
+        <item name="android:paddingLeft">5dip</item>
+        <item name="android:paddingRight">5dip</item>
+        <item name="android:textColor">@color/holo_blue_light_transparent</item>
+        <item name="android:textSize">20sp</item>
+        <!-- <item name="android:layout_marginTop">3dip</item>
+        <item name="android:layout_marginBottom">3dip</item> -->
+    </style>
+
+    <style name="text_view" parent="@android:style/TextAppearance">
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/yellow</item>
+    </style>
+
+    <style name="user_controller_btn_bg">
+        <item name="android:background">@android:drawable/btn_default</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_gravity">center_vertical|center_horizontal</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:paddingRight">12dip</item>
+        <item name="android:paddingLeft">12dip</item>
+        <item name="android:paddingTop">2dip</item>
+        <item name="android:paddingBottom">0dip</item>
+    </style>
+
+    <style name="user_table_bg">
+        <!--<item name="android:background">@drawable/abs__btn_cab_done_holo_dark</item>-->
+        <item name="android:clickable">true</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:minHeight">40dp</item>
+    </style>
+
+    <!-- ImageButton in the bottom bar -->
+    <!--<style name="BottomActionBarItem">
+        <item name="android:layout_width">@dimen/bottom_action_bar_item_width</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">@dimen/bottom_action_bar_item_padding_left_right</item>
+        <item name="android:paddingRight">@dimen/bottom_action_bar_item_padding_left_right</item>
+        <item name="android:background">@drawable/holo_selector</item>
+        <item name="android:gravity">center|right</item>
+    </style>-->
+
+    <!-- =========================================================== -->
+
+    <style name="Animations"/>
+
+    <!-- PopDownMenu -->
+    <style name="Animations.PopDownMenu"/>
+
+    <!--<style name="Animations.PopDownMenu.Left">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_topleft_to_bottomright</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_bottomright_to_topleft</item>
+    </style>
+
+    <style name="Animations.PopDownMenu.Right">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_topright_to_bottomleft</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_bottomleft_to_topright</item>
+    </style>
+
+    <style name="Animations.PopDownMenu.Center">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_top</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_bottom</item>
+    </style>-->
+
+    <!-- PopUpMenu -->
+    <style name="Animations.PopUpMenu"/>
+
+    <!--<style name="Animations.PopUpMenu.Left">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_bottomleft_to_topright</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_topright_to_bottomleft</item>
+    </style>
+
+    <style name="Animations.PopUpMenu.Right">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_bottomright_to_topleft</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_topleft_to_bottomright</item>
+    </style>
+
+    <style name="Animations.PopUpMenu.Center">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_bottom</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_top</item>
+    </style>-->
+
+    <style name="tags" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+
+        <item name="verticalSpacing">2dp</item>
+        <item name="horizontalSpacing">4dp</item>
+        <item name="minRows">1</item>
+    </style>
+
+    <style name="emoji_tag_items">
+        <!--<item name="android:textSize">14.0dp</item>-->
+        <item name="android:padding">2dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@color/holo_blue_dark</item>
+        <item name="android:textColor">@color/whiteSmoke</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+</resources>

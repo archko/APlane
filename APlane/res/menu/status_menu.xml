@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--<item android:id="@+id/menu_refresh" android:showAsAction="ifRoom"
+        android:title="@string/opb_refresh" android:icon="@drawable/ic_compose"/>
+
+    <item android:id="@+id/menu_nav" android:showAsAction="always"
+        android:icon="@drawable/abs__ic_menu_moreoverflow_normal_holo_light">
+        <menu>
+            <item android:id="@+id/menu_quick_repost" android:showAsAction="ifRoom|withText"
+                android:title="@string/opb_quick_repost"/>
+
+            <item android:id="@+id/menu_comment" android:showAsAction="ifRoom|withText"
+                android:title="@string/opb_comment"/>
+
+            <item android:id="@+id/menu_repost" android:showAsAction="ifRoom|withText"
+                android:title="@string/opb_repost"/>
+
+            <item android:id="@+id/menu_favorite" android:showAsAction="ifRoom|withText"
+                android:title="@string/opb_favorite"/>
+
+            <item android:id="@+id/menu_download_ori_img" android:showAsAction="ifRoom|withText"
+                android:title="@string/download_ori_img"/>
+
+            <item android:id="@+id/menu_show_in_gallery" android:showAsAction="ifRoom|withText"
+                android:title="@string/show_in_gallery"/>
+        </menu>
+    </item>-->
+
+    <item android:id="@+id/menu_refresh" android:showAsAction="always"
+        android:title="@string/opb_refresh" android:icon="@drawable/av_repeat_dark"/>
+
+    <item android:id="@+id/menu_quick_comment" android:showAsAction="always"
+        android:title="@string/opb_quick_comment"/>
+
+    <item android:id="@+id/menu_favorite" android:showAsAction="always"
+        android:title="@string/opb_favorite" android:icon="@drawable/rating_favorite_dark"/>
+
+    <item android:id="@+id/menu_nav" android:showAsAction="always"
+        android:title="@string/opb_more_hint">
+        <menu>
+
+            <item android:id="@+id/menu_quick_repost" android:showAsAction="always"
+                android:title="@string/opb_quick_repost"/>
+
+            <item android:id="@+id/menu_comment" android:showAsAction="ifRoom|withText"
+                android:title="@string/opb_comment"/>
+
+            <item android:id="@+id/menu_repost" android:showAsAction="ifRoom|withText"
+                android:title="@string/opb_repost"/>
+
+            <item android:id="@+id/menu_download_ori_img" android:showAsAction="ifRoom|withText"
+                android:title="@string/download_ori_img"/>
+
+            <item android:id="@+id/menu_show_in_gallery" android:showAsAction="ifRoom|withText"
+                android:title="@string/show_in_gallery"/>
+
+            <item android:id="@+id/menu_steal" android:showAsAction="ifRoom|withText"
+                android:title="@string/text_view_status_steal" android:visible="false"/>
+
+            <item android:id="@+id/menu_more" android:showAsAction="ifRoom|withText"
+                android:title="@string/text_view_status_more" android:visible="false"/>
+        </menu>
+    </item>
+
+</menu>

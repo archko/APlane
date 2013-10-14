@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- prefs -->
+    <string name="pref">设置</string>
+    <string name="pref_nav">导航设置</string>
+    <string name="pref_msg">消息设置</string>
+    <string name="pref_other">其他设置</string>
+
+    <!-- fonts and theme-->
+    <string name="pref_font_title">微博字体设置</string>
+    <string name="pref_font_title_sum">微博字体及颜色的设置</string>
+
+    <string name="pref_font_status_title">微博标题字体</string>
+    <string name="pref_font_content_size">微博内容字体</string>
+    <string name="pref_font_ret_content_size">微博转发内容字体</string>
+
+    <string name="pref_font_color_title">微博颜色配置(不随主题改变)</string>
+    <string name="pref_font_color_status_title">原微博颜色</string>
+    <string name="pref_font_color_status_title_sum">原微博内容字体颜色</string>
+    <string name="pref_font_color_retstatus_title">转发微博颜色</string>
+    <string name="pref_font_color_retstatus_title_sum">转发微博内容字体颜色</string>
+    <string name="pref_font_color_sidebar_title">侧边栏颜色(需要重启)</string>
+    <string name="pref_font_color_sidebar_title_sum">侧边栏字体颜色</string>
+
+    <string name="pref_theme_and_font_title">主题与字体</string>
+    <string name="pref_theme_and_font_title_sum">主题与字体的配置</string>
+    <string name="pref_theme">主题(需要重启)</string>
+    <string name="default_theme">1</string>
+    <string-array name="themes">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <!--<item>3</item>-->
+    </string-array>
+    <string-array name="themes_labels">
+        <item>黑色</item>
+        <item>灰色(ActionBar)</item>
+        <item>白色</item>
+        <!--<item>浅绿色</item>-->
+    </string-array>
+
+    <!-- 分辨率 -->
+    <string name="pref_resolution">列表图片分辨率</string>
+    <string name="default_resolution">0</string>
+    <string-array name="resolutions">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="resolutions_labels">
+        <item>缩略图</item>
+        <item>大图</item>
+    </string-array>
+
+    <!-- 显示列表图片 -->
+    <string name="pref_list">列表参数</string>
+    <string name="show_bitmap">显示列表图片</string>
+    <string name="show_bitmap_sum">是否显示列表图片</string>
+    <string name="default_show_bitmap">0</string>
+    <string-array name="show_bitmap">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="show_bitmap_labels">
+        <item>显示</item>
+        <item>不显示</item>
+    </string-array>
+    <string name="pref_increment">主页增量加载</string>
+    <string name="pref_increment_sum">只获取未读消息数,以减少流量消耗!</string>
+
+    <string name="pref_status_comment">详细微博及评论</string>
+    <string name="pref_status_comment_sum">微博详细页面图片及评论头像</string>
+    <string name="pref_comment">评论列表参数</string>
+    <string name="pref_comment_status_bm">显示微博大图</string>
+    <string name="pref_comment_status_bm_sum">是否加载微博详细页面大图</string>
+    <string name="pref_comment_user_bm">评论列表头像显示</string>
+    <string name="pref_comment_user_bm_sum">是否加载评论列表头像</string>
+    <string name="pref_weibo_count_title">微博加载的数量</string>
+    <string name="pref_weibo_count_sum">微博加载的数量</string>
+
+    <string name="pref_back_pressed">后退键行为</string>
+    <string name="pref_back_pressed_sum">后退键直接退出,不保留服务!</string>
+    <string name="pref_webview">浏览器</string>
+    <string name="pref_webview_sum">是否使用内置浏览器加载url</string>
+
+    <!-- nav -->
+    <string name="fast_scroll">快速滚动</string>
+    <string name="fast_scroll_sum">是否使用快速滚动滑块</string>
+    <string name="show_nav_btn">显示上下导航按钮</string>
+    <string name="show_nav_btn_sum">是否显示右侧导航按钮</string>
+    <string name="show_nav_page_btn">上下翻页(默认)/首尾导航</string>
+    <string name="show_nav_page_btn_sum">是上下翻页还是回到首尾(JellyBean有效)</string>
+    <string name="nav_mode">导航模式（侧边栏与标签）</string>
+    <string name="nav_tab_summary">标签滑动导航</string>
+    <string name="nav_sidebar_summary">侧边栏导航</string>
+    <string name="show_nav_tab">显示标签(无标签也可滑动)</string>
+    <string name="nav_sidebar_touch">侧边栏手势</string>
+    <string name="nav_sidebar_touch_sum">侧边栏右侧手势触摸范围</string>
+
+    <string name="default_nav_sidebar_touch">1</string>
+    <string-array name="default_nav_sidebar_touch_val">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="default_nav_sidebar_touch_labels">
+        <item>无手势</item>
+        <item>边缘滑动</item>
+        <item>全屏滑动</item>
+    </string-array>
+
+    <!-- sidebar item -->
+    <string name="pref_sidebar_title">侧边栏标签</string>
+    <string name="pref_sidebar_title_sum">侧边栏标签显示配置</string>
+    <string name="pref_sidebar_my_post_title">我发布的</string>
+    <string name="pref_sidebar_my_post_title_sum">是否显示我发布的微博</string>
+    <string name="pref_sidebar_my_fav_title">我的收藏</string>
+    <string name="pref_sidebar_my_fav_title_sum">是否显示我收藏的微博</string>
+    <string name="pref_sidebar_public_title">随便看看</string>
+    <string name="pref_sidebar_public_title_sum">是否显示随便看看</string>
+    <string name="pref_sidebar_profile_title">个人资料</string>
+    <string name="pref_sidebar_profile_title_sum">是否显示个人资料</string>
+    <string name="pref_sidebar_place_nearby_photos_title">附近照片</string>
+    <string name="pref_sidebar_place_nearby_photos_title_sum">是否显示附近照片</string>
+    <string name="pref_sidebar_place_nearby_users_title">附近的人</string>
+    <string name="pref_sidebar_place_nearby_users_title_sum">是否显示附近的人</string>
+    <string name="pref_sidebar_place_friend_timeline_title">位置动态</string>
+    <string name="pref_sidebar_place_friend_timeline_title_sum">是否显示位置动态</string>
+    <string name="pref_sidebar_dm_title">私信</string>
+    <string name="pref_sidebar_dm_title_sum">是否显示私信</string>
+
+    <string name="auto_chk_update">自动检查更新</string>
+    <string name="auto_chk_update_sum">是否自动更新(一天一次)</string>
+    <string name="pref_auto_chk_update_wifi_only">Wifi下检测更新</string>
+    <string name="pref_auto_chk_update_wifi_only_sum">只在Wifi下检测更新</string>
+
+    <string name="auto_chk_new_status">自动获取新消息</string>
+    <string name="auto_chk_new_status_sum">是否自动获取新消息(运行期)</string>
+    <string name="chk_new_status_time">获取新消息间隔</string>
+    <string name="default_chk_new_status_time">1</string>
+    <string-array name="default_chk_new_status_times">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="default_chk_new_status_time_labels">
+        <item>1分钟</item>
+        <item>2分钟</item>
+        <item>5分钟</item>
+        <item>20分钟</item>
+    </string-array>
+
+    <string name="prefs_reset_toast">已经清除了当前所有的设置!</string>
+    <string name="prefs_reset_title">清除设置</string>
+    <string name="prefs_reset_title_sum">清除当前所有的设置(一些需要重启生效)</string>
+
+    <string name="pref_current">当前值:</string>
+
+    <!-- ColorPicker -->
+    <string name="color_picker_title">Color scheme</string>
+    <string name="hex">#</string>
+    <string name="current_color">当前</string>
+    <string name="new_color">新的</string>
+
+</resources>

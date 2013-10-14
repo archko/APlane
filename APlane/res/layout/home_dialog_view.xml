@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_gravity="center" android:id="@+id/root"
+    android:orientation="vertical" android:layout_marginTop="10dip"
+    android:layout_height="wrap_content" android:layout_width="wrap_content">
+
+    <TextView android:id="@+id/update_msg"
+        android:textColor="?attr/textColorItemNum"
+        android:textSize="18sp"
+        android:paddingLeft="8dp" android:paddingRight="8dp"
+        android:paddingTop="8dp" android:paddingBottom="8dp"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+    <LinearLayout android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dip"
+        android:layout_height="wrap_content" android:layout_width="fill_parent">
+        <Button android:id="@+id/cancel"
+            style="?attr/holoButtonStyle"
+            android:layout_weight="1" android:text="@string/cancel"
+            android:layout_width="0dp" android:layout_height="wrap_content"/>
+
+        <Button android:id="@+id/ok" android:visibility="visible"
+            style="?attr/holoButtonStyle"
+            android:layout_weight="1" android:text="@string/update_btn"
+            android:layout_width="0dp" android:layout_height="wrap_content"/>
+
+        <Button android:id="@+id/install" android:visibility="visible"
+            style="?attr/holoButtonStyle"
+            android:layout_weight="1" android:text="@string/update_install"
+            android:layout_width="0dp" android:layout_height="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>

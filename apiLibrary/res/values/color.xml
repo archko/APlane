@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <color name="transparent">#00000000</color>
+    <color name="none">#00000000</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="white2">#FFaFFFFF</color>
+    <color name="red">#ff0000</color>
+    <color name="DeepSkyBlue">#00aFFF</color>
+    <color name="blue2">#ff0000FF</color>
+    <color name="yellow">#FFFF9900</color>
+
+    <color name="whiteSmoke">#F5F5F5</color>
+    <!-- #DCDCDC  	Gainsboro  	淡灰色 -->
+    <color name="gainsboro">#aaDCDCDC</color>
+    <color name="detail_bg">#B5B5B5</color>
+
+    <color name="btn_normal_state">#ffa4e700</color>
+    <color name="btn_selected_state">#ff86e700</color>
+    <color name="btn_pressed_state">#ffc8e700</color>
+
+    <color name="button_bar_bg">#10Ab0000</color>
+
+    <!-- action bar  -->
+    <color name="actionbar_separator">#8B1A1A</color>
+    <color name="actionbar_title">#FFFFFF</color>
+    <color name="actionbar_background_start">#8B1A1A</color>
+    <color name="actionbar_background_end">#CD2626</color>
+    <color name="actionbar_background_item_pressed_start">#FF7F00</color>
+    <color name="actionbar_background_item_pressed_end">#EE7600</color>
+
+    <color name="progress_start">#ff00BFFF</color>
+    <color name="progress_end">#ff3399FF</color>
+    <color name="progress_center">#086608cc</color>
+
+    <color name="pull_to_refresh_end">#ffffe6c6</color>
+
+    <color name="progress_bg">#5fffffff</color>
+
+    <color name="shadow_color1">#ff333333</color>
+    <color name="shadow_color2">#ff0099ff</color>
+
+    <!-- tab txt color -->
+    <drawable name="tab_txt_press">#FFFFFFFF</drawable>
+    <drawable name="tab_txt_selected">#ff00BFFF</drawable>
+    <drawable name="tab_txt_unselected_press">#FFFFFFFF</drawable>
+    <drawable name="tab_txt_unselected">#FFFFFFFF</drawable>
+</resources>

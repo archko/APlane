@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/hourly" android:text="@string/trend_hourly"
+            android:layout_width="fill_parent" android:layout_height="40dip"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/daily" android:text="@string/trend_daily"
+            android:layout_width="fill_parent" android:layout_height="40dip"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/weekly" android:text="@string/trend_weekly"
+            android:layout_width="fill_parent" android:layout_height="40dip"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/test" android:text="test"
+            android:layout_width="fill_parent" android:layout_height="40dip"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <Button android:id="@+id/testurl" android:text="testurl"
+            android:layout_width="fill_parent" android:layout_height="40dip"
+            android:layout_weight="1"/>
+
+        <Button android:text="@string/trend_daily"
+            android:layout_width="fill_parent" android:layout_height="40dip"
+            android:layout_weight="1"/>
+        <Button android:text="@string/trend_weekly"
+            android:layout_width="fill_parent" android:layout_height="40dip"
+            android:layout_weight="1"/>
+        <Button android:text="test"
+            android:layout_width="fill_parent" android:layout_height="40dip"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/topicList" android:background="@color/white"
+        android:layout_width="fill_parent" android:layout_height="0dip"
+        android:layout_weight="1.0" android:cacheColorHint="@color/none"
+        android:dividerHeight="1dp" android:drawSelectorOnTop="true"
+        />
+</LinearLayout>

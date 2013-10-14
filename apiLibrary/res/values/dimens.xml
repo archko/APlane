@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="image_dialog_max_width">300.0dip</dimen>
+    <dimen name="image_dialog_max_height">480.0dip</dimen>
+</resources>

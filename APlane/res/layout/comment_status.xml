@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription" android:id="@+id/root"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+        <EditText android:id="@+id/status_comment_content"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:lines="8" android:hint="@string/text_hint" android:gravity="top|left"/>
+
+        <RelativeLayout android:id="@+id/status_bar"
+            android:layout_below="@id/status_comment_content"
+            android:layout_width="fill_parent" android:layout_height="@dimen/bottom_action_bar_height2"
+            android:layout_marginTop="0dip">
+
+            <TextView android:id="@+id/char_num"
+                android:layout_width="64dip"
+                android:layout_height="fill_parent" android:text="@string/text_count"
+                android:layout_alignParentRight="true" android:padding="2dip"
+                style="?attr/bottomActionBarItem" android:textColor="@color/red"/>
+
+            <LinearLayout android:id="@+id/opera_bar" android:layout_toLeftOf="@id/char_num"
+                android:layout_width="fill_parent" android:layout_height="@dimen/bottom_action_bar_height2"
+                android:layout_gravity="bottom" android:layout_marginBottom="0dip">
+
+                <!--<Button android:id="@+id/comment_btn"
+                    android:text="@string/comment_btn"
+                    android:layout_weight="1" style="?attr/bottomActionBarItem"/>
+
+                <Button android:id="@+id/comment_retweet_btn"
+                    android:text="@string/comment_retweet_btn"
+                    android:layout_weight="1" style="?attr/bottomActionBarItem"/>
+
+                <Button android:id="@+id/comment_and_post_btn" android:visibility="gone"
+                    android:text="@string/comment_and_post_btn"
+                    android:layout_weight="1" style="?attr/bottomActionBarItem"/>-->
+
+                <Button android:id="@+id/btn_trend"
+                    android:text="@string/new_status_trend"
+                    android:layout_weight="1" style="?attr/bottomActionBarItem"/>
+
+                <Button android:id="@+id/btn_emo" android:visibility="visible"
+                    android:text="@string/new_status_emo" android:layout_weight="1"
+                    style="?attr/bottomActionBarItem"/>
+
+                <Button android:id="@+id/btn_at"
+                    android:text="@string/new_status_at"
+                    android:layout_weight="1" style="?attr/bottomActionBarItem"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <cn.archko.microblog.view.EmojiPanelView android:layout_below="@id/status_bar"
+            android:id="@+id/emoji_panel" android:visibility="gone"
+            android:layout_width="match_parent" android:layout_height="match_parent"/>
+    </RelativeLayout>
+
+    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <RelativeLayout
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="8dip" android:layout_marginRight="8dip"
+            android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <RelativeLayout android:id="@+id/_title"
+                android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <TextView android:id="@+id/tv_name"
+                    android:layout_alignParentLeft="true" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="@string/item_test_title"
+                    android:textSize="14sp" android:textColor="?attr/textColorItemName"
+                    android:clickable="false"/>
+
+                <TextView android:id="@+id/comment_num"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/item_comment" android:layout_alignParentRight="true"
+                    android:textSize="12sp" android:paddingRight="4dip"
+                    android:paddingTop="2dip" android:textColor="?attr/textColorItemNum"/>
+
+                <TextView android:id="@+id/repost_num"
+                    android:layout_toLeftOf="@id/comment_num"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/item_repost"
+                    android:textSize="12sp" android:paddingRight="4dip"
+                    android:paddingTop="2dip" android:textColor="?attr/textColorItemNum"/>
+            </RelativeLayout>
+
+            <TextView android:id="@+id/tv_content_first" android:layout_marginTop="4dp"
+                android:layout_below="@id/_title" style="?attr/textColorItemStatus"
+                android:layout_alignParentLeft="true" android:text="@string/test"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textSize="16sp" android:bufferType="spannable"/>
+
+            <ImageView android:id="@+id/status_picture"
+                android:layout_below="@id/tv_content_first" android:layout_alignParentRight="true"
+                android:maxHeight="66dip"
+                android:minWidth="45dip"
+                android:scaleType="centerCrop"
+                android:layout_margin="4dip"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:src="@drawable/image_loading" android:visibility="gone"/>
+
+            <ImageView android:id="@+id/status_picture_lay" android:src="@drawable/gif"
+                android:layout_alignLeft="@id/status_picture" android:visibility="gone"
+                android:layout_alignBottom="@id/status_picture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <TextView android:id="@+id/tv_content_sencond"
+                android:layout_below="@id/status_picture"
+                android:layout_alignParentLeft="true" android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:text="@string/test"
+                android:textSize="16sp" android:clickable="false"
+                style="?attr/itemRetStatusStyle" android:bufferType="spannable"
+                android:layout_marginTop="6dp" android:layout_marginBottom="2dp"
+                android:layout_marginLeft="6dip" android:layout_marginRight="6dip"
+                android:paddingLeft="8dip" android:paddingRight="4dip"/>
+
+            <RelativeLayout android:layout_marginTop="4dp"
+                android:layout_below="@id/tv_content_sencond" android:id="@+id/retweet_content"
+                android:layout_height="wrap_content" android:layout_width="fill_parent">
+                <TextView android:id="@+id/ret_comment_num"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/item_comment" android:layout_alignParentRight="true"
+                    android:textSize="12sp" android:paddingRight="4dip"
+                    android:textColor="?attr/textColorItemNum"
+                    android:paddingTop="2dip" android:visibility="gone"/>
+
+                <TextView android:id="@+id/ret_repost_num"
+                    android:layout_toLeftOf="@id/ret_comment_num"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/item_repost" android:textColor="?attr/textColorItemNum"
+                    android:textSize="12sp" android:paddingRight="4dip"
+                    android:paddingTop="2dip" android:visibility="gone"/>
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

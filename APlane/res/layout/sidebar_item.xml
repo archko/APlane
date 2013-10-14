@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <TextView android:id="@+id/left_slider" android:visibility="gone"
+        android:background="@color/holo_green_light"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="0dp" android:layout_marginRight="6dp"
+        android:layout_width="8dp" android:layout_height="match_parent"/>
+
+    <TextView android:id="@+id/msg"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dip"
+        android:layout_marginRight="4dip"
+        android:paddingRight="4dip"
+        android:text="" android:textStyle="bold"
+        android:textColor="@color/red"
+        android:gravity="center"/>
+
+    <ImageView android:id="@+id/image" android:contentDescription=""
+        android:layout_alignParentLeft="true" android:layout_toRightOf="@id/left_slider"
+        android:layout_width="42dp" android:layout_height="42dp"
+        android:layout_marginTop="6dp" android:layout_marginBottom="6dp"
+        android:layout_marginLeft="6dp" android:layout_marginRight="6dp"
+        android:layout_centerVertical="true"
+        android:padding="4dip" android:src="@drawable/user_default_photo"/>
+
+    <TextView android:id="@+id/title"
+        android:layout_toLeftOf="@id/msg" android:layout_toRightOf="@id/image"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dip"
+        android:text="title"
+        android:textColor="?attr/textColorItemSidebar"
+        android:layout_centerVertical="true"/>
+</RelativeLayout>

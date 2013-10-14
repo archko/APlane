@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:akapp="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription"
+    android:gravity="center" android:layout_gravity="center"
+    android:orientation="vertical"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:background="@drawable/pic_bg_scaleable">
+
+    <RelativeLayout
+        android:layout_height="wrap_content" android:layout_width="wrap_content">
+        <ImageView android:id="@+id/save" android:src="@drawable/content_save"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:visibility="visible" android:layout_alignParentLeft="true"/>
+
+        <TextView android:id="@+id/path_txt" android:textSize="12sp"
+            android:paddingTop="2dp" android:layout_toRightOf="@id/save"
+            android:paddingBottom="2dp" android:paddingRight="2dp"
+            android:layout_height="wrap_content" android:layout_width="wrap_content"
+            android:textColor="@color/detail_bg" android:text=""/>
+
+        <com.me.microblog.view.TextProgressBar android:id="@+id/progress_bar"
+            android:layout_below="@id/save" android:layout_centerHorizontal="true"
+            style="?android:attr/progressBarStyleLarge" android:progress="3"
+            akapp:progress_txt_color="@color/DeepSkyBlue" akapp:progress_txt_size="18sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+        <!--<com.me.microblog.view.TextProgressBar android:id="@+id/progress_bar2"
+            android:layout_marginTop="8dp" android:layout_marginLeft="8dp"
+            style="?android:attr/progressBarStyleSmall" akapp:progress_txt_size="16sp"
+            akapp:progress_txt_color="@color/actionbar_background_item_pressed_start"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+        <com.me.microblog.view.TextProgressBar android:id="@+id/progress_bar3"
+            android:layout_marginTop="8dp"
+            style="?android:attr/progressBarStyleHorizontal"
+            akapp:progress_txt_color="@color/btn_selected_state" akapp:progress_txt_size="20sp"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"/>-->
+
+        <!--<ProgressBar android:id="@+id/progress_bar"
+            android:layout_width="160dip" android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal"
+            mce_style="?android:attr/progressBarStyleHorizontal"
+            android:layout_marginTop="8dip" android:visibility="gone"
+            android:minHeight="8dip" android:maxHeight="8dip" android:progress="1"
+            android:layout_marginLeft="4dip" android:paddingRight="4dip"
+            android:progressDrawable="@drawable/custom_yellow_color_seekbar_style"
+            android:layout_toRightOf="@id/save"/>-->
+    </RelativeLayout>
+
+    <com.me.microblog.view.MyWebView android:id="@+id/webview"
+        android:gravity="center" android:adjustViewBounds="true"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:padding="0.0dip" android:layout_margin="0.0dip"
+        android:visibility="gone" android:scrollbars="none"/>
+
+    <ScrollView
+        android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <!--<LinearLayout android:orientation="vertical"
+            android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <commicroblog.gif.GifView2
+                android:id="@+id/gif_view" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:visibility="gone"/>-->
+
+            <ImageView android:id="@+id/ivImage"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:visibility="gone" android:scaleType="center"/>
+        <!--</LinearLayout>-->
+    </ScrollView>
+
+    <TextView android:id="@+id/txt" android:textSize="12sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="4dp" android:layout_marginRight="4dp"
+        android:layout_height="wrap_content" android:layout_width="wrap_content"
+        android:textColor="@color/detail_bg" android:text="@string/downloading"/>
+</LinearLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none">
+
+    <LinearLayout orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <RelativeLayout android:id="@+id/action_group_layout"
+            android:layout_width="@dimen/bottom_action_bar_group_width" android:layout_height="match_parent">
+            <!--<ImageButton android:id="@+id/action_group_bg"
+                android:src="@drawable/social_group_dark"
+                android:background="@drawable/holo_selector"
+                style="@style/TopActionBarItem"/>-->
+            <Spinner android:id="@+id/action_group"
+                android:contentDescription=""
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"/>
+        </RelativeLayout>
+
+        <ImageButton android:id="@+id/action_new_status"
+            android:src="@drawable/content_edit_dark" android:contentDescription="@string/action_new_status"
+            android:background="@drawable/holo_selector"
+            style="@style/TopActionBarItem"/>
+
+        <ImageButton android:id="@+id/action_refresh"
+            android:background="@drawable/holo_selector" android:contentDescription="@string/opb_refresh"
+            android:src="@drawable/navigation_refresh_dark"
+            style="@style/TopActionBarItem"/>
+
+        <ImageButton android:id="@+id/action_clear"
+            android:background="@drawable/holo_selector" android:contentDescription=""
+            android:src="@drawable/content_discard_light"
+            style="@style/TopActionBarItem"/>
+
+        <include layout="@layout/home_action_item" android:id="@+id/action_home"/>
+        <include layout="@layout/home_action_item" android:id="@+id/action_comment"/>
+        <include layout="@layout/home_action_item" android:id="@+id/action_at_status"/>
+        <include layout="@layout/home_action_item" android:id="@+id/action_at_comment"/>
+        <include layout="@layout/home_action_item" android:id="@+id/action_follower"/>
+
+    </LinearLayout>
+</HorizontalScrollView>

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- listview images -->
+    <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        android:title="@string/pref_list" android:summary="@string/pref_list">
+
+        <CheckBoxPreference
+            android:title="@string/show_bitmap"
+            android:defaultValue="true"
+            android:key="show_bitmap" android:summary="@string/show_bitmap_sum"/>
+
+        <ListPreference
+            android:title="@string/pref_resolution"
+            android:defaultValue="@string/default_resolution"
+            android:entries="@array/resolutions_labels"
+            android:entryValues="@array/resolutions"
+            android:key="resolution"
+            android:dependency="show_bitmap"
+            android:summary="@string/show_bitmap_sum"/>
+
+        <CheckBoxPreference
+            android:title="@string/pref_increment"
+            android:defaultValue="true"
+            android:key="pref_update_increment"
+            android:summary="@string/pref_increment_sum"/>
+
+        <PreferenceCategory android:title="@string/pref_status_comment"
+            android:summary="@string/pref_status_comment_sum">
+            <CheckBoxPreference
+                android:title="@string/pref_comment_status_bm"
+                android:defaultValue="true"
+                android:key="pref_comment_status_bm"
+                android:summary="@string/pref_comment_status_bm_sum"/>
+
+            <CheckBoxPreference
+                android:title="@string/pref_comment_user_bm"
+                android:defaultValue="true"
+                android:key="pref_comment_user_bm"
+                android:summary="@string/pref_comment_user_bm_sum"/>
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="@string/pref_weibo_count_title">
+
+            <cn.archko.microblog.view.SeekBarPref
+                android:key="pref_weibo_count"
+                android:persistent="true" android:defaultValue="25"
+                android:title="@string/pref_weibo_count_sum"
+                android:summary="25"
+                android:widgetLayout="@layout/ak_prefs_seekbar"/>
+        </PreferenceCategory>
+    </PreferenceScreen>
+
+    <!-- navigation mode -->
+    <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        android:title="@string/pref_nav" android:summary="@string/pref_nav">
+
+        <CheckBoxPreference
+            android:title="@string/fast_scroll"
+            android:defaultValue="true"
+            android:key="fast_scroll"
+            android:summary="@string/fast_scroll_sum"/>
+
+        <CheckBoxPreference
+            android:title="@string/show_nav_btn"
+            android:defaultValue="true"
+            android:key="show_nav_btn" android:summary="@string/show_nav_btn_sum"/>
+
+        <CheckBoxPreference
+            android:title="@string/show_nav_page_btn"
+            android:defaultValue="true" android:dependency="show_nav_btn"
+            android:key="show_nav_page_btn" android:summary="@string/show_nav_page_btn_sum"/>
+
+        <ListPreference
+            android:title="@string/nav_sidebar_touch"
+            android:summary="@string/nav_sidebar_touch_sum"
+            android:defaultValue="@string/default_nav_sidebar_touch"
+            android:entries="@array/default_nav_sidebar_touch_labels"
+            android:entryValues="@array/default_nav_sidebar_touch_val"
+            android:key="nav_sidebar_touch"/>
+
+        <!--<CheckBoxPreference
+            android:title="@string/nav_mode"
+            android:defaultValue="false"
+            android:summary="@string/nav_tab_summary"
+            android:key="nav_tab"/>-->
+
+        <!-- 依赖上面的导航模式，选中时为标签导航 -->
+        <!--<CheckBoxPreference
+            android:title="@string/show_nav_tab"
+            android:defaultValue="true" android:dependency="nav_tab"
+            android:key="show_nav_tab"/>-->
+
+        <PreferenceCategory android:title="@string/pref_sidebar_title"
+            android:summary="@string/pref_sidebar_title_sum">
+
+            <!-- TAB_ID_MY_POST -->
+            <CheckBoxPreference
+                android:title="@string/pref_sidebar_my_post_title"
+                android:defaultValue="true"
+                android:summary="@string/pref_sidebar_my_post_title_sum"
+                android:key="pref_sidebar_my_post"/>
+            <!-- TAB_ID_MY_POST -->
+            <CheckBoxPreference
+                android:title="@string/pref_sidebar_my_fav_title"
+                android:defaultValue="true"
+                android:summary="@string/pref_sidebar_my_fav_title_sum"
+                android:key="pref_sidebar_my_fav"/>
+            <!-- TAB_ID_PUBLIC -->
+            <CheckBoxPreference
+                android:title="@string/pref_sidebar_public_title"
+                android:defaultValue="true"
+                android:summary="@string/pref_sidebar_public_title_sum"
+                android:key="pref_sidebar_public"/>
+            <!-- TAB_ID_PROFILE -->
+            <CheckBoxPreference
+                android:title="@string/pref_sidebar_profile_title"
+                android:defaultValue="true"
+                android:summary="@string/pref_sidebar_profile_title_sum"
+                android:key="pref_sidebar_profile"/>
+            <!-- TAB_ID_PLACE_NEARBY_PHOTOS -->
+            <CheckBoxPreference
+                android:title="@string/pref_sidebar_place_nearby_photos_title"
+                android:defaultValue="false"
+                android:summary="@string/pref_sidebar_place_nearby_photos_title_sum"
+                android:key="pref_sidebar_place_nearby_photos"/>
+            <!-- TAB_ID_PLACE_NEARBY_USERS -->
+            <CheckBoxPreference
+                android:title="@string/pref_sidebar_place_nearby_users_title"
+                android:defaultValue="false"
+                android:summary="@string/pref_sidebar_place_nearby_users_title_sum"
+                android:key="pref_sidebar_place_nearby_users"/>
+            <!-- TAB_ID_PLACE_FRIEND_TIMELINE -->
+            <CheckBoxPreference
+                android:title="@string/pref_sidebar_place_friend_timeline_title"
+                android:defaultValue="false"
+                android:summary="@string/pref_sidebar_place_friend_timeline_title_sum"
+                android:key="pref_sidebar_place_friend_timeline"/>
+            <!-- TAB_ID_DIRECT_MSG -->
+            <CheckBoxPreference
+                android:title="@string/pref_sidebar_dm_title"
+                android:defaultValue="false"
+                android:summary="@string/pref_sidebar_dm_title_sum"
+                android:key="pref_sidebar_dm"/>
+        </PreferenceCategory>
+
+    </PreferenceScreen>
+
+    <!-- message -->
+    <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        android:title="@string/pref_msg" android:summary="@string/pref_msg">
+
+        <CheckBoxPreference
+            android:title="@string/auto_chk_new_status"
+            android:defaultValue="true"
+            android:key="auto_chk_new_status" android:summary="@string/auto_chk_new_status_sum"/>
+
+        <ListPreference
+            android:title="@string/chk_new_status_time"
+            android:defaultValue="@string/default_chk_new_status_time"
+            android:entries="@array/default_chk_new_status_time_labels"
+            android:entryValues="@array/default_chk_new_status_times"
+            android:key="chk_new_status_time"
+            android:dependency="auto_chk_new_status"/>
+    </PreferenceScreen>
+
+    <!-- other -->
+    <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        android:title="@string/pref_other"
+        android:summary="@string/pref_other">
+
+        <CheckBoxPreference
+            android:title="@string/pref_back_pressed"
+            android:defaultValue="false"
+            android:key="pref_back_pressed" android:summary="@string/pref_back_pressed_sum"/>
+
+        <CheckBoxPreference
+            android:title="@string/pref_auto_chk_update_wifi_only"
+            android:defaultValue="false"
+            android:key="pref_auto_chk_update_wifi_only" android:summary="@string/pref_auto_chk_update_wifi_only_sum"/>
+
+        <!--<CheckBoxPreference
+            android:title="@string/auto_chk_update"
+            android:defaultValue="true"
+            android:key="auto_chk_update" android:summary="@string/auto_chk_update_sum"/>-->
+
+        <Preference
+            android:key="prefs_reset"
+            android:defaultValue="false"
+            android:summary="@string/prefs_reset_title_sum"
+            android:title="@string/prefs_reset_title"/>
+
+        <CheckBoxPreference
+            android:title="@string/pref_webview"
+            android:defaultValue="true"
+            android:key="pref_webview" android:summary="@string/pref_webview_sum"/>
+    </PreferenceScreen>
+
+    <!-- font size,color theme -->
+    <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        android:title="@string/pref_theme_and_font_title"
+        android:summary="@string/pref_theme_and_font_title_sum">
+
+        <PreferenceCategory android:title="@string/pref_theme">
+            <ListPreference
+                android:title="@string/pref_theme"
+                android:defaultValue="@string/default_theme"
+                android:entries="@array/themes_labels"
+                android:entryValues="@array/themes"
+                android:key="theme"/>
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="@string/pref_font_status_title">
+
+            <cn.archko.microblog.view.SeekBarPref
+                android:key="pref_title_font_size"
+                android:persistent="true" android:defaultValue="14"
+                android:title="@string/pref_font_status_title"
+                android:summary="14"
+                android:widgetLayout="@layout/ak_prefs_seekbar"/>
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="@string/pref_font_content_size">
+
+            <cn.archko.microblog.view.SeekBarPref
+                android:key="pref_content_font_size"
+                android:persistent="true" android:defaultValue="16"
+                android:title="@string/pref_font_content_size"
+                android:summary="16"
+                android:widgetLayout="@layout/ak_prefs_seekbar"/>
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="@string/pref_font_ret_content_size">
+
+            <cn.archko.microblog.view.SeekBarPref
+                android:key="pref_ret_content_font_size"
+                android:persistent="true" android:defaultValue="16"
+                android:title="@string/pref_font_ret_content_size"
+                android:summary="16"
+                android:widgetLayout="@layout/ak_prefs_seekbar"/>
+
+        </PreferenceCategory>
+
+        <!-- Color scheme -->
+        <PreferenceCategory android:title="@string/pref_font_color_title">
+            <Preference
+                android:key="status_color_scheme"
+                android:summary="@string/pref_font_color_status_title_sum"
+                android:title="@string/pref_font_color_status_title"/>
+
+            <Preference
+                android:key="ret_status_color_scheme"
+                android:summary="@string/pref_font_color_retstatus_title_sum"
+                android:title="@string/pref_font_color_retstatus_title"/>
+
+            <Preference
+                android:key="sidebar_color_scheme"
+                android:summary="@string/pref_font_color_sidebar_title_sum"
+                android:title="@string/pref_font_color_sidebar_title"/>
+        </PreferenceCategory>
+    </PreferenceScreen>
+
+</PreferenceScreen>

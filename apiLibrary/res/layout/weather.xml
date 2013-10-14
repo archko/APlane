@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+    <RelativeLayout android:layout_weight="1" android:layout_marginLeft="6dip"
+        android:layout_width="fill_parent" android:layout_height="0dip">
+        <LinearLayout android:id="@+id/edit"
+            android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <EditText android:id="@+id/location_edit" android:textSize="18sp"
+                android:layout_width="170dip" android:layout_height="wrap_content"
+                android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                android:hint="@string/wea_text_hint"/>
+            <Button android:id="@+id/button" android:textSize="18sp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                android:text="@string/wea_text_btn"/>
+            <Button android:id="@+id/city_btn" android:textSize="18sp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                android:text="@string/wea_text_city" android:visibility="visible"/>
+        </LinearLayout>
+
+        <TextView android:id="@+id/location" android:textSize="18sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+            android:text="@string/wea_test_city" android:layout_below="@id/edit"/>
+        <ImageView android:id="@+id/current_icon" android:layout_marginTop="6dip"
+            android:layout_width="50dip" android:layout_height="50dip"
+            android:src="@drawable/icon" android:layout_below="@id/location"/>
+
+        <RelativeLayout android:layout_toRightOf="@id/current_icon"
+            android:layout_below="@id/location"
+            android:orientation="vertical" android:layout_marginLeft="6dip"
+            android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TextView android:id="@+id/current_temp_label" android:textSize="18sp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                android:text="@string/wea_current_temp"/>
+            <TextView android:id="@+id/current_temp" android:textSize="18sp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                android:text="@string/wea_test_temp" android:layout_toRightOf="@id/current_temp_label"/>
+
+            <TextView android:id="@+id/current_condition" android:textSize="18sp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                android:text="@string/wea_test_condition"
+                android:layout_below="@id/current_temp_label"/>
+
+            <TextView android:id="@+id/current_wind_condition" android:textSize="18sp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                android:text="@string/wea_test_wind_condition"
+                android:layout_below="@id/current_condition"/>
+
+            <TextView android:id="@+id/current_humidity_label" android:textSize="18sp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                android:text="" android:layout_below="@id/current_wind_condition"/>
+            <TextView android:id="@+id/current_humidity" android:textSize="18sp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textColor="@color/yellow"
+                android:text="@string/wea_test_humidity" android:layout_toRightOf="@id/current_humidity_label"
+                android:layout_below="@id/current_wind_condition"/>
+        </RelativeLayout>
+    </RelativeLayout>
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:baselineAligned="false"
+             android:layout_weight="1" android:layout_marginTop="18sp"
+            android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <LinearLayout android:layout_weight="1" android:layout_gravity="center"
+                android:layout_marginLeft="6dip" android:orientation="vertical"
+                android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+                <TextView android:id="@+id/first" android:textSize="18sp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                    android:text="@string/wea_test_weekday"/>
+                <ImageView android:id="@+id/first_icon" android:layout_marginTop="6dip"
+                    android:layout_width="50dip" android:layout_height="50dip"
+                    android:src="@drawable/icon"/>
+                <TextView android:id="@+id/first_temp" android:textSize="18sp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                    android:text="@string/wea_test_temp"/>
+                <TextView android:id="@+id/first_condition" android:textSize="18sp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                    android:text="@string/wea_test_humidity"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_weight="1" android:layout_gravity="center"
+                android:layout_marginLeft="6dip" android:orientation="vertical"
+                android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+                <TextView android:id="@+id/second" android:textSize="18sp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                    android:text="@string/wea_test_weekday"/>
+                <ImageView android:id="@+id/second_icon" android:layout_marginTop="6dip"
+                    android:layout_width="50dip" android:layout_height="50dip"
+                    android:src="@drawable/icon"/>
+                <TextView android:id="@+id/second_temp" android:textSize="18sp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                    android:text="@string/wea_test_temp"/>
+                <TextView android:id="@+id/second_condition" android:textSize="18sp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                    android:text="@string/wea_test_humidity"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:baselineAligned="false"
+             android:layout_weight="1" android:layout_marginTop="18sp"
+            android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <LinearLayout android:layout_weight="1" android:layout_gravity="center"
+                android:layout_marginLeft="6dip" android:orientation="vertical"
+                android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+                <TextView android:id="@+id/third" android:textSize="18sp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                    android:text="@string/wea_test_weekday"/>
+                <ImageView android:id="@+id/third_icon" android:layout_marginTop="6dip"
+                    android:layout_width="50dip" android:layout_height="50dip"
+                    android:src="@drawable/icon"/>
+                <TextView android:id="@+id/third_temp" android:textSize="18sp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                    android:text="@string/wea_test_temp"/>
+                <TextView android:id="@+id/third_condition" android:textSize="18sp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                    android:text="@string/wea_test_humidity"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_weight="1" android:layout_gravity="center"
+                android:layout_marginLeft="6dip" android:orientation="vertical"
+                android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+                <TextView android:id="@+id/fouth" android:textSize="18sp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                    android:text="@string/wea_test_weekday"/>
+                <ImageView android:id="@+id/fouth_icon" android:layout_marginTop="6dip"
+                    android:layout_width="50dip" android:layout_height="50dip"
+                    android:src="@drawable/icon"/>
+                <TextView android:id="@+id/fouth_temp" android:textSize="18sp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                    android:text="@string/wea_test_temp"/>
+                <TextView android:id="@+id/fouth_condition" android:textSize="18sp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dip" android:textColor="@color/yellow"
+                    android:text="@string/wea_test_humidity"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

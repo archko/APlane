@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- message -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/pref_msg" android:summary="@string/pref_msg">
+
+    <CheckBoxPreference
+        android:title="@string/auto_chk_new_status"
+        android:defaultValue="true"
+        android:key="auto_chk_new_status" android:summary="@string/auto_chk_new_status_sum"/>
+
+    <ListPreference
+        android:title="@string/chk_new_status_time"
+        android:defaultValue="@string/default_chk_new_status_time"
+        android:entries="@array/default_chk_new_status_time_labels"
+        android:entryValues="@array/default_chk_new_status_times"
+        android:key="chk_new_status_time"
+        android:dependency="auto_chk_new_status"/>
+</PreferenceScreen>

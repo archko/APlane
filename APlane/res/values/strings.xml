@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="app_name">AK微博</string>
+    <string name="app_ak_widget">AK 桌面</string>
+    <string name="exit_title">退出AKWBO</string>
+    <string name="exit_msg">您确定退出AKWBO？</string>
+    <string name="app_logout_title">注销帐户</string>
+    <string name="app_logout_msg">您确定注销帐户？</string>
+
+    <string name="my_profile">我的微博</string>
+
+    <string name="hot_category">推荐用户分类</string>
+    <string name="hot_user">推荐用户</string>
+    <string name="hot_status_category">精选微博分类</string>
+    <string name="hot_status">精选微博</string>
+
+    <!-- operation bar -->
+    <string name="opb_delete">删除</string>
+    <string name="opb_favorite">收藏</string>
+    <string name="opb_comment">评论</string>
+    <string name="opb_origin_text">原文</string>
+    <string name="opb_repost">转发</string>
+    <string name="opb_quick_repost">快速转发</string>
+    <string name="opb_quick_comment">快速评论</string>
+    <string name="opb_anim">动画</string>
+    <string name="opb_user">用户</string>
+    <string name="opb_follow">关注</string>
+    <string name="opb_user_info">资料</string>
+    <string name="opb_user_status">他的微博</string>
+    <string name="opb_unfollow">取消关注</string>
+    <string name="opb_follows">粉丝列表</string>
+    <string name="opb_friends">关注列表</string>
+    <string name="opb_reply_comment">回复评论</string>
+    <string name="opb_destroy_comment">删除评论</string>
+    <string name="opb_destroy_batch_comment">批量删除</string>
+    <string name="opb_at">\@他</string>
+    <string name="opb_more_content">内容处理</string>
+    <string name="opb_more_content_copy_status">复制原微博内容</string>
+    <string name="opb_more_content_copy_ret_status">复制转发内容</string>
+    <string name="opb_more_view_ret_status">查看转发微博原文</string>
+    <string name="opb_refresh">刷新</string>
+    <string name="opb_reply_dm">回复私信</string>
+    <string name="opb_destroy_dm">删除私信</string>
+    <string name="opb_destroy_status">删除微博</string>
+    <string name="opb_destroy_batch">批量删除</string>
+    <string name="opb_destroy_fav">删除收藏</string>
+    <string name="opb_shield_one">屏蔽当前@的微博</string>
+    <string name="opb_shield_all">屏蔽此微博@我</string>
+    <string name="opb_comment_status">微博原文</string>
+
+    <string name="opb_account_set_default">设为默认</string>
+    <string name="opb_account_delete">删除帐户</string>
+    <string name="opb_draft_edit">编辑草稿</string>
+    <string name="opb_draft_delete">删除草稿</string>
+
+    <string name="opb_task_edit">编辑任务</string>
+    <string name="opb_task_delete">删除任务</string>
+    <string name="opb_task_delete_all">删除所有任务</string>
+    <string name="opb_task_restart">重新执行任务</string>
+
+    <string name="menu_delete">删除</string>
+    <string name="menu_invert_selection">反选</string>
+
+    <string name="opb_more_hint">更多</string>
+
+    <string name="more">加载更多</string>
+    <string name="more_loaded_failed">加载失败!</string>
+    <string name="more_add_account_user">添加帐户</string>
+    <string name="more_add_status">新建微博</string>
+    <string name="network_error">网络连接失败!</string>
+
+    <string name="list_pre_empty_txt">数据加载中...</string>
+    <string name="list_empty_txt">没有数据,下拉刷新！</string>
+
+    <!-- profile -->
+    <string name="profile_edit">编辑</string>
+    <string name="profile_refresh">刷新</string>
+    <string name="profile_test_city">福建</string>
+    <string name="address">地址</string>
+    <string name="login_name">登录名</string>
+    <string name="friends">关注</string>
+    <string name="favourites">收藏</string>
+    <string name="statuses">微博</string>
+    <string name="followers">粉丝</string>
+    <string name="topics">话题</string>
+    <string name="user_info">资料</string>
+    <string name="user_id_error">用户id不正确，需要先获取用户资料!</string>
+    <string name="profile_update_group">更新分组</string>
+    <string name="profile_dialog_title">下载@好友</string>
+    <string name="profile_get_friend">下载@好友</string>
+
+    <!-- about -->
+    <string name="about">关于</string>
+    <string name="about_3dparty_title">第三方软件</string>
+    <string name="about_changelog_title">修改日志</string>
+
+    <string name="about_app_ver_label">版本</string>
+    <string name="about_app_author_label">作者</string>
+    <string name="about_app_author">AKWBO，林越风</string>
+    <string name="about_app_email_label">邮箱</string>
+    <string name="about_app_email">archko@sina.com</string>
+    <string name="about_app_follow_label">关注作者微博</string>
+    <string name="about_app_home_page_label">程序主页</string>
+    <string name="about_app_home_page">http://code.google.com/p/akwbo/</string>
+    <string name="about_app_play">Play商店</string>
+    <string name="about_app_play_url">https://play.google.com/store/apps/details?id=com.me.microblog</string>
+    <string name="about_app_home">Home</string>
+    <string name="about_app_home_url">http://code.google.com/p/akwbo/downloads/list</string>
+    <string name="about_app_suggesst_label">在微博上推荐AKWBO</string>
+    <string name="about_app_suggesst">
+        我安装了AKWBO新版:v%s,相当不错,您也装一个:https://play.google.com/store/apps/details?id=com.me.microblog
+    </string>
+    <string name="about_app_mic_label">其它杂项</string>
+    <string name="about_app_plan">近期计划：</string>
+    <string name="about_app_plan_content">从细处增强用户体验!</string>
+    <string name="about_app_about">关于其中一些功能：</string>
+    <string name="about_app_about_function">私信受限于key，默认不会显示，可以在配置中打开，而且不能随意发出私信，也算是支持新浪的做法。评论暂时只能查看我收到的评论,对发出的评论未处理!</string>
+    <string name="about_app_chk_update">检测更新</string>
+    <string name="about_app_feedback">编写更多反馈内容</string>
+    <string name="about_app_feedback_url">http://code.google.com/p/akwbo/issues/entry</string>
+
+    <!-- account -->
+    <string name="account_change">切换帐户</string>
+    <string name="account_change_dialog_title">切换帐户</string>
+    <string name="account_change_dialog_msg">正在切换帐户！</string>
+    <string name="account_change_suc">切换帐户成功！</string>
+    <string name="account_change_failed">切换帐户失败！</string>
+    <string name="account_delete_dialog_title">删除帐户</string>
+    <string name="account_delete_dialog_msg">正在删除帐户！</string>
+    <string name="account_delete_suc">删除帐户成功！</string>
+    <string name="account_delete_failed">删除帐户失败！</string>
+    <string name="account_add_dialog_title">添加帐户</string>
+    <string name="account_add_dialog_msg">正在添加帐户！</string>
+    <string name="account_add_suc">添加帐户成功！</string>
+    <string name="account_add_failed">添加帐户失败！</string>
+
+    <!-- user -->
+    <string name="follow">关注</string>
+    <string name="at">\@他</string>
+    <string name="test_status"></string>
+    <string name="test_num">100</string>
+    <string name="user_view_user">查看用户</string>
+    <string name="unfollow">取消关注</string>
+    <string name="send_direct_msg">发私信</string>
+    <string name="user_lastest_status">最新微博</string>
+    <string name="user_other_info">其它信息</string>
+    <string name="test_email"></string>
+    <string name="user_remark">备注</string>
+    <string name="user_domain">域名</string>
+    <string name="user_create_at">创建时间</string>
+    <string name="user_url">博客</string>
+    <string name="user_gender">性别</string>
+    <string name="user_loc">所在地</string>
+    <string name="user_male">男</string>
+    <string name="user_female">女</string>
+    <string name="user_unknown">未知</string>
+    <string name="user_followers">粉丝：</string>
+    <string name="user_friends">关注：</string>
+
+    <string name="pull_to_refresh_label">更新于：</string>
+
+    <!-- task-->
+    <string name="task_status">新微博:</string>
+    <string name="task_repost">新转发:</string>
+    <string name="task_comment">新评论:</string>
+    <string name="task_favorite">新收藏:</string>
+    <string name="task_ori_text">原文:</string>
+    <string name="task_err_header">处理失败:</string>
+    <string name="task_err_code"> 错误代码:</string>
+    <string name="task_err_msg"> 异常:</string>
+    <string name="task_in_progress">状态:等待完成!</string>
+
+    <!-- status and comment -->
+    <string name="text_repost">转发</string>
+    <string name="text_comment">评论</string>
+    <string name="text_time">一小时前</string>
+    <string name="text_from">来自:</string>
+    <string name="text_quick_comment_hint">快速评论</string>
+    <string name="image_activity_not_found">没有找到查看图片的程序</string>
+    <string name="text_title_content">微博正文</string>
+    <string name="text_view_comments">查看评论->右侧滑动</string>
+    <string name="text_view_status_more">更多内容操作</string>
+    <string name="text_view_status_steal">偷微博</string>
+    <string name="text_shield_suc">屏蔽成功</string>
+    <string name="text_shield_failed">屏蔽失败</string>
+
+    <string name="comment_status_not_found">无法获取微博信息!</string>
+    <string name="comment_btn">评论</string>
+    <string name="comment_and_post_btn">评论且发布</string>
+    <string name="comment_retweet_btn">评论原微博</string>
+    <string name="comment_dialog_title">回复评论</string>
+
+    <string name="content_is_null">内容不能为空!</string>
+    <string name="in_progress">正在处理中,请稍候.</string>
+    <!--<string name="comment_suc">评论成功!</string>
+    <string name="comment_failed">评论失败!</string>-->
+    <string name="repost_btn">转发</string>
+    <string name="repost_to_btn">同时评论给</string>
+    <!--<string name="repost_suc">转发成功!</string>
+    <string name="repost_failed">转发失败!</string>-->
+    <string name="text_copy_status">微博原文复制到剪切版！</string>
+    <string name="text_copy_ret_status">微博转发内容复制到剪切版！</string>
+
+    <string name="show_in_gallery">图库显示</string>
+    <string name="show_big_img">显示大图</string>
+    <string name="download_ori_img">下载原图</string>
+
+    <string name="comment_reply_start">开始回复评论，请稍候！</string>
+    <string name="comment_reply_suc">回复评论成功！</string>
+    <string name="comment_reply_failed">回复评论失败！</string>
+    <string name="comment_reply_token_isexpired">Token过期了，需要重新认证，不能评论！</string>
+
+    <!-- new status -->
+    <string name="new_status">发微博</string>
+    <string name="new_no_sdcard">没有 SD 卡</string>
+    <string name="new_take_photo">拍照</string>
+    <string name="new_pick_photo">从相册中选择</string>
+    <string name="new_back">返回</string>
+    <string name="new_photo_picker_not_found">Photo Picker not found</string>
+    <string name="new_status_should_not_null">请输入要发表的微博内容!</string>
+    <!--<string name="new_status_suc">发表微博成功!</string>-->
+    <!--<string name="new_status_failed">发表微博失败!</string>-->
+    <string name="new_status_posting">正在发表微博，请稍等！</string>
+    <string name="new_status_capture">照片</string>
+    <string name="new_status_loc">位置</string>
+    <string name="new_status_drafts">草稿</string>
+    <string name="new_status_trend">#</string>
+    <string name="new_status_emo">表情</string>
+    <string name="new_status_at">\@</string>
+    <string name="new_status_token_invalid">Token过期，此次操作耗时较长!</string>
+    <string name="new_status_cancel">点错了</string>
+    <string name="new_status_save_draft">存稿</string>
+    <string name="new_status_exit">退出</string>
+    <string name="new_status_too_more_txt">字数超出限制，截断了!</string>
+    <string name="new_status_img_crop">裁剪</string>
+    <string name="new_status_img_rotate">旋转</string>
+    <string name="new_status_img_filter">滤镜</string>
+    <string name="new_status_img_edit">编辑</string>
+    <string name="share_in_weibo">AK微博共享</string>
+
+    <string name="text_count">140</string>
+    <string name="text_hint">可以输入140个文字.</string>
+    <string name="text_new_status">发表新微博</string>
+    <string name="text_exceed_max_num">超过了140个文字.</string>
+    <string name="text_repost_num">转发 %s</string>
+    <string name="text_comment_num">评论 %s</string>
+    <string name="text_come_from">来自：%s</string>
+
+    <string name="say_something">说点什么吧&#8230;</string>
+    <string name="send_comment">评论</string>
+    <string name="send_and_comment">评论并发表微博</string>
+    <string name="repost_status">转发</string>
+
+    <string name="login">登录</string>
+    <string name="login2">授权登录</string>
+    <string name="exit">退出</string>
+    <string name="regist">注册</string>
+    <string name="other_login_btn">其它key登录</string>
+    <string name="logout">注销</string>
+    <string name="login_show_webview">显示授权页面</string>
+    <string name="mode_tabs">显示标签</string>
+    <string name="mode_standard">隐藏标签</string>
+    <string name="feedback_at_name">\@AKWBO</string>
+    <string name="sina_oauth2">采用新浪Oauth2认证，需要重新登录！如果有对您造成不便，敬请谅解。</string>
+    <string name="repost_exit_msg">您未转发微博，确定退出？</string>
+    <string name="comment_exit_msg">您未评论微博，确定退出？</string>
+    <string name="new_status_exit_msg">您未发布微博，确定退出？</string>
+    <string name="login2_title">长时间无响应,请使用显式认证</string>
+    <string name="login2_msg">第一次本程序,需要使用下面的授权登录,授权成功后,以后登录请尽量先用上面的登录按钮登录,可免去一些麻烦.</string>
+    <string name="oauth_selector_msg">显式认证在过期后不能自动处理，优先使用授权按钮！</string>
+
+    <string name="login_user_hint">邮箱/会员帐号/手机号</string>
+    <string name="login_desc">
+        AKWeibo是一个由Archko开发的新浪微博第三方客户端，通过新浪官方认证。拥有快速图片下载速度，极佳的阅读体验，横向滑动切换布局，4.0风格界面，大图模式等特点！\n作者邮箱：archko@sina.com,主页：http://code.google.com/p/akwbo
+    </string>
+    <string name="login_webview_title">您需要在上面输入框输入用户名与密码授权登录,否则将无法成功登录,使用app.</string>
+    <string name="login_custom_key_title">其它的key登录.</string>
+    <string name="login_custom_key_msg">使用的key是来自互联网搜集的!.</string>
+    <string name="login_show_webview">显式认证</string>
+    <string name="splash_loading">Loading&#8230;</string>
+
+    <string name="update_force_NoSdcard">没有sdcard，无法下载更新！</string>
+    <string name="update_title">发现新版本</string>
+    <string name="update_btn">更新</string>
+    <string name="update_install">安装</string>
+    <string name="update_download">下载中&#8230;</string>
+    <string name="update_no_browser">你手机上没有安装浏览器，无法下载更新！</string>
+
+    <string name="action_new_status">发微博</string>
+    <string name="action_home_hot">热门用户</string>
+    <string name="action_home_user">私人地盘</string>
+    <string name="action_weather">天气</string>
+    <string name="action_at_author">微博反馈</string>
+    <string name="action_pref">设置</string>
+    <string name="action_logout">注销</string>
+    <string name="action_mode_tabs">显示标签</string>
+    <string name="action_mode_standard">隐藏标签</string>
+    <string name="action_about">关于</string>
+    <string name="action_account_user_manager">帐户和草稿</string>
+    <string name="action_update">检测更新</string>
+    <string name="action_exit">退出</string>
+    <string name="action_search">搜索</string>
+    <string name="action_task">任务队列</string>
+    <string name="action_stop">停止</string>
+
+    <!-- tab label -->
+    <string name="tab_label_home">首页</string>
+    <string name="tab_label_my_post">我发布的</string>
+    <string name="tab_label_at_status">\@我的微博</string>
+    <string name="tab_label_profile">个人资料</string>
+    <string name="tab_label_public">随便看看</string>
+    <string name="tab_label_friends">我的关注</string>
+    <string name="tab_label_comment_timeline">我的评论</string>
+    <string name="tab_label_place_friend_timeline">位置动态</string>
+    <string name="tab_label_trends">话题</string>
+    <string name="tab_label_followers">我的粉丝</string>
+    <string name="tab_label_hot_pick">热门微博</string>
+    <string name="tab_label_hot_repost">热门转发</string>
+    <string name="tab_label_hot_comment">热门评论</string>
+    <string name="tab_label_hot">热门分类</string>
+    <string name="tab_label_place_nearby_users">附近的人</string>
+    <string name="tab_label_place_nearby_photos">附近的照片</string>
+    <string name="tab_label_direct_msg">私信</string>
+    <string name="tab_label_send_task">任务列表</string>
+    <string name="tab_label_about">关于AKWBO</string>
+    <string name="tab_label_at_comment">\@我的评论</string>
+    <string name="tab_label_settings">设置</string>
+    <string name="tab_label_my_fav">我的收藏</string>
+
+    <string name="tab_label_account">帐户</string>
+    <string name="tab_label_draft">草稿</string>
+
+    <!-- action bar labels -->
+    <string name="action_item_home">首页</string>
+    <string name="action_item_comment">评论</string>
+    <string name="action_item_at_status">\@微博</string>
+    <string name="action_item_at_comment">\@评论</string>
+    <string name="action_item_follower">粉丝</string>
+
+    <string name="local_service_started">local_service_started</string>
+    <string name="service_unread_status">新微博数：</string>
+    <string name="service_lastest_status">最新微博：</string>
+
+    <!-- directmessage -->
+    <string name="dm_new">写私信</string>
+    <string name="dm_new_suc">写私信成功！</string>
+    <string name="dm_new_failed">写私信失败！</string>
+    <string name="dm_new_token_isexpired">Token过期了，需要重新认证，不能私信！</string>
+
+    <!-- search -->
+    <string name="search_user">用户</string>
+    <string name="search_status">微博</string>
+
+    <string name="search_user_title">搜索用户</string>
+    <string name="search_trend_title">搜索话题</string>
+    <string name="search_trends">搜索话题</string>
+    <string name="search_friends">关注的人</string>
+    <string name="search_sugguestion">微博推荐</string>
+    <string name="search_recent">最近\@的人</string>
+
+    <string name="search_user_friends">网络搜索关注用户</string>
+
+    <!-- exception -->
+    <string name="err_api_error">api 初始化异常！可能是token过期了。</string>
+
+    <string name="status_delete_suc">成功删除微博%d 条</string>
+    <string name="fav_delete_suc">成功删除收藏：%d 条</string>
+
+    <!-- webview -->
+    <string name="webview_receive_err">加载失败！</string>
+    <string name="webview_out_app">外置浏览器</string>
+
+    <string name="clear_data">清除了列表微博</string>
+
+    <!-- filter -->
+    <string name="filters">Filters</string>
+    <string name="filters_desc">To apply when integration to Android is used</string>
+    <string name="filters_for">Filters for</string>
+    <string name="add_filter">Add filter / rewrite rule</string>
+    <string name="delete_filter">Delete filter</string>
+</resources>

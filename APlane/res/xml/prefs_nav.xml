@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- navigation mode -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/pref_nav" android:summary="@string/pref_nav">
+
+    <CheckBoxPreference
+        android:title="@string/fast_scroll"
+        android:defaultValue="true"
+        android:key="fast_scroll"
+        android:summary="@string/fast_scroll_sum"/>
+
+    <CheckBoxPreference
+        android:title="@string/show_nav_btn"
+        android:defaultValue="true"
+        android:key="show_nav_btn" android:summary="@string/show_nav_btn_sum"/>
+
+    <CheckBoxPreference
+        android:title="@string/show_nav_page_btn"
+        android:defaultValue="true" android:dependency="show_nav_btn"
+        android:key="show_nav_page_btn" android:summary="@string/show_nav_page_btn_sum"/>
+
+    <ListPreference
+        android:title="@string/nav_sidebar_touch"
+        android:summary="@string/nav_sidebar_touch_sum"
+        android:defaultValue="@string/default_nav_sidebar_touch"
+        android:entries="@array/default_nav_sidebar_touch_labels"
+        android:entryValues="@array/default_nav_sidebar_touch_val"
+        android:key="nav_sidebar_touch"/>
+
+    <!--<CheckBoxPreference
+        android:title="@string/nav_mode"
+        android:defaultValue="false"
+        android:summary="@string/nav_tab_summary"
+        android:key="nav_tab"/>-->
+
+    <!-- 依赖上面的导航模式，选中时为标签导航 -->
+    <!--<CheckBoxPreference
+        android:title="@string/show_nav_tab"
+        android:defaultValue="true" android:dependency="nav_tab"
+        android:key="show_nav_tab"/>-->
+
+    <PreferenceCategory android:title="@string/pref_sidebar_title"
+        android:summary="@string/pref_sidebar_title_sum">
+
+        <!-- TAB_ID_MY_POST -->
+        <CheckBoxPreference
+            android:title="@string/pref_sidebar_my_post_title"
+            android:defaultValue="true"
+            android:summary="@string/pref_sidebar_my_post_title_sum"
+            android:key="pref_sidebar_my_post"/>
+        <!-- TAB_ID_MY_POST -->
+        <CheckBoxPreference
+            android:title="@string/pref_sidebar_my_fav_title"
+            android:defaultValue="true"
+            android:summary="@string/pref_sidebar_my_fav_title_sum"
+            android:key="pref_sidebar_my_fav"/>
+        <!-- TAB_ID_PUBLIC -->
+        <CheckBoxPreference
+            android:title="@string/pref_sidebar_public_title"
+            android:defaultValue="true"
+            android:summary="@string/pref_sidebar_public_title_sum"
+            android:key="pref_sidebar_public"/>
+        <!-- TAB_ID_PROFILE -->
+        <CheckBoxPreference
+            android:title="@string/pref_sidebar_profile_title"
+            android:defaultValue="true"
+            android:summary="@string/pref_sidebar_profile_title_sum"
+            android:key="pref_sidebar_profile"/>
+        <!-- TAB_ID_PLACE_NEARBY_PHOTOS -->
+        <CheckBoxPreference
+            android:title="@string/pref_sidebar_place_nearby_photos_title"
+            android:defaultValue="false"
+            android:summary="@string/pref_sidebar_place_nearby_photos_title_sum"
+            android:key="pref_sidebar_place_nearby_photos"/>
+        <!-- TAB_ID_PLACE_NEARBY_USERS -->
+        <CheckBoxPreference
+            android:title="@string/pref_sidebar_place_nearby_users_title"
+            android:defaultValue="false"
+            android:summary="@string/pref_sidebar_place_nearby_users_title_sum"
+            android:key="pref_sidebar_place_nearby_users"/>
+        <!-- TAB_ID_PLACE_FRIEND_TIMELINE -->
+        <CheckBoxPreference
+            android:title="@string/pref_sidebar_place_friend_timeline_title"
+            android:defaultValue="false"
+            android:summary="@string/pref_sidebar_place_friend_timeline_title_sum"
+            android:key="pref_sidebar_place_friend_timeline"/>
+        <!-- TAB_ID_DIRECT_MSG -->
+        <CheckBoxPreference
+            android:title="@string/pref_sidebar_dm_title"
+            android:defaultValue="false"
+            android:summary="@string/pref_sidebar_dm_title_sum"
+            android:key="pref_sidebar_dm"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
+

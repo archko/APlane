@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- emoji -->
+    <string name="emoji_picture">官方</string>
+    <string name="emoji_angry">生气</string>
+    <string name="emoji_animal">动物</string>
+    <string name="emoji_cry">哭泣</string>
+    <string name="emoji_embarrased">害羞</string>
+    <string name="emoji_happy">高兴</string>
+    <string name="emoji_kiss">吻</string>
+    <string name="emoji_love">爱心</string>
+    <string name="emoji_pig">猪</string>
+    <string name="emoji_wakeup">起床</string>
+</resources>

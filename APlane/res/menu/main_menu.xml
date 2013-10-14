@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_new_status" android:showAsAction="ifRoom"
+        android:title="@string/action_new_status" android:icon="@drawable/content_edit_dark"/>
+
+    <item android:id="@+id/menu_nav" android:title="@string/opb_more_hint"
+        android:showAsAction="always">
+        <menu>
+            <item android:id="@+id/menu_account_user_manager" android:showAsAction="ifRoom|withText"
+                android:title="@string/action_account_user_manager"/>
+
+            <item android:id="@+id/menu_search" android:showAsAction="ifRoom"
+                android:title="@string/action_search"/>
+
+            <item android:id="@+id/menu_home_user" android:showAsAction="ifRoom|withText"
+                android:title="@string/action_home_user"/>
+
+            <item android:id="@+id/menu_at_author" android:showAsAction="ifRoom|withText"
+                android:title="@string/action_at_author"/>
+
+            <item android:id="@+id/menu_pref" android:showAsAction="ifRoom|withText"
+                android:title="@string/action_pref"/>
+
+            <item android:id="@+id/menu_logout" android:showAsAction="ifRoom|withText"
+                android:title="@string/action_logout"/>
+
+            <item android:id="@+id/menu_mode" android:showAsAction="ifRoom|withText"
+                android:title="@string/action_mode_standard"/>
+
+            <item android:id="@+id/menu_about" android:showAsAction="ifRoom|withText"
+                android:title="@string/action_about"/>
+
+            <item android:id="@+id/menu_update" android:showAsAction="ifRoom|withText"
+                android:title="@string/action_update"/>
+
+            <item android:id="@+id/menu_exit" android:showAsAction="ifRoom|withText"
+                android:title="@string/action_exit"/>
+
+            <item android:id="@+id/menu_task" android:showAsAction="ifRoom|withText"
+                android:title="@string/action_task"/>
+        </menu>
+    </item>
+
+    <!-- old menu -->
+    <!--<item android:id="@+id/menu_new_status" android:showAsAction="ifRoom"
+        android:title="@string/action_new_status" android:icon="@drawable/ic_compose"/>
+
+    <item android:id="@+id/menu_search" android:showAsAction="ifRoom"
+        android:title="@string/action_search" android:icon="@drawable/ic_search"/>-->
+
+    <!--  api过期了。 -->
+    <!--<item android:id="@+id/menu_home_hot" android:showAsAction="ifRoom|withText"
+        android:title="@string/action_home_hot"/>-->
+
+    <!--<item android:id="@+id/menu_weather" android:showAsAction="ifRoom|withText"
+        android:title="@string/action_weather"/>-->
+
+    <!--<item android:id="@+id/menu_home_user" android:showAsAction="ifRoom|withText"
+        android:title="@string/action_home_user"/>
+
+    <item android:id="@+id/menu_at_author" android:showAsAction="ifRoom|withText"
+        android:title="@string/action_at_author"/>
+
+    <item android:id="@+id/menu_pref" android:showAsAction="ifRoom|withText"
+        android:title="@string/action_pref"/>
+
+    <item android:id="@+id/menu_logout" android:showAsAction="ifRoom|withText"
+        android:title="@string/action_logout"/>
+
+    <item android:id="@+id/menu_mode" android:showAsAction="ifRoom|withText"
+        android:title="@string/action_mode_standard"/>
+
+    <item android:id="@+id/menu_about" android:showAsAction="ifRoom|withText"
+        android:title="@string/action_about"/>
+
+    <item android:id="@+id/menu_account_user_manager" android:showAsAction="ifRoom|withText"
+        android:title="@string/action_account_user_manager"/>
+
+    <item android:id="@+id/menu_update" android:showAsAction="ifRoom|withText"
+        android:title="@string/action_update"/>
+
+    <item android:id="@+id/menu_exit" android:showAsAction="ifRoom|withText"
+        android:title="@string/action_exit"/>-->
+
+</menu>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget">
+    </style>
+
+    <style name="Widget.AK.ActionButton" parent="android:TextAppearance.Holo.Widget.Button">
+    </style>
+    <style name="Widget.AK.Light.ActionButton" parent="Widget.AK.ActionButton">
+    </style>
+
+    <!-- custom tabs -->
+    <style name="Widget.AK.CustomTabs" parent="Widget">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/bottom_action_bar_height</item>
+        <!--<item name="android:background">@drawable/abs__tab_indicator_ab_holo</item>-->
+        <item name="android:gravity">center</item>
+        <item name="android:paddingBottom">@dimen/tab_padding_top_bottom</item>
+        <item name="android:paddingLeft">@dimen/tab_padding_left_right</item>
+        <item name="android:paddingRight">@dimen/tab_padding_left_right</item>
+        <item name="android:paddingTop">@dimen/tab_padding_top_bottom</item>
+        <item name="android:textColor">@android:color/primary_text_light</item>
+        <item name="android:textSize">@dimen/text_size_micro</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:selectAllOnFocus">false</item>
+    </style>
+    <style name="Widget.AK.Light.CustomTabs" parent="Widget.AK.CustomTabs">
+        <item name="android:textColor">@android:color/primary_text_light</item>
+        <!--<item name="android:background">@drawable/abs__tab_indicator_ab_holo</item>-->
+    </style>
+
+    <!-- Button in the bottom bar -->
+    <style name="Widget.AK.BottomActionBarItem" parent="android:TextAppearance.Holo.Widget.Button">
+        <item name="android:layout_width">@dimen/bottom_action_bar_item_width</item>
+        <item name="android:layout_height">fill_parent</item>
+        <!--<item name="android:paddingLeft">@dimen/bottom_action_bar_item_padding_left_right</item>
+        <item name="android:paddingRight">@dimen/bottom_action_bar_item_padding_left_right</item>-->
+        <item name="android:background">@drawable/holo_selector</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">?attr/textColorItemBottomBar</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="Widget.AK.Light.BottomActionBarItem" parent="Widget.AK.BottomActionBarItem">
+    </style>
+
+    <style name="Widget.AK.HoloButtonStyle" parent="android:Widget.Button">
+        <item name="android:background">@drawable/btn_default_holo_dark</item>
+        <item name="android:textColor">@color/holo_dark_btn_txt</item>
+    </style>
+    <style name="Widget.AK.Light.HoloButtonStyle" parent="Widget.AK.HoloButtonStyle">
+        <item name="android:background">@drawable/btn_default_holo_light</item>
+        <item name="android:textColor">@color/holo_light_btn_txt</item>
+    </style>
+
+    <style name="TextAppearance.AK.itemRetStatus" parent="Widget">
+        <item name="android:textColor">?attr/textColorItemRetStatus</item>
+        <!--<item name="android:background">@drawable/item_bg_darka</item>-->
+    </style>
+    <style name="TextAppearance.AK.Light.itemRetStatus"
+        parent="TextAppearance.AK.itemRetStatus">
+        <!--<item name="android:background">@drawable/item_bg_light</item>-->
+    </style>
+
+    <!-- sidebar -->
+    <style name="Background.AK.colorSidebarBackground" parent="Widget">
+        <item name="android:background">?attr/bgColorSidebar</item>
+        <item name="android:textColor">?attr/textColorItemSidebar</item>
+    </style>
+    <style name="Background.AK.Light.colorSidebarBackground" parent="Background.AK.colorSidebarBackground">
+    </style>
+
+    <!-- Top Action Bar Items -->
+    <!-- Top Action Bar group -->   <!-- hard code -->
+    <!--<style name="Widget.AK.HoloTopGroupButtonStyle" parent="android:Widget.ImageButton">
+        <item name="android:src">@drawable/social_group_dark</item>
+    </style>
+    <style name="Widget.AK.Light.HoloTopGroupButtonStyle" parent="Widget.AK.HoloTopGroupButtonStyle">
+        <item name="android:src">@drawable/social_group_light</item>
+    </style>-->
+
+    <!-- Top Action Bar msg Buttons -->
+    <style name="TopActionBarMsgItem">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:gravity">top|center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center|bottom</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:paddingRight">@dimen/bottom_action_bar_item_padding_left_right</item>
+        <item name="android:scaleType">centerInside</item>
+    </style>
+
+    <!-- Top Action Bar Image Buttons -->
+    <style name="TopActionBarItem">
+        <!--<item name="android:layout_weight">1</item>-->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center|bottom</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:paddingLeft">@dimen/bottom_action_bar_item_padding_left_right</item>
+        <item name="android:paddingRight">@dimen/bottom_action_bar_item_padding_left_right</item>
+        <item name="android:layout_marginBottom">@dimen/bottom_action_bar_item_margin_bottom</item>
+        <item name="android:scaleType">centerInside</item>
+    </style>
+
+    <style name="TopActionBarItem.Home" parent="@style/TopActionBarItem">
+        <item name="android:contentDescription">@string/tab_label_home</item>
+    </style>
+
+    <style name="TopActionBarItem.Comment" parent="@style/TopActionBarItem">
+        <item name="android:contentDescription">@string/tab_label_comment_timeline</item>
+    </style>
+
+    <style name="TopActionBarItem.Follower" parent="@style/TopActionBarItem">
+        <item name="android:contentDescription">@string/tab_label_followers</item>
+    </style>
+
+    <style name="TopActionBarItem.AtStatus" parent="@style/TopActionBarItem">
+        <item name="android:contentDescription">@string/tab_label_at_status</item>
+    </style>
+
+    <style name="TopActionBarItem.AtComment" parent="@style/TopActionBarItem">
+        <item name="android:contentDescription">@string/tab_label_at_comment</item>
+    </style>
+</resources>

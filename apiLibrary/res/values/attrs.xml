@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TextProgressBar">
+        <attr name="progress_txt_color" format="reference|color"/>
+        <attr name="progress_txt_size" format="reference|dimension"/>
+    </declare-styleable>
+</resources>

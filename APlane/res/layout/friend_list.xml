@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:gravity="center_vertical">
+
+    <!--<eu.erikw.PullToRefreshListView-->
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/statusList"
+        android:listSelector="@drawable/abs__list_selector_holo_dark"
+        android:layout_width="fill_parent" android:layout_height="fill_parent"
+        android:cacheColorHint="@color/transparent" android:dividerHeight="0dp"
+        android:drawSelectorOnTop="false" android:fastScrollEnabled="true"
+        android:fadingEdge="none" android:smoothScrollbar="true"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"/>
+
+    <TextView android:id="@+id/empty_txt"
+        android:visibility="gone" android:text="@string/list_pre_empty_txt"
+        android:gravity="center" android:textSize="20sp"
+        android:layout_width="fill_parent" android:layout_height="fill_parent"/>
+</RelativeLayout>

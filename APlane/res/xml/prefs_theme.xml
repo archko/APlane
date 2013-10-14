@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- font size,color theme -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/pref_theme_and_font_title"
+    android:summary="@string/pref_theme_and_font_title_sum">
+
+    <PreferenceCategory android:title="@string/pref_theme">
+        <ListPreference
+            android:title="@string/pref_theme"
+            android:defaultValue="@string/default_theme"
+            android:entries="@array/themes_labels"
+            android:entryValues="@array/themes"
+            android:key="theme"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_font_status_title">
+
+        <cn.archko.microblog.view.SeekBarPref
+            android:key="pref_title_font_size"
+            android:persistent="true" android:defaultValue="14"
+            android:title="@string/pref_font_status_title"
+            android:summary="14"
+            android:widgetLayout="@layout/ak_prefs_seekbar"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_font_content_size">
+
+        <cn.archko.microblog.view.SeekBarPref
+            android:key="pref_content_font_size"
+            android:persistent="true" android:defaultValue="16"
+            android:title="@string/pref_font_content_size"
+            android:summary="16"
+            android:widgetLayout="@layout/ak_prefs_seekbar"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_font_ret_content_size">
+
+        <cn.archko.microblog.view.SeekBarPref
+            android:key="pref_ret_content_font_size"
+            android:persistent="true" android:defaultValue="16"
+            android:title="@string/pref_font_ret_content_size"
+            android:summary="16"
+            android:widgetLayout="@layout/ak_prefs_seekbar"/>
+
+    </PreferenceCategory>
+
+    <!-- Color scheme -->
+    <PreferenceCategory android:title="@string/pref_font_color_title">
+        <Preference
+            android:key="status_color_scheme"
+            android:summary="@string/pref_font_color_status_title_sum"
+            android:title="@string/pref_font_color_status_title"/>
+
+        <Preference
+            android:key="ret_status_color_scheme"
+            android:summary="@string/pref_font_color_retstatus_title_sum"
+            android:title="@string/pref_font_color_retstatus_title"/>
+
+        <Preference
+            android:key="sidebar_color_scheme"
+            android:summary="@string/pref_font_color_sidebar_title_sum"
+            android:title="@string/pref_font_color_sidebar_title"/>
+    </PreferenceCategory>
+</PreferenceScreen>

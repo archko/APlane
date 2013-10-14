@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- These are the attributes that we want to retrieve for
+         app/FragmentArguments.java -->
+
+    <declare-styleable name="FragmentArguments">
+        <attr name="android:label"/>
+    </declare-styleable>
+
+    <declare-styleable name="SeekBarPreference">
+        <attr name="defaultValue" format="string|boolean|integer|reference|float"/>
+    </declare-styleable>
+
+    <declare-styleable name="TagsViewGroup">
+        <attr name="verticalSpacing"  format="dimension" />
+        <attr name="horizontalSpacing"  format="dimension" />
+        <attr name="minRows" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="RoundedImageView">
+        <attr name="corner_radius" format="dimension" />
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+        <attr name="round_background" format="boolean" />
+        <attr name="is_oval" format="boolean" />
+        <attr name="android:scaleType" />
+    </declare-styleable>
+</resources>

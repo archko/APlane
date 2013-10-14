@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- listview images -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/pref_list" android:summary="@string/pref_list">
+
+    <CheckBoxPreference
+        android:title="@string/show_bitmap"
+        android:defaultValue="true"
+        android:key="show_bitmap" android:summary="@string/show_bitmap_sum"/>
+
+    <ListPreference
+        android:title="@string/pref_resolution"
+        android:defaultValue="@string/default_resolution"
+        android:entries="@array/resolutions_labels"
+        android:entryValues="@array/resolutions"
+        android:key="resolution"
+        android:dependency="show_bitmap"
+        android:summary="@string/show_bitmap_sum"/>
+
+    <CheckBoxPreference
+        android:title="@string/pref_increment"
+        android:defaultValue="true"
+        android:key="pref_update_increment"
+        android:summary="@string/pref_increment_sum"/>
+
+    <PreferenceCategory android:title="@string/pref_status_comment"
+        android:summary="@string/pref_status_comment_sum">
+        <CheckBoxPreference
+            android:title="@string/pref_comment_status_bm"
+            android:defaultValue="true"
+            android:key="pref_comment_status_bm"
+            android:summary="@string/pref_comment_status_bm_sum"/>
+
+        <CheckBoxPreference
+            android:title="@string/pref_comment_user_bm"
+            android:defaultValue="true"
+            android:key="pref_comment_user_bm"
+            android:summary="@string/pref_comment_user_bm_sum"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
+

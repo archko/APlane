@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:background="@color/black">
+
+    <LinearLayout android:id="@+id/title_layout" android:orientation="vertical"
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <TextView android:id="@+id/tv_title"
+            android:layout_height="wrap_content" android:layout_width="fill_parent"
+            android:text="@string/search_user_title"
+            android:gravity="center_horizontal" android:textSize="18sp"
+            android:layout_marginTop="10dp" android:layout_marginBottom="10dp"
+            android:textColor="?attr/textColorItemTitle"/>
+
+        <!-- 用于下载好友的,在搜索时隐藏 -->
+        <LinearLayout android:id="@+id/profile_layout" android:visibility="gone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:divider="?android:listDivider"
+            android:dividerPadding="12.0dip"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:showDividers="middle">
+
+            <ImageButton
+                android:id="@+id/profile_download"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/holo_selector"
+                android:padding="6dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/download_dark"/>
+
+            <ImageButton
+                android:id="@+id/profile_refresh"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/holo_selector"
+                android:padding="6dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/navigation_refresh_dark"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout android:id="@+id/content_layout"
+        android:layout_below="@id/title_layout"
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+        <ImageView android:id="@+id/search_btn"
+            android:src="@drawable/action_search_light"
+            android:layout_alignParentRight="true" android:layout_centerVertical="true"
+            android:layout_marginRight="6dp" android:layout_marginLeft="6dp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+        <EditText android:id="@+id/content" android:layout_toLeftOf="@id/search_btn"
+            android:layout_height="wrap_content" android:layout_width="fill_parent"
+            android:text="" android:gravity="left|top"
+            android:singleLine="true"/>
+
+        <ImageView android:id="@+id/search_close_btn"
+            android:src="@drawable/et_close_icon" android:visibility="gone"
+            android:layout_alignRight="@id/content"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <LinearLayout android:id="@+id/button_bar"
+        android:layout_below="@id/content_layout"
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+        <Button android:id="@+id/btn_recent" android:visibility="gone"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:text="@string/search_recent" android:layout_weight="1"
+            style="@style/SearchTabs"/>
+
+        <Button android:id="@+id/btn_friends"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:text="@string/search_friends" android:layout_weight="1"
+            style="@style/SearchTabs"/>
+
+        <Button android:id="@+id/btn_sugguest"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:text="@string/search_sugguestion" android:layout_weight="1"
+            style="@style/SearchTabs"/>
+
+        <Button android:id="@+id/btn_trends" android:visibility="gone"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:text="@string/search_trends" android:layout_weight="1"
+            style="@style/SearchTabs"/>
+    </LinearLayout>
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/colorstrip"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/colorstrip_height"
+        android:background="@color/DeepSkyBlue"
+        tools:ignore="Overdraw" android:layout_alignBottom="@id/button_bar"/>
+
+    <ListView android:id="@+id/statusList"
+        android:background="@color/black" android:layout_below="@id/button_bar"
+        android:visibility="visible"
+        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:cacheColorHint="@color/none" android:dividerHeight="0dp"
+        android:layout_marginLeft="4dp" android:layout_marginRight="4dp"/>
+
+    <LinearLayout android:id="@+id/loading"
+        android:visibility="gone"
+        android:orientation="horizontal" android:gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <ProgressBar android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            style="?android:attr/progressBarStyle"
+            android:layout_gravity="center"
+            android:indeterminateDrawable="@drawable/progressbar"/>
+    </LinearLayout>
+</RelativeLayout>

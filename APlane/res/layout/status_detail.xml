@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:makeramen="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:orientation="vertical"
+    tools:ignore="ContentDescription"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+    <RelativeLayout
+        android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout android:id="@+id/title_bar"
+            android:layout_marginLeft="40dp" android:paddingLeft="40dp"
+            android:layout_height="@dimen/bottom_action_bar_height" android:layout_width="fill_parent"
+            android:background="@color/holo_blue_light">
+            <!--<TextView
+                android:id="@+id/screen_name" android:layout_toRightOf="@id/iv_portrait"
+                android:layout_height="wrap_content" android:layout_width="wrap_content"
+                android:text="@string/app_name" android:textColor="@color/black"
+                android:layout_marginLeft="4dip" android:layout_marginTop="2dp"
+                android:textColorLink="@color/blue"
+                android:clickable="true" android:linksClickable="true"/>-->
+
+            <TextView
+                android:id="@+id/repost_label"
+                android:textSize="16sp"
+                android:layout_height="wrap_content" android:layout_width="wrap_content"
+                android:text="@string/text_repost" android:textColor="@color/black"
+                android:layout_marginLeft="4dip" android:layout_marginTop="2dp"/>
+            <TextView
+                android:id="@+id/repost_num"
+                android:layout_toRightOf="@id/repost_label"
+                android:layout_height="wrap_content" android:layout_width="wrap_content"
+                android:text="@string/test_num" android:textColor="?attr/textColorItemNum"
+                android:layout_marginLeft="8dip" android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:id="@+id/comment_label"
+                android:layout_below="@id/repost_num" android:textSize="16sp"
+                android:layout_height="wrap_content" android:layout_width="wrap_content"
+                android:text="@string/text_comment" android:textColor="@color/black"
+                android:layout_marginLeft="4dip" android:layout_marginTop="2dp"/>
+            <TextView
+                android:id="@+id/comment_num"
+                android:layout_toRightOf="@id/comment_label" android:layout_below="@id/repost_num"
+                android:layout_height="wrap_content" android:layout_width="wrap_content"
+                android:text="@string/test_num" android:textColor="?attr/textColorItemNum"
+                android:layout_marginLeft="8dip" android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:id="@+id/send_time"
+                android:layout_marginLeft="4dip" android:layout_marginTop="2dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true" android:layout_marginRight="4dp"
+                android:layout_height="wrap_content" android:layout_width="wrap_content"
+                android:text="@string/text_time" android:textColor="?attr/textColorItemNum"/>
+            <TextView
+                android:id="@+id/source_from"
+                android:layout_marginLeft="4dip" android:layout_marginTop="4dp"
+                android:layout_below="@id/send_time" android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true" android:layout_marginRight="4dp"
+                android:layout_height="wrap_content" android:layout_width="wrap_content"
+                android:text="@string/my_profile" android:textColor="?attr/textColorItemNum"/>
+            <TextView
+                android:id="@+id/come_from_label" android:layout_alignBaseline="@id/source_from"
+                android:layout_alignParentBottom="true" android:layout_toLeftOf="@id/source_from"
+                android:layout_height="wrap_content" android:layout_width="wrap_content"
+                android:text="@string/text_from" android:textColor="@color/black"/>
+        </RelativeLayout>
+
+        <View android:layout_below="@id/title_bar"
+            android:layout_width="match_parent" android:visibility="visible"
+            android:layout_height="@dimen/shadow_height" android:layout_marginLeft="40dp"
+            android:background="@drawable/top_shadow"/>
+
+        <com.makeramen.rounded.RoundedImageView android:id="@+id/iv_portrait"
+            android:layout_alignParentLeft="true"
+            makeramen:corner_radius="30dip"
+            makeramen:border_width="0dip"
+            android:layout_width="70dip" android:layout_height="70dip"
+            android:src="@drawable/user_default_photo"
+            android:scaleType="centerCrop"
+            android:focusable="false"/>
+
+        <ProgressBar android:id="@+id/progress_bar"
+            android:layout_below="@id/title_bar" android:layout_toRightOf="@id/iv_portrait"
+            android:layout_marginTop="4dp" android:layout_marginLeft="1dp"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:visibility="invisible" android:progress="3"
+            android:minHeight="4dip" android:maxHeight="4dip"
+            android:progressDrawable="@drawable/custom_yellow_color_seekbar_style"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout android:orientation="vertical"
+            tools:ignore="ContentDescription"
+            android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <include layout="@layout/status_detail_header_item"/>
+
+            <LinearLayout android:id="@+id/ly_view_comment"
+                android:clickable="true"
+                android:background="@drawable/abs__list_selector_holo_dark"
+                android:layout_width="fill_parent" android:layout_height="@dimen/bottom_action_bar_height">
+                <TextView android:textColor="@color/btn_default_normal_holo_dark_color"
+                    android:text="@string/text_view_comments" android:textSize="16sp"
+                    android:layout_gravity="center" android:gravity="center"
+                    android:layout_width="fill_parent" android:layout_height="fill_parent"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

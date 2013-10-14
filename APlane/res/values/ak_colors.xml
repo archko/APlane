@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="holo_dark_item_sidebar">@color/white</color>
+    <color name="holo_dark_item_title">@color/DeepSkyBlue</color>
+    <color name="holo_dark_item_name">@color/DeepSkyBlue</color>
+
+    <!-- 列表项的正文内容与转发的内容颜色 -->
+    <color name="holo_dark_item_status">@color/white</color>
+    <color name="holo_dark_item_ret_status">@color/white</color>
+    <color name="holo_dark_item_topbottom">@color/whiteSmoke</color>
+    <color name="holo_dark_item_bottombar">@color/white</color>
+    <color name="holo_dark_item_num">@color/whiteSmoke</color>
+    <color name="holo_dark_item_user_num">@color/transparent_black</color>
+    <color name="holo_dark_item_user_info">#ffffffff</color>
+    <color name="holo_dark_item_highliht_link">@color/yellow</color>
+    <color name="holo_dark_item_at">#ffffffff</color>
+
+    <!-- holo button style -->
+    <color name="holo_dark_btn_txt">#ffffffff</color>
+
+    <!-- abs__background_holo_light 作为列表的背景色 -->
+    <color name="holo_dark_bg_list">@color/holo_dark_end</color>
+    <color name="holo_dark_bg_view">@drawable/background_holo_dark</color>
+    <color name="holo_dark_bg_sidebar">@drawable/background_holo_dark</color>
+
+    <color name="holo_dark_bg_actionbar_tab">@color/action_bar_color</color>
+
+    <!-- ================= light ================ -->
+    <color name="holo_light_item_sidebar">#FF000000</color>
+    <color name="holo_light_item_title">@color/DeepSkyBlue</color>
+    <color name="holo_light_item_name">@color/DeepSkyBlue</color>
+
+    <!-- 列表项的正文内容与转发的内容颜色 -->
+    <color name="holo_light_item_status">@color/holo_dark_end</color>
+    <color name="holo_light_item_ret_status">@color/holo_dark_end</color>
+    <color name="holo_light_item_topbottom">@color/soft_grey</color>
+    <color name="holo_light_item_bottombar">@color/holo_dark_end</color>
+    <color name="holo_light_item_num">@color/soft_grey</color>
+    <color name="holo_light_item_user_num">#FF000000</color>
+    <color name="holo_light_item_user_info">#FF000000</color>
+    <color name="holo_light_item_highliht_link">@color/holo_blue_light_transparent</color>
+    <color name="holo_light_item_at">#FF000000</color>
+
+    <!-- holo button style -->
+    <color name="holo_light_btn_txt">#FF000000</color>
+
+    <!-- abs__background_holo_light 作为自动完成列表的背景色 -->
+    <color name="holo_light_bg_list">@color/btn_default_normal_holo_dark_color2</color>
+    <color name="holo_light_bg_view">@drawable/background_holo_light</color>
+    <color name="holo_light_bg_sidebar">#ffe8e8e8</color>
+
+    <color name="holo_light_bg_actionbar_tab">@color/holo_light_start</color>
+</resources>

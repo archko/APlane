@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.AK" parent="android:Theme.Holo">
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowActionBar">true</item>
+
+        <!-- Internal -->
+        <!--<item name="dropdownListPreferredItemHeight">48dip</item>-->
+        <item name="buttonStyle">@style/Widget.AK.ActionButton</item>
+        <item name="bottomActionBarItem">@style/Widget.AK.BottomActionBarItem</item>
+        <item name="holoButtonStyle">@style/Widget.AK.HoloButtonStyle</item>
+
+        <!-- custom tab-->
+        <item name="holoActionBarTabStyle">@style/Widget.AK.CustomTabs</item>
+
+        <!-- 转发微博的style,有背景的. -->
+        <item name="itemRetStatusStyle">@style/TextAppearance.AK.itemRetStatus</item>
+
+        <!-- sidebar item color -->
+        <item name="textColorItemSidebar">@color/holo_dark_item_sidebar</item>
+
+        <!-- 列表项 标题左侧为蓝色 右侧为黑色默认的 -->
+        <item name="textColorItemTitle">@color/holo_dark_item_title</item>
+
+        <!-- 列表项 标题左侧为蓝色 右侧为黑色默认的 -->
+        <item name="textColorItemName">@color/holo_dark_item_name</item>
+
+        <!-- 列表项的正文内容与转发的内容颜色 -->
+        <item name="textColorItemStatus">@color/holo_dark_item_status</item>
+        <item name="textColorItemRetStatus">@color/holo_dark_item_ret_status</item>
+
+        <!-- 顶部或底部来自与时间的颜色 -->
+        <item name="textColorItemTopBottom">@color/holo_dark_item_topbottom</item>
+
+        <!-- bottom button bar -->
+        <item name="textColorItemBottomBar">@color/holo_dark_item_bottombar</item>
+
+        <!-- repost,comment number color -->
+        <item name="textColorItemNum">@color/holo_dark_item_num</item>
+
+        <!-- user status,friendscount,followerscount favorites number -->
+        <item name="textColorItemUserNum">@color/holo_dark_item_user_num</item>
+
+        <!-- user info -->
+        <item name="textColorItemUserInfo">@color/holo_dark_item_user_info</item>
+
+        <!-- @,#,url highlight color -->
+        <item name="textColorItemHighlightLink">@color/holo_dark_item_highliht_link</item>
+
+        <!-- list @,# item color -->
+        <item name="textColorItemAt">@color/holo_dark_item_at</item>
+
+        <!-- ================ background color ================= -->
+        <!-- 作为列表的背景色 -->
+        <item name="bgColorList">@color/holo_blue_light</item>
+
+        <!-- view viewpager,all view background -->
+        <item name="bgView">@color/holo_dark_bg_view</item>
+
+        <!-- sidebar background -->
+        <item name="bgColorSidebar">@color/holo_dark_bg_sidebar</item>
+
+        <!-- tab background -->
+        <item name="bgColorActionBarTab">@drawable/holo_dark_action_bar</item>
+    </style>
+
+    <style name="Theme.AK.Light" parent="android:Theme.Holo.Light">
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowActionBar">true</item>
+
+        <!-- Internal -->
+        <!--<item name="dropdownListPreferredItemHeight">48dip</item>-->
+        <item name="buttonStyle">@style/Widget.AK.Light.ActionButton</item>
+        <item name="bottomActionBarItem">@style/Widget.AK.Light.BottomActionBarItem</item>
+        <item name="holoButtonStyle">@style/Widget.AK.Light.HoloButtonStyle</item>
+
+        <!-- custom tab-->
+        <item name="holoActionBarTabStyle">@style/Widget.AK.Light.CustomTabs</item>
+
+        <!-- 转发微博的style,有背景的. -->
+        <item name="itemRetStatusStyle">@style/TextAppearance.AK.Light.itemRetStatus</item>
+
+        <!-- sidebar item color -->
+        <item name="textColorItemSidebar">@color/holo_light_item_sidebar</item>
+
+        <!-- 列表项 标题左侧为蓝色 右侧为黑色默认的 -->
+        <item name="textColorItemTitle">@color/holo_light_item_title</item>
+
+        <!-- 列表项 标题左侧为蓝色 右侧为黑色默认的 -->
+        <item name="textColorItemName">@color/holo_light_item_name</item>
+
+        <!-- 列表项的正文内容与转发的内容颜色 -->
+        <item name="textColorItemStatus">@color/holo_light_item_status</item>
+        <item name="textColorItemRetStatus">@color/holo_light_item_ret_status</item>
+
+        <!-- 顶部或底部来自与时间的颜色 -->
+        <item name="textColorItemTopBottom">@color/holo_light_item_topbottom</item>
+
+        <!-- bottom button bar -->
+        <item name="textColorItemBottomBar">@color/holo_light_item_bottombar</item>
+
+        <!-- repost,comment number color -->
+        <item name="textColorItemNum">@color/holo_light_item_num</item>
+
+        <!-- user status,friendscount,followerscount favorites number -->
+        <item name="textColorItemUserNum">@color/holo_light_item_user_num</item>
+
+        <!-- user info -->
+        <item name="textColorItemUserInfo">@color/holo_light_item_user_info</item>
+
+        <!-- @,#,url highlight color -->
+        <item name="textColorItemHighlightLink">@color/holo_light_item_highliht_link</item>
+
+        <!-- list @,# item color -->
+        <item name="textColorItemAt">@color/holo_light_item_at</item>
+
+        <!-- ================ background color ================= -->
+        <!-- 作为列表的背景色 -->
+        <item name="bgColorList">@color/holo_light_bg_list</item>
+
+        <!-- view viewpager,all view background -->
+        <item name="bgView">@color/holo_light_bg_view</item>
+
+        <!-- sidebar background -->
+        <item name="bgColorSidebar">@color/holo_light_bg_sidebar</item>
+
+        <!-- tab background -->
+        <item name="bgColorActionBarTab">@color/holo_light_bg_actionbar_tab</item>
+    </style>
+
+    <!-- no action bar -->
+    <style name="Theme.AK.NoActionBar" parent="android:Theme.Holo.NoActionBar">
+        <!--<item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>-->
+    </style>
+    <style name="Theme.AK.Light.NoActionBar" parent="android:Theme.Holo.Light.NoActionBar">
+        <!--<item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>-->
+    </style>
+</resources>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="1332" android:installLocation="auto"
+    android:versionName="1.1.32"
+    package="cn.archko.microblog">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
+    <uses-permission android:name="android.permission.CLEAR_APP_CACHE"/>
+    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="17"/>
+
+    <supports-screens
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:xlargeScreens="true"
+        android:resizeable="true"
+        android:anyDensity="true"/>
+
+    <application android:hardwareAccelerated="false" android:icon="@drawable/logo"
+        android:label="@string/app_name" android:name="com.me.microblog.App"
+        android:allowBackup="true"
+        android:taskAffinity="com.me.microblog" android:largeHeap="true">
+
+        <service android:name="com.baidu.location.f" android:enabled="true"
+            android:process=":remote">
+        </service>
+
+        <!--  友盟统计begin -->
+        <meta-data android:value="51d7441656240b629d01c250" android:name="UMENG_APPKEY"></meta-data>
+        <meta-data android:value="akwbo" android:name="UMENG_CHANNEL"/>
+        <!--<activity android:name="com.umeng.fb.ui.SendFeedback" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name="com.umeng.fb.ui.FeedbackConversations"/>
+        <activity android:name="com.umeng.fb.ui.FeedbackConversation" android:configChanges="keyboard"/>-->
+
+        <service
+            android:name="com.umeng.common.net.DownloadingService"
+            android:exported="true"
+            android:process=":DownloadingService">
+        </service>
+
+        <!-- -->
+        <activity android:name=".ui.LoginActivity" android:label="twitter/Login"
+            android:excludeFromRecents="true" android:launchMode="singleTop">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="archko.test"/>
+            </intent-filter>-->
+        </activity>
+
+        <activity android:name=".ui.CommentStatusActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
+
+        <activity android:name=".ui.NewStatusActivity"
+            android:label="twitter/NewStatusActivity" android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="adjustResize" android:launchMode="singleTop">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="archko.test"/>
+            </intent-filter>-->
+            <intent-filter android:label="@string/share_in_weibo">
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="image/*"/>
+            </intent-filter>
+            <intent-filter android:label="@string/share_in_weibo">
+                <action android:name="android.intent.action.SEND"/>
+                <data android:mimeType="text/*"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter android:label="@string/share_in_weibo">
+                <action android:name="com.me.microblog.intent.action.NEW_BLOG"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.RepostStatusActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
+
+        <activity android:name=".ui.ViewStatusDetailActivity" android:label="twitter/ViewStatusFragment"
+            android:uiOptions="splitActionBarWhenNarrow">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="archko.test"/>
+            </intent-filter>-->
+        </activity>
+
+        <activity android:name=".ui.SplashActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.UserFragmentActivity"
+            android:label="twitter/UserFragments">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="archko.test"/>
+            </intent-filter>-->
+        </activity>
+
+        <!--<activity android:name=".ui.WeatherActivity"
+            android:label="twitter/weather">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="archko.test"/>
+            </intent-filter>
+        </activity>-->
+
+        <activity android:name=".ui.PrefsActivity" android:theme="@style/Theme.AK"
+            android:label="@string/pref" android:excludeFromRecents="true">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="archko.test"/>
+            </intent-filter>-->
+        </activity>
+
+        <activity android:name=".ui.AboutActivity"
+            android:excludeFromRecents="true">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="archko.test"/>
+            </intent-filter>-->
+        </activity>
+
+        <activity android:name=".ui.HomeActivity" android:label="@string/app_name"
+            android:launchMode="singleTask" android:configChanges="orientation|keyboardHidden|screenSize">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="archko.test"/>
+            </intent-filter>-->
+        </activity>
+
+        <activity android:name=".ui.SearchActivity">
+        </activity>
+
+        <activity android:name=".ui.AccountUserActivity" android:label="twitter/accountUser">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="archko.test"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.TaskQueueActivity" android:label="twitter/TaskQueue">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="archko.test"/>
+            </intent-filter>-->
+        </activity>
+
+        <activity android:name=".ui.EmptyFragmentActivity">
+        </activity>
+
+        <activity android:name=".ui.TestApiActivity" android:label="twitter/TestApi">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="archko.test"/>
+            </intent-filter>-->
+        </activity>
+
+        <activity android:name=".ui.WebviewActivity" android:allowTaskReparenting="true"
+            android:launchMode="singleInstance" android:excludeFromRecents="true"
+            android:taskAffinity="com.me.microblog.webview" android:hardwareAccelerated="true"
+            android:process=":archko.webview"></activity>
+
+        <provider android:name="com.me.microblog.db.TwitterProvider" android:authorities="cn.archko.microblog"/>
+        <service android:name=".service.WeiboService" android:enabled="true"/>
+        <service android:name=".service.SendTaskService" android:enabled="true"/>
+        <service android:name=".service.AKWidgetService" android:enabled="true"/>
+
+        <receiver
+            android:name=".appwidgets.AppWidgetLarge"
+            android:enabled="true"
+            android:exported="false"
+            android:label="@string/app_ak_widget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget_large"/>
+        </receiver>
+
+    </application>
+</manifest>

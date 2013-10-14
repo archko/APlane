@@ -1,0 +1,90 @@
+Styles and Themes
+style是一个属性的集合,分配外观与格式给视图或窗口.style可以分配高宽,补白,字体颜色,字体大小,背景色行装.style在xml资源文件里定义与布局文件分离开的.
+
+style在Android像css在web中一样的原理,可以与内容分开定义.
+如使用style,可以定义下面的布局:
+<TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:textColor="#00FF00"
+    android:typeface="monospace"
+    android:text="@string/hello" />
+改为:
+<TextView
+    style="@style/CodeFont"
+    android:text="@string/hello" />
+
+所有style相关的属性移除放到单独的文件CodeFont中.下面的章节可以看到定义.
+theme是一个style,应用到整个应用或Activity中,而不是单独的View.单一个style作为theme应用时,每个view在Activity中或应用中都会应用到style属性的.如应用CodeFont作为theme到一个Activity中,所有的文件都会修改字体的.
+
+定义style;
+创建一个style文件,保存在res/values目录中,名字任意,但需要xml扩展名,根节点需要为resources.
+对于每一个要创建的style,要一个<style>节点,名字唯一.然后添加item子节点到里面定义每一个属性.item的值可以是一个16进制颜色,引用到其它的资源.
+示例:
+<resources>
+    <style name="CodeFont" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#00FF00</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+</resources>
+对于每个resources的子节点都会在编译期被转为应用资源对象,这些对象可以由名字被引用.这个示例可以在xml中像上面的示例那样引用.
+parent属性是可选的,分配资源的id或其它的style.通过继承它们的属性,你也可以覆盖这些属性.
+
+继承:
+parent属性可以继承已经存在的style属性,你可以只定义要变化的部分.可以继承平台的也可以继承自己定义的style.如下面继承默认平台的文本样式.
+<style name="GreenText" parent="@android:style/TextAppearance">
+	<item name="android:textColor">#00FF00</item>
+</style>
+如果你定义自己的样式,可以不用parent.只要分配一个name就可以了.
+<style name="CodeFont.Red">
+    <item name="android:textColor">#FF0000</item>
+</style>
+这里没有parent属性,这个style继承了所有的style属性,然后覆盖了textColor属性,
+
+style与属性
+理解了如何定义style,你就需要知道item中的哪些是可用的.有一些可能是熟悉的了,layout_width,textColor.当然你也可以用更多的style属性.
+最好的地方查找这些属性是在View类指南,它列出了所有的支持的xml属性.如所有的在TextView表格中列出的属性可以用到TextView元素中.
+
+可以查看R.attr指南知道所有的style属性.不是所有的View都支持相同的属性,所以你需要针对不同的View分配不同的style.
+
+一些style属性不能被View使用,它只是作一个theme使用.这些属性应用到整个窗口而不是View.如style可以隐藏标题,状态栏,改变窗口的背景.这些style属性不是属性某一个View对象.可以查看R.attr指南找到这些属于窗口的属性.如windowNoTitle,windowBackground.都只对一个应用或Activity有效.
+
+应用style与theme到ui
+有两种方法设置style
+1.对单个view,添加style属性来添加一个View元素的style.
+2.分配android:theme到Activity配置文件中.
+
+当使用单独的View时,style属性只针对这个View.如果应用到一个ViewGroup中,也不会继承这些的.当然可以通过theme来应用整个style.
+
+将style定义为theme,需要应用到Activity或应用中,要配置xml里面定义.整个View都会被应用到.如前面的CodeFont,所有可用的对应属性都会使用它.不支持的会忽略它.
+
+关于上面两种不多说了,应用的也不少.但不是我要的.
+
+像Android提供的内置资源一样,已经有不少定义的theme,如Theme.Dialog,Theme.Translucent这些.如果你想微调这些,需要添加它们到parent属性中.
+<color name="custom_theme_color">#b0b0ff</color>
+<style name="CustomTheme" parent="android:Theme.Light">
+    <item name="android:windowBackground">@color/custom_theme_color</item>
+    <item name="android:colorBackground">@color/custom_theme_color</item>
+</style>
+需要注意的是color要在单独的文件里定义的,因为android:windowBackground属性仅支持一个引用到另一个资源的.
+
+选择基于平台版本的theme.
+新的Android有额外的主题,所以只要parent换成对应的主题,然后就可以在不同的平台上自动切换了.但需要放在对应的目录中,如3.0的放在values-11,
+
+使用平台的style与theme
+Android平台提供了大量的style与theme可以用在你的应用中.可以在R.style类中找到.
+
+终于找到办法替换主题的了.
+Theme_Sherlock是有效的,Theme_Sherlock_Light还没有找到对应的.
+
+主题的修改步骤:
+1.在abs__attrs里面的<declare-styleable name="SherlockTheme">中选定义一个子节点<attr name="itemTitleStyle" format="reference"/>,这个itemTitleStyle是在一个TextView中的style中引用的?attr/itemTitleStyle,没有定义这个,它是无法认出的,引用的类型可以知道,换了不同的主题这些文本就变换了相应的风格了,而不需要一个一个地换.
+2.在abs__styles里面定义一个:<style name="TextAppearance.Sherlock.listItemBottom" parent="Widget">
+        <item name="android:textColor">?attr/textColorItemBottom</item>
+    </style>
+    <style name="TextAppearance.Sherlock.Light.ItemBottom" parent="TextAppearance.Sherlock.listItemBottom">
+    </style>这两种分别对应普通的与Light主题,可以看到其它的示例,Light只是继承普通的.具体的变化是在theme文件中的.
+3.所以在abs__themes里面的<style name="Theme.Sherlock" parent="Sherlock.__Theme">定义一个子节点:<item name="itemTitleStyle">@style/TextAppearance.Sherlock.listItemBottom</item>,这个节点就是在attr中的风格的具体实现了.它在这里引用style,而style则是引用这里的textColorItemBottom,所以需要定义一个<item name="textColorItemBottom">@color/abs__holo_blue_light</item>,为什么要在这里定义呢,因为便于管理,style定义的是风格,theme定义的是主题,当然也可以将前面的<item name="android:textColor">?attr/textColorItemBottom</item>直接换成color.但是Light就不只是继承而以了,需要作相应的变化.放在这里就更容易处理了.可是要颜色的话也需要在attr中定义,同样少不了麻烦的.
+凡是有attr的都需要在attrs文件里定义.

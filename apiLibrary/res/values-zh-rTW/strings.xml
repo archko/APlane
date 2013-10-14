@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="downloading">正在下載圖片&#8230;</string>
+    <string name="app_crash">對不起，微博崩潰了，感謝您的支持!</string>
+    <string name="app_crash_oome">對不起，微博崩潰了，感謝您的支持!</string>
+    <string name="test">Test</string>
+
+    <string name="image_save_dir">保存目錄</string>
+    <string name="image_sdcard_not_mount">SDcard沒有掛載!</string>
+    <string name="image_save_dir_error">圖片存儲目錄不正確!</string>
+    <string name="image_save_suc">保存圖片成功:%s</string>
+    <string name="image_save_failed">保存圖片失敗!</string>
+
+    <string name="trend_hourly">hourly</string>
+    <string name="trend_daily">daily</string>
+    <string name="trend_weekly">weekly</string>
+
+    <string name="cancel">取消</string>
+    <string name="confirm">確定</string>
+
+    <!-- weather -->
+    <string name="wea_text_hint">城市拼音全稱</string>
+    <string name="wea_text_btn">查詢</string>
+    <string name="wea_text_city">城市</string>
+    <string name="wea_test_city">福州</string>
+    <string name="wea_current_temp">實時</string>
+    <string name="wea_test_temp">9°C</string>
+    <string name="wea_test_condition">小雨</string>
+    <string name="wea_test_wind_condition">微風微風微風微風微風微風</string>
+    <string name="wea_test_humidity">99%</string>
+    <string name="wea_test_weekday">今天(周一)</string>
+
+    <string name="wea_city_title">選擇城市</string>
+    <string name="wea_province_btn">省份</string>
+    <string name="wea_city_btn">城市</string>
+
+    <!-- status and comment -->
+    <string name="comment_suc">評論成功!</string>
+    <string name="comment_failed">評論失敗!</string>
+    <string name="repost_suc">轉發成功!</string>
+    <string name="repost_failed">轉發失敗!</string>
+    <string name="favorite_add_suc">收藏成功!</string>
+    <string name="favorite_add_failed">收藏失敗!</string>
+
+    <string name="new_status_suc">發表微博成功!</string>
+    <string name="new_status_failed">發表微博失敗!</string>
+
+    <!-- line item -->
+    <string name="item_test_title">title</string>
+    <string name="item_comment">評論0</string>
+    <string name="item_repost">轉發 0</string>
+    <string name="item_from">來自</string>
+    <string name="item_time">時間</string>
+
+    <string name="friend_item_btn">關注</string>
+    <string name="friend_item_name">name</string>
+    <string name="friend_item_content">content</string>
+
+    <string name="out_memory">對不起，您的手機內存不足！建議修改headSize大小。</string>
+
+    <string name="login_error">驗證用戶失敗.如果帳戶及密碼是正確的，請使用web授權登錄。</string>
+    <string name="login2_error">驗證用戶失敗.如果帳戶及密碼是正確的，請聯繫開發者(archko@sina.com)，Oauth2授權認證失效！</string>
+    <string name="login2_run_error">Oauth2授權認證失效,請註銷後重新登錄，如果還是失敗，請聯繫開發者(archko@sina.com)！</string>
+    <string name="login2_suc_error">Oauth2授權認證是正確的，但程序無法處理，請註銷後重新登錄。</string>
+
+    <string name="oauth_runtime_user_pass_is_null">Token過期,需要重新登錄</string>
+    <string name="oauth_runtime_failed">認證失敗!如果再次失敗可以註銷後再登錄!</string>
+    <string name="oauth_runtime_suc">認證成功，請稍候。</string>
+
+    <string name="oauth_suc_user_pass_is_null">Oauth2授權認證是正確的，但程序無法自動處理，過期後需要手動認證!</string>
+    <string name="oauth_account_exist">認證的用戶已經存在！</string>
+    <string name="oauth_token_expired_dialog_title">若認證過期，需要重新登錄</string>
+</resources>

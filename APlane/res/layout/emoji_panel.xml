@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    <HorizontalScrollView android:fillViewport="true" android:scrollbars="none"
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:id="@+id/button_bar"
+            android:layout_width="wrap_content" android:layout_height="@dimen/bottom_action_bar_height2"
+            android:layout_gravity="bottom" android:layout_marginBottom="0dip">
+
+            <Button android:id="@+id/btn_emoji_picture" android:visibility="visible"
+                android:text="@string/emoji_picture"
+                style="?attr/bottomActionBarItem"/>
+
+            <Button android:id="@+id/btn_emoji_love" android:visibility="visible"
+                android:text="@string/emoji_love"
+                style="?attr/bottomActionBarItem"/>
+
+            <Button android:id="@+id/btn_emoji_pig" android:visibility="gone"
+                android:text="@string/emoji_pig"
+                style="?attr/bottomActionBarItem"/>
+
+            <Button android:id="@+id/btn_emoji_wakeup"
+                android:text="@string/emoji_wakeup"
+                style="?attr/bottomActionBarItem"/>
+
+            <Button android:id="@+id/btn_emoji_kiss" android:visibility="visible"
+                android:text="@string/emoji_kiss"
+                style="?attr/bottomActionBarItem"/>
+
+            <Button android:id="@+id/btn_emoji_happy" android:visibility="visible"
+                android:text="@string/emoji_happy"
+                style="?attr/bottomActionBarItem"/>
+
+            <Button android:id="@+id/btn_emoji_embarrased" android:visibility="visible"
+                android:text="@string/emoji_embarrased"
+                style="?attr/bottomActionBarItem"/>
+
+            <Button android:id="@+id/btn_emoji_cry" android:visibility="visible"
+                android:text="@string/emoji_cry"
+                style="?attr/bottomActionBarItem"/>
+
+            <Button android:id="@+id/btn_emoji_angry" android:visibility="visible"
+                android:text="@string/emoji_angry"
+                style="?attr/bottomActionBarItem"/>
+
+            <Button android:id="@+id/btn_emoji_animal" android:visibility="visible"
+                android:text="@string/emoji_animal"
+                style="?attr/bottomActionBarItem"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!--<GridView android:id="@+id/faces" android:visibility="visible"
+         android:drawSelectorOnTop="false"
+        android:fadingEdgeLength="0.0dip" android:columnWidth="45dp"
+        android:layout_width="fill_parent" android:layout_height="fill_parent"
+        android:listSelector="@color/transparent" android:paddingLeft="6dp" android:paddingRight="6dp"
+        android:verticalSpacing="6dp" android:horizontalSpacing="4dp"
+        android:cacheColorHint="@null" android:stretchMode="columnWidth" android:numColumns="auto_fit"/>-->
+
+    <ScrollView android:fillViewport="true" android:scrollbars="none"
+        android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <cn.archko.microblog.view.TagsViewGroup android:id="@+id/tags"
+            style="@style/tags"
+            android:layout_width="match_parent" android:layout_height="match_parent"/>
+    </ScrollView>
+</LinearLayout>
