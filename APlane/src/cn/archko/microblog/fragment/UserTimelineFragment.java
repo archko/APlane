@@ -10,8 +10,11 @@ import cn.archko.microblog.fragment.impl.SinaUserStatusImpl;
 import cn.archko.microblog.view.ThreadBeanItemView;
 import com.me.microblog.App;
 import com.me.microblog.bean.Status;
+import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00
@@ -38,7 +41,15 @@ public class UserTimelineFragment extends StatusListFragment {
 
             return;
         }*/
+        //mStatusImpl=new SinaUserStatusImpl();
+    }
+
+    @Override
+    public void initApi() {
         mStatusImpl=new SinaUserStatusImpl();
+
+        AbsApiFactory absApiFactory=new SinaApiFactory();
+        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
     }
 
     @Override

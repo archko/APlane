@@ -8,6 +8,7 @@ import com.me.microblog.bean.Group;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
+import com.me.microblog.core.abs.IGroupApi;
 import com.me.microblog.http.PostParameter;
 import com.me.microblog.util.WeiboLog;
 import org.apache.http.client.methods.HttpPost;
@@ -28,7 +29,7 @@ import java.util.List;
  * @author: archko Date: 13-1-28 Time: 下午7:15
  * @description:
  */
-public class SinaGroupApi extends AbsApiImpl {
+public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
 
     public static final String TAG="SinaGroupApi";
 

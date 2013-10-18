@@ -37,7 +37,7 @@ import com.me.microblog.bean.Status;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 /**
  * 显示一条微博信息,进行评论,暂时先完成评论,转发不处理.也不评论原作者内容.

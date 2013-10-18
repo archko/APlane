@@ -41,7 +41,7 @@ public class SkinFragmentActivity extends Activity implements PopupMenu.OnMenuIt
         //requestWindowFeature(com.actionbarsherlock.view.Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
 
-        ThemeUtils.getsInstance().themeActionBar(getSupportActionBar(), this);
+        ThemeUtils.getsInstance().themeActionBar(getActionBar(), this);
     }
 
     /**

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <TextView android:id="@+id/left_slider" android:visibility="gone"
-        android:background="@color/holo_green_light"
-        android:layout_centerVertical="true"
+    <ImageView android:id="@+id/left_slider" android:visibility="invisible"
+        android:background="@color/holo_blue_dark"
         android:layout_marginLeft="0dp" android:layout_marginRight="6dp"
         android:layout_width="8dp" android:layout_height="match_parent"/>
 
@@ -15,10 +13,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dip"
-        android:layout_marginRight="4dip"
-        android:paddingRight="4dip"
+        android:layout_marginRight="10dip"
+        android:paddingRight="6dip" android:paddingLeft="4dp"
+        android:visibility="gone"
         android:text="" android:textStyle="bold"
-        android:textColor="@color/red"
+        android:textColor="@color/white" android:background="@drawable/shape_msg_bg"
         android:gravity="center"/>
 
     <ImageView android:id="@+id/image" android:contentDescription=""

@@ -5,7 +5,7 @@ import android.view.View;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00

@@ -40,8 +40,8 @@ public class SinaHomeStatusImpl extends AbsStatusImpl<Status> {
     SinaGroupApi mSinaGroupApi;
 
     public SinaHomeStatusImpl() {
-        AbsApiImpl absApi=new SinaStatusApi();
-        mAbsApi=absApi;
+        /*AbsApiImpl absApi=new SinaStatusApi();
+        mAbsApi=absApi;*/
         mSinaGroupApi=new SinaGroupApi();
     }
 

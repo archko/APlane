@@ -28,7 +28,7 @@ import com.me.microblog.core.SinaUserApi;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00  用户的网格，这个是超类，需要修改原来的ListView的行为。这里包含了所有的用户列表，
@@ -36,7 +36,7 @@ import com.me.microblog.utils.AKUtils;
  * @description:
  * @author: archko 11-12-29
  */
-public class UserGridFragment extends AbsBaseListFragment<User> {   //TODO 需要与UserListFragment合并
+public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //TODO 需要与UserListFragment合并
 
     public static final String TAG="UserGridFragment";
     protected int nextCursor=-1;//下一页索引，第一页为-1，不是0

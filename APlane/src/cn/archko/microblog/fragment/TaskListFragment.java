@@ -27,7 +27,7 @@ import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.SqliteWrapper;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00
@@ -52,6 +52,10 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
             mQuickAction.setActionItemVisible(View.GONE, 0);
             mQuickAction.setActionItemVisible(View.GONE, 1);
         }*/
+        //mStatusImpl=new SinaTaskImpl();
+    }
+
+    public void initApi() {
         mStatusImpl=new SinaTaskImpl();
     }
 

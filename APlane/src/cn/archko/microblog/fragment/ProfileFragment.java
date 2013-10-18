@@ -33,9 +33,12 @@ import com.me.microblog.bean.Group;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.bean.User;
+import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -72,7 +75,15 @@ public class ProfileFragment extends AbsStatusAbstraction<User> {
         super.onCreate(savedInstanceState);
         WeiboLog.v(TAG, "onCreate:"+this);
         mPrefs=PreferenceManager.getDefaultSharedPreferences(getActivity());
+        //mStatusImpl=new SinaUserImpl();
+    }
+
+    @Override
+    public void initApi() {
         mStatusImpl=new SinaUserImpl();
+
+        AbsApiFactory absApiFactory=new SinaApiFactory();
+        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.userApiFactory());
     }
 
     @Override

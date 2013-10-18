@@ -18,7 +18,7 @@ import com.me.microblog.bean.Status;
 import com.me.microblog.bean.Unread;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 import java.util.ArrayList;
 

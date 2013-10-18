@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">AK微博</string>
-    <string name="app_ak_widget">AK 桌面</string>
-    <string name="exit_title">退出AKWBO</string>
-    <string name="exit_msg">您確定退出AKWBO？</string>
+    <string name="app_name">APlane</string>
+    <string name="app_ak_widget">APlane</string>
+    <string name="exit_title">退出APlane</string>
+    <string name="exit_msg">您確定退出APlane？</string>
     <string name="app_logout_title">註銷帳戶</string>
     <string name="app_logout_msg">您確定註銷帳戶？</string>
 
@@ -97,7 +97,7 @@
 
     <string name="about_app_ver_label">版本</string>
     <string name="about_app_author_label">作者</string>
-    <string name="about_app_author">AKWBO，林越風</string>
+    <string name="about_app_author">林越風</string>
     <string name="about_app_email_label">郵箱</string>
     <string name="about_app_email">archko@sina.com</string>
     <string name="about_app_follow_label">關注作者微博</string>
@@ -107,9 +107,9 @@
     <string name="about_app_play_url">https://play.google.com/store/apps/details?id=com.me.microblog</string>
     <string name="about_app_home">Home</string>
     <string name="about_app_home_url">http://code.google.com/p/akwbo/downloads/list</string>
-    <string name="about_app_suggesst_label">在微博上推薦AKWBO</string>
+    <string name="about_app_suggesst_label">在微博上推薦APlane</string>
     <string name="about_app_suggesst">
-        我安裝了AKWBO新版:v%s,相當不錯,您也裝一個:https://play.google.com/store/apps/details?id=com.me.microblog
+        我安裝了APlane新版:v%s,相當不錯,您也裝一個:https://play.google.com/store/apps/details?id=com.me.microblog
     </string>
     <string name="about_app_mic_label">其它雜項</string>
     <string name="about_app_plan">近期計劃：</string>
@@ -261,7 +261,7 @@
     <string name="login_show_webview">顯示授權頁面</string>
     <string name="mode_tabs">顯示標籤</string>
     <string name="mode_standard">隱藏標籤</string>
-    <string name="feedback_at_name">\@AKWBO</string>
+    <string name="feedback_at_name">\@</string>
     <string name="sina_oauth2">採用新浪Oauth2認證，需要重新登錄！如果有對您造成不便，敬請諒解。</string>
     <string name="repost_exit_msg">您未轉發微博，確定退出？</string>
     <string name="comment_exit_msg">您未評論微博，確定退出？</string>
@@ -323,7 +323,7 @@
     <string name="tab_label_place_nearby_photos">附近的照片</string>
     <string name="tab_label_direct_msg">私信</string>
     <string name="tab_label_send_task">任务列表</string>
-    <string name="tab_label_about">關於AKWBO</string>
+    <string name="tab_label_about">關於APlane</string>
     <string name="tab_label_at_comment">\@我的評論</string>
     <string name="tab_label_settings">設置</string>
     <string name="tab_label_my_fav">我的收藏</string>

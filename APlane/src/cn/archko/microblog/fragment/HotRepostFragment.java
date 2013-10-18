@@ -68,5 +68,10 @@ public class HotRepostFragment extends StatusListFragment {
         return sStatusData;
     }
 
+    @Override
+    public void initApi() {
+
+    }
+
     //--------------------- 微博操作 ---------------------
 }

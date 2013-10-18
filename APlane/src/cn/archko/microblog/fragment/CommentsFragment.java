@@ -6,10 +6,13 @@ import cn.archko.microblog.fragment.impl.SinaMyCommentImpl;
 import cn.archko.microblog.ui.SkinFragmentActivity;
 import com.me.microblog.App;
 import com.me.microblog.bean.SStatusData;
+import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.SinaUnreadApi;
+import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00  用户的评论，发出，收到，与合并的
@@ -25,7 +28,14 @@ public class CommentsFragment extends AtMeCommentsFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         WeiboLog.v(TAG, "onCreate:");
+        //mStatusImpl=new SinaMyCommentImpl();
+    }
+
+    public void initApi() {
         mStatusImpl=new SinaMyCommentImpl();
+
+        AbsApiFactory absApiFactory=new SinaApiFactory();
+        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.commentApiFactory());
     }
 
     //--------------------- 微博操作 ---------------------

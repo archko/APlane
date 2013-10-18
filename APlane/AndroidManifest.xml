@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="1332" android:installLocation="auto"
-    android:versionName="1.1.32"
+    android:versionCode="1370" android:installLocation="auto"
+    android:versionName="1.2.0"
     package="cn.archko.microblog">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -14,11 +14,10 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
-    <uses-permission android:name="android.permission.CLEAR_APP_CACHE"/>
     <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
 
     <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
-    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="17"/>
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="18"/>
 
     <supports-screens
         android:smallScreens="true"
@@ -40,9 +39,6 @@
         <!--  友盟统计begin -->
         <meta-data android:value="51d7441656240b629d01c250" android:name="UMENG_APPKEY"></meta-data>
         <meta-data android:value="akwbo" android:name="UMENG_CHANNEL"/>
-        <!--<activity android:name="com.umeng.fb.ui.SendFeedback" android:windowSoftInputMode="adjustResize"/>
-        <activity android:name="com.umeng.fb.ui.FeedbackConversations"/>
-        <activity android:name="com.umeng.fb.ui.FeedbackConversation" android:configChanges="keyboard"/>-->
 
         <service
             android:name="com.umeng.common.net.DownloadingService"
@@ -177,7 +173,11 @@
             android:taskAffinity="com.me.microblog.webview" android:hardwareAccelerated="true"
             android:process=":archko.webview"></activity>
 
-        <provider android:name="com.me.microblog.db.TwitterProvider" android:authorities="cn.archko.microblog"/>
+        <activity android:name=".ui.ImageViewerActivity" android:excludeFromRecents="true"
+            android:taskAffinity="com.me.microblog.webview"
+            android:process=":archko.webview"></activity>
+
+        <provider android:exported="false" android:name="com.me.microblog.db.TwitterProvider" android:authorities="cn.archko.microblog"/>
         <service android:name=".service.WeiboService" android:enabled="true"/>
         <service android:name=".service.SendTaskService" android:enabled="true"/>
         <service android:name=".service.AKWidgetService" android:enabled="true"/>

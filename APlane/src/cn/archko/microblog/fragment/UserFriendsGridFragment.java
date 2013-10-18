@@ -2,6 +2,9 @@ package cn.archko.microblog.fragment;
 
 import android.os.Bundle;
 import cn.archko.microblog.fragment.impl.SinaUserFriendsImpl;
+import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.SinaApiFactory;
 
 /**
  * @version 1.00.00  用户的关注列表
@@ -18,7 +21,14 @@ public class UserFriendsGridFragment extends UserGridFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //mStatusImpl=new SinaUserFriendsImpl();
+    }
+
+    public void initApi() {
         mStatusImpl=new SinaUserFriendsImpl();
+
+        AbsApiFactory absApiFactory=new SinaApiFactory();
+        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.userApiFactory());
     }
 
     //--------------------- 数据加载 ---------------------

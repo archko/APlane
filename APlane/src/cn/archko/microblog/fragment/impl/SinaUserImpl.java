@@ -25,7 +25,7 @@ public class SinaUserImpl extends AbsStatusImpl<User> {
     public static final String TAG="SinaUserImpl";
 
     public SinaUserImpl() {
-        mAbsApi=new SinaUserApi();
+        //mAbsApi=new SinaUserApi();
     }
 
     @Override

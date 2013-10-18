@@ -3,6 +3,7 @@ package com.me.microblog.core;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.Comment;
 import com.me.microblog.bean.SStatusData;
+import com.me.microblog.core.abs.ICommentApi;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
  * @author: archko Date: 13-1-28 Time: 下午7:18
  * @description:
  */
-public class SinaCommentApi extends AbsApiImpl {
+public class SinaCommentApi extends AbsApiImpl implements ICommentApi{
 
     public static final String TAG="SinaCommentApi";
 

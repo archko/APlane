@@ -6,10 +6,13 @@ import cn.archko.microblog.fragment.impl.SinaUserFollowersImpl;
 import cn.archko.microblog.ui.SkinFragmentActivity;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.User;
+import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.SinaUnreadApi;
+import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 import java.util.ArrayList;
 
@@ -27,8 +30,17 @@ public class UserFollowersGridFragment extends UserFriendsGridFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mStatusImpl=new SinaUserFollowersImpl();
+        //mStatusImpl=new SinaUserFollowersImpl();
     }
+
+    @Override
+    public void initApi() {
+        mStatusImpl=new SinaUserFollowersImpl();
+
+        AbsApiFactory absApiFactory=new SinaApiFactory();
+        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.userApiFactory());
+    }
+
     //--------------------- 数据加载 ---------------------
 
     @Override

@@ -10,10 +10,11 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"/>
 
-    <TextView android:id="@+id/title"
+    <TextView android:id="@+id/title" android:text=""
         android:textColor="?attr/textColorItemSidebar"
         style="@style/TopActionBarItem.Home"/>
 
-    <TextView android:id="@+id/msg"
-        style="@style/TopActionBarMsgItem"/>
+    <TextView android:id="@+id/msg" android:text=""
+        android:paddingLeft="4dp" android:paddingRight="6dp"
+        style="@style/TopActionBarMsgItem" android:background="@drawable/shape_msg_bg"/>
 </RelativeLayout>

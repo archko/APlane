@@ -1,5 +1,6 @@
 package cn.archko.microblog.fragment.abs;
 
+import android.os.Bundle;
 import cn.archko.microblog.fragment.impl.AbsStatusImpl;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.SStatusData;
@@ -12,6 +13,17 @@ import com.me.microblog.util.WeiboLog;
 public abstract class AbsStatusAbstraction<T> extends AbstractBaseFragment {
 
     public AbsStatusImpl<T> mStatusImpl;
+
+    /**
+     * 初始化api.子类必须覆盖,否则无法执行
+     */
+    public abstract void initApi();
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initApi();
+    }
 
     @Override
     public void onResume() {

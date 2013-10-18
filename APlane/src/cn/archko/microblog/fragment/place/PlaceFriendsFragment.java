@@ -6,7 +6,7 @@ import cn.archko.microblog.R;
 import com.me.microblog.App;
 import com.me.microblog.bean.Status;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00  获取当前登录用户与其好友的位置动态

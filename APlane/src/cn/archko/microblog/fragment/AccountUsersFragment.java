@@ -41,7 +41,7 @@ import com.me.microblog.oauth.SOauth2;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.SqliteWrapper;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00
@@ -53,7 +53,7 @@ import com.me.microblog.utils.AKUtils;
  * 覆盖basePostOperation方法，因为它与网络数据相关，而且当数据为空时，会在footerview中显示
  * @author: archko 12-10-17
  */
-public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> {
+public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> implements AddAccountDialogFragment.AccountOauthListener{
 
     public static final String TAG="AccountUsersFragment";
     ProgressDialog mProgressDialog;
@@ -61,6 +61,10 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //mStatusImpl=new SinaAccountImpl();
+    }
+
+    public void initApi() {
         mStatusImpl=new SinaAccountImpl();
     }
 

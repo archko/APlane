@@ -43,13 +43,13 @@ import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.BaseApi;
 import com.me.microblog.core.SinaStatusApi;
 import com.me.microblog.db.TwitterTable;
-import com.me.microblog.smiley.AKSmileyParser;
+import cn.archko.microblog.smiley.AKSmileyParser;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 import com.me.microblog.view.ImageViewerDialog;
-import com.me.microblog.view.TagsViewGroup;
+import cn.archko.microblog.view.TagsViewGroup;
 
 import java.io.File;
 import java.io.FileOutputStream;

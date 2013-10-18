@@ -4,6 +4,7 @@ import com.me.microblog.WeiboException;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
+import com.me.microblog.core.abs.ISearchApi;
 import com.me.microblog.util.WeiboLog;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -16,7 +17,7 @@ import java.util.Map;
  * @author: archko Date: 13-1-28 Time: 下午7:20
  * @description:
  */
-public class SinaSearchApi extends AbsApiImpl {
+public class SinaSearchApi extends AbsApiImpl implements ISearchApi{
 
     public static final String TAG="SinaSearchApi";
     //--------------------- 搜索 ---------------------

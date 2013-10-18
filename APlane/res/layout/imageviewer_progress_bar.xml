@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 进度,可以用于图片下载. -->
+<com.me.microblog.view.TextProgressBar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:akapp="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/progress_bar"
+    android:layout_centerInParent="true"
+    style="?android:attr/progressBarStyleLarge" android:progress="1"
+    android:background="@drawable/ak_shape_lession_progress_bg"
+    android:progressDrawable="@color/transparent"
+    android:indeterminateDrawable="@color/transparent"
+    akapp:progress_txt_color="@color/DeepSkyBlue" akapp:progress_txt_size="18sp"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"/>

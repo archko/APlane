@@ -73,4 +73,6 @@
 
     <dimen name="normal_height">64dip</dimen>
     <dimen name="expanded_height">128dip</dimen>
+
+    <dimen name="sidebar_width">208dp</dimen>
 </resources>

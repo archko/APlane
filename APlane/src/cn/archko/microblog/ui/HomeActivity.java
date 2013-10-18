@@ -21,6 +21,7 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
@@ -44,6 +45,7 @@ import cn.archko.microblog.sliding.app.SlidingFragmentActivity;
 import cn.archko.microblog.sliding.app.SlidingMenuChangeListener;
 import cn.archko.microblog.utils.AKUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
+import com.andrew.apollo.utils.ThemeUtils;
 import com.me.microblog.App;
 import com.me.microblog.action.ActionResult;
 import com.me.microblog.action.AsyncActionTask;
@@ -136,7 +138,7 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
 
         // set the Behind View
         mSidebarAdapter=new SidebarAdapter(getFragmentManager(), HomeActivity.this);
-        int home=mSidebarAdapter.addFragment();
+        int home=mSidebarAdapter.addFragment(true);
 
         mMenuFragment=new SidebarMenuFragment();
         mMenuFragment.setMenuChangeListener(mMenuChangeListener);
@@ -176,8 +178,8 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
         WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         @SuppressWarnings("deprecation")
-        int behindOffset_dp = Util.convertPxToDp(display.getWidth()) - 208;
-        sm.setBehindOffset(Util.convertDpToPx(behindOffset_dp));
+        int behindOffset_dp = AKUtils.convertPxToDp(display.getWidth()) - 208;
+        sm.setBehindOffset(AKUtils.convertDpToPx(behindOffset_dp));
         //sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
     }
 
@@ -356,12 +358,12 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
             }*/
         }
 
-        if (getSupportFragmentManager().getBackStackEntryCount()>0) {
-            for (int i=0; i<getSupportFragmentManager().getBackStackEntryCount(); i++) {
-                getSupportFragmentManager().popBackStack();
+        if (getFragmentManager().getBackStackEntryCount()>0) {
+            for (int i=0; i<getFragmentManager().getBackStackEntryCount(); i++) {
+                getFragmentManager().popBackStack();
             }
         }
-        FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft=getFragmentManager().beginTransaction();
         ft.detach(current);
         ft.attach(next);
         ft.commit();
@@ -391,11 +393,11 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
     void applyTheme() {
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         if (!mThemeId.equals(themeId)) {
-            ThemeUtils.getsInstance().themeActionBar(getSupportActionBar(), this);
+            ThemeUtils.getsInstance().themeActionBar(getActionBar(), this);
             mMenuFragment.themeBackground(true);
             mThemeId=themeId;
             applyThemeId(themeId);
-            final Fragment current=getSupportFragmentManager().findFragmentById(R.id.fragment_placeholder);
+            final Fragment current=getFragmentManager().findFragmentById(R.id.fragment_placeholder);
             if (current!=null&&current instanceof BaseFragment) {
                 BaseFragment baseFragment=(BaseFragment) current;
                 baseFragment.themeBackground();

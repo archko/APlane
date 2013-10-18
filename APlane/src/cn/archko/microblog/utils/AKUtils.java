@@ -10,6 +10,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
+import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.service.AKWidgetService;
 import cn.archko.microblog.service.SendTaskService;

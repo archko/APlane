@@ -22,6 +22,7 @@ import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.service.WeiboService;
+import cn.archko.microblog.fragment.OauthDialogFragment;
 import com.me.microblog.App;
 import com.me.microblog.db.MyHelper;
 import com.me.microblog.db.TwitterTable;

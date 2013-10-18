@@ -22,12 +22,16 @@ import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.Comment;
 import com.me.microblog.bean.SStatusData;
+import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
+import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.SinaCommentApi;
 import com.me.microblog.core.SinaUnreadApi;
+import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 import java.util.ArrayList;
 
@@ -43,8 +47,15 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mStatusImpl=new SinaAtMeCommentImpl();
     }
+
+    public void initApi() {
+        mStatusImpl=new SinaAtMeCommentImpl();
+
+        AbsApiFactory absApiFactory=new SinaApiFactory();
+        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.commentApiFactory());
+    }
+
     //--------------------- 微博操作 ---------------------
 
     /**
@@ -267,7 +278,7 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
         menuBuilder.getMenu().add(0, Constants.OP_ID_VIEW_USER, index++, R.string.user_view_user);
         menuBuilder.getMenu().add(0, Constants.OP_ID_STATUS, index++, R.string.opb_user_status);
         menuBuilder.getMenu().add(0, Constants.OP_ID_AT, index++, R.string.opb_at);
-        menuBuilder.add(0, Constants.OP_ID_COMMENT_STATUS, index++, R.string.opb_comment_status);
+        menuBuilder.getMenu().add(0, Constants.OP_ID_COMMENT_STATUS, index++, R.string.opb_comment_status);
     }
 
     @Override

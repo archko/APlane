@@ -43,6 +43,11 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
     String mType=types[1];
 
     @Override
+    public void initApi() {
+
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

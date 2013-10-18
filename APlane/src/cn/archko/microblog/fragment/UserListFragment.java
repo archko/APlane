@@ -15,9 +15,12 @@ import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.UserItemView;
 import com.me.microblog.bean.User;
+import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00
@@ -32,7 +35,15 @@ public class UserListFragment extends AbsBaseListFragment<User> {   //TODO éœ€è¦
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //mStatusImpl=new SinaPlaceUserImpl();
+    }
+
+    @Override
+    public void initApi() {
         mStatusImpl=new SinaPlaceUserImpl();
+
+        AbsApiFactory absApiFactory=new SinaApiFactory();
+        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.placeApiFactory());
     }
 
     /*@Override

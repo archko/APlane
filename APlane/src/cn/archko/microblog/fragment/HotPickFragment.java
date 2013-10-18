@@ -12,7 +12,7 @@ import com.me.microblog.WeiboException;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Status;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00
@@ -142,4 +142,8 @@ public class HotPickFragment extends StatusListFragment {
         return sStatusData;
     }
 
+    @Override
+    public void initApi() {
+
+    }
 }

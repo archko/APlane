@@ -7,6 +7,9 @@ import android.widget.AbsListView;
 import cn.archko.microblog.fragment.impl.SinaPublucStatusImpl;
 import cn.archko.microblog.view.ThreadBeanItemView;
 import com.me.microblog.bean.Status;
+import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.WeiboLog;
 
 /**
@@ -21,7 +24,15 @@ public class PublicFragment extends StatusListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //mStatusImpl=new SinaPublucStatusImpl();
+    }
+
+    @Override
+    public void initApi() {
         mStatusImpl=new SinaPublucStatusImpl();
+
+        AbsApiFactory absApiFactory=new SinaApiFactory();
+        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
     }
 
     @Override

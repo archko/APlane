@@ -26,7 +26,7 @@ public class SinaUserFriendsImpl extends AbsStatusImpl<User> {
     protected int nextCursor=0;//下一页索引，第一页为-1，不是0
 
     public SinaUserFriendsImpl() {
-        mAbsApi=new SinaUserApi();
+        //mAbsApi=new SinaUserApi();
     }
 
     @Override

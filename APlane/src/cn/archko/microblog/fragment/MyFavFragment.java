@@ -23,9 +23,12 @@ import com.me.microblog.App;
 import com.me.microblog.action.ActionResult;
 import com.me.microblog.action.AsyncActionTask;
 import com.me.microblog.bean.Favorite;
+import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 import java.util.ArrayList;
 
@@ -52,6 +55,14 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
         mStatusImpl=new SinaMyFavStatusImpl();
         weibo_count=15; //加载15条数据
         page=1;     //收藏默认从1开始页码
+    }
+
+    @Override
+    public void initApi() {
+        mStatusImpl=new SinaMyFavStatusImpl();
+
+        AbsApiFactory absApiFactory=new SinaApiFactory();
+        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
     }
 
     @Override

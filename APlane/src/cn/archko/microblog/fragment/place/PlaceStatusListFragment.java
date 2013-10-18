@@ -10,7 +10,10 @@ import cn.archko.microblog.fragment.StatusListFragment;
 import cn.archko.microblog.fragment.impl.SinaPlaceStatusImpl;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.ui.UserFragmentActivity;
-import com.me.microblog.utils.AKUtils;
+import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.SinaApiFactory;
+import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.PlaceItemView;
 import com.baidu.location.BDLocation;
@@ -46,7 +49,15 @@ public class PlaceStatusListFragment extends StatusListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //mStatusImpl=new SinaPlaceStatusImpl();
+    }
+
+    @Override
+    public void initApi() {
         mStatusImpl=new SinaPlaceStatusImpl();
+
+        AbsApiFactory absApiFactory=new SinaApiFactory();
+        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
     }
 
     /**

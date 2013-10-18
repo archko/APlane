@@ -38,7 +38,8 @@ import cn.archko.microblog.fragment.place.PlaceFriendsFragment;
 import cn.archko.microblog.fragment.place.PlaceNearbyPhotosFragment;
 import cn.archko.microblog.fragment.place.PlaceNearbyUsersFragment;
 import com.andrew.apollo.utils.PreferenceUtils;
-import com.me.microblog.ui.PrefsActivity;
+import cn.archko.microblog.ui.PrefsActivity;
+import com.me.microblog.App;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 

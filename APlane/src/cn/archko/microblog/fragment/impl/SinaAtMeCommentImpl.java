@@ -31,8 +31,8 @@ public class SinaAtMeCommentImpl extends AbsStatusImpl<Comment> {
     public static final String TAG="SinaAtMeCommentImpl";
 
     public SinaAtMeCommentImpl() {
-        AbsApiImpl absApi=new SinaCommentApi();
-        mAbsApi=absApi;
+        /*AbsApiImpl absApi=new SinaCommentApi();
+        mAbsApi=absApi;*/
     }
 
     @Override

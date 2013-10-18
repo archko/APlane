@@ -1,4 +1,4 @@
-package com.me.microblog.fragment;
+package cn.archko.microblog.fragment;
 
 import android.os.Bundle;
 import android.view.Gravity;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.me.microblog.fragment.abs.AbstractBaseFragment;
+import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
 
 /**
  * @version 1.00.00

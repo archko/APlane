@@ -30,7 +30,7 @@ public class SinaUserFollowersImpl extends AbsStatusImpl<User> {
     SharedPreferences mPrefs;
 
     public SinaUserFollowersImpl() {
-        mAbsApi=new SinaUserApi();
+        //mAbsApi=new SinaUserApi();
         mPrefs=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
         currentUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
     }

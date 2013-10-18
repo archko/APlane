@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00

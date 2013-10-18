@@ -36,7 +36,7 @@ public class SidebarMenuFragment extends ListFragment {
         getListView().setItemsCanFocus(false);
 
         if (null==mSidebarAdapter) {
-            mSidebarAdapter=new SidebarAdapter(getActivity().getSupportFragmentManager(), getActivity());
+            mSidebarAdapter=new SidebarAdapter(getActivity().getFragmentManager(), getActivity());
             mSidebarAdapter.addFragment(true);
         }
         setListAdapter(mSidebarAdapter);

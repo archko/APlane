@@ -38,6 +38,7 @@ import cn.archko.microblog.fragment.SearchDialogFragment;
 import cn.archko.microblog.fragment.abs.AtUserListener;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
 import cn.archko.microblog.service.SendTaskService;
+import cn.archko.microblog.utils.AKUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.andrew.apollo.utils.ThemeUtils;
 import cn.archko.microblog.view.AutoCompleteView;

@@ -3,6 +3,7 @@ package com.me.microblog.core;
 import android.text.TextUtils;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.Unread;
+import com.me.microblog.core.abs.IUnreadApi;
 import com.me.microblog.util.WeiboLog;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @author: archko Date: 13-1-28 Time: 下午7:20
  * @description:
  */
-public class SinaUnreadApi extends AbsApiImpl {
+public class SinaUnreadApi extends AbsApiImpl implements IUnreadApi{
 
     public static final String TAG="SinaUnreadApi";
     static boolean mAdvanceTokenAvalible=false;
@@ -31,8 +32,8 @@ public class SinaUnreadApi extends AbsApiImpl {
      */
     public Unread getUnread(long uid) throws WeiboException {
         String urlString=getBaseUrl()+"remind/unread_count.json";
-        if (mAdvanceTokenAvalible&&!TextUtils.isEmpty(mDAccessToken)) {
-            urlString+="?access_token="+mDAccessToken;
+        if (mAdvanceTokenAvalible&&!TextUtils.isEmpty(mAccessToken)) {
+            urlString+="?access_token="+mAccessToken;
         }
         List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
@@ -74,8 +75,8 @@ public class SinaUnreadApi extends AbsApiImpl {
         pair=new BasicNameValuePair("type", type);
         nvps.add(pair);
 
-        if (!TextUtils.isEmpty(mDAccessToken)) {
-            nvps.add(new BasicNameValuePair("access_token", mDAccessToken));
+        if (!TextUtils.isEmpty(mAccessToken)) {
+            nvps.add(new BasicNameValuePair("access_token", mAccessToken));
         }
 
         String rs=get(urlString, false, nvps);

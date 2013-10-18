@@ -37,6 +37,11 @@ public class TestHomeFragment extends AbsBaseListFragment<Status> {
     boolean isGroupUpdated=false;
 
     @Override
+    public void initApi() {
+
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mStatusImpl=new SinaHomeStatusImpl();

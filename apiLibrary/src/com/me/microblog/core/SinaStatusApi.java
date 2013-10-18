@@ -6,6 +6,7 @@ import com.me.microblog.bean.Count;
 import com.me.microblog.bean.Favorite;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Status;
+import com.me.microblog.core.abs.IStatusApi;
 import com.me.microblog.http.PostParameter;
 import com.me.microblog.util.WeiboLog;
 import org.apache.http.client.methods.HttpPost;
@@ -26,7 +27,7 @@ import java.util.List;
  * @author: archko Date: 13-1-28 Time: 下午7:15
  * @description:
  */
-public class SinaStatusApi extends AbsApiImpl {
+public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
 
     public static final String TAG="SinaStatusApi";
 

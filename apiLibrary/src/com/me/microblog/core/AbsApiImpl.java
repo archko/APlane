@@ -28,10 +28,6 @@ public abstract class AbsApiImpl {
 
     public final String OAUTH2_BASEURL="https://api.weibo.com/2/";
     String mAccessToken="";
-    /**
-     * 高级的key。高级的api都用这个来处理。
-     */
-    String mDAccessToken="";
     public static final String USERAGENT="Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.4) Gecko/20091111 Gentoo Firefox/3.5.4";
     protected static final String ACCEPTENCODING="gzip,deflate";
 
@@ -54,10 +50,6 @@ public abstract class AbsApiImpl {
         this.mAccessToken=mAccessToken;
     }
 
-    public void setDAccessToken(String mDAccessToken) {
-        this.mDAccessToken=mDAccessToken;
-    }
-
     public void updateToken() {
         App app=((App) App.getAppContext());
         OauthBean oauthBean=app.getOauthBean();
@@ -65,10 +57,6 @@ public abstract class AbsApiImpl {
             return;
         }
         mAccessToken=oauthBean.accessToken;
-        oauthBean=app.getDOauthBean();
-        if (null!=oauthBean) {
-            mDAccessToken=oauthBean.accessToken;
-        }
     }
 
     public String getBaseUrl() {

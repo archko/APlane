@@ -21,9 +21,12 @@ import com.me.microblog.App;
 import com.me.microblog.action.ActionResult;
 import com.me.microblog.action.AsyncActionTask;
 import com.me.microblog.bean.Status;
+import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 import java.util.ArrayList;
 
@@ -47,7 +50,15 @@ public class MyPostFragment extends StatusListFragment {
         mUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
 
         WeiboLog.v(TAG, "onCreate:"+this);
+        //mStatusImpl=new SinaMyPostStatusImpl();
+    }
+
+    @Override
+    public void initApi() {
         mStatusImpl=new SinaMyPostStatusImpl();
+
+        AbsApiFactory absApiFactory=new SinaApiFactory();
+        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
     }
 
     @Override

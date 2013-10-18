@@ -4,6 +4,7 @@ import com.me.microblog.WeiboException;
 import com.me.microblog.bean.Relationship;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.User;
+import com.me.microblog.core.abs.IUserApi;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author: archko Date: 13-1-28 Time: 下午7:20
  * @description:
  */
-public class SinaUserApi extends AbsApiImpl {
+public class SinaUserApi extends AbsApiImpl implements IUserApi{
 
     public static final String TAG="SinaUserApi";
     //--------------------- 用户 ---------------------

@@ -1,4 +1,4 @@
-package com.me.microblog.view;
+package cn.archko.microblog.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,13 +13,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import com.me.microblog.App;
-import com.me.microblog.R;
+import cn.archko.microblog.R;
 import com.me.microblog.WeiboUtil;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.BaseApi;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
+import com.me.microblog.view.MyWebView;
+import com.me.microblog.view.TextProgressBar;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 

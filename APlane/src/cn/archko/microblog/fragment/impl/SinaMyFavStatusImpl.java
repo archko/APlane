@@ -31,8 +31,8 @@ public class SinaMyFavStatusImpl extends AbsStatusImpl<Favorite> {
     public static final String TAG="SinaMyFavStatusImpl";
 
     public SinaMyFavStatusImpl() {
-        AbsApiImpl absApi=new SinaStatusApi();
-        mAbsApi=absApi;
+        /*AbsApiImpl absApi=new SinaStatusApi();
+        mAbsApi=absApi;*/
     }
 
     @Override

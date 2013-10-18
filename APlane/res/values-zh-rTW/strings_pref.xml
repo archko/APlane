@@ -20,12 +20,12 @@
     <string name="pref_font_color_status_title_sum">原微博内容字體颜色</string>
     <string name="pref_font_color_retstatus_title">轉發微博颜色</string>
     <string name="pref_font_color_retstatus_title_sum">轉發微博内容字體颜色</string>
-    <string name="pref_font_color_sidebar_title">側邊欄顏色(需要重啟)</string>
+    <string name="pref_font_color_sidebar_title">側邊欄顏色</string>
     <string name="pref_font_color_sidebar_title_sum">側邊欄字體顏色</string>
 
     <string name="pref_theme_and_font_title">主題與字體</string>
     <string name="pref_theme_and_font_title_sum">主题與字體的配置</string>
-    <string name="pref_theme">主题(需要重啟)</string>
+    <string name="pref_theme">主题</string>
     <string-array name="themes">
         <item>0</item>
         <item>1</item>

@@ -21,7 +21,7 @@ import com.me.microblog.App;
 import com.me.microblog.WeiboUtil;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.thread.DownloadPool;
-import com.me.microblog.ui.ImageViewerActivity;
+import cn.archko.microblog.ui.ImageViewerActivity;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 import com.me.microblog.view.ImageViewerDialog;
@@ -146,7 +146,7 @@ public class ImageAdapter extends BaseAdapter {
         AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
         builder.setTitle("显示图片");
 
-        String thumb=imageUrls[pos];
+        /*String thumb=imageUrls[pos];
 
         if (!TextUtils.isEmpty(thumb)) {
             String imgUrl=thumb.replace("thumbnail", "bmiddle");
@@ -160,7 +160,7 @@ public class ImageAdapter extends BaseAdapter {
                     WeiboLog.d(TAG, "dialog,onCancel.");
                 }
             });
-        }
+        }*/
         Intent intent=new Intent(mContext, ImageViewerActivity.class);
         intent.putExtra("thumbs", imageUrls);
         intent.putExtra("pos", pos);

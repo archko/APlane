@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:makeramen="http://schemas.android.com/apk/res-auto"
     tools:ignore="ContentDescription"
     android:layout_height="fill_parent" android:layout_width="fill_parent"
     android:fillViewport="true"
@@ -12,16 +11,12 @@
 
         <RelativeLayout android:id="@+id/header"
             android:layout_height="wrap_content" android:layout_width="fill_parent">
-
-            <com.makeramen.rounded.RoundedImageView android:id="@+id/iv_portrait"
-                makeramen:corner_radius="15dip"
-                makeramen:border_width="0dip"
+            <ImageView android:id="@+id/iv_portrait"
                 android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
                 android:layout_height="60dp" android:layout_width="60dp"
                 android:src="@drawable/user_default_photo"
                 android:layout_marginLeft="6dip"
-                android:layout_marginTop="6dip"
-                android:scaleType="center"/>
+                android:layout_marginTop="6dip"/>
 
             <TextView android:id="@+id/screen_name" android:layout_toRightOf="@id/iv_portrait"
                 android:layout_alignParentTop="true" android:layout_height="wrap_content"

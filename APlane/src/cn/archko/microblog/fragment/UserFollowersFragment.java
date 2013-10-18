@@ -12,7 +12,7 @@ import com.me.microblog.core.SinaUnreadApi;
 import com.me.microblog.core.SinaUserApi;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 import java.util.ArrayList;
 

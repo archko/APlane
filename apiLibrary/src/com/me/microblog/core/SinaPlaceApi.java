@@ -6,6 +6,7 @@ import com.me.microblog.bean.PlacePoi;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
+import com.me.microblog.core.abs.IPlaceApi;
 import com.me.microblog.util.WeiboLog;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * @author: archko Date: 13-1-28 Time: 下午7:15
  * @description:
  */
-public class SinaPlaceApi extends AbsApiImpl {
+public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
 
     public static final String TAG="SinaPlaceApi";
 

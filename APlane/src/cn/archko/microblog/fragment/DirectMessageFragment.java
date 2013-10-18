@@ -18,11 +18,14 @@ import cn.archko.microblog.view.DirectMessageItemView;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.DirectMessage;
 import com.me.microblog.bean.SStatusData;
+import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.SinaDMApi;
 import com.me.microblog.core.SinaUnreadApi;
+import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00
@@ -36,7 +39,14 @@ public class DirectMessageFragment extends AdvancedOauth2ListFragment<DirectMess
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //mStatusImpl=new SinaDMImpl();
+    }
+
+    public void initApi() {
         mStatusImpl=new SinaDMImpl();
+
+        AbsApiFactory absApiFactory=new SinaApiFactory();
+        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.dmApiFactory());
     }
 
     @Override

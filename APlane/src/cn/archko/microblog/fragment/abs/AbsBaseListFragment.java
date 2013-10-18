@@ -32,7 +32,7 @@ import com.me.microblog.bean.SStatusData;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 import java.util.ArrayList;
 

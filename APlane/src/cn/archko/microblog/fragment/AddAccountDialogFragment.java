@@ -1,4 +1,4 @@
-package com.me.microblog.fragment;
+package cn.archko.microblog.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,9 +8,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +19,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import com.me.microblog.App;
-import com.me.microblog.R;
+import cn.archko.microblog.R;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.oauth.OauthBean;
 import com.me.microblog.oauth.SOauth2;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.SqliteWrapper;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @description:
@@ -45,8 +45,8 @@ public class AddAccountDialogFragment extends DialogFragment {
         mAccountOauthListener=accountOauthListener;
     }
 
-    public void setAccountOauthListener(AccountOauthListener mAccountOauthListener) {
-        this.mAccountOauthListener=mAccountOauthListener;
+    public void setAccountOauthListener(AccountOauthListener accountOauthListener) {
+        this.mAccountOauthListener=accountOauthListener;
     }
 
     interface AccountOauthListener {
@@ -126,8 +126,8 @@ public class AddAccountDialogFragment extends DialogFragment {
         }
 
         if (type==1) {
-            FragmentTransaction ft=getActivity().getSupportFragmentManager().beginTransaction();
-            Fragment prev=getActivity().getSupportFragmentManager().findFragmentByTag("oauth_dialog");
+            FragmentTransaction ft=getActivity().getFragmentManager().beginTransaction();
+            Fragment prev=getActivity().getFragmentManager().findFragmentByTag("oauth_dialog");
             if (prev!=null) {
                 ft.remove(prev);
             }
@@ -161,8 +161,8 @@ public class AddAccountDialogFragment extends DialogFragment {
 
             if (type==1) {
                 try {
-                    FragmentTransaction ft=getActivity().getSupportFragmentManager().beginTransaction();
-                    Fragment prev=getActivity().getSupportFragmentManager().findFragmentByTag("oauth_dialog");
+                    FragmentTransaction ft=getActivity().getFragmentManager().beginTransaction();
+                    Fragment prev=getActivity().getFragmentManager().findFragmentByTag("oauth_dialog");
                     if (prev!=null) {
                         ft.remove(prev);
                     }

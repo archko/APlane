@@ -9,7 +9,7 @@ import cn.archko.microblog.fragment.UserListFragment;
 import cn.archko.microblog.fragment.impl.SinaPlaceUserImpl;
 import cn.archko.microblog.ui.NewStatusActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.UserItemView;
 import com.baidu.location.BDLocation;
@@ -42,7 +42,7 @@ public class PlaceUserListFragment extends UserListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mStatusImpl=new SinaPlaceUserImpl();
+        //mStatusImpl=new SinaPlaceUserImpl();
     }
 
     /**

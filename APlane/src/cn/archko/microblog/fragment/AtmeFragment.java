@@ -16,10 +16,13 @@ import com.me.microblog.action.ActionResult;
 import com.me.microblog.action.AsyncActionTask;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Status;
+import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.SinaUnreadApi;
+import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 import java.util.ArrayList;
 
@@ -35,7 +38,14 @@ public class AtmeFragment extends StatusListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void initApi() {
         mStatusImpl=new SinaAtMeStatusImpl();
+
+        AbsApiFactory absApiFactory=new SinaApiFactory();
+        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
     }
 
     /**
@@ -308,5 +318,4 @@ public class AtmeFragment extends StatusListFragment {
             e.printStackTrace();
         }
     }
-
 }

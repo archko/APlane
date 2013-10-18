@@ -72,5 +72,10 @@ public class HotCommentFragment extends StatusListFragment {
         //热门评论没有几页的，只有一页。
     }
 
+    @Override
+    public void initApi() {
+
+    }
+
     //--------------------- 微博操作 ---------------------
 }

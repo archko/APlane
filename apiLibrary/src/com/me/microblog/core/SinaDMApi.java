@@ -3,6 +3,7 @@ package com.me.microblog.core;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.DirectMessage;
 import com.me.microblog.bean.SStatusData;
+import com.me.microblog.core.abs.IDMApi;
 import com.me.microblog.util.WeiboLog;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @author: archko Date: 13-1-28 Time: 下午7:20
  * @description:
  */
-public class SinaDMApi extends AbsApiImpl {
+public class SinaDMApi extends AbsApiImpl implements IDMApi{
 
     public static final String TAG="SinaDMApi";
     //--------------------- 高级信息 ---------------------
@@ -29,7 +30,7 @@ public class SinaDMApi extends AbsApiImpl {
     public SStatusData<DirectMessage> getSentDirectMessages(long sinnceId, long maxId, int count, int page)
         throws WeiboException {
         String urlString=getBaseUrl()+"direct_messages/sent.json";
-        urlString+="?access_token="+mDAccessToken;
+        urlString+="?access_token="+mAccessToken;
 
         ArrayList<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
 
@@ -71,7 +72,7 @@ public class SinaDMApi extends AbsApiImpl {
     public SStatusData<DirectMessage> getDirectMessages(long sinceId, long maxId, int count, int page)
         throws WeiboException {
         String urlString=getBaseUrl()+"direct_messages.json";
-        urlString+="?access_token="+mDAccessToken;
+        urlString+="?access_token="+mAccessToken;
         List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair basicNameValuePair;
@@ -107,7 +108,7 @@ public class SinaDMApi extends AbsApiImpl {
      */
     public SStatusData<DirectMessage> getDirectMessagesUsers() throws WeiboException {
         String urlString=getBaseUrl()+"direct_messages/user_list.json";
-        urlString+="?access_token="+mDAccessToken;
+        urlString+="?access_token="+mAccessToken;
 
         String rs=get(urlString, false, null);
         WeiboLog.v(TAG, "rs:"+rs);
@@ -126,7 +127,7 @@ public class SinaDMApi extends AbsApiImpl {
         String urlString=getBaseUrl()+"direct_messages/new.json";
         List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
-        nvps.add(new BasicNameValuePair("access_token", mDAccessToken));
+        nvps.add(new BasicNameValuePair("access_token", mAccessToken));
 
         pair=new BasicNameValuePair("uid", String.valueOf(uid));
         nvps.add(pair);
@@ -150,7 +151,7 @@ public class SinaDMApi extends AbsApiImpl {
         String urlString=getBaseUrl()+"direct_messages/new.json";
         List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
-        nvps.add(new BasicNameValuePair("access_token", mDAccessToken));
+        nvps.add(new BasicNameValuePair("access_token", mAccessToken));
 
         pair=new BasicNameValuePair("screen_name", screen_name);
         nvps.add(pair);
@@ -173,7 +174,7 @@ public class SinaDMApi extends AbsApiImpl {
         String urlString=getBaseUrl()+"direct_messages/destroy.json";
         List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
-        nvps.add(new BasicNameValuePair("access_token", mDAccessToken));
+        nvps.add(new BasicNameValuePair("access_token", mAccessToken));
         pair=new BasicNameValuePair("id", String.valueOf(id));
         nvps.add(pair);
 

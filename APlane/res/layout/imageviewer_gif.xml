@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- gif图片查看的布局 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:akapp="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:background="@color/black"
+    android:layout_height="match_parent" android:layout_width="match_parent">
+
+    <ScrollView android:fillViewport="true" android:scrollbars="none"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <com.me.microblog.view.MyWebView android:id="@+id/webview"
+            android:gravity="center" android:adjustViewBounds="true"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:padding="0dip" android:layout_margin="0dip"
+            android:background="@color/black"
+            android:scrollbars="none"/>
+    </ScrollView>
+
+    <include layout="@layout/imageviewer_progress_bar"/>
+    <!--<com.me.microblog.view.TextProgressBar android:id="@+id/progress_bar"
+        android:layout_centerInParent="true"
+        style="?android:attr/progressBarStyleLarge" android:progress="3"
+        android:background="@drawable/ak_shape_lession_progress_bg"
+        android:progressDrawable="@color/transparent"
+        android:indeterminateDrawable="@color/transparent"
+        akapp:progress_txt_color="@color/DeepSkyBlue" akapp:progress_txt_size="18sp"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"/>-->
+
+</RelativeLayout>

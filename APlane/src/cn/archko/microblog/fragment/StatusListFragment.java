@@ -18,7 +18,7 @@ import com.me.microblog.bean.User;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.AKUtils;
 
 import java.util.Date;
 
@@ -29,7 +29,7 @@ import java.util.Date;
  * 将废除QuickAction，而使用PopupMenu实现，ui也不需要费心了。
  * @author: archko 12-9-12
  */
-public class StatusListFragment extends AbsBaseListFragment<Status> {
+public abstract class StatusListFragment extends AbsBaseListFragment<Status> {
 
     public static final String TAG="StatusListFragment";
 
