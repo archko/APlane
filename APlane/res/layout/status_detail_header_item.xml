@@ -62,7 +62,7 @@
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:padding="0.0dip" android:layout_margin="0.0dip"
             android:visibility="gone" android:scrollbars="none"/>-->
-        <com.me.microblog.view.TagsViewGroup android:id="@+id/tags"
+        <cn.archko.microblog.view.TagsViewGroup android:id="@+id/tags"
             android:layout_alignParentRight="true"
             style="@style/tags" android:layout_marginRight="16dp"/>
     </RelativeLayout>

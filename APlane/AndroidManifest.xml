@@ -30,7 +30,7 @@
     <application android:hardwareAccelerated="false" android:icon="@drawable/logo"
         android:label="@string/app_name" android:name="com.me.microblog.App"
         android:allowBackup="true"
-        android:taskAffinity="com.me.microblog" android:largeHeap="true">
+        android:taskAffinity="cn.archko.microblog" android:largeHeap="true">
 
         <service android:name="com.baidu.location.f" android:enabled="true"
             android:process=":remote">
@@ -77,7 +77,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <intent-filter android:label="@string/share_in_weibo">
-                <action android:name="com.me.microblog.intent.action.NEW_BLOG"/>
+                <action android:name="cn.archko.microblog.intent.action.NEW_BLOG"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
@@ -170,11 +170,11 @@
 
         <activity android:name=".ui.WebviewActivity" android:allowTaskReparenting="true"
             android:launchMode="singleInstance" android:excludeFromRecents="true"
-            android:taskAffinity="com.me.microblog.webview" android:hardwareAccelerated="true"
+            android:taskAffinity="cn.archko.microblog.webview" android:hardwareAccelerated="true"
             android:process=":archko.webview"></activity>
 
         <activity android:name=".ui.ImageViewerActivity" android:excludeFromRecents="true"
-            android:taskAffinity="com.me.microblog.webview"
+            android:taskAffinity="cn.archko.microblog.webview"
             android:process=":archko.webview"></activity>
 
         <provider android:exported="false" android:name="com.me.microblog.db.TwitterProvider" android:authorities="cn.archko.microblog"/>
