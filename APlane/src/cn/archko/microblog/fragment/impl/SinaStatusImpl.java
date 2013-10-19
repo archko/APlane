@@ -15,8 +15,8 @@ public class SinaStatusImpl extends AbsStatusImpl<Status> {
     public static final String TAG="SinaStatusImpl";
 
     public SinaStatusImpl() {
-        AbsApiImpl absApi=new SinaStatusApi();
-        setApiImpl(absApi);
+        /*AbsApiImpl absApi=new SinaStatusApi();
+        setApiImpl(absApi);*/
     }
 
     @Override

@@ -41,8 +41,8 @@ import java.util.regex.Matcher;
 public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
 
     private static final String TAG="ThreadBeanItemView";
-    private TagsViewGroup mTagsViewGroup;
-    ImageAdapter mAdapter;
+    public TagsViewGroup mTagsViewGroup;
+    public ImageAdapter mAdapter;
 
     public ThreadBeanItemView(Context context, ListView view, String cacheDir, Status status, boolean updateFlag,
         boolean cache, boolean showLargeBitmap, boolean showBitmap) {
@@ -247,7 +247,9 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
         }
         //WeiboLog.v(TAG, "setAdapter.有图片显示。"+mStatus.thumbs[0]);
 
-        mTagsViewGroup.setVisibility(VISIBLE);
+        if (mTagsViewGroup.getVisibility()==GONE) {
+            mTagsViewGroup.setVisibility(VISIBLE);
+        }
         //ImageAdapter adapter=(ImageAdapter) mTagsViewGroup.getAdapter();
         if (null==mAdapter) {
             mAdapter=new ImageAdapter(mContext, mCacheDir, mStatus.thumbs);
