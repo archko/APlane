@@ -39,7 +39,7 @@ import org.apache.http.params.HttpProtocolParams;
 public class DownloadPool extends Thread {
 
     public static final String TAG="DownloadPool";
-    public static final int MAX_THREAD_COUNT=1;
+    public static int MAX_THREAD_COUNT=1;
     //private DefaultHttpClient httpClient;
     private int mActiveThread=0;
     private App mApp;
@@ -84,6 +84,10 @@ public class DownloadPool extends Thread {
         schemeRegistry.register(new Scheme("https", ssf, 443));
 
         return schemeRegistry;
+    }
+
+    public void setThreadCount(int threadCount) {
+        MAX_THREAD_COUNT=threadCount;
     }
 
     public DownloadPool(App app) {

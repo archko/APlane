@@ -566,7 +566,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             mBmiddlePic=imgUrl;
         }
 
-        if (showBitmap) {
+        //if (showBitmap) {
             if (null!=user) {
                 imgUrl=user.profileImageUrl;
             }
@@ -575,9 +575,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                 portraitUrl=imgUrl;
                 new Thread(portraitRunnable).start();
             }
-        } else {
+        //} else {
             //TODO load portrait
-        }
+        //}
 
         Status retweetStatus=mStatus.retweetedStatus;
         if (null!=retweetStatus) {
@@ -774,10 +774,13 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                 udpatePortrait(bitmap);
                 return;
             }
-            bitmap=ImageCache2.getInstance().getImageManager().getBitmapFromDiskOrNet(portraitUrl, dir, true);
-            if (null!=bitmap) {
-                udpatePortrait(bitmap);
-                return;
+
+            if (showBitmap) {
+                bitmap=ImageCache2.getInstance().getImageManager().getBitmapFromDiskOrNet(portraitUrl, dir, true);
+                if (null!=bitmap) {
+                    udpatePortrait(bitmap);
+                    return;
+                }
             }
         }
     };

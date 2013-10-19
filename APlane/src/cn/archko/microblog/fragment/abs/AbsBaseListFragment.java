@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
+import cn.archko.microblog.recycler.RecycleHolder;
 import cn.archko.microblog.ui.PrefsActivity;
 import com.andrew.apollo.utils.ThemeUtils;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -246,16 +247,6 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> {
         mPullRefreshListView=(PullToRefreshListView) root.findViewById(R.id.statusList);
         mListView=mPullRefreshListView.getRefreshableView();
 
-        /*SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String themeId=options.getString(PrefsActivity.PREF_THEME, "0");
-        if ("0".equals(themeId)) {
-            mListView.setHeaderContainerBackground(R.color.abs__background_holo_light);
-        } else if ("1".equals(themeId)) {
-            mListView.setHeaderContainerBackground(R.color.abs__background_holo_light);
-        } else if ("2".equals(themeId)) {
-        } else if ("3".equals(themeId)) {
-        }*/
-
         // ------------------------------------------------------------------
         /*root.setLayoutParams(new FrameLayout.LayoutParams(
        ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));*/
@@ -269,6 +260,8 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> {
         down.setBackgroundColor(Color.TRANSPARENT);
         zoomLayout=(RelativeLayout) root.findViewById(R.id.zoomLayout);
         zoomAnim=AnimationUtils.loadAnimation(getActivity(), R.anim.zoom);
+
+        mListView.setRecyclerListener(new RecycleHolder());
 
         return root;
     }

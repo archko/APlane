@@ -305,6 +305,9 @@ public class PrefsActivity extends PreferenceActivity implements
                     int weiboCount=prefs.getInt(PREF_WEIBO_COUNT, Constants.WEIBO_COUNT);
                     WeiboLog.d(PREF_TAG ,"wc:"+weiboCount);
                     ((App) App.getAppContext()).loadAccount(prefs);
+                } else if (Constants.PREF_THREAD_COUNT.equals(key)) {
+                    int threadCount=prefs.getInt(Constants.PREF_THREAD_COUNT, Constants.THREAD_COUNT);
+                    WeiboLog.d(PREF_TAG ,"tc:"+threadCount);
                 }
             }
         });
@@ -327,6 +330,8 @@ public class PrefsActivity extends PreferenceActivity implements
         updateRetColorScheme();
 
         updateSidebarColorScheme();
+
+        updateThreadCount();
 
         final Preference clearPrefs=findPreference("prefs_reset");
         clearPrefs.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -442,6 +447,13 @@ public class PrefsActivity extends PreferenceActivity implements
                 return true;
             }
         });
+    }
+
+    private void updateThreadCount() {
+        final SeekBarPref seekBarPref=(SeekBarPref) findPreference("pref_thread_count");
+        SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(this);
+        int pref_thread_count=options.getInt(Constants.PREF_THREAD_COUNT, Constants.THREAD_COUNT);
+        seekBarPref.setInitialValue(pref_thread_count, false, 1, 4);
     }
 
 }

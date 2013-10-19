@@ -227,7 +227,7 @@ public class AtmeFragment extends StatusListFragment {
     private void shield(int follow_up) {
         AtMeAction action=new AtMeAction();
         long id=mDataList.get(selectedPos).id;
-        AsyncActionTask task=new AsyncActionTask(getActivity(), action);
+        AsyncActionTask task=new AsyncActionTask(App.getAppContext(), action);
         task.execute(id, follow_up, mStatusHandler);
     }
 

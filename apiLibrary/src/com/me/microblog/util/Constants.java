@@ -143,7 +143,12 @@ public class Constants {
     public static final String SERVICE_NOTIFY_UNREAD="service_notify_unread";   //服务的未计消息通知。
 
     public static final int WEIBO_COUNT=25;
+    public static final int THREAD_COUNT=1;
     public static final int WEIBO_COUNT_MIN=15;
+    /**
+     * 图片下载的线程数量
+     */
+    public final static String PREF_THREAD_COUNT="pref_thread_count";
 
     public static final String TAB_ID_HOME="tab_id_home";  //主页id
     public static final String TAB_ID_COMMENT="tab_id_comment";  //

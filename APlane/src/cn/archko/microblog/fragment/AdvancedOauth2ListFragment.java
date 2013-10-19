@@ -14,6 +14,7 @@ import cn.archko.microblog.utils.AKUtils;
  * @description: Oauth2高级key的认证
  * @author: archko 12-11-4
  */
+@Deprecated
 public abstract class AdvancedOauth2ListFragment<T> extends AbsBaseListFragment<T> {
 
     /**
@@ -22,11 +23,11 @@ public abstract class AdvancedOauth2ListFragment<T> extends AbsBaseListFragment<
      * @param params 参数
      * @param msg    线程已经在运行中的提示信息
      */
-    @Override
+    /*@Override
     protected void newTask(final Object[] params, String msg) {
         App app=(App) App.getAppContext();
         WeiboLog.v(TAG, "AdvancedOauth2ListFragment.newTask:"+App.OAUTH_MODE+
-            " App.mAdvancedOauth2Timestampe:"+app.mAdvancedOauth2Timestampe);
+            " App.mAdvancedOauth2Timestampe:"+app.oauth2_timestampe);
         if (!App.hasInternetConnection(getActivity())) {
             AKUtils.showToast(R.string.network_error, Toast.LENGTH_LONG);
             if (mRefreshListener!=null) {
@@ -44,14 +45,14 @@ public abstract class AdvancedOauth2ListFragment<T> extends AbsBaseListFragment<
             return;
         }
 
-        if (System.currentTimeMillis()>=app.mAdvancedOauth2Timestampe&&app.mAdvancedOauth2Timestampe<100) {
+        if (System.currentTimeMillis()>=app.oauth2_timestampe&&app.oauth2_timestampe<100) {
             WeiboLog.i(TAG, "认证，高级token过期了.");
-            /*OauthBean bean=mOauth2Handler.advancedOauth2();
+            *//*OauthBean bean=mOauth2Handler.advancedOauth2();
             if (null!=bean) {
                 WeiboLog.d(TAG, "重新认证成功。");
                 mCommonTask=new CommonTask();
                 mCommonTask.execute(params);
-            }*/
+            }*//*
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -80,5 +81,5 @@ public abstract class AdvancedOauth2ListFragment<T> extends AbsBaseListFragment<
             mCommonTask=new CommonTask();
             mCommonTask.execute(params);
         }
-    }
+    }*/
 }

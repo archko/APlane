@@ -1,5 +1,10 @@
 package com.me.microblog.oauth;
 
+/**
+ * 认证的结果,包含了运行时需要用的key,与数据库对应的数据.
+ *
+ * @author archko
+ */
 public class OauthBean {
 
     public String accessToken="";

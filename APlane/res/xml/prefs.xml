@@ -46,7 +46,17 @@
                 android:key="pref_weibo_count"
                 android:persistent="true" android:defaultValue="25"
                 android:title="@string/pref_weibo_count_sum"
-                android:summary="25"
+                android:summary="@string/pref_weibo_default_count"
+                android:widgetLayout="@layout/ak_prefs_seekbar"/>
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="@string/pref_thread_count_title">
+
+            <cn.archko.microblog.view.SeekBarPref
+                android:key="pref_thread_count"
+                android:persistent="true" android:defaultValue="1"
+                android:title="@string/pref_thread_count_sum"
+                android:summary="@string/pref_thread_default_count"
                 android:widgetLayout="@layout/ak_prefs_seekbar"/>
         </PreferenceCategory>
     </PreferenceScreen>

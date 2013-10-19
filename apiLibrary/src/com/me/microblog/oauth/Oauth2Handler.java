@@ -269,7 +269,7 @@ public class Oauth2Handler {
     }
 
     /**
-     * 保存高级认证后的值
+     * 保存高级认证后的值,仅用于高级key,这些key具有password认证类型的.而不是webview.
      *
      * @param resultObj 这是包含OauthBean的对象，第一个元素是用户名，第三个是密码，第2个才是OauthBean
      * @param ctx
@@ -281,7 +281,6 @@ public class Oauth2Handler {
         bean.time=bean.expireTime*1000+System.currentTimeMillis()-100l;
         bean.expireTime=bean.time;
         App app=(App) App.getAppContext();
-        app.setDOauthBean(bean);
         WeiboLog.d("bean+"+bean);
 
         Cursor cursor=null;
@@ -305,7 +304,7 @@ public class Oauth2Handler {
                 String username=(String) resultObj[1];
                 String passwd=(String) resultObj[2];
                 if (TextUtils.isEmpty(username)||TextUtils.isEmpty(passwd)) {
-                    WeiboLog.e("数据库中没有高级token,没有用户名与密码。认证成功但无效。");
+                    WeiboLog.e("数据库中没有token,没有用户名与密码。认证成功但无效。");
                     //Toast.makeText(ctx, R.string.login2_suc_error, Toast.LENGTH_LONG).show();
                     return false;
                 }
