@@ -1,7 +1,6 @@
 package com.me.microblog;
 
 import java.io.File;
-import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.io.BufferedReader;
@@ -20,6 +19,8 @@ import android.content.ContentResolver;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.text.TextPaint;
+import android.text.style.ClickableSpan;
 import com.me.microblog.bean.ContentItem;
 import com.me.microblog.bean.Status;
 import com.me.microblog.core.WeiboParser;
@@ -31,13 +32,9 @@ import org.apache.http.HttpResponse;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.text.Spannable;
-import android.text.TextPaint;
-import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
-import android.view.View;
 
 import java.io.*;
 import java.util.List;
@@ -200,92 +197,6 @@ public class WeiboUtil {
         return contentItems;
     }
 
-    /**
-     * *****************************************
-     */
-    public static void highlightContentClickable(Context context, Spannable spannable) {
-        Matcher atMatcher=getAtPattern().matcher(spannable);
-
-        while (atMatcher.find()) {
-            int start=atMatcher.start();
-            int end=atMatcher.end();
-            WeiboLog.i("weibo", "start:"+start+" end:"+end);
-            if (end-start==2) {
-                /*String me = "我";
-                 int k = start + 1;
-                 Character character = Character.valueOf(spannable.charAt(k));*/
-                //if (me.equals(character))
-            } else {
-                if (end-start<=2) {
-                    break;
-                }
-            }
-
-            /*ForegroundColorSpan colorSpan=new ForegroundColorSpan(color);
-            spannable.setSpan(colorSpan, start, end, 33);*/
-
-            String name=spannable.subSequence(start, end).toString();
-            AtClicker atClicker=new AtClicker(context, name);
-            spannable.setSpan(atClicker, start, end, 33);
-        }
-
-        atMatcher=getWebPattern().matcher(spannable);
-
-        while (atMatcher.find()) {
-            int start=atMatcher.start();
-            int end=atMatcher.end();
-            WeiboLog.i("weibo", "start:"+start+" end:"+end);
-            if (end-start==2) {
-                /*String me = "我";
-                 int k = start + 1;
-                 Character character = Character.valueOf(spannable.charAt(k));*/
-                //if (me.equals(character))
-            } else {
-                if (end-start<=2) {
-                    break;
-                }
-            }
-
-            String name=spannable.subSequence(start, end).toString();
-            UrlClicker atClicker=new UrlClicker(context, name);
-            spannable.setSpan(atClicker, start, end, 33);
-        }
-    }
-
-    /**
-     * 高亮且有点击功能
-     *
-     * @param spannable 需要处理的字符串
-     * @param pattern   匹配模式
-     * @param clicker   点击处理器，需要与匹配模式对应。
-     */
-    public static void highlightContentClickable(Spannable spannable, Pattern pattern, MyClicker clicker) {
-        Matcher atMatcher=pattern.matcher(spannable);
-
-        while (atMatcher.find()) {
-            int start=atMatcher.start();
-            int end=atMatcher.end();
-            //WeiboLog.d("weibo", "start:"+start+" end:"+end);
-            if (end-start==2) {
-                /*String me = "我";
-                 int k = start + 1;
-                 Character character = Character.valueOf(spannable.charAt(k));*/
-                //if (me.equals(character))
-            } else {
-                if (end-start<=2) {
-                    break;
-                }
-            }
-
-            /*ForegroundColorSpan colorSpan=new ForegroundColorSpan(color);
-            spannable.setSpan(colorSpan, start, end, 34);*/
-
-            String name=spannable.subSequence(start, end).toString();
-            clicker.name=name;
-            spannable.setSpan(clicker, start, end, 33);
-        }
-    }
-
     public static Pattern getAtPattern() {
         if (atpattern==null) {
             Object[] arrayOfObject=new Object[1];
@@ -323,11 +234,6 @@ public class WeiboUtil {
         return webpattern;
     }
 
-    /*public static Pattern getWebPattern2() {
-     if (webpattern2 == null)
-     webpattern2 = Pattern.compile("((?:(http|https|Http|Https|rtsp|Rtsp):\\/\\/(?:(?:[a-zA-Z0-9\\$\\-\\_\\.\\+\\!\\*\\'\\(\\)\\,\\;\\?\\&\\=]|(?:\\%[a-fA-F0-9]{2})){1,64}(?:\\:(?:[a-zA-Z0-9\\$\\-\\_\\.\\+\\!\\*\\'\\(\\)\\,\\;\\?\\&\\=]|(?:\\%[a-fA-F0-9]{2})){1,25})?\\@)?)?((?:(?:[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}\\.)+(?:(?:aero|arpa|asia|a[cdefgilmnoqrstuwxz])|(?:biz|b[abdefghijmnorstvwyz])|(?:cat|com|coop|c[acdfghiklmnoruvxyz])|d[ejkmoz]|(?:edu|e[cegrstu])|f[ijkmor]|(?:gov|g[abdefghilmnpqrstuwy])|h[kmnrtu]|(?:info|int|i[delmnoqrst])|(?:jobs|j[emop])|k[eghimnrwyz]|l[abcikrstuvy]|(?:mil|mobi|museum|m[acdghklmnopqrstuvwxyz])|(?:name|net|n[acefgilopruz])|(?:org|om)|(?:pro|p[aefghklmnrstwy])|qa|r[eouw]|s[abcdeghijklmnortuvyz]|(?:tel|travel|t[cdfghjklmnoprtvwz])|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw]))|(?:(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[0-9])))(?:\\:\\d{1,5})?)(\\/(?:(?:[a-zA-Z0-9\\;\\/\\?\\:\\@\\&\\=\\#\\~\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_])|(?:\\%[a-fA-F0-9]{2}))*)?(?:\\b|$)");
-     return webpattern2;
-     }*/
     public static abstract class MyClicker extends ClickableSpan {
 
         /**
@@ -341,83 +247,6 @@ public class WeiboUtil {
             textPaint.setUnderlineText(true);
         }
 
-    }
-
-    private static class AtClicker extends WeiboUtil.MyClicker {
-
-        private Context mContext;
-        private String nickName;
-
-        public AtClicker(Context ctx, String name) {
-            super();
-            this.mContext=ctx;
-            this.nickName=name;
-        }
-
-        public void onClick(View view) {
-            WeiboLog.d("AtClicker:"+nickName);
-            /*String nn=this.nickName;
-            Intent intent=new Intent(mContext, UserFragmentActivity.class);//new Intent(mContext, UserActivity.class);
-            intent.putExtra("nickName", nn);
-            intent.putExtra("user_id", "");
-            intent.putExtra("type", UserFragmentActivity.TYPE_USER_INFO);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mContext.startActivity(intent);*/
-        }
-
-    }
-
-    private static class TopicClicker extends WeiboUtil.MyClicker {
-
-        private Context mContext;
-        private String topic;
-
-        public TopicClicker(Context context, String topicContent) {
-            super();
-            this.mContext=context;
-            this.topic=topicContent;
-        }
-
-        public void onClick(View paramView) {
-            Context localContext=this.mContext;
-            /*Intent localIntent1 = new Intent(localContext, UserTopicAttentionList.class);
-             String str = this.topic;
-             Intent localIntent2 = localIntent1.putExtra("query", str);
-             this.mContext.startActivity(localIntent1);*/
-        }
-
-    }
-
-    private static class UrlClicker extends WeiboUtil.MyClicker {
-
-        private static final String URL_PREX="http://t.sina.cn/dpool/ttt/sinaurlc.php?vt=3&u=%s&gsid=%s";
-        private String gsid;
-        private Context mContext;
-        private String urlPath;
-
-        public UrlClicker(Context context, String url) {
-            super();
-            this.mContext=context;
-            this.urlPath=url;
-        }
-
-        public UrlClicker(Context context, String url, String paramString2) {
-            super();
-            this.mContext=context;
-            this.urlPath=url;
-            this.gsid=paramString2;
-        }
-
-        public void onClick(View paramView) {
-            Object[] arrayOfObject=new Object[2];
-            String str1=URLEncoder.encode(this.urlPath);
-            arrayOfObject[0]=str1;
-            String str2=this.gsid;
-            arrayOfObject[1]=str2;
-            String str3=String.format("http://t.sina.cn/dpool/ttt/sinaurlc.php?vt=3&u=%s&gsid=%s", arrayOfObject);
-            str3=str1;
-            openUrlByDefaultBrowser(this.mContext, str3);
-        }
     }
 
     public static void openUrlByDefaultBrowser(Context context, String url) {
@@ -629,16 +458,6 @@ public class WeiboUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Used to determine if the device is running ICS or greater
-     *
-     * @return True if the device is running Ice Cream Sandwich or greater,
-     *         false otherwise
-     */
-    public static final boolean hasICS() {
-        return Build.VERSION.SDK_INT>=Build.VERSION_CODES.ICE_CREAM_SANDWICH;
     }
 
     public static boolean isHoneycombOrLater() {
