@@ -259,20 +259,6 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         //send.setEnabled(false);
 
         addTask(contentString);
-        /*if (App.OAUTH_MODE.equalsIgnoreCase(Constants.SOAUTH_TYPE_CLIENT)) {
-            SendStatusTask sendStatusTask=new SendStatusTask();
-            sendStatusTask.execute(contentString);
-        } else {
-            if (System.currentTimeMillis()>=App.oauth2_timestampe&&App.oauth2_timestampe!=0) {
-                WeiboLog.w(TAG, "web认证，token过期了.");
-                mOauth2Handler.oauth2(null);
-                showToast(R.string.new_status_token_invalid, Toast.LENGTH_SHORT);
-            } else {
-                WeiboLog.d(TAG, "web认证，但token有效。");
-                SendStatusTask sendStatusTask=new SendStatusTask();
-                sendStatusTask.execute(contentString);
-            }
-        }*/
     }
 
     private TextWatcher watcher=new TextWatcher() {
@@ -635,6 +621,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         if (content.length()>Constants.INPUT_STRING_COUNT) {
             content=content.substring(0, Constants.INPUT_STRING_COUNT);
             AKUtils.showToast(R.string.new_status_too_more_txt);
+            return;
         }
 
         Intent taskService=new Intent(NewStatusActivity.this, SendTaskService.class);

@@ -73,9 +73,9 @@
             android:layout_height="@dimen/shadow_height" android:layout_marginLeft="40dp"
             android:background="@drawable/top_shadow"/>
 
-        <com.makeramen.rounded.RoundedImageView android:id="@+id/iv_portrait"
+        <com.makeramen.RoundedImageView android:id="@+id/iv_portrait"
             android:layout_alignParentLeft="true"
-            makeramen:corner_radius="30dip"
+            makeramen:corner_radius="24dip"
             makeramen:border_width="0dip"
             android:layout_width="70dip" android:layout_height="70dip"
             android:src="@drawable/user_default_photo"

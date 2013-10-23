@@ -102,23 +102,20 @@
     <string name="about_app_email">archko@sina.com</string>
     <string name="about_app_follow_label">關注作者微博</string>
     <string name="about_app_home_page_label">程序主頁</string>
-    <string name="about_app_home_page">http://code.google.com/p/akwbo/</string>
     <string name="about_app_play">Play商店</string>
-    <string name="about_app_play_url">https://play.google.com/store/apps/details?id=com.me.microblog</string>
     <string name="about_app_home">Home</string>
-    <string name="about_app_home_url">http://code.google.com/p/akwbo/downloads/list</string>
+    <string name="about_app_author">官方微博</string>
     <string name="about_app_suggesst_label">在微博上推薦APlane</string>
     <string name="about_app_suggesst">
-        我安裝了APlane新版:v%s,相當不錯,您也裝一個:https://play.google.com/store/apps/details?id=com.me.microblog
+        我安裝了APlane新版:v%s,相當不錯,您也裝一個:https://play.google.com/store/apps/details?id=cn.archko.microblog
     </string>
     <string name="about_app_mic_label">其它雜項</string>
     <string name="about_app_plan">近期計劃：</string>
-    <string name="about_app_plan_content">从细处增强用户体验!</string>
+    <string name="about_app_plan_content">多图上传,上传功能的完善!</string>
     <string name="about_app_about">關於其中一些功能：</string>
-    <string name="about_app_about_function">私信受限於key，默認不會顯示，可以在配置中打開，而且不能隨意發出私信，也算是支持新浪的做法。評論暫時只能查看我收到的評論,對發出的評論未處理!</string>
+    <string name="about_app_about_function">私信默認不會顯示，可以在配置中打開，而且不能隨意發出私信。</string>
     <string name="about_app_chk_update">檢測更新</string>
     <string name="about_app_feedback">編寫更多反饋內容</string>
-    <string name="about_app_feedback_url">http://code.google.com/p/akwbo/issues/entry</string>
 
     <!-- account -->
     <string name="account_change">切換帳戶</string>
@@ -237,7 +234,7 @@
     <string name="new_status_img_rotate">旋轉</string>
     <string name="new_status_img_filter">濾鏡</string>
     <string name="new_status_img_edit">編輯</string>
-    <string name="share_in_weibo">AK微博共享</string>
+    <string name="share_in_weibo">APlane共享</string>
 
     <string name="text_count">140</string>
     <string name="text_hint">可以輸入140個文字..</string>

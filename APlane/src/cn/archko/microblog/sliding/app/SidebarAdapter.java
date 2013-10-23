@@ -127,7 +127,7 @@ public class SidebarAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int arg0) {
-        return 0;
+        return arg0;
     }
 
     @Override

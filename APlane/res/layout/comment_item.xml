@@ -11,7 +11,7 @@
     <RelativeLayout android:id="@+id/content"
         android:layout_width="fill_parent" android:layout_height="wrap_content">
 
-        <com.makeramen.rounded.RoundedImageView android:id="@+id/iv_portrait"
+        <com.makeramen.RoundedImageView android:id="@+id/iv_portrait"
             android:layout_alignParentRight="true"
             makeramen:corner_radius="24dip"
             makeramen:border_width="0dip"

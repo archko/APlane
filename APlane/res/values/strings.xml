@@ -102,23 +102,25 @@
     <string name="about_app_email">archko@sina.com</string>
     <string name="about_app_follow_label">关注作者微博</string>
     <string name="about_app_home_page_label">程序主页</string>
-    <string name="about_app_home_page">http://code.google.com/p/akwbo/</string>
+    <string name="about_app_home_page">https://github.com/archko/akwbo</string>
     <string name="about_app_play">Play商店</string>
-    <string name="about_app_play_url">https://play.google.com/store/apps/details?id=com.me.microblog</string>
+    <string name="about_app_play_url">https://play.google.com/store/apps/details?id=cn.archko.microblog</string>
     <string name="about_app_home">Home</string>
-    <string name="about_app_home_url">http://code.google.com/p/akwbo/downloads/list</string>
+    <string name="about_app_home_url">https://github.com/archko/akwbo</string>
+    <string name="about_app_author">官方微博</string>
+    <string name="about_app_author_url">http://weibo.com/u/2532909203</string>
     <string name="about_app_suggesst_label">在微博上推荐APlane</string>
     <string name="about_app_suggesst">
-        我安装了APlane新版:v%s,相当不错,您也装一个:https://play.google.com/store/apps/details?id=com.me.microblog
+        我安装了APlane新版:v%s,相当不错,您也装一个:https://play.google.com/store/apps/details?id=cn.archko.microblog
     </string>
     <string name="about_app_mic_label">其它杂项</string>
     <string name="about_app_plan">近期计划：</string>
-    <string name="about_app_plan_content">从细处增强用户体验!</string>
+    <string name="about_app_plan_content">多图上传,上传功能的完善!</string>
     <string name="about_app_about">关于其中一些功能：</string>
-    <string name="about_app_about_function">私信受限于key，默认不会显示，可以在配置中打开，而且不能随意发出私信，也算是支持新浪的做法。评论暂时只能查看我收到的评论,对发出的评论未处理!</string>
+    <string name="about_app_about_function">私信未完成默认不会显示，可以在配置中打开，而且不能随意发出私信，在完善后可以使用自定义的拥有私信权限的key来处理。</string>
     <string name="about_app_chk_update">检测更新</string>
     <string name="about_app_feedback">编写更多反馈内容</string>
-    <string name="about_app_feedback_url">http://code.google.com/p/akwbo/issues/entry</string>
+    <string name="about_app_feedback_url">https://github.com/archko/akwbo</string>
 
     <!-- account -->
     <string name="account_change">切换帐户</string>
@@ -237,7 +239,7 @@
     <string name="new_status_img_rotate">旋转</string>
     <string name="new_status_img_filter">滤镜</string>
     <string name="new_status_img_edit">编辑</string>
-    <string name="share_in_weibo">AK微博共享</string>
+    <string name="share_in_weibo">APlane共享</string>
 
     <string name="text_count">140</string>
     <string name="text_hint">可以输入140个文字.</string>

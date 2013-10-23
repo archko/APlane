@@ -570,7 +570,6 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             if (null!=user) {
                 imgUrl=user.profileImageUrl;
             }
-
             if (!TextUtils.isEmpty(imgUrl)) {
                 portraitUrl=imgUrl;
                 new Thread(portraitRunnable).start();
@@ -767,13 +766,13 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         }
 
         private void loadPortrait() {
-            String dir=mCacheDir;
-            dir+=Constants.ICON_DIR;
             Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(portraitUrl);
             if (null!=bitmap) {
                 udpatePortrait(bitmap);
                 return;
             }
+            String dir=mCacheDir;
+            dir+=Constants.ICON_DIR;
 
             if (showBitmap) {
                 bitmap=ImageCache2.getInstance().getImageManager().getBitmapFromDiskOrNet(portraitUrl, dir, true);
@@ -828,6 +827,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     };
 
     private void udpatePortrait(final Bitmap bitmap) {
+        if (!isResumed()){
+            return;
+        }
         mHandler.post(new Runnable() {
 
             @Override

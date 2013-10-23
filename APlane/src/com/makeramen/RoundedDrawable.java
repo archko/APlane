@@ -1,86 +1,126 @@
-/*
-	Copyright (C) 2013 Make Ramen, LLC
-*/
+package com.makeramen;
 
-package com.makeramen.rounded;
-
+import android.content.res.ColorStateList;
 import android.graphics.*;
 import android.graphics.Bitmap.Config;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
+import android.graphics.drawable.*;
 import android.util.Log;
 import android.widget.ImageView.ScaleType;
 
-public class RoundedDrawable extends ColorDrawable {
+public class RoundedDrawable extends Drawable {
+
     public static final String TAG = "RoundedDrawable";
+    public static final int DEFAULT_BORDER_COLOR = Color.BLACK;
 
     private final RectF mBounds = new RectF();
-
     private final RectF mDrawableRect = new RectF();
-    private float mCornerRadius;
-
     private final RectF mBitmapRect = new RectF();
     private final BitmapShader mBitmapShader;
     private final Paint mBitmapPaint;
     private final int mBitmapWidth;
     private final int mBitmapHeight;
-
     private final RectF mBorderRect = new RectF();
     private final Paint mBorderPaint;
-    private boolean mOval = false;
-    private int mBorderWidth;
-    private int mBorderColor;
-
-    private ScaleType mScaleType = ScaleType.FIT_XY;
-
     private final Matrix mShaderMatrix = new Matrix();
 
-    RoundedDrawable(Bitmap bitmap, float cornerRadius, int border, int borderColor) {
-        this(bitmap, cornerRadius, border, borderColor, false);
-    }
 
-    RoundedDrawable(Bitmap bitmap, float cornerRadius, int border, int borderColor, boolean oval) {
+    private float mCornerRadius = 0;
+    private boolean mOval = false;
+    private float mBorderWidth = 0;
+    private ColorStateList mBorderColor = ColorStateList.valueOf(DEFAULT_BORDER_COLOR);
+    private ScaleType mScaleType = ScaleType.FIT_XY;
 
-        mBorderWidth = border;
-        mBorderColor = borderColor;
+    RoundedDrawable(Bitmap bitmap) {
 
         mBitmapWidth = bitmap.getWidth();
         mBitmapHeight = bitmap.getHeight();
         mBitmapRect.set(0, 0, mBitmapWidth, mBitmapHeight);
 
-        mCornerRadius = cornerRadius;
         mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         mBitmapShader.setLocalMatrix(mShaderMatrix);
 
         mBitmapPaint = new Paint();
+        mBitmapPaint.setStyle(Paint.Style.FILL);
         mBitmapPaint.setAntiAlias(true);
         mBitmapPaint.setShader(mBitmapShader);
 
         mBorderPaint = new Paint();
+        mBorderPaint.setStyle(Paint.Style.STROKE);
         mBorderPaint.setAntiAlias(true);
-        mBorderPaint.setColor(mBorderColor);
-        mBorderPaint.setStrokeWidth(border);
+        mBorderPaint.setColor(mBorderColor.getColorForState(getState(), DEFAULT_BORDER_COLOR));
+        mBorderPaint.setStrokeWidth(mBorderWidth);
     }
 
-    protected void setScaleType(ScaleType scaleType) {
-        if (scaleType == null) {
-            scaleType = ScaleType.FIT_XY;
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
         }
-        if (mScaleType != scaleType) {
-            mScaleType = scaleType;
-            setMatrix();
+
+        Bitmap bitmap;
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+        if (width > 0 && height > 0) {
+            bitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+        } else {
+            bitmap = null;
+        }
+
+        return bitmap;
+    }
+
+    public static Drawable fromDrawable(Drawable drawable) {
+        if (drawable != null) {
+            if (drawable instanceof RoundedDrawable) {
+                // just return if it's already a RoundedDrawable
+                return drawable;
+            } else if (drawable instanceof ColorDrawable) {
+                // FIXME we don't support ColorDrawables yet
+                return drawable;
+            } else if (drawable instanceof LayerDrawable) {
+                LayerDrawable ld = (LayerDrawable) drawable;
+                int num = ld.getNumberOfLayers();
+
+                // loop through layers to and change to RoundedDrawables if possible
+                for (int i = 0; i < num; i++) {
+                    Drawable d = ld.getDrawable(i);
+                    ld.setDrawableByLayerId(ld.getId(i), fromDrawable(d));
+                }
+                return ld;
+            }
+
+            // try to get a bitmap from the drawable and
+            Bitmap bm = drawableToBitmap(drawable);
+            if (bm != null) {
+                return new RoundedDrawable(bm);
+            } else {
+                Log.w(TAG, "Failed to create bitmap from drawable!");
+            }
+        }
+        return drawable;
+    }
+
+    @Override
+    public boolean isStateful() {
+        return mBorderColor.isStateful();
+    }
+
+    @Override
+    protected boolean onStateChange(int[] state) {
+        int newColor = mBorderColor.getColorForState(state, 0);
+        if (mBorderPaint.getColor() != newColor) {
+            mBorderPaint.setColor(newColor);
+            return true;
+        } else {
+            return super.onStateChange(state);
         }
     }
 
-    protected ScaleType getScaleType() {
-        return mScaleType;
-    }
-
-    private void setMatrix() {
+    private void updateShaderMatrix() {
         mBorderRect.set(mBounds);
-        mDrawableRect.set(0 + mBorderWidth, 0 + mBorderWidth, mBorderRect.width() - mBorderWidth, mBorderRect.height() - mBorderWidth);
+        mDrawableRect.set(mBorderWidth, mBorderWidth, mBorderRect.width() - mBorderWidth, mBorderRect.height() - mBorderWidth);
 
         float scale;
         float dx;
@@ -88,17 +128,15 @@ public class RoundedDrawable extends ColorDrawable {
 
         switch (mScaleType) {
             case CENTER:
-//                Log.d(TAG, "CENTER");
                 mBorderRect.set(mBounds);
-                mDrawableRect.set(0 + mBorderWidth, 0 + mBorderWidth, mBorderRect.width() - mBorderWidth, mBorderRect.height() - mBorderWidth);
+                mDrawableRect.set(mBorderWidth, mBorderWidth, mBorderRect.width() - mBorderWidth, mBorderRect.height() - mBorderWidth);
 
                 mShaderMatrix.set(null);
                 mShaderMatrix.setTranslate((int) ((mDrawableRect.width() - mBitmapWidth) * 0.5f + 0.5f), (int) ((mDrawableRect.height() - mBitmapHeight) * 0.5f + 0.5f));
                 break;
             case CENTER_CROP:
-//                Log.d(TAG, "CENTER_CROP");
                 mBorderRect.set(mBounds);
-                mDrawableRect.set(0 + mBorderWidth, 0 + mBorderWidth, mBorderRect.width() - mBorderWidth, mBorderRect.height() - mBorderWidth);
+                mDrawableRect.set(mBorderWidth, mBorderWidth, mBorderRect.width() - mBorderWidth, mBorderRect.height() - mBorderWidth);
 
                 mShaderMatrix.set(null);
 
@@ -106,10 +144,10 @@ public class RoundedDrawable extends ColorDrawable {
                 dy = 0;
 
                 if (mBitmapWidth * mDrawableRect.height() > mDrawableRect.width() * mBitmapHeight) {
-                    scale = (float) mDrawableRect.height() / (float) mBitmapHeight;
+                    scale = mDrawableRect.height() / (float) mBitmapHeight;
                     dx = (mDrawableRect.width() - mBitmapWidth * scale) * 0.5f;
                 } else {
-                    scale = (float) mDrawableRect.width() / (float) mBitmapWidth;
+                    scale = mDrawableRect.width() / (float) mBitmapWidth;
                     dy = (mDrawableRect.height() - mBitmapHeight * scale) * 0.5f;
                 }
 
@@ -117,14 +155,13 @@ public class RoundedDrawable extends ColorDrawable {
                 mShaderMatrix.postTranslate((int) (dx + 0.5f) + mBorderWidth, (int) (dy + 0.5f) + mBorderWidth);
                 break;
             case CENTER_INSIDE:
-//                Log.d(TAG, "CENTER_INSIDE");
                 mShaderMatrix.set(null);
 
                 if (mBitmapWidth <= mBounds.width() && mBitmapHeight <= mBounds.height()) {
                     scale = 1.0f;
                 } else {
-                    scale = Math.min((float) mBounds.width() / (float) mBitmapWidth,
-                            (float) mBounds.height() / (float) mBitmapHeight);
+                    scale = Math.min(mBounds.width() / (float) mBitmapWidth,
+                        mBounds.height() / (float) mBitmapHeight);
                 }
 
                 dx = (int) ((mBounds.width() - mBitmapWidth * scale) * 0.5f + 0.5f);
@@ -161,29 +198,29 @@ public class RoundedDrawable extends ColorDrawable {
                 break;
             case FIT_XY:
             default:
-//                Log.d(TAG, "DEFAULT TO FILL");
                 mBorderRect.set(mBounds);
                 mDrawableRect.set(0 + mBorderWidth, 0 + mBorderWidth, mBorderRect.width() - mBorderWidth, mBorderRect.height() - mBorderWidth);
                 mShaderMatrix.set(null);
                 mShaderMatrix.setRectToRect(mBitmapRect, mDrawableRect, Matrix.ScaleToFit.FILL);
                 break;
         }
+
+        mBorderRect.inset(mBorderWidth/2, mBorderWidth/2);
+
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
 
     @Override
     protected void onBoundsChange(Rect bounds) {
-//        Log.i(TAG, "onboundschange: w: " + bounds.width() + "h:" + bounds.height());
         super.onBoundsChange(bounds);
 
         mBounds.set(bounds);
 
-        setMatrix();
+        updateShaderMatrix();
     }
 
     @Override
     public void draw(Canvas canvas) {
-//        Log.w(TAG, "Draw: " + mScaleType.toString());
 
         if (mOval) {
             if (mBorderWidth > 0) {
@@ -210,11 +247,13 @@ public class RoundedDrawable extends ColorDrawable {
     @Override
     public void setAlpha(int alpha) {
         mBitmapPaint.setAlpha(alpha);
+        invalidateSelf();
     }
 
     @Override
     public void setColorFilter(ColorFilter cf) {
         mBitmapPaint.setColorFilter(cf);
+        invalidateSelf();
     }
 
     @Override
@@ -227,90 +266,64 @@ public class RoundedDrawable extends ColorDrawable {
         return mBitmapHeight;
     }
 
-    public static Bitmap drawableToBitmap(Drawable drawable) {
-        if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable) drawable).getBitmap();
-        }
-
-        Bitmap bitmap;
-        int width = drawable.getIntrinsicWidth();
-        int height = drawable.getIntrinsicHeight();
-        if (width > 0 && height > 0) {
-            bitmap = Bitmap.createBitmap(width, height, Config.RGB_565);
-            Canvas canvas = new Canvas(bitmap);
-            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawable.draw(canvas);
-        } else {
-            bitmap = null;
-        }
-
-        return bitmap;
-    }
-
-    public static Drawable fromDrawable(Drawable drawable, float radius) {
-        return fromDrawable(drawable, radius, 0, 0, false);
-    }
-
-    public static Drawable fromDrawable(Drawable drawable, float radius, int border, int borderColor, boolean isOval) {
-        if (drawable != null) {
-            if (drawable instanceof TransitionDrawable) {
-                TransitionDrawable td = (TransitionDrawable) drawable;
-                int num = td.getNumberOfLayers();
-
-                Drawable[] drawableList = new Drawable[num];
-                for (int i = 0; i < num; i++) {
-                    Drawable d = td.getDrawable(i);
-                    if (d instanceof ColorDrawable) {
-                        // TODO skip colordrawables for now
-                        drawableList[i] = d;
-                    } else {
-                        drawableList[i] = new RoundedDrawable(drawableToBitmap(td.getDrawable(i)), radius, border, borderColor, isOval);
-                    }
-                }
-                return new TransitionDrawable(drawableList);
-            }
-
-            Bitmap bm = drawableToBitmap(drawable);
-            if (bm != null) {
-                return new RoundedDrawable(bm, radius, border, borderColor, isOval);
-            } else {
-                Log.w(TAG, "Failed to create bitmap from drawable!");
-            }
-        }
-        return drawable;
-    }
-
     public float getCornerRadius() {
         return mCornerRadius;
     }
 
-    public int getBorderWidth() {
+    public RoundedDrawable setCornerRadius(float radius) {
+        mCornerRadius = radius;
+        return this;
+    }
+
+    public float getBorderWidth() {
         return mBorderWidth;
     }
 
+    public RoundedDrawable setBorderWidth(int width) {
+        mBorderWidth = width;
+        mBorderPaint.setStrokeWidth(mBorderWidth);
+        return this;
+    }
+
     public int getBorderColor() {
+        return mBorderColor.getDefaultColor();
+    }
+
+    public RoundedDrawable setBorderColor(int color) {
+        return setBorderColors(ColorStateList.valueOf(color));
+    }
+
+    public ColorStateList getBorderColors() {
         return mBorderColor;
+    }
+
+    public RoundedDrawable setBorderColors(ColorStateList colors) {
+        mBorderColor = colors != null ? colors : ColorStateList.valueOf(0);
+        mBorderPaint.setColor(mBorderColor.getColorForState(getState(), DEFAULT_BORDER_COLOR));
+        return this;
     }
 
     public boolean isOval() {
         return mOval;
     }
 
-    public void setCornerRadius(float radius) {
-        this.mCornerRadius = radius;
-    }
-
-    public void setBorderWidth(int width) {
-        this.mBorderWidth = width;
-        mBorderPaint.setStrokeWidth(mBorderWidth);
-    }
-
-    public void setBorderColor(int color) {
-        this.mBorderColor = color;
-        mBorderPaint.setColor(color);
-    }
-
-    public void setOval(boolean oval) {
+    public RoundedDrawable setOval(boolean oval) {
         mOval = oval;
+        return this;
+    }
+
+    public ScaleType getScaleType() {
+        return mScaleType;
+    }
+
+    public RoundedDrawable setScaleType(ScaleType scaleType) {
+        if (scaleType == null) {
+            scaleType = ScaleType.FIT_XY;
+        }
+        if (mScaleType != scaleType) {
+            mScaleType = scaleType;
+            updateShaderMatrix();
+        }
+        return this;
     }
 }

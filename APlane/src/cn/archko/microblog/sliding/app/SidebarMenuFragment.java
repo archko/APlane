@@ -19,6 +19,10 @@ public class SidebarMenuFragment extends ListFragment {
     private SidebarAdapter mSidebarAdapter;
     SlidingMenuChangeListener mMenuChangeListener;
     View mRoot;
+    /**
+     * 是否已经选中一个位置了.第一次为未选中.
+     */
+    boolean hasFocused=false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,12 +38,24 @@ public class SidebarMenuFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         getListView().setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         getListView().setItemsCanFocus(false);
+        getListView().setDivider(null);
+        getListView().setDividerHeight(0);
+        getListView().setVerticalScrollBarEnabled(false);
 
         if (null==mSidebarAdapter) {
             mSidebarAdapter=new SidebarAdapter(getActivity().getFragmentManager(), getActivity());
             mSidebarAdapter.addFragment(true);
         }
         setListAdapter(mSidebarAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!hasFocused) {
+            selectItem(0);
+            hasFocused=true;
+        }
     }
 
     public void setSidebarAdapter(SidebarAdapter mSidebarAdapter) {
@@ -60,7 +76,6 @@ public class SidebarMenuFragment extends ListFragment {
     }
 
     public void selectItem(int postion){
-        getListView().setItemChecked(getListView().getCheckedItemPosition(), false);
         getListView().setItemChecked(postion, true);
         mSidebarAdapter.notifyDataSetChanged();
     }

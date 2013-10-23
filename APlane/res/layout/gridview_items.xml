@@ -14,7 +14,7 @@
         android:layout_width="@dimen/gridview_image_width"
         android:layout_height="@dimen/gridview_image_height"
         android:scaleType="fitXY" android:padding="@dimen/gridview_item_ccontainer_padding_left"/>-->
-    <com.makeramen.rounded.RoundedImageView android:id="@+id/iv_portrait"
+    <com.makeramen.RoundedImageView android:id="@+id/iv_portrait"
         makeramen:corner_radius="15dip"
         makeramen:border_width="0dip"
         android:layout_width="@dimen/gridview_image_width"

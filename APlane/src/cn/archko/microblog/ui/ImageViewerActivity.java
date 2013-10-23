@@ -69,6 +69,7 @@ public class ImageViewerActivity extends SkinFragmentActivity {
         mPagerAdapter=new SamplePagerAdapter(getFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setCurrentItem(mSelectedIdx);
+
     }
 
     private void saveImage() {

@@ -9,10 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
 import cn.archko.microblog.ui.NewStatusActivity;
+import cn.archko.microblog.ui.UserFragmentActivity;
+import cn.archko.microblog.utils.WeiboOperation;
 import com.andrew.apollo.utils.ThemeUtils;
 import com.me.microblog.bean.User;
 import com.me.microblog.core.SinaUserApi;
@@ -37,7 +40,8 @@ public class AboutAppFragment extends AbstractBaseFragment {
     private Button mFollow, mSugguest, mChkUpdate, mFeedback;
     TextView mVersion;
     boolean isFollowing=false;
-    String mCurrVersionName="2.6.10_0921";
+    String mCurrVersionName="1.3.0";
+    LinearLayout authorLayout;
     View.OnClickListener clickListener=new View.OnClickListener() {
 
         @Override
@@ -63,6 +67,8 @@ public class AboutAppFragment extends AbstractBaseFragment {
             } else if (id==R.id.feedback_btn) {
                 AKUtils.showToast("not implemented!");
                 //WeiboUtil.openUrlByDefaultBrowser(getActivity(), getString(R.string.about_app_feedback_url));
+            } else if (id==R.id.author_layout) {
+                WeiboOperation.toViewStatusUser(getActivity(), "", AKWBO_USER_ID, UserFragmentActivity.TYPE_USER_INFO);
             }
         }
     };
@@ -76,6 +82,8 @@ public class AboutAppFragment extends AbstractBaseFragment {
         mFeedback=(Button) root.findViewById(R.id.feedback_btn);
         mVersion=(TextView) root.findViewById(R.id.version);
 
+        authorLayout=(LinearLayout) root.findViewById(R.id.author_layout);
+
         mRoot=root;
         themeBackground();
         return root;
@@ -88,6 +96,7 @@ public class AboutAppFragment extends AbstractBaseFragment {
         mSugguest.setOnClickListener(clickListener);
         mChkUpdate.setOnClickListener(clickListener);
         mFeedback.setOnClickListener(clickListener);
+        authorLayout.setOnClickListener(clickListener);
 
         PackageManager manager=getActivity().getPackageManager();
         try {

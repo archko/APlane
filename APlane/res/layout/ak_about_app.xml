@@ -112,6 +112,26 @@
         </LinearLayout>
         <include layout="@layout/ak_colorstrip"/>
 
+        <!-- author -->
+        <LinearLayout android:id="@+id/author_layout" android:clickable="true"
+            android:background="@drawable/holo_selector"
+            android:minHeight="?android:attr/listPreferredItemHeight"
+            android:paddingLeft="10dp" android:paddingRight="10dp"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="fill_parent" android:text="@string/about_app_author"
+                android:textColor="?attr/textColorItemTitle"
+                android:gravity="center_vertical"/>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" android:text="@string/about_app_author_url"
+                android:textColor="?attr/textColorItemNum"
+                android:gravity="center_vertical"/>
+        </LinearLayout>
+        <include layout="@layout/ak_colorstrip"/>
+
         <Button android:id="@+id/follow_btn"
             android:layout_marginTop="6dp"
             style="?attr/holoButtonStyle" android:layout_gravity="center_horizontal"

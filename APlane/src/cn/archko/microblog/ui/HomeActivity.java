@@ -199,23 +199,18 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
             clear();
         } else if (R.id.action_home==id) {
             int pos=mSidebarAdapter.getFragmentPos(Constants.TAB_ID_HOME);
-            mMenuFragment.selectItem(pos);
             navigationFragment(pos);
         } else if (R.id.action_at_comment==id) {
             int pos=mSidebarAdapter.getFragmentPos(Constants.TAB_ID_AT_COMMENT);
-            mMenuFragment.selectItem(pos);
             navigationFragment(pos);
         } else if (R.id.action_at_status==id) {
             int pos=mSidebarAdapter.getFragmentPos(Constants.TAB_ID_AT_STATUS);
-            mMenuFragment.selectItem(pos);
             navigationFragment(pos);
         } else if (R.id.action_comment==id) {
             int pos=mSidebarAdapter.getFragmentPos(Constants.TAB_ID_COMMENT);
-            mMenuFragment.selectItem(pos);
             navigationFragment(pos);
         } else if (R.id.action_follower==id) {
             int pos=mSidebarAdapter.getFragmentPos(Constants.TAB_ID_FOLLOWER);
-            mMenuFragment.selectItem(pos);
             navigationFragment(pos);
         }
     }
