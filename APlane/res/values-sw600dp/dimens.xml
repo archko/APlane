@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+-->
+<resources>
+
+    <!-- grid item detailed height -->
+    <dimen name="list_item_detailed_height">164.0dip</dimen>
+    <dimen name="gridview_image_width">164dp</dimen>
+    <dimen name="gridview_image_height">164dp</dimen>
+
+</resources>

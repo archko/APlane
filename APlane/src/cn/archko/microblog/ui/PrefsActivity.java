@@ -293,7 +293,7 @@ public class PrefsActivity extends PreferenceActivity implements
                 } else if (PREF_RESOLUTION.equals(key)) {
                     boolean slb="0".equals(prefs.getString(PrefsActivity.PREF_RESOLUTION, getString(R.string.default_resolution)));
                     if (slb) {
-                        ((App) App.getAppContext()).clearLargeLruCache();
+                        //((App) App.getAppContext()).clearLargeLruCache();
                     } else {
                         final int memClass=((ActivityManager) PrefsActivity.this.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
                         WeiboLog.d("memClass:"+memClass);

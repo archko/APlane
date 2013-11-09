@@ -297,12 +297,12 @@ public class FavItemView extends LinearLayout implements View.OnClickListener, C
             setPictureLay(mPictureUrl);
 
             Bitmap tmp=null;
-            if (!isShowLargeBitmap) {
+            //if (!isShowLargeBitmap) {
                 tmp=ImageCache2.getInstance().getBitmapFromMemCache(mPictureUrl);
-            } else {
+            /*} else {
                 LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
                 tmp=lruCache.get(mPictureUrl);
-            }
+            }*/
 
             //WeiboLog.v(TAG, "cached.tmp:"+tmp+" mPictureUrl:"+mPictureUrl);
             if (null!=tmp&&!tmp.isRecycled()) {

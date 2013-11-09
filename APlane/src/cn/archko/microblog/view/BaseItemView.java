@@ -255,12 +255,14 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
             setPictureLay(mPictureUrl);
 
             Bitmap tmp=null;
-            if (!isShowLargeBitmap) {
+            //TODO fix it later
+            //if (!isShowLargeBitmap) {
+                //mPictureUrl=mPictureUrl.replace("thumbnail", "bmiddle");
                 tmp=ImageCache2.getInstance().getBitmapFromMemCache(mPictureUrl);
-            } else {
+            /*} else {
                 LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
                 tmp=lruCache.get(mPictureUrl);
-            }
+            }*/
 
             //WeiboLog.v(TAG, "cached.tmp:"+tmp+" mPictureUrl:"+mPictureUrl);
             if (null!=tmp&&!tmp.isRecycled()) {
@@ -397,12 +399,12 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
         }
 
         if (bitmap!=null&&!bitmap.isRecycled()) {
-            if (!isShowLargeBitmap) {   //大图暂时不缓存内存，但是缓存小图
+            //if (!isShowLargeBitmap) {   //大图暂时不缓存内存，但是缓存小图
                 ImageCache2.getInstance().addBitmapToMemCache(imgUrl, bitmap);
-            } else {
+            /*} else {
                 LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
                 lruCache.put(imgUrl, bitmap);
-            }
+            }*/
 
             /*WeakReference<View> viewWeakReference=DownloadPool.downloading.get(imgUrl);
 

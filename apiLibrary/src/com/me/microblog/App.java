@@ -45,7 +45,7 @@ public class App extends Application {
     /**
      * 大图片缓存
      */
-    private LruCache<String, Bitmap> mLargeLruCache;
+    //private LruCache<String, Bitmap> mLargeLruCache;
     private int pageCount=Constants.WEIBO_COUNT;
 
     public void logout() {
@@ -136,7 +136,7 @@ public class App extends Application {
         }
     }
 
-    private void initLargeCache() {
+    /*private void initLargeCache() {
         mLargeLruCache=new LruCache<String, Bitmap>(3);
     }
 
@@ -152,7 +152,7 @@ public class App extends Application {
             mLargeLruCache.evictAll();
             mLargeLruCache=null;
         }
-    }
+    }*/
 
     private void initCacheDir() {
         mCacheDir=Constants.CACHE_DIR;
@@ -250,9 +250,9 @@ public class App extends Application {
     }
 
     private void cleanupImages() {
-        if (null!=mLargeLruCache) {
+        /*if (null!=mLargeLruCache) {
             mLargeLruCache.evictAll();
-        }
+        }*/
     }
 
     private void initDownloadPool(int threadCount) {

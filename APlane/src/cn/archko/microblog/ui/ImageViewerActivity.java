@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.FragmentManager;
+import android.support.v4.view.LazyViewPager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -30,7 +31,7 @@ import java.util.Date;
  */
 public class ImageViewerActivity extends SkinFragmentActivity {
 
-    private ViewPager mViewPager;
+    private LazyViewPager mViewPager;
     SamplePagerAdapter mPagerAdapter;
     String[] mUrls;
     int mSelectedIdx;
@@ -57,7 +58,8 @@ public class ImageViewerActivity extends SkinFragmentActivity {
         }
 
         setContentView(R.layout.imageviewer);
-        mViewPager=(ViewPager) findViewById(R.id.viewpager);
+        mViewPager=(LazyViewPager) findViewById(R.id.viewpager);
+        mViewPager.setOffscreenPageLimit(0);
         mSave=(ImageView) findViewById(R.id.save);
         mSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +104,6 @@ public class ImageViewerActivity extends SkinFragmentActivity {
     class SamplePagerAdapter extends PagerAdapter {
 
         private final SparseArray<WeakReference<AKSnapImageView>> mFragmentArray=new SparseArray<WeakReference<AKSnapImageView>>();
-        int mPos=0;
 
         public SamplePagerAdapter(FragmentManager fm) {
             super();

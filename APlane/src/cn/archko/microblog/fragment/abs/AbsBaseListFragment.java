@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -31,6 +32,7 @@ import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.SStatusData;
 import com.andrew.apollo.utils.ApolloUtils;
+import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
@@ -41,7 +43,7 @@ import java.util.ArrayList;
  * @author: archko Date: 13-1-28 Time: 下午6:44
  * @description:
  */
-public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> {
+public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> implements AbsListView.OnScrollListener{
 
     public static final String TAG="AbsBaseListFragment";
     protected ContentResolver mResolver;
@@ -262,6 +264,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> {
         zoomAnim=AnimationUtils.loadAnimation(getActivity(), R.anim.zoom);
 
         mListView.setRecyclerListener(new RecycleHolder());
+        mListView.setOnScrollListener(this);
 
         return root;
     }
@@ -384,6 +387,22 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> {
 
         WeiboLog.v(TAG, "isLoading:"+isLoading+" status:"+(null==mDataList ? "null" : mDataList.size()));
         loadData();
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING
+            || scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+            ImageCache2.getInstance().setPauseDiskCache(true);
+        } else {
+            ImageCache2.getInstance().setPauseDiskCache(false);
+            //mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
     }
 
     //--------------------- 微博操作 ---------------------

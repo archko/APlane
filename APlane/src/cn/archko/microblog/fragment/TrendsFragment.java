@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
+import cn.archko.microblog.recycler.RecycleHolder;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.me.microblog.App;
@@ -61,6 +62,8 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
         mPullRefreshListView=(PullToRefreshListView) root.findViewById(R.id.statusList);
         mListView=mPullRefreshListView.getRefreshableView();
         mPullRefreshListView.setMode(PullToRefreshBase.Mode.DISABLED);
+        mListView.setRecyclerListener(new RecycleHolder());
+        mListView.setOnScrollListener(this);
 
         return root;
     }

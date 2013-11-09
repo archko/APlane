@@ -39,7 +39,7 @@ import org.apache.http.params.HttpProtocolParams;
 public class DownloadPool extends Thread {
 
     public static final String TAG="DownloadPool";
-    public static int MAX_THREAD_COUNT=1;
+    public static int MAX_THREAD_COUNT=2;
     //private DefaultHttpClient httpClient;
     private int mActiveThread=0;
     private App mApp;
@@ -96,6 +96,7 @@ public class DownloadPool extends Thread {
         this.mApp=app;
 
         connectionManager=new ThreadSafeClientConnManager(params, createRegitry());
+        init();
     }
 
     public void setStop(boolean stop) {
@@ -103,6 +104,9 @@ public class DownloadPool extends Thread {
             notifyAll();
         }
         isStop=stop;
+        if (stop) {
+            release();
+        }
     }
 
     /**
@@ -233,7 +237,7 @@ public class DownloadPool extends Thread {
      * @param cache     是否缓存
      */
     public void Push(DownloadPiece mpiece) {
-        if (TextUtils.isEmpty(mpiece.uri)) {
+        /*if (TextUtils.isEmpty(mpiece.uri)) {
             WeiboLog.d(TAG, "uri is null.");
             return;
         }
@@ -248,7 +252,11 @@ public class DownloadPool extends Thread {
             mQuery.add(mpiece);
 
             notifyAll();
-        }
+        }*/
+        Message msg=Message.obtain();
+        msg.obj=mpiece;
+        msg.what=0;
+        mHandler.sendMessage(msg);
     }
 
     /**
@@ -263,7 +271,7 @@ public class DownloadPool extends Thread {
      */
     public void Push(Handler handler, String uri, int type, boolean cache, String dir, ImageView imageView) {
         //downloading.put(uri, new WeakReference<View>(imageView));
-        synchronized (this) {   //这里的同步造成了ui缓慢。
+        /*synchronized (this) {   //这里的同步造成了ui缓慢。
             for (DownloadPiece piece : mQuery) {    //在这里先排除总比在FrechImg_Impl()中查找文件要快.
                 if (piece.uri.equals(uri)) {
                     //WeiboLog.v(TAG, "已经存在url:"+uri);
@@ -275,7 +283,12 @@ public class DownloadPool extends Thread {
             mQuery.add(piece);
 
             notifyAll();
-        }
+        }*/
+        Message msg=Message.obtain();
+        DownloadPiece piece=new DownloadPiece(handler, uri, type, cache, dir, false, imageView);
+        msg.obj=piece;
+        msg.what=0;
+        mHandler.sendMessage(msg);
     }
 
     @Override
@@ -302,6 +315,7 @@ public class DownloadPool extends Thread {
                 }
             }
         }
+        release();
     }
 
     public class DownloadPiece {
@@ -390,6 +404,126 @@ public class DownloadPool extends Thread {
             FetchImage fetchImage=new FetchImage(mApp, httpClient, httpGet, piece);
             fetchImage.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
             fetchImage.start();
+        }
+    }
+
+    //=======================================
+
+    Handler mHandler;
+
+    private void init() {
+        initDecodeThread();
+        //this.mHandler.sendEmptyMessage(0);
+        this.mHandler.removeMessages(1);
+        this.mHandler.sendEmptyMessage(1);
+    }
+
+    private void initDecodeThread() {
+        quitLooper();
+
+        WeiboLog.d(TAG, "initDecodeThread:");
+        synchronized (this) {
+            final Thread previewThread=new Thread() {
+                @Override
+                public void run() {
+                    Looper.prepare();
+                    mHandler=new Handler() {
+                        @Override
+                        public void handleMessage(Message msg) {
+                            internalhandleMessage(msg);
+                        }
+                    };
+                    looperPrepared();
+                    Looper.loop();
+                    WeiboLog.d(TAG, "quit.");
+                }
+            };
+            previewThread.start();
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void looperPrepared() {
+        synchronized (this) {
+            try {
+                notify();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void internalhandleMessage(Message msg) {
+        //Log.d(TAG, "internalhandleMessage:"+msg.what);
+        switch (msg.what) {
+            default:
+                return;
+            case 0:
+                internalStart(msg);
+                return;
+            case 1:
+                moniter();
+                return;
+            case 2:
+                internalRelease();
+                return;
+            case 3:
+                return;
+        }
+    }
+
+    private void moniter() {
+        return;
+    }
+
+    private void internalStart(Message msg) {
+        //Log.d(TAG, "internalStart:");
+        DownloadPiece mpiece=(DownloadPiece) msg.obj;
+        if (TextUtils.isEmpty(mpiece.uri)) {
+            WeiboLog.d(TAG, "internalStart uri is null.");
+            return;
+        }
+
+        synchronized (DownloadPool.this) {   //这里的同步造成了ui缓慢。
+            for (DownloadPiece piece : mQuery) {    //在这里先排除总比在FrechImg_Impl()中查找文件要快.
+                if (piece.uri.equals(mpiece.uri)) {
+                    WeiboLog.d(TAG, "已经存在url:"+mpiece.uri);
+                    mQuery.remove(piece);
+                    break;
+                }
+            }
+            mQuery.add(mpiece);
+
+            DownloadPool.this.notifyAll();
+        }
+    }
+
+    /**
+     * 资源释放
+     */
+    public void release() {
+        if (null!=mHandler) {
+            mHandler.sendEmptyMessage(2);
+        }
+    }
+
+    public void internalRelease() {
+        if (this.mHandler!=null) {
+            this.mHandler.removeCallbacksAndMessages(null);
+        }
+        quitLooper();
+    }
+
+    private void quitLooper() {
+        try {
+            synchronized (this) {
+                Looper.myLooper().quit();
+            }
+        } catch (Exception e) {
         }
     }
 }

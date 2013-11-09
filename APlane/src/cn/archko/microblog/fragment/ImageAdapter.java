@@ -180,9 +180,12 @@ public class ImageAdapter extends BaseAdapter {
         if (!isShowLargeBitmap) {
             tmp=ImageCache2.getInstance().getBitmapFromMemCache(mPictureUrl);
         } else {
-            mPictureUrl=mPictureUrl.replace("thumbnail", "bmiddle");
-            LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
-            tmp=lruCache.get(mPictureUrl);
+            if (!mPictureUrl.endsWith("gif")) {
+                mPictureUrl=mPictureUrl.replace("thumbnail", "bmiddle");
+            }
+            tmp=ImageCache2.getInstance().getBitmapFromMemCache(mPictureUrl);
+            /*LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
+            tmp=lruCache.get(mPictureUrl);*/
         }
 
         //WeiboLog.v(TAG, "cached.tmp:"+tmp+" mPictureUrl:"+mPictureUrl);

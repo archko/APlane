@@ -91,6 +91,7 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         mPullRefreshGridView=(PullToRefreshGridView) root.findViewById(R.id.pull_refresh_grid);
         mGridView=mPullRefreshGridView.getRefreshableView();
         mGridView.setDrawSelectorOnTop(true);
+        mGridView.setOnScrollListener(this);
 
         /*SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(getActivity());
         String themeId=options.getString(PrefsActivity.PREF_THEME, "0");

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!-- GridView items -->
-    <dimen name="gridview_image_width">120dp</dimen>
-    <dimen name="gridview_image_height">96dp</dimen>
-
-</resources>
