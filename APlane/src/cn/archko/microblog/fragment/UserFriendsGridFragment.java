@@ -2,8 +2,12 @@ package cn.archko.microblog.fragment;
 
 import android.os.Bundle;
 import cn.archko.microblog.fragment.impl.SinaUserFriendsImpl;
+import cn.archko.microblog.utils.AKUtils;
+import com.me.microblog.App;
+import com.me.microblog.WeiboException;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.ApiConfigFactory;
 import com.me.microblog.core.factory.SinaApiFactory;
 
 /**
@@ -27,8 +31,15 @@ public class UserFriendsGridFragment extends UserGridFragment {
     public void initApi() {
         mStatusImpl=new SinaUserFriendsImpl();
 
-        AbsApiFactory absApiFactory=new SinaApiFactory();
-        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.userApiFactory());
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
+        try {
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.userApiFactory());
+        } catch (WeiboException e) {
+            e.printStackTrace();
+            AKUtils.showToast("初始化api异常.");
+            //getActivity().finish();
+        }
     }
 
     //--------------------- 数据加载 ---------------------

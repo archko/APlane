@@ -35,6 +35,7 @@ import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.SinaUserApi;
 import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.ApiConfigFactory;
 import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
@@ -96,8 +97,15 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
     public void initApi() {
         mStatusImpl=new SinaUserImpl();
 
-        AbsApiFactory absApiFactory=new SinaApiFactory();
-        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.userApiFactory());
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
+        try {
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.userApiFactory());
+        } catch (WeiboException e) {
+            e.printStackTrace();
+            AKUtils.showToast("初始化api异常.");
+            //getActivity().finish();
+        }
     }
 
     @Override

@@ -25,6 +25,24 @@ public class OauthBean {
     public String customKey;
     public String customSecret;
 
+    ServiceProvider serviceProvider;
+
+    public OauthBean() {
+        serviceProvider=ServiceProvider.Sina;
+    }
+
+    public ServiceProvider getServiceProvider() {
+        return serviceProvider;
+    }
+
+    public void setServiceProvider(ServiceProvider serviceProvider) {
+        this.serviceProvider=serviceProvider;
+    }
+
+    public void setServiceProvider(int spNo) {
+        serviceProvider=ServiceProvider.getServiceProvider(spNo);
+    }
+
     @Override
     public String toString() {
         return "OauthBean{"+
@@ -34,11 +52,16 @@ public class OauthBean {
             ", openKey='"+openKey+'\''+
             ", refreshToken='"+refreshToken+'\''+
             ", time="+time+
+            ", id="+id+
             ", userId='"+userId+'\''+
             ", name='"+name+'\''+
+            ", pass='"+pass+'\''+
             ", type="+type+
             ", isDefault="+isDefault+
             ", oauthType="+oauthType+
+            ", customKey='"+customKey+'\''+
+            ", customSecret='"+customSecret+'\''+
+            ", serviceProvider="+serviceProvider+
             '}';
     }
 }

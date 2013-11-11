@@ -18,11 +18,13 @@ import cn.archko.microblog.fragment.impl.SinaMyPostStatusImpl;
 import com.andrew.apollo.utils.PreferenceUtils;
 import cn.archko.microblog.view.ActionModeItemView;
 import com.me.microblog.App;
+import com.me.microblog.WeiboException;
 import com.me.microblog.action.ActionResult;
 import com.me.microblog.action.AsyncActionTask;
 import com.me.microblog.bean.Status;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.ApiConfigFactory;
 import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
@@ -57,8 +59,15 @@ public class MyPostFragment extends StatusListFragment {
     public void initApi() {
         mStatusImpl=new SinaMyPostStatusImpl();
 
-        AbsApiFactory absApiFactory=new SinaApiFactory();
-        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
+        try {
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
+        } catch (WeiboException e) {
+            e.printStackTrace();
+            AKUtils.showToast("初始化api异常.");
+            //getActivity().finish();
+        }
     }
 
     @Override

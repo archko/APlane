@@ -9,9 +9,11 @@ import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.impl.SinaUserStatusImpl;
 import cn.archko.microblog.view.ThreadBeanItemView;
 import com.me.microblog.App;
+import com.me.microblog.WeiboException;
 import com.me.microblog.bean.Status;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.ApiConfigFactory;
 import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
@@ -48,8 +50,15 @@ public class UserTimelineFragment extends StatusListFragment {
     public void initApi() {
         mStatusImpl=new SinaUserStatusImpl();
 
-        AbsApiFactory absApiFactory=new SinaApiFactory();
-        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
+        try {
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
+        } catch (WeiboException e) {
+            e.printStackTrace();
+            AKUtils.showToast("初始化api异常.");
+            //getActivity().finish();
+        }
     }
 
     @Override

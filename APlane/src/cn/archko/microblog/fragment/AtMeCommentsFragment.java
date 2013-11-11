@@ -28,6 +28,7 @@ import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.SinaCommentApi;
 import com.me.microblog.core.SinaUnreadApi;
 import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.ApiConfigFactory;
 import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
@@ -52,8 +53,15 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
     public void initApi() {
         mStatusImpl=new SinaAtMeCommentImpl();
 
-        AbsApiFactory absApiFactory=new SinaApiFactory();
-        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.commentApiFactory());
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
+        try {
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.commentApiFactory());
+        } catch (WeiboException e) {
+            e.printStackTrace();
+            AKUtils.showToast("初始化api异常.");
+            //getActivity().finish();
+        }
     }
 
     //--------------------- 微博操作 ---------------------

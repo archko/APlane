@@ -10,8 +10,10 @@ import cn.archko.microblog.fragment.StatusListFragment;
 import cn.archko.microblog.fragment.impl.SinaPlaceStatusImpl;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.ui.UserFragmentActivity;
+import com.me.microblog.WeiboException;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.ApiConfigFactory;
 import com.me.microblog.core.factory.SinaApiFactory;
 import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.utils.WeiboOperation;
@@ -56,8 +58,15 @@ public class PlaceStatusListFragment extends StatusListFragment {
     public void initApi() {
         mStatusImpl=new SinaPlaceStatusImpl();
 
-        AbsApiFactory absApiFactory=new SinaApiFactory();
-        mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
+        try {
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
+        } catch (WeiboException e) {
+            e.printStackTrace();
+            AKUtils.showToast("初始化api异常.");
+            //getActivity().finish();
+        }
     }
 
     /**
