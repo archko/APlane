@@ -58,7 +58,7 @@ public class FetchImage extends Thread {
     /**
      * Default transition drawable fade time
      */
-    private static final int FADE_IN_TIME = 200;
+    public static final int FADE_IN_TIME = 200;
 
     /**
      * First layer of the transition drawable
@@ -118,11 +118,12 @@ public class FetchImage extends Thread {
     public void run() {
         App app=(App) this.mContext.getApplicationContext();
         HttpResponse response;
-        while (ImageCache2.getInstance().isScrolling() && cancelWork()) {
+        //这里没有解决滚动的问题,可能是由于前面的线程同步造成的.
+        /*while (ImageCache2.getInstance().isScrolling() && !DownloadPool.cancelWork(mPiece)) {
             //cancel(true);
-        }
+        }*/
 
-        if (cancelWork()) {
+        if (ImageCache2.getInstance().isScrolling()||DownloadPool.cancelWork(mPiece)) {
             app.mDownloadPool.ActiveThread_Pop();
             /*if (null!=mHttpGet) {
                 mHttpGet.abort();
@@ -147,7 +148,7 @@ public class FetchImage extends Thread {
 
             bitmap=ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(imagepath, -1);
             if (null!=bitmap) {
-                if (!cancelWork()) {
+                if (!DownloadPool.cancelWork(mPiece)) {
                     SendMessage(mPiece.handler, mPiece, bitmap);
                 }
                 return;
@@ -157,7 +158,7 @@ public class FetchImage extends Thread {
               HttpConnectionParams.setConnectionTimeout(httpParameters, Twitter.CONNECT_TIMEOUT);
               HttpConnectionParams.setSoTimeout(httpParameters, Twitter.READ_TIMEOUT);
               DefaultHttpClient httpClient=new DefaultHttpClient(httpParameters);*/
-            if (cancelWork()) {
+            if (DownloadPool.cancelWork(mPiece)) {
                 app.mDownloadPool.ActiveThread_Pop();
                 return;
             }
@@ -174,7 +175,7 @@ public class FetchImage extends Thread {
                 }
                 //WeiboLog.d(TAG, "cache:"+cache+" uri:"+uri+" length:"+bytes.length+" mFilepath:"+mFilepath+" dir:"+dir+" bitmap:"+bitmap);
 
-                if (cancelWork()) {   //下载过程,如果View已经销毁,不需要返回.
+                if (DownloadPool.cancelWork(mPiece)) {   //下载过程,如果View已经销毁,不需要返回.
                     return;
                 }
                 /*Bundle bundle=new Bundle();
@@ -195,15 +196,6 @@ public class FetchImage extends Thread {
         }
     }
 
-    private boolean cancelWork() {
-        WeakReference<ImageView> viewWeakReference=mPiece.mImageReference;//DownloadPool.downloading.get(uri);
-        if (null==viewWeakReference||viewWeakReference.get()==null) {
-            //app.mDownloadPool.ActiveThread_Pop();
-            return true;
-        }
-        return false;
-    }
-
     public void SendMessage(Handler handler, final DownloadPool.DownloadPiece piece, final Bitmap bitmap) {
         if (null==piece||null==bitmap) {
             WeiboLog.d(TAG, "SendMessage,bitmap is null.");
@@ -217,14 +209,14 @@ public class FetchImage extends Thread {
             lruCache.put(piece.uri, bitmap);
         }*/
 
-        if (handler==null) {
-            WeiboLog.v(TAG, "SendMessage:"+piece+" handler is null:");
+        if (handler==null||ImageCache2.getInstance().isScrolling()) {
+            WeiboLog.v(TAG, "SendMessage:"+piece+" handler is null:or is scrolling.");
             return;
         }
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (!cancelWork()) {
+                if (!DownloadPool.cancelWork(mPiece)) {
                     WeakReference<ImageView> viewWeakReference=mPiece.mImageReference;//DownloadPool.downloading.get(uri);
                     ImageView view=(ImageView) viewWeakReference.get();
                     if (null!=view) {

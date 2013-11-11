@@ -394,10 +394,10 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
         if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING
             || scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
             ImageCache2.getInstance().setPauseDiskCache(true);
-            WeiboLog.v(TAG, "onScrollStateChanged.scroll");
+            //WeiboLog.v(TAG, "onScrollStateChanged.scroll");
         } else {
             ImageCache2.getInstance().setPauseDiskCache(false);
-            //mAdapter.notifyDataSetChanged();
+            mAdapter.notifyDataSetChanged();
         }
     }
 

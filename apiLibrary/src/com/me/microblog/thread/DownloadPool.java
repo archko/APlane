@@ -362,22 +362,16 @@ public class DownloadPool extends Thread {
             return;
         }
 
-        final WeakReference<ImageView> viewWeakReference=piece.mImageReference;
-        if (null==viewWeakReference) {
+        if (cancelWork(piece)) {
             WeiboLog.i(TAG, "viewWeakRef is null."+uri);
-            //downloading.remove(uri);
-            return;
-        }
-
-        if (null==viewWeakReference.get()) {
-            WeiboLog.i(TAG, "viewWeakRef get is null."+uri);
             //downloading.remove(uri);
             return;
         }
 
         final Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(uri);
         if (null!=bitmap) {
-            if (null!=viewWeakReference&&null!=viewWeakReference.get()&&null!=piece.handler) {
+            if (!cancelWork(piece)&&null!=piece.handler) {
+                final WeakReference<ImageView> viewWeakReference=piece.mImageReference;
                 piece.handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -395,7 +389,7 @@ public class DownloadPool extends Thread {
             return;
         }
 
-        synchronized (this) {
+        //synchronized (this) {
             mApp.mDownloadPool.ActiveThread_Push();
             String str3=Uri.encode(uri, ":/");
             HttpGet httpGet=new HttpGet(str3);
@@ -404,7 +398,18 @@ public class DownloadPool extends Thread {
             FetchImage fetchImage=new FetchImage(mApp, httpClient, httpGet, piece);
             fetchImage.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
             fetchImage.start();
+        //}
+    }
+
+    public static boolean cancelWork(DownloadPiece piece) {
+        if (null==piece){
+            return false;
         }
+        WeakReference<ImageView> viewWeakReference=piece.mImageReference;//DownloadPool.downloading.get(uri);
+        if (null==viewWeakReference||viewWeakReference.get()==null) {
+            return true;
+        }
+        return false;
     }
 
     //=======================================

@@ -92,7 +92,7 @@ public class ImageCache2 {
         mLruCache=new MemoryCache(lruCacheSize);
 
         // Release some memory as needed
-        if(true){//if (ApolloUtils.hasICS()) {
+        if (true) {//if (ApolloUtils.hasICS()) {
             context.registerComponentCallbacks(new ComponentCallbacks2() {
 
                 /**
@@ -240,7 +240,9 @@ public class ImageCache2 {
      * @param pause True to temporarily pause the disk cache, false otherwise.
      */
     public void setPauseDiskCache(final boolean pause) {
-        mPauseDiskAccess=pause;
+        if (mPauseDiskAccess!=pause) {
+            mPauseDiskAccess=pause;
+        }
     }
 
     /**
@@ -281,7 +283,7 @@ public class ImageCache2 {
         @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
         public static final int getBitmapSize(final Bitmap bitmap) {
             //if (ApolloUtils.hasHoneycombMR1()) {
-                return bitmap.getByteCount();
+            return bitmap.getByteCount();
             //}
             /* Pre HC-MR1 */
             //return bitmap.getRowBytes()*bitmap.getHeight();
