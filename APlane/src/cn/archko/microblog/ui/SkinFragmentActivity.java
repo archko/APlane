@@ -72,37 +72,6 @@ public class SkinFragmentActivity extends Activity implements PopupMenu.OnMenuIt
     public void refreshSidebar() {
     }
 
-    /*public void showToast(final String message) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(SkinFragmentActivity.this, message, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public void showToast(final int resId) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(SkinFragmentActivity.this, resId, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public void showToast(final String message, final int delay) {
-        Toast.makeText(SkinFragmentActivity.this, message, delay).show();
-    }
-
-    public void showToast(final int resId, final int delay) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(SkinFragmentActivity.this, resId, delay).show();
-            }
-        });
-    }*/
-
     //--------------------- popupMenu ---------------------
 
     /**

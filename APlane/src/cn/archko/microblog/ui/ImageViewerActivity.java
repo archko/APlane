@@ -1,5 +1,6 @@
 package cn.archko.microblog.ui;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,7 +30,7 @@ import java.util.Date;
  * @description:
  * @author: archko 13-9-22 :上午10:27
  */
-public class ImageViewerActivity extends SkinFragmentActivity {
+public class ImageViewerActivity extends Activity {
 
     private LazyViewPager mViewPager;
     SamplePagerAdapter mPagerAdapter;

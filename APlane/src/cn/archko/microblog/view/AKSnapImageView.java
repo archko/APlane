@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.me.microblog.App;
 import cn.archko.microblog.R;
@@ -147,14 +148,20 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
 
     private void loadImageView() {
         mImageDownloaded=false;
-        Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(imageBean);
+        Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(mBmidPath);
         WeiboLog.d(TAG, "loadImageView:"+bitmap+" url:"+imageBean);
         if (null!=bitmap) {
             imageView.setImageBitmap(bitmap);
-        }
+        } else {
+            bitmap=ImageCache2.getInstance().getBitmapFromMemCache(mThumbPath);
+            if (null!=bitmap) {
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                imageView.setImageBitmap(bitmap);
+            }
 
-        if (!TextUtils.isEmpty(bmiddlePic)) {
-            downloadImage();
+            if (!TextUtils.isEmpty(bmiddlePic)) {
+                downloadImage();
+            }
         }
     }
 
@@ -261,6 +268,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                     if (null!=bitmap) {
                         WeiboLog.d(TAG, "width："+bitmap.getWidth()+" height:"+bitmap.getHeight());
                         try {
+                            imageView.setScaleType(ImageView.ScaleType.CENTER);
                             imageView.setImageBitmap(bitmap);
                         } catch (Exception e) {
                             e.printStackTrace();

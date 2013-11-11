@@ -1,9 +1,12 @@
 package com.andrew.apollo.utils;
 
+import android.annotation.TargetApi;
+import android.graphics.drawable.Drawable;
 import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.view.View;
 import cn.archko.microblog.R;
 import com.me.microblog.App;
@@ -42,6 +45,22 @@ public final class ThemeUtils {
             BitmapDrawable bgSplit=(BitmapDrawable) context.getResources().getDrawable(R.drawable.bg_striped_split_img);
             bgSplit.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
             actionBar.setSplitBackgroundDrawable(bgSplit);
+        } else if ("2".equals(themeId)){
+            //Drawable bg=(Drawable) context.getResources().getDrawable(R.drawable.abs__ab_solid_light_holo);
+            //bg.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+            actionBar.setBackgroundDrawable(null);
+
+            //Drawable bgSplit=(Drawable) context.getResources().getDrawable(R.drawable.abs__ab_bottom_solid_light_holo);
+            //bgSplit.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+            actionBar.setSplitBackgroundDrawable(null);
+        } else if ("0".equals(themeId)) {
+            //Drawable bg=(Drawable) context.getResources().getDrawable(R.drawable.abs__ab_solid_dark_holo);
+            //bg.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+            actionBar.setBackgroundDrawable(null);
+
+            //Drawable bgSplit=(Drawable) context.getResources().getDrawable(R.drawable.abs__ab_bottom_solid_dark_holo);
+            //bgSplit.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+            actionBar.setSplitBackgroundDrawable(null);
         }
     }
 

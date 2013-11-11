@@ -8,11 +8,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.LazyViewPager;
+import android.util.SparseArray;
+import android.view.ViewGroup;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
 import com.andrew.apollo.utils.ThemeUtils;
 import com.me.microblog.util.WeiboLog;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -21,6 +24,7 @@ import java.util.ArrayList;
  */
 public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity implements OnRefreshListener {
 
+    public static final String TAG="AbstractFragmentTabsPager";
     protected LazyViewPager mViewPager;
     protected ActionTabsAdapter mTabsAdapter;
     protected ActionBar.TabListener mTabListener;
@@ -119,6 +123,7 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
         private final ActionBar mTabHost;
         private final LazyViewPager mViewPager;
         private final ArrayList<TabInfo> mTabs=new ArrayList<TabInfo>();
+        private final SparseArray<WeakReference<Fragment>> mFragmentArray=new SparseArray<WeakReference<Fragment>>();
 
         final class TabInfo {
 
@@ -188,8 +193,43 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
 
         @Override
         public Fragment getItem(int position) {
+            WeiboLog.v(TAG, "getItem:"+position);
+            final WeakReference<Fragment> mWeakFragment=mFragmentArray.get(position);
+            if (mWeakFragment!=null&&mWeakFragment.get()!=null) {
+                return mWeakFragment.get();
+            }
+
             TabInfo info=mTabs.get(position);
             return Fragment.instantiate(mContext, info.clss.getName(), info.args);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Object instantiateItem(final ViewGroup container, final int position) {
+            WeiboLog.v("instantiateItem:"+position);
+            WeakReference<Fragment> mWeakFragment=mFragmentArray.get(position);
+            if (mWeakFragment!=null&&mWeakFragment.get()!=null) {
+                //mWeakFragment.clear();
+                return mWeakFragment.get();
+            }
+
+            final Fragment mFragment=(Fragment) super.instantiateItem(container, position);
+            mFragmentArray.put(position, new WeakReference<Fragment>(mFragment));
+            return mFragment;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void destroyItem(final ViewGroup container, final int position, final Object object) {
+            super.destroyItem(container, position, object);
+            final WeakReference<Fragment> mWeakFragment=mFragmentArray.get(position);
+            if (mWeakFragment!=null) {
+                mWeakFragment.clear();
+            }
         }
 
         @Override
@@ -220,6 +260,17 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
         public void onTabItemChanged(int index) {
             mViewPager.setCurrentItem(index);
             WeiboLog.d("onTabItemChanged.index:"+index);
+        }
+
+        /**
+         * 在使用TabPageIndicator时有用到，否则Tab无法显示标题。
+         *
+         * @param position
+         * @return
+         */
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTabs.get(position).tag;
         }
     }
 
