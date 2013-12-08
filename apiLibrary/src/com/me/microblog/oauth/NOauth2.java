@@ -46,18 +46,18 @@ public class NOauth2 extends BaseOauth2 {
     }
     
     @Override
-	public String buildOauthTokenUrl() {
+	public String buildOauthTokenUrl(String consumer_key, String callback_url) {
 		String touchParam = "";
 
         touchParam = "&state=ABCDEFG";
 
-        return AUTHENTICATIONURL + "?" + "client_id=" + CONSUMER_KEY
-            + "&redirect_uri=" + CALLBACK_URL
+        return AUTHENTICATIONURL + "?" + "client_id=" + consumer_key
+            + "&redirect_uri=" + callback_url
             + "&response_type=token" + touchParam
             + "&display=mobile" + "&confirm=1&oauthCheckItem=1" ;
     }
     
-	@Override
+	@Deprecated
 	public OauthBean login(Object... params) {
 		mOauthBean=null;
 		mAccessToken=null;
@@ -99,10 +99,10 @@ public class NOauth2 extends BaseOauth2 {
         return null;
 	}
 
-	@Override
+	@Deprecated
 	OauthBean fetchAccessToken(HttpClient client) {
 		try {
-			String urlString = buildOauthTokenUrl();
+			String urlString = buildOauthTokenUrl(CONSUMER_KEY, CALLBACK_URL);
 			HttpPost post = new HttpPost(urlString);
 			ArrayList<NameValuePair> nvps = new ArrayList<NameValuePair>();
 

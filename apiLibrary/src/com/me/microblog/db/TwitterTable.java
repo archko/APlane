@@ -150,6 +150,7 @@ public class TwitterTable {
         public static final String ACCOUNT_OAUTH_TYPE="oauth_type";//网页认证还是密码认证.目前可实现两个认证.
         public static final String ACCOUNT_CUSTOM_KEY="custom_key";//自定义的key
         public static final String ACCOUNT_CUSTOM_SECRET="custom_secret";//密钥
+        public static final String ACCOUNT_CALLBACK_URL="callback_url";//回调地址.如果是web认证,需要填写
 
         //常量
         public static final int WEIBO_SINA=0;   //新浪的号

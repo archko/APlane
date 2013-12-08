@@ -19,6 +19,7 @@ import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.sina.SinaUserApi;
+import com.me.microblog.oauth.Oauth2;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 
@@ -93,11 +94,11 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
             return;
         }
 
-        if (App.OAUTH_MODE.equalsIgnoreCase(Constants.SOAUTH_TYPE_CLIENT)) {
+        App app=(App) App.getAppContext();
+        if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB) {
             FollwingTask follwingTask=new FollwingTask();
             follwingTask.execute(new Integer[]{followingType});
         } else {
-            App app=(App) App.getAppContext();
             if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
                 WeiboLog.d(TAG, "web认证，token过期了.");
                 Toast.makeText(mContext, "token过期了,处理失败,可以刷新列表重新获取token.", Toast.LENGTH_LONG).show();

@@ -68,27 +68,17 @@ public class SOauth2 extends BaseOauth2 {
     }
 
     @Override
-    public String buildOauthTokenUrl() {
+    public String buildOauthTokenUrl(String consumer_key, String callback_url) {
         String touchParam;
 
         touchParam="&display=mobile&state=ABCDEFG";
 
-        return AUTHENTICATIONURL+"?"+"client_id="+CONSUMER_KEY
+        return AUTHENTICATIONURL+"?"+"client_id="+consumer_key
             +"&response_type=token"+touchParam
-            +"&redirect_uri="+CALLBACK_URL;
+            +"&redirect_uri="+callback_url;
     }
 
-    public String buildOtherOauthTokenUrl() {
-        String touchParam;
-
-        touchParam="&display=mobile&state=ABCDEFG";
-
-        return AUTHENTICATIONURL+"?"+"client_id="+DESKTOP_KEY
-            +"&response_type=token"+touchParam
-            +"&redirect_uri="+DESKTOP_CALLBACK;
-    }
-
-    @Override
+    @Deprecated
     public OauthBean login(Object... params) {
         mOauthBean=null;
         mAccessToken=null;
@@ -154,10 +144,10 @@ public class SOauth2 extends BaseOauth2 {
         return null;
     }
 
-    @Override
+    @Deprecated
     OauthBean fetchAccessToken(HttpClient client) {
         try {
-            String urlString=buildOauthTokenUrl();
+            String urlString=buildOauthTokenUrl(CONSUMER_KEY, CALLBACK_URL);
             //WeiboLog.d("urlString:"+urlString);
             HttpPost post=new HttpPost(urlString);
 
@@ -241,7 +231,7 @@ public class SOauth2 extends BaseOauth2 {
      * @param objects  在认证前执行方法的参数。
      * @return webview，可以直接添加到ui上显示网页。
      */
-    private WebView bindViews(final String username, final String password, Context context, final Handler handler, final Object[] objects) {
+    public WebView bindViews(final String username, final String password, Context context, final Handler handler, final Object[] objects) {
         WeiboLog.v("binds:"+username+" p:"+password);
         final OauthWebView webView=new OauthWebView(context, handler);
         WebSettings settings=webView.getSettings();
@@ -419,7 +409,7 @@ public class SOauth2 extends BaseOauth2 {
         };
         webView.setWebChromeClient(webChromeClient);
 
-        String url=buildOauthTokenUrl();
+        String url=buildOauthTokenUrl(CONSUMER_KEY, CALLBACK_URL);
         webView.loadUrl(url);
 
         return webView;
@@ -438,7 +428,7 @@ public class SOauth2 extends BaseOauth2 {
         OauthBean oauthBean=null;
         DefaultHttpClient client=(DefaultHttpClient) SSLSocketFactoryEx.getNewHttpClient();
         client.getParams().setParameter("http.protocol.cookie-policy", CookiePolicy.BROWSER_COMPATIBILITY);
-        client.getParams().setParameter(HttpConnectionParams.CONNECTION_TIMEOUT, 5000);
+        client.getParams().setParameter(HttpConnectionParams.CONNECTION_TIMEOUT, 9000);
         try {
             HttpPost post=new HttpPost("https://api.weibo.com/oauth2/access_token");
 

@@ -3,7 +3,6 @@ package cn.archko.microblog.fragment.abs;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
@@ -11,6 +10,7 @@ import android.widget.Toast;
 import cn.archko.microblog.R;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
+import com.me.microblog.oauth.Oauth2;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
@@ -82,7 +82,7 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
      * @param msg    线程已经在运行中的提示信息
      */
     protected void newTask(Object[] params, String msg) {
-        WeiboLog.d(TAG, "newTask:"+App.OAUTH_MODE);
+        WeiboLog.d(TAG, "newTask:");
         if (!App.hasInternetConnection(getActivity())) {
             AKUtils.showToast(R.string.network_error, Toast.LENGTH_LONG);
             if (mRefreshListener!=null) {
@@ -100,11 +100,11 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
             return;
         }
 
-        if (App.OAUTH_MODE.equalsIgnoreCase(Constants.SOAUTH_TYPE_CLIENT)) {
+        App app=(App) App.getAppContext();
+        if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB) {
             mCommonTask=new CommonTask();
             mCommonTask.execute(params);
         } else {
-            App app=(App) App.getAppContext();
             if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
                 WeiboLog.i(TAG, "web认证，token过期了.");
                 AKUtils.showToast("token过期了,需要重新认证，如果认证失败，请注销再登陆！");
@@ -125,7 +125,7 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
      * @param msg    线程已经在运行中的提示信息
      */
     protected void newTaskNoNet(Object[] params, String msg) {
-        WeiboLog.d(TAG, "newTaskNoNet:"+App.OAUTH_MODE);
+        WeiboLog.d(TAG, "newTaskNoNet:");
 
         if (mThreadStatus==THREAD_RUNNING||(mQueryTask!=null&&mQueryTask.getStatus()==AsyncTask.Status.RUNNING)) {
             if (!TextUtils.isEmpty(msg)) {
@@ -269,7 +269,7 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
      * @param msg    线程已经在运行中的提示信息
      */
     protected void newOperationTask(Object[] params, String msg) {
-        WeiboLog.d(TAG, "newTask:"+App.OAUTH_MODE);
+        WeiboLog.d(TAG, "newTask:");
         if (!App.hasInternetConnection(getActivity())) {
             AKUtils.showToast(R.string.network_error, Toast.LENGTH_LONG);
             /*if (mRefreshListener!=null) {
@@ -284,11 +284,11 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
             return;
         }*/
 
-        if (App.OAUTH_MODE.equalsIgnoreCase(Constants.SOAUTH_TYPE_CLIENT)) {
+        App app=(App) App.getAppContext();
+        if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB) {
             mOperationTask=new OperationTask();
             mOperationTask.execute(params);
         } else {
-            App app=(App) App.getAppContext();
             if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
                 WeiboLog.i(TAG, "web认证，token过期了.");
                 //mOauth2Handler.oauth2(params);

@@ -27,6 +27,7 @@ import cn.archko.microblog.utils.AKUtils;
 import com.me.microblog.App;
 import com.me.microblog.db.MyHelper;
 import com.me.microblog.db.TwitterTable;
+import com.me.microblog.oauth.Oauth2;
 import com.me.microblog.oauth.Oauth2Handler;
 import com.me.microblog.oauth.BaseOauth2;
 import com.me.microblog.oauth.OauthBean;
@@ -235,10 +236,11 @@ public class LoginActivity extends NavModeActivity {
                 return;
             }
 
-            mProgressDialog.setTitle(R.string.login);
+            /*mProgressDialog.setTitle(R.string.login);
             mProgressDialog.show();
             LoginTask loginTask=new LoginTask();
-            loginTask.execute(new Object[]{emailTxt, passwordTxt});
+            loginTask.execute(new Object[]{emailTxt, passwordTxt});*/
+            AKUtils.showToast("not implemented");
         } else if (v.getId()==R.id.exit) {
             finish();
         } else if (v.getId()==R.id.regist_btn) {  //注册
@@ -249,101 +251,6 @@ public class LoginActivity extends NavModeActivity {
         } else if (v.getId()==R.id.login2) {  //web认证
             type=0;
             oauth2(emailTxt, passwordTxt);
-        }
-    }
-
-    private OauthBean oauth(Object... params) {
-        BaseOauth2 oauth2=new SOauth2();
-
-        return oauth2.login(params);
-    }
-
-    @Deprecated
-    class LoginTask extends AsyncTask<Object, Void, Object[]> {
-
-        @Override
-        protected Object[] doInBackground(Object... params) {
-            String name=null;
-            String passwd=null;
-            if (params!=null) {
-                WeiboLog.i(TAG, "需要原始登录.");
-                name=(String) params[0];
-                passwd=(String) params[1];
-            }
-
-            // user.id=1358179637l;
-            OauthBean bean=null;
-            try {
-                bean=oauth(params);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            if (bean!=null&&!TextUtils.isEmpty(bean.accessToken)) {// user.id=1358179637l;
-                App.isLogined=true;
-                return new Object[]{name, bean, passwd};
-            } else {
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Object[] resultObj) {
-            WeiboLog.d(TAG, "resultObj:"+resultObj);
-
-            mProgressDialog.dismiss();
-
-            if (null!=resultObj) {
-                SharedPreferences.Editor editor=mPreferences.edit();
-                /*if (null==resultObj[0]) {
-                    // 不需要原始登录,获取token
-                    WeiboLog.i(TAG, "不需要原始登录,获取token.");
-                } else {*/
-                //editor.putString(PREF_USERNAME_KEY, (String) resultObj[0]);
-                /*User user=((User) resultObj[1]);
-                String username=(String) resultObj[0];
-                editor.putString(PREF_USERNAME_KEY, username);
-                String passwd=(String) resultObj[2];
-                //editor.putString(PREF_PASSWORD_KEY, RC4.RunRC4(passwd, KEY));
-                // add 存储当前用户的id
-                editor.putLong(PREF_CURRENT_USER_ID, user.id);
-                long time=SystemClock.currentThreadTimeMillis();
-                editor.putLong(PREF_TIMESTAMP, time);
-                editor.putInt(PREF_WEIBO_COUNTS, 25);
-
-                // save token,secret
-                if (App.OAUTH_TYPE==App.OAUTH1) {
-                    CommonsHttpOAuthConsumer consumer=((WeiboApi) App.getMicroBlog(LoginActivity.this)).twitter.consumer;
-                    String token=consumer.getToken();
-                    String secret=consumer.getTokenSecret();
-                    WeiboLog.i(TAG, "save token:"+token+" secret:"+secret);
-                    editor.putString(PREF_TOKEN, token);
-                    editor.putString(PREF_SECRET, secret);
-                    editor.putLong(PREF_TIMESTAMP, System.currentTimeMillis());
-                }
-
-                editor.putString(PREF_SCREENNAME_KEY, user.screenName);
-                // add 存储当前用户的id
-                editor.putLong("user_id", user.id);
-                editor.putString(PREF_LOCATION, user.location);
-                editor.putInt(PREF_FOLLWWERCOUNT_KEY, user.followersCount);
-                editor.putInt(PREF_FRIENDCOUNT_KEY, user.friendsCount);
-                editor.putInt(PREF_STATUSCOUNT_KEY, user.statusesCount);
-                editor.putString(PREF_TOPICCOUNT_KEY, "");
-                String url=user.profileImageUrl;
-                editor.putString(PREF_PORTRAIT_URL, url);
-                editor.putBoolean(PREF_NEES_TO_UPDATE, false);
-
-                editor.commit();
-                //}
-                startIntent();*/
-                editor.putString(Constants.PREF_SOAUTH_TYPE, Constants.SOAUTH_TYPE_CLIENT);
-                editor.commit();
-                App.OAUTH_MODE=Constants.SOAUTH_TYPE_WEB;
-                postLogin(resultObj);
-            } else {
-                Toast.makeText(App.getAppContext(), R.string.login_error, Toast.LENGTH_LONG).show();
-            }
         }
     }
 
@@ -420,7 +327,7 @@ public class LoginActivity extends NavModeActivity {
             if (oauthBean!=null) {
                 WeiboLog.d(TAG, "认证成功。");
                 SharedPreferences.Editor editor=mPreferences.edit();
-                editor.putString(Constants.PREF_SOAUTH_TYPE, Constants.SOAUTH_TYPE_WEB);
+                editor.putString(Constants.PREF_SOAUTH_TYPE, String.valueOf(Oauth2.OAUTH_TYPE_WEB));
                 editor.commit();
                 String username=mName.getEditableText().toString();
                 String password=mPass.getEditableText().toString();
@@ -428,7 +335,6 @@ public class LoginActivity extends NavModeActivity {
                     username=password="";
                 }
                 App.isLogined=true;
-                App.OAUTH_MODE=Constants.SOAUTH_TYPE_WEB;
                 postLogin(new Object[]{username, oauthBean, password});
             }
         } catch (Exception e) {

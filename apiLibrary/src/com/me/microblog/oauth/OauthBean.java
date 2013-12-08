@@ -29,7 +29,7 @@ public class OauthBean implements Serializable{
     public String pass;
     public int type;//什么类型的，对应下面的五个，WEIBO_SINA...`
     public int isDefault;
-    public int oauthType;//网页认证还是密码认证.
+    public int oauthType=Oauth2.OAUTH_TYPE_WEB;//网页认证还是密码认证.
     public String customKey;
     public String customSecret;
 

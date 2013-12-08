@@ -28,7 +28,7 @@ import com.me.microblog.util.WeiboLog;
  */
 public class QOauth2 extends BaseOauth2 {
 
-	@Override
+	@Deprecated
 	public OauthBean login(Object... params) {
 		try {
             String urlString="http://ptlogin2.id.qq.com/login?";
@@ -81,7 +81,7 @@ public class QOauth2 extends BaseOauth2 {
         return null;
 	}
 
-	@Override
+	@Deprecated
 	OauthBean fetchAccessToken(HttpClient client) {
 		WeiboLog.d("parseAuthHtml.");
 		try {

@@ -72,21 +72,21 @@ public abstract class BaseOauth2 implements Oauth2 {
     }
 
     //oauth method
-    public String buildOauthTokenUrl() {
+    public String buildOauthTokenUrl(String consumer_key, String callback_url) {
         return null;
     }
 
 	/**
 	 * 登录
 	 */
-	public abstract OauthBean login(Object... params);
+	//public abstract OauthBean login(Object... params);
 
 	/**
 	 * 获取AccessToken
 	 * 
 	 * @param client 登录后获取的.
 	 */
-	abstract OauthBean fetchAccessToken(HttpClient client);
+	//abstract OauthBean fetchAccessToken(HttpClient client);
 	
 	abstract void saveAccessToken(Context ctx);
 	

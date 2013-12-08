@@ -20,6 +20,7 @@ import com.me.microblog.bean.Status;
 import com.me.microblog.core.sina.SinaCommentApi;
 import com.me.microblog.core.sina.SinaStatusApi;
 import com.me.microblog.db.TwitterTable;
+import com.me.microblog.oauth.Oauth2;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.SqliteWrapper;
 import com.me.microblog.util.WeiboLog;
@@ -70,9 +71,9 @@ public class SendTaskPool extends Thread {
                 return;
             }
 
-            if (App.OAUTH_MODE.equalsIgnoreCase(Constants.SOAUTH_TYPE_CLIENT)) {
+            App app=(App) App.getAppContext();
+            if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB) {
             } else {
-                App app=(App) App.getAppContext();
                 if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
                     WeiboLog.w(TAG, "web认证，token过期了.不能执行任务。");
                     return;

@@ -273,6 +273,7 @@ public class MyHelper extends SQLiteOpenHelper {
         db.execSQL("UPDATE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" SET "+TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE+"=0;");
         db.execSQL("ALTER TABLE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" ADD "+TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY+" text;");
         db.execSQL("ALTER TABLE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" ADD "+TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET+" text;");
+        db.execSQL("ALTER TABLE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" ADD "+TwitterTable.AUTbl.ACCOUNT_CALLBACK_URL+" text;");
     }
 
 

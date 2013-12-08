@@ -114,11 +114,10 @@ public class Oauth2Handler {
                 WeiboLog.d("认证成功。"+oauthBean);
                 SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(mContext);
                 SharedPreferences.Editor editor=preferences.edit();
-                editor.putString(Constants.PREF_SOAUTH_TYPE, Constants.SOAUTH_TYPE_WEB);
+                editor.putString(Constants.PREF_SOAUTH_TYPE, String.valueOf(Oauth2.OAUTH_TYPE_WEB));
                 editor.commit();
 
                 App.isLogined=true;
-                App.OAUTH_MODE=Constants.SOAUTH_TYPE_WEB;
                 postLogin(new Object[]{"", oauthBean, ""}, params);
             }
         } catch (Exception e) {

@@ -36,6 +36,7 @@ import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.sina.SinaUserApi;
 import com.me.microblog.core.factory.AbsApiFactory;
 import com.me.microblog.core.factory.ApiConfigFactory;
+import com.me.microblog.oauth.Oauth2;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
@@ -488,11 +489,11 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
             return;
         }
 
-        if (App.OAUTH_MODE.equalsIgnoreCase(Constants.SOAUTH_TYPE_CLIENT)) {
+        App app=(App) App.getAppContext();
+        if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB) {
             FollwingTask follwingTask=new FollwingTask();
             follwingTask.execute(new Integer[]{followingType});
         } else {
-            App app=(App) App.getAppContext();
             if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
                 WeiboLog.d(TAG, "web认证，token过期了.");
                 mOauth2Handler.oauth2(null);

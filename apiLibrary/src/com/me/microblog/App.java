@@ -11,7 +11,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import android.text.TextUtils;
-import com.me.microblog.bean.User;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.oauth.OauthBean;
 import com.me.microblog.thread.DownloadPool;
@@ -27,16 +26,11 @@ public class App extends Application {
     public static final String TAG="App";
     private static App instance;
     private OauthBean mOauthBean;
-    /**
-     * 当前登录的用户，之前这个没有用到。
-     * 它不具备所有的用户属性，提供id，token，
-     */
-    public static User currentUser;
     public static boolean isLogined=false;
     public DownloadPool mDownloadPool=null;
     public static String mCacheDir; //图片存储上级目录
     public static final String KEY="abcdefgopqrstuvwxyzhijklmn";
-    public static String OAUTH_MODE=Constants.SOAUTH_TYPE_WEB;   //默认使用的是客户端认证。
+    //public static String OAUTH_MODE=Constants.SOAUTH_TYPE_WEB;   //默认使用的是客户端认证。
     /**
      * OAuth2的过期时间,使用OauthBean中的值
      */
@@ -47,7 +41,6 @@ public class App extends Application {
         mOauthBean=null;
         //oauth2_timestampe=0;
         isLogined=false;
-        currentUser=null;
     }
 
     @Override
@@ -214,7 +207,6 @@ public class App extends Application {
     @Override
     public void onTerminate() {
         isLogined=false;
-        currentUser=null;
         mOauthBean=null;
         WeiboLog.i(TAG, "onTerminate");
 

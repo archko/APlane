@@ -50,8 +50,8 @@ public class Constants {
     public static final String PREF_ACCESS_TOKEN_TIME="access_token_time";
     public static final String PREF_OAUTH_TYPE="oauth_type";
     public static final String PREF_SOAUTH_TYPE="soauth_type";   //新浪微博的登录方式
-    public static final String SOAUTH_TYPE_CLIENT="soauth_type_client";   //新浪微博的登录方式client，这是默认的
-    public static final String SOAUTH_TYPE_WEB="soauth_type_web";   //新浪微博的登录方式web
+    //public static final String SOAUTH_TYPE_CLIENT="soauth_type_client";   //新浪微博的登录方式client，这是默认的
+    //public static final String SOAUTH_TYPE_WEB="soauth_type_web";   //新浪微博的登录方式web
 
     //下载图片的一些常量 .
     public static final int PNG_TYPE=0;//非gif图片类型

@@ -27,6 +27,7 @@ import com.me.microblog.bean.Status;
 import com.me.microblog.bean.Unread;
 import com.me.microblog.core.sina.SinaUnreadApi;
 import com.me.microblog.db.TwitterTable;
+import com.me.microblog.oauth.Oauth2;
 import com.me.microblog.oauth.OauthBean;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
@@ -200,7 +201,7 @@ public class WeiboService extends Service {
         }
 
         App app=(App) App.getAppContext();
-        if (App.OAUTH_MODE.equalsIgnoreCase(Constants.SOAUTH_TYPE_WEB)&&
+        if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB&&
             System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
             timer.cancel();
             return;
@@ -266,7 +267,7 @@ public class WeiboService extends Service {
         }
 
         App app=(App) App.getAppContext();
-        if (App.OAUTH_MODE.equalsIgnoreCase(Constants.SOAUTH_TYPE_WEB)&&
+        if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB&&
             System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
             WeiboLog.e(TAG, "web认证，token过期了.不能启动定时器:"+app.getOauthBean().expireTime);
             if (null!=timer) {
