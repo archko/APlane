@@ -3,7 +3,6 @@ package com.me.microblog.util;
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -155,7 +154,7 @@ public final class SqliteWrapper {
 
     /**
      * 查询帐户，当前登录的默认帐户与高级帐户查询，类型与是否是默认的状态一定要有，userId可以无。
-     * 通常只有在第一次全程时才没有userId参数。
+     * 通常只有在第一次登录时才没有userId参数。
      *
      * @param context
      * @param account_type 类型，有区分新浪，网易等，还有新浪高级key
@@ -167,12 +166,20 @@ public final class SqliteWrapper {
         Cursor cursor=null;
         try {
             StringBuilder sb=new StringBuilder();
-            sb.append(TwitterTable.AUTbl.ACCOUNT_TYPE).append("=").append(account_type);
+            sb.append(TwitterTable.AUTbl.ACCOUNT_TYPE).
+                append("=").
+                append(account_type);
             if (au_default!=0) {    //当不是0时，表示不过滤默认帐户类型。
-                sb.append(" and ").append(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT).append("=").append(au_default);
+                sb.append(" and ").
+                    append(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT).
+                    append("=").
+                    append(au_default);
             }
             if (userId>-1) {
-                sb.append(" and ").append(TwitterTable.AUTbl.ACCOUNT_USERID).append("=").append(userId);
+                sb.append(" and ").
+                    append(TwitterTable.AUTbl.ACCOUNT_USERID).
+                    append("=").
+                    append(userId);
             }
 
             ContentResolver resolver=context.getContentResolver();
@@ -212,14 +219,19 @@ public final class SqliteWrapper {
         return null;
     }
 
-    @SuppressWarnings("temp")
     public static OauthBean queryAccount(Context context, int account_type, String uname) {
         Cursor cursor=null;
         try {
             StringBuilder sb=new StringBuilder();
-            sb.append(TwitterTable.AUTbl.ACCOUNT_TYPE).append("=").append(account_type);
+            sb.append(TwitterTable.AUTbl.ACCOUNT_TYPE).
+                append("=").
+                append(account_type);
             String username=RC4.RunRC4(uname, App.KEY);
-            sb.append(" and ").append(TwitterTable.AUTbl.ACCOUNT_NAME).append("='").append(username).append("'");
+            sb.append(" and ").
+                append(TwitterTable.AUTbl.ACCOUNT_NAME).
+                append("='").
+                append(username).
+                append("'");
 
             ContentResolver resolver=context.getContentResolver();
             cursor=resolver.query(TwitterTable.AUTbl.CONTENT_URI, null, sb.toString(), null, null);
@@ -376,10 +388,18 @@ public final class SqliteWrapper {
         try {
             ContentResolver resolver=context.getContentResolver();
             StringBuilder sb=new StringBuilder();
-            sb.append(TwitterTable.AUTbl.ACCOUNT_TYPE).append("=").append(account_type);
-            sb.append(" and ").append(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT).append("=").append(au_default);
+            sb.append(TwitterTable.AUTbl.ACCOUNT_TYPE).
+                append("=").
+                append(account_type);
+            sb.append(" and ").
+                append(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT).
+                append("=").
+                append(au_default);
             if (userId>-1) {
-                sb.append(" and ").append(TwitterTable.AUTbl.ACCOUNT_USERID).append("=").append(userId);
+                sb.append(" and ").
+                    append(TwitterTable.AUTbl.ACCOUNT_USERID).
+                    append("=").
+                    append(userId);
             }
             return resolver.delete(TwitterTable.AUTbl.CONTENT_URI, sb.toString(), null);
         } catch (Exception e) {
@@ -403,7 +423,6 @@ public final class SqliteWrapper {
             return resolver.delete(TwitterTable.AUTbl.CONTENT_URI, TwitterTable.AUTbl.ACCOUNT_USERID+" ='"+userId+"'", null);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
         }
 
         return 0;
@@ -439,7 +458,6 @@ public final class SqliteWrapper {
             return resolver.insert(TwitterTable.AUTbl.CONTENT_URI, cv);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
         }
 
         return null;
@@ -511,7 +529,6 @@ public final class SqliteWrapper {
             return resolver.delete(Uri.withAppendedPath(TwitterTable.DraftTbl.CONTENT_URI, String.valueOf(draft.id)), null, null);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
         }
 
         return 0;
@@ -598,7 +615,6 @@ public final class SqliteWrapper {
             return resolver.update(TwitterTable.SendQueueTbl.CONTENT_URI, cv, " _id='"+task.id+"'", null);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
         }
 
         return 0;
@@ -617,7 +633,6 @@ public final class SqliteWrapper {
             return resolver.delete(TwitterTable.SendQueueTbl.CONTENT_URI, " _id='"+task.id+"'", null);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
         }
 
         return 0;
@@ -637,7 +652,6 @@ public final class SqliteWrapper {
                 TwitterTable.SendQueueTbl.USER_ID+"='"+currentUserId+"'", null);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
         }
 
         return 0;
@@ -807,11 +821,24 @@ public final class SqliteWrapper {
             ContentResolver resolver=context.getContentResolver();
 
             StringBuilder sb=new StringBuilder();
-            sb.append(TwitterTable.UserTbl.UID).append("=").append(currentUserId);
-            sb.append(" and ").append(TwitterTable.UserTbl.TYPE).append("=").append(type);
+            sb.append(TwitterTable.UserTbl.UID).
+                append("=").
+                append(currentUserId);
+            sb.append(" and ").
+                append(TwitterTable.UserTbl.TYPE).
+                append("=").
+                append(type);
             if (!TextUtils.isEmpty(where)) {
-                sb.append(" and (").append(TwitterTable.UserTbl.USER_SCREEN_NAME).append(" like '%").append(where).append("%'");
-                sb.append(" or ").append(TwitterTable.UserTbl.PINYIN).append(" like '%").append(where).append("%')");
+                sb.append(" and (").
+                    append(TwitterTable.UserTbl.USER_SCREEN_NAME).
+                    append(" like '%").
+                    append(where).
+                    append("%'");
+                sb.append(" or ").
+                    append(TwitterTable.UserTbl.PINYIN).
+                    append(" like '%").
+                    append(where).
+                    append("%')");
             }
 
             WeiboLog.d(TAG, "at user.:"+sb.toString());
@@ -954,9 +981,19 @@ public final class SqliteWrapper {
         for (Status status : list) {
             try {
                 StringBuilder sb=new StringBuilder();
-                sb.append(TwitterTable.SStatusCommentTbl.UID).append("='").append(currentUserId).append("'");
-                sb.append(" and ").append(TwitterTable.SStatusCommentTbl.TYPE).append("=").append(TwitterTable.SStatusCommentTbl.TYPE_STATUT);
-                sb.append(" and ").append(TwitterTable.SStatusCommentTbl.STATUS_ID).append("='").append(status.id).append("'");
+                sb.append(TwitterTable.SStatusCommentTbl.UID).
+                    append("='").
+                    append(currentUserId).
+                    append("'");
+                sb.append(" and ").
+                    append(TwitterTable.SStatusCommentTbl.TYPE).
+                    append("=").
+                    append(TwitterTable.SStatusCommentTbl.TYPE_STATUT);
+                sb.append(" and ").
+                    append(TwitterTable.SStatusCommentTbl.STATUS_ID).
+                    append("='").
+                    append(status.id).
+                    append("'");
 
                 cursor=resolver.query(TwitterTable.SStatusCommentTbl.CONTENT_URI, null,
                     sb.toString(), null, null);
@@ -1289,7 +1326,6 @@ public final class SqliteWrapper {
             return resolver.delete(TwitterTable.DirectMsgTbl.CONTENT_URI, TwitterTable.DirectMsgTbl.DM_ID+"='"+dmId+"'", null);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
         }
 
         return 0;

@@ -39,6 +39,7 @@ public class MyHelper extends SQLiteOpenHelper {
         updateDBToVer15(db);
         updateDBToVer16(db);
         updateDBToVer17(db);
+        //updateDBToVer18(db);
     }
 
     @Override
@@ -93,6 +94,11 @@ public class MyHelper extends SQLiteOpenHelper {
             updateDBToVer17(db);
             oldVersion=17;
         }
+
+        /*if (oldVersion<18) {
+            updateDBToVer18(db);
+            oldVersion=18;
+        }*/
 
         if (oldVersion!=newVersion) {
             throw new IllegalStateException("error upgrading the database to version "+newVersion);
@@ -247,18 +253,6 @@ public class MyHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * 升级认证用户表,添加认证的类型,网页认证与密码认证.添加了自定义的key与secret
-     *
-     * @param db
-     */
-    void updateDBToVer(SQLiteDatabase db) {
-        db.execSQL("ALTER TABLE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" ADD "+TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE+" integer;");
-        db.execSQL("UPDATE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" SET "+TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE+"=0;");
-        db.execSQL("ALTER TABLE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" ADD "+TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY+" text;");
-        db.execSQL("ALTER TABLE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" ADD "+TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET+" text;");
-    }
-
-    /**
      * 升级微博数据库表,存储的数据需要保存多个图片
      * 评论的原微博也存储多个图片.如果有.
      *
@@ -267,6 +261,18 @@ public class MyHelper extends SQLiteOpenHelper {
     void updateDBToVer17(SQLiteDatabase db) {
         db.execSQL("ALTER TABLE "+TwitterTable.SStatusTbl.TBNAME+" ADD "+TwitterTable.SStatusTbl.PIC_URLS+" text;");
         db.execSQL("ALTER TABLE "+TwitterTable.SStatusCommentTbl.TBNAME+" ADD "+TwitterTable.SStatusCommentTbl.PIC_URLS+" text;");
+    }
+
+    /**
+     * 升级认证用户表,添加认证的类型,网页认证与密码认证.添加了自定义的key与secret
+     *
+     * @param db
+     */
+    void updateDBToVer18(SQLiteDatabase db) {
+        db.execSQL("ALTER TABLE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" ADD "+TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE+" integer;");
+        db.execSQL("UPDATE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" SET "+TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE+"=0;");
+        db.execSQL("ALTER TABLE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" ADD "+TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY+" text;");
+        db.execSQL("ALTER TABLE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" ADD "+TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET+" text;");
     }
 
 

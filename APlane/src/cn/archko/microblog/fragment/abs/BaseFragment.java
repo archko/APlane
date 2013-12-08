@@ -152,22 +152,6 @@ public abstract class BaseFragment extends Fragment implements FragmentListListe
         }
     }
 
-    /*public void showToast(final String message) {
-        Toast.makeText(App.getAppContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    public void showToast(final int resId) {
-        Toast.makeText(App.getAppContext(), resId, Toast.LENGTH_SHORT).show();
-    }
-
-    public void showToast(final String message, final int delay) {
-        Toast.makeText(App.getAppContext(), message, delay).show();
-    }
-
-    public void showToast(final int resId, final int delay) {
-        Toast.makeText(App.getAppContext(), resId, delay).show();
-    }*/
-
     //------------------------------------
 
     /**

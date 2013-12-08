@@ -105,7 +105,7 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
             mCommonTask.execute(params);
         } else {
             App app=(App) App.getAppContext();
-            if (System.currentTimeMillis()>=app.oauth2_timestampe&&app.oauth2_timestampe!=0) {
+            if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
                 WeiboLog.i(TAG, "web认证，token过期了.");
                 AKUtils.showToast("token过期了,需要重新认证，如果认证失败，请注销再登陆！");
                 //oauth2(params);
@@ -289,7 +289,7 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
             mOperationTask.execute(params);
         } else {
             App app=(App) App.getAppContext();
-            if (System.currentTimeMillis()>=app.oauth2_timestampe&&app.oauth2_timestampe!=0) {
+            if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
                 WeiboLog.i(TAG, "web认证，token过期了.");
                 //mOauth2Handler.oauth2(params);
             } else {

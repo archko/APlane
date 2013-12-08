@@ -1,18 +1,26 @@
 package com.me.microblog.oauth;
 
+import java.io.Serializable;
+
 /**
  * 认证的结果,包含了运行时需要用的key,与数据库对应的数据.
  *
  * @author archko
  */
-public class OauthBean {
+public class OauthBean implements Serializable{
 
+    /**
+     * 认证后的token
+     */
     public String accessToken="";
+    /**
+     * 认证过期的时间戳,在认证过程中,获取到的值,需要经过转换为毫秒,然后保存于数据库中.
+     */
     public long expireTime=0L;
     public String openId="";    //qq有的，新浪中用uid
     public String openKey="";    //qq独有的。
     public String refreshToken="";    //网易独有的
-    public long time;   //实际到期时间
+    public long time;   //实际到期时间,最终是与expireTime一样的.
 
     //下面是表格twitter_au对应的数据。
     public long id; //主键

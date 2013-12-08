@@ -23,6 +23,7 @@ import cn.archko.microblog.R;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.service.WeiboService;
 import cn.archko.microblog.fragment.OauthDialogFragment;
+import cn.archko.microblog.utils.AKUtils;
 import com.me.microblog.App;
 import com.me.microblog.db.MyHelper;
 import com.me.microblog.db.TwitterTable;
@@ -116,8 +117,6 @@ public class LoginActivity extends NavModeActivity {
         setTheme(R.style.Theme_AK_Light);
         super.onCreate(savedInstanceState);
 
-        /*App app=(App) getApplication();
-        app.mDownloadPool.setStop(false);*/
         Intent intent=new Intent(LoginActivity.this, WeiboService.class);
         stopService(intent);
         intent=new Intent(LoginActivity.this, SendTaskService.class);
@@ -176,7 +175,7 @@ public class LoginActivity extends NavModeActivity {
                 mAccounts=objects;
                 String name=objects.get(0).name;
                 mAccountName.setText(name);
-                Toast.makeText(LoginActivity.this, String.format("您已有%d个帐户，可以直接登录！", objects.size()), Toast.LENGTH_LONG).show();
+                AKUtils.showToast(String.format("您已有%d个帐户，可以直接登录！", objects.size()), Toast.LENGTH_LONG);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -409,7 +408,7 @@ public class LoginActivity extends NavModeActivity {
         WeiboLog.d(TAG, "oauthResult objects:"+objects);
 
         if (null==objects||objects[0]==null) {
-            Toast.makeText(App.getAppContext(), R.string.login2_error, Toast.LENGTH_LONG).show();
+            AKUtils.showToast(R.string.login2_error, Toast.LENGTH_LONG);
             WeiboLog.e(TAG, "运行中认证失败。");
             return;
         }

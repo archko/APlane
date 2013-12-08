@@ -2,16 +2,15 @@ package com.me.microblog;
 
 import java.io.File;
 
-import android.support.v4.util.LruCache;
 import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import android.text.TextUtils;
 import com.me.microblog.bean.User;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.oauth.OauthBean;
@@ -39,21 +38,16 @@ public class App extends Application {
     public static final String KEY="abcdefgopqrstuvwxyzhijklmn";
     public static String OAUTH_MODE=Constants.SOAUTH_TYPE_WEB;   //默认使用的是客户端认证。
     /**
-     * OAuth2的过期时间
+     * OAuth2的过期时间,使用OauthBean中的值
      */
-    public long oauth2_timestampe=0;
-    /**
-     * 大图片缓存
-     */
-    //private LruCache<String, Bitmap> mLargeLruCache;
+    //public long oauth2_timestampe=0;
     private int pageCount=Constants.WEIBO_COUNT;
 
     public void logout() {
         mOauthBean=null;
-        oauth2_timestampe=0;
+        //oauth2_timestampe=0;
         isLogined=false;
         currentUser=null;
-        cleanupImages();
     }
 
     @Override
@@ -96,6 +90,9 @@ public class App extends Application {
      * @return
      */
     public OauthBean getOauthBean() {
+        if (null==mOauthBean){
+            mOauthBean=new OauthBean();
+        }
         return mOauthBean;
     }
 
@@ -106,17 +103,17 @@ public class App extends Application {
      */
     public void setOauthBean(OauthBean oauthBean) {
         mOauthBean=oauthBean;
-        oauth2_timestampe=mOauthBean.expireTime;
+        //oauth2_timestampe=mOauthBean.expireTime;
     }
 
     /**
-     * 初始化认证
+     * 初始化认证,修改后需要检查accessToken的值
      *
      * @param force 是否强制初始化，如果是在登录页面选择的，就需要强制初始化一次
      */
     public void initOauth2(boolean force) {
-        if (mOauthBean!=null) {
-            WeiboLog.i(TAG, "initOauth2已经初始化过了！");
+        if (mOauthBean!=null&&!TextUtils.isEmpty(mOauthBean.accessToken)) {
+            WeiboLog.i(TAG, "initOauth2已经初始化过了！"+mOauthBean);
             return;
         }
 
@@ -135,24 +132,6 @@ public class App extends Application {
             WeiboLog.d("查询为空，有可能是没有帐户，有可能是默认的帐户注销了!");
         }
     }
-
-    /*private void initLargeCache() {
-        mLargeLruCache=new LruCache<String, Bitmap>(3);
-    }
-
-    public LruCache<String, Bitmap> getLargeLruCache() {
-        if (null==mLargeLruCache) {
-            initLargeCache();
-        }
-        return mLargeLruCache;
-    }
-
-    public void clearLargeLruCache() {
-        if (null!=mLargeLruCache) {
-            mLargeLruCache.evictAll();
-            mLargeLruCache=null;
-        }
-    }*/
 
     private void initCacheDir() {
         mCacheDir=Constants.CACHE_DIR;
@@ -234,9 +213,9 @@ public class App extends Application {
 
     @Override
     public void onTerminate() {
-        cleanupImages();
         isLogined=false;
         currentUser=null;
+        mOauthBean=null;
         WeiboLog.i(TAG, "onTerminate");
 
         super.onTerminate();
@@ -246,13 +225,6 @@ public class App extends Application {
     public void onLowMemory() {
         super.onLowMemory();
         WeiboLog.i(TAG, "onLowMemory");
-        cleanupImages();
-    }
-
-    private void cleanupImages() {
-        /*if (null!=mLargeLruCache) {
-            mLargeLruCache.evictAll();
-        }*/
     }
 
     private void initDownloadPool(int threadCount) {

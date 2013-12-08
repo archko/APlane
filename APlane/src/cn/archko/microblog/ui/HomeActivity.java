@@ -298,6 +298,7 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
             .getBoolean(PrefsActivity.PREF_AUTO_CHK_NEW_STATUS, true);
 
         Intent intent=new Intent(this, WeiboService.class);
+        intent.setAction(WeiboService.REFRESH);
         if (chk_new_status) {
             startService(intent);
         } else {

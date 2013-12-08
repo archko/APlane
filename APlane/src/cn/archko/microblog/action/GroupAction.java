@@ -54,7 +54,7 @@ public class GroupAction implements Action {
             }
         } else {
             App app=(App) App.getAppContext();
-            if (System.currentTimeMillis()>=app.oauth2_timestampe&&app.oauth2_timestampe!=0) {
+            if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
                 WeiboLog.d(TAG, "不下载分组，token过期了。");
                 actionResult.reslutMsg="不下载分组，token过期了。";
             } else {

@@ -158,7 +158,7 @@ public class PrefsFragment extends BaseFragment {
             }).create().show();
     }
 
-    private void exit() {
+    /*private void exit() {
         Intent intent=new Intent(getActivity(), WeiboService.class);
         getActivity().stopService(intent);
         intent=new Intent(getActivity(), SendTaskService.class);
@@ -166,5 +166,5 @@ public class PrefsFragment extends BaseFragment {
         ((App) App.getAppContext()).logout();
         getActivity().finish();
         android.os.Process.killProcess(android.os.Process.myPid());
-    }
+    }*/
 }

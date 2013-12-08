@@ -1,8 +1,10 @@
-package com.me.microblog.core;
+package com.me.microblog.core.sina;
 
 import android.text.TextUtils;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.Unread;
+import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.WeiboParser;
 import com.me.microblog.core.abs.IUnreadApi;
 import com.me.microblog.util.WeiboLog;
 import org.apache.http.message.BasicNameValuePair;

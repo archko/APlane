@@ -136,27 +136,24 @@ public class TwitterTable {
     public static class AUTbl implements BaseColumns {
 
         public static final String ACCOUNT_TBNAME="twitter_au";
-        public static final String ACCOUNT_NAME="au_name";
-        public static final String ACCOUNT_PASS="au_pass";
-        public static final String ACCOUNT_TOKEN="au_token";
-        public static final String ACCOUNT_SECRET="au_secret";
-        public static final String ACCOUNT_TYPE="au_type";//什么类型的，对应下面的五个，WEIBO_SINA...
+        public static final String ACCOUNT_NAME="au_name";  //用户名
+        public static final String ACCOUNT_PASS="au_pass";  //密码
+        public static final String ACCOUNT_TOKEN="au_token";    //授权的token
+        public static final String ACCOUNT_SECRET="au_secret";  //secret
+        public static final String ACCOUNT_TYPE="au_type";//api的实现类型
         /**
          * 默认帐户状态:0表示是默认帐户,-1或其它值表示非默认帐户.在version=10以前是没有值的，所以在更新数据库时，需要注意。
          */
         public static final String ACCOUNT_AS_DEFAULT="au_default";  //默认帐户状态:1表示是默认帐户,-1表示非默认帐户.
         public static final String ACCOUNT_USERID="a_userid";//用户id,登录后的
         public static final String ACCOUNT_TIME="au_time";  //过期时间
-        public static final String ACCOUNT_OAUTH_TYPE="oauth_type";//网页认证还是密码认证.
+        public static final String ACCOUNT_OAUTH_TYPE="oauth_type";//网页认证还是密码认证.目前可实现两个认证.
         public static final String ACCOUNT_CUSTOM_KEY="custom_key";//自定义的key
         public static final String ACCOUNT_CUSTOM_SECRET="custom_secret";//密钥
 
         //常量
         public static final int WEIBO_SINA=0;   //新浪的号
-        public static final int WEIBO_QQ=1; //腾讯的号
-        public static final int WEIBO_NETEASE=2;    //网易的号
-        public static final int WEIBO_MOBILE=3; //移动的号
-        //高级key目前用于新浪的。
+
         public static final int WEIBO_SINA_DESK=10; //新浪的号
 
         public static final int ACCOUNT_IS_DEFAULT=1;

@@ -274,6 +274,7 @@ public class PrefsActivity extends PreferenceActivity implements
                     Intent intent=new Intent(PrefsActivity.this, WeiboService.class);
                     if (auto_chk_new_status) {
                         WeiboLog.d(PREF_TAG, "sp changed,startservice.");
+                        intent.setAction(WeiboService.REFRESH);
                         startService(intent);
                     } else {
                         WeiboLog.d(PREF_TAG, "sp changed,stopservice.");

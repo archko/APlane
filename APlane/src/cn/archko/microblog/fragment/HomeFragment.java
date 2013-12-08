@@ -266,6 +266,7 @@ public class HomeFragment extends StatusListFragment {
         }
 
         Intent intent=new Intent(getActivity(), WeiboService.class);
+        intent.setAction(WeiboService.REFRESH);
         if (isStop) {
             getActivity().stopService(intent);
         } else {

@@ -151,6 +151,7 @@ public class Oauth2Handler {
      *
      * @param params
      */
+    @Deprecated
     public OauthBean advancedOauth2() {
         String password=null;
         String username=null;

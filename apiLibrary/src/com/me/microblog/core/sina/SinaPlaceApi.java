@@ -1,4 +1,4 @@
-package com.me.microblog.core;
+package com.me.microblog.core.sina;
 
 import android.text.TextUtils;
 import com.me.microblog.WeiboException;
@@ -6,6 +6,8 @@ import com.me.microblog.bean.PlacePoi;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
+import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.WeiboParser;
 import com.me.microblog.core.abs.IPlaceApi;
 import com.me.microblog.util.WeiboLog;
 import org.apache.http.message.BasicNameValuePair;

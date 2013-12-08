@@ -5,7 +5,6 @@ package com.me.microblog.util;
  * @description: 这个网上流传的版本，问题一大堆，与正常的编码后效果不同。
  * @author: archko 12-1-9
  */
-@Deprecated
 public class RC4 {
 
     /*public RC4()

@@ -493,7 +493,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
             follwingTask.execute(new Integer[]{followingType});
         } else {
             App app=(App) App.getAppContext();
-            if (System.currentTimeMillis()>=app.oauth2_timestampe&&app.oauth2_timestampe!=0) {
+            if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
                 WeiboLog.d(TAG, "web认证，token过期了.");
                 mOauth2Handler.oauth2(null);
             } else {

@@ -13,8 +13,6 @@ import android.os.Message;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
-import android.support.v4.util.LruCache;
-import android.view.View;
 import android.widget.ImageView;
 import com.me.microblog.R;
 import com.me.microblog.WeiboUtil;
@@ -118,16 +116,9 @@ public class FetchImage extends Thread {
     public void run() {
         App app=(App) this.mContext.getApplicationContext();
         HttpResponse response;
-        //这里没有解决滚动的问题,可能是由于前面的线程同步造成的.
-        /*while (ImageCache2.getInstance().isScrolling() && !DownloadPool.cancelWork(mPiece)) {
-            //cancel(true);
-        }*/
 
         if (ImageCache2.getInstance().isScrolling()||DownloadPool.cancelWork(mPiece)) {
             app.mDownloadPool.ActiveThread_Pop();
-            /*if (null!=mHttpGet) {
-                mHttpGet.abort();
-            }*/
             return;
         }
 
@@ -154,10 +145,6 @@ public class FetchImage extends Thread {
                 return;
             }
 
-            /*HttpParams httpParameters=new BasicHttpParams();
-              HttpConnectionParams.setConnectionTimeout(httpParameters, Twitter.CONNECT_TIMEOUT);
-              HttpConnectionParams.setSoTimeout(httpParameters, Twitter.READ_TIMEOUT);
-              DefaultHttpClient httpClient=new DefaultHttpClient(httpParameters);*/
             if (DownloadPool.cancelWork(mPiece)) {
                 app.mDownloadPool.ActiveThread_Pop();
                 return;
@@ -178,9 +165,7 @@ public class FetchImage extends Thread {
                 if (DownloadPool.cancelWork(mPiece)) {   //下载过程,如果View已经销毁,不需要返回.
                     return;
                 }
-                /*Bundle bundle=new Bundle();
-                bundle.putParcelable("name", bitmap);
-                FetchImage.SendMessage(mHandler, mType, bundle, uri);*/
+
                 SendMessage(mPiece.handler, mPiece, bitmap);
             } else {
                 WeiboLog.w(TAG, "下载图片失败:"+uri);
@@ -197,7 +182,7 @@ public class FetchImage extends Thread {
     }
 
     public void SendMessage(Handler handler, final DownloadPool.DownloadPiece piece, final Bitmap bitmap) {
-        if (null==piece||null==bitmap) {
+        if (null==piece||null==bitmap||handler==null) {
             WeiboLog.d(TAG, "SendMessage,bitmap is null.");
             return;
         }
@@ -209,10 +194,10 @@ public class FetchImage extends Thread {
             lruCache.put(piece.uri, bitmap);
         }*/
 
-        if (handler==null||ImageCache2.getInstance().isScrolling()) {
+        /*if (handler==null||ImageCache2.getInstance().isScrolling()) {
             WeiboLog.v(TAG, "SendMessage:"+piece+" handler is null:or is scrolling.");
             return;
-        }
+        }*/
         handler.post(new Runnable() {
             @Override
             public void run() {
@@ -250,6 +235,7 @@ public class FetchImage extends Thread {
         });
     }
 
+    @Deprecated
     public static void SendMessage(Handler handler, int what, Bundle bundle, String uri) {
         if (handler==null) {
             return;

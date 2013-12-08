@@ -1,9 +1,11 @@
-package com.me.microblog.core;
+package com.me.microblog.core.sina;
 
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.Relationship;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.User;
+import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.WeiboParser;
 import com.me.microblog.core.abs.IUserApi;
 import org.apache.http.message.BasicNameValuePair;
 

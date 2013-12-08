@@ -98,7 +98,7 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
             follwingTask.execute(new Integer[]{followingType});
         } else {
             App app=(App) App.getAppContext();
-            if (System.currentTimeMillis()>=app.oauth2_timestampe&&app.oauth2_timestampe!=0) {
+            if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
                 WeiboLog.d(TAG, "web认证，token过期了.");
                 Toast.makeText(mContext, "token过期了,处理失败,可以刷新列表重新获取token.", Toast.LENGTH_LONG).show();
             } else {

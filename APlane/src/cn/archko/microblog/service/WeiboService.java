@@ -12,7 +12,9 @@ import android.database.Cursor;
 import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Message;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
@@ -25,15 +27,18 @@ import com.me.microblog.bean.Status;
 import com.me.microblog.bean.Unread;
 import com.me.microblog.core.sina.SinaUnreadApi;
 import com.me.microblog.db.TwitterTable;
+import com.me.microblog.oauth.OauthBean;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 /**
  * 当前服务要做的事就是不断查询是否有新的消息.
+ * 添加了认证操作.
  *
  * @author root
  */
@@ -49,9 +54,14 @@ public class WeiboService extends Service {
      * 查询新微博时间
      */
     public static int DELAY_TIME=10*1000*60;
-    private static final String NEW_STATUS_TIMESTAMP="new_status_timestamp";//微博新信息时间戳.
     Timer timer;
-    private TimerTask timerTask;
+
+    public static final String REFRESH="cn.archko.microblog.refresh";
+
+    private static final String OAUTH="cn.archko.microblog.oauth";
+
+    public boolean isOauthing=false;
+    private ServiceHandler mServiceHandler;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -81,13 +91,37 @@ public class WeiboService extends Service {
 
     }
 
-    private Handler mHandler=new Handler() {
+    private static final class ServiceHandler extends Handler {
 
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
+        private final WeakReference<WeiboService> mService;
+
+        /**
+         * Constructor of <code>ServiceHandler</code>
+         *
+         * @param service The service to use.
+         * @param looper  The thread to run on.
+         */
+        public ServiceHandler(final WeiboService service, final Looper looper) {
+            super(looper);
+            mService=new WeakReference<WeiboService>(service);
         }
-    };
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void handleMessage(final Message msg) {
+            final WeiboService service=mService.get();
+            if (service==null) {
+                return;
+            }
+
+            switch (msg.what) {
+                default:
+                    break;
+            }
+        }
+    }
 
     @Override
     public void onCreate() {
@@ -115,6 +149,13 @@ public class WeiboService extends Service {
         } else if (chk_new_status_time.equals("3")) {
             WeiboService.DELAY_TIME=20*1000*60;
         }
+
+        final HandlerThread thread = new HandlerThread("ServiceHandler",
+            android.os.Process.THREAD_PRIORITY_BACKGROUND);
+        thread.start();
+
+        // Initialize the handler
+        mServiceHandler = new ServiceHandler(this, thread.getLooper());
     }
 
     @Override
@@ -128,23 +169,25 @@ public class WeiboService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-    }
-
-    @Override
-    public void onStart(Intent intent, int startId) {
-        WeiboLog.d(TAG, "onStart:"+" startId:"+startId);
-        //fetchNewStatuses(intent);
+        mServiceHandler.removeCallbacksAndMessages(null);
+        mServiceHandler.getLooper().quit();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         WeiboLog.d(TAG, "onStartCommand,flags:"+flags+" startId:"+startId);
-        fetchNewStatuses(intent);
-        // We want this service to continue running until it is explicitly
-        // stopped, so return sticky.
-        return START_STICKY;
+
+        if (intent!=null) {
+            final String action=intent.getAction();
+            if (REFRESH.equals(action)) {
+                fetchNewStatuses(intent);
+            } else if (OAUTH.equals(action)) {
+                oauth2(intent);
+            }
+        }
+
+        return START_NOT_STICKY;
     }
 
     /**
@@ -158,7 +201,7 @@ public class WeiboService extends Service {
 
         App app=(App) App.getAppContext();
         if (App.OAUTH_MODE.equalsIgnoreCase(Constants.SOAUTH_TYPE_WEB)&&
-            System.currentTimeMillis()>=app.oauth2_timestampe&&app.oauth2_timestampe!=0) {
+            System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
             timer.cancel();
             return;
         }
@@ -224,8 +267,8 @@ public class WeiboService extends Service {
 
         App app=(App) App.getAppContext();
         if (App.OAUTH_MODE.equalsIgnoreCase(Constants.SOAUTH_TYPE_WEB)&&
-            System.currentTimeMillis()>=app.oauth2_timestampe&&app.oauth2_timestampe!=0) {
-            WeiboLog.e(TAG, "web认证，token过期了.不能启动定时器:"+app.oauth2_timestampe);
+            System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
+            WeiboLog.e(TAG, "web认证，token过期了.不能启动定时器:"+app.getOauthBean().expireTime);
             if (null!=timer) {
                 timer.cancel();
             }
@@ -319,6 +362,24 @@ public class WeiboService extends Service {
             WeiboLog.d(TAG, "保存新微博记录:"+len);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    //--------------------- 帐户认证操作 ---------------------
+    void oauth2(Intent intent) {
+        if (isOauthing){
+            WeiboLog.d(TAG, "isOauthing.");
+            //return;
+        }
+
+        if (intent==null||null==intent.getSerializableExtra("oauth_bean")) {
+            WeiboLog.d(TAG, "oauth2,intent =null.");
+            return;
+        }
+
+        OauthBean oauthBean=(OauthBean) intent.getSerializableExtra("oauth_bean");
+        WeiboLog.d(TAG, "添加任务:"+oauthBean);
+        if (null!=oauthBean) {
         }
     }
 

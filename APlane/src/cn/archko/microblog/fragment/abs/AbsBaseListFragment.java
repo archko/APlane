@@ -728,11 +728,11 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      */
     public void refreshAdapter(boolean load, boolean isRefresh) {
         WeiboLog.d(TAG, "refreshAdapter.load:"+load+" isRefresh:"+isRefresh);
-        mPullRefreshListView.onRefreshComplete();
         if (load) {
             mPullRefreshListView.setLastUpdatedLabel(getString(R.string.pull_to_refresh_label)+DateUtils.longToDateTimeString(System.currentTimeMillis()));
             mAdapter.notifyDataSetChanged();
         }
+        mPullRefreshListView.onRefreshComplete();
 
         if (isRefresh) {
             if (null!=mListView) {
