@@ -2,8 +2,6 @@ package cn.archko.microblog.fragment.impl;
 
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Status;
-import com.me.microblog.core.AbsApiImpl;
-import com.me.microblog.core.SinaStatusApi;
 
 /**
  * @author: archko Date: 13-1-28 Time: 下午7:10

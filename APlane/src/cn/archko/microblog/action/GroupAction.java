@@ -10,7 +10,7 @@ import com.me.microblog.action.Action;
 import com.me.microblog.action.ActionResult;
 import com.me.microblog.bean.Group;
 import com.me.microblog.bean.SStatusData;
-import com.me.microblog.core.SinaGroupApi;
+import com.me.microblog.core.sina.SinaGroupApi;
 import com.me.microblog.util.WeiboLog;
 
 import java.io.File;

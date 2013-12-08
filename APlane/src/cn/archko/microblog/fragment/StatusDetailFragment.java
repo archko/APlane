@@ -41,7 +41,7 @@ import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.BaseApi;
-import com.me.microblog.core.SinaStatusApi;
+import com.me.microblog.core.sina.SinaStatusApi;
 import com.me.microblog.db.TwitterTable;
 import cn.archko.microblog.smiley.AKSmileyParser;
 import com.me.microblog.util.Constants;

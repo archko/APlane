@@ -20,7 +20,7 @@ import com.me.microblog.WeiboException;
 import com.me.microblog.bean.AtUser;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
-import com.me.microblog.core.SinaStatusApi;
+import com.me.microblog.core.sina.SinaStatusApi;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.PinYin;

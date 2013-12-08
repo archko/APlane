@@ -8,7 +8,7 @@ import cn.archko.microblog.R;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.User;
-import com.me.microblog.core.SinaUserApi;
+import com.me.microblog.core.sina.SinaUserApi;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;

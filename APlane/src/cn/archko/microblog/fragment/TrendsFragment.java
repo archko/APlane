@@ -18,7 +18,7 @@ import com.me.microblog.WeiboException;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Trend;
 import com.me.microblog.bean.Trends;
-import com.me.microblog.core.SinaTrendApi;
+import com.me.microblog.core.sina.SinaTrendApi;
 import com.me.microblog.util.WeiboLog;
 
 import java.util.Arrays;

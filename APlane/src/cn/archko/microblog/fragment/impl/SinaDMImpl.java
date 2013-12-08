@@ -9,7 +9,7 @@ import com.me.microblog.WeiboException;
 import com.me.microblog.bean.DirectMessage;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.core.AbsApiImpl;
-import com.me.microblog.core.SinaDMApi;
+import com.me.microblog.core.sina.SinaDMApi;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.SqliteWrapper;
 import com.me.microblog.util.WeiboLog;

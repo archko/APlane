@@ -148,20 +148,15 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
 
     private void loadImageView() {
         mImageDownloaded=false;
-        Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(mBmidPath);
+        Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(imageBean);
         WeiboLog.d(TAG, "loadImageView:"+bitmap+" url:"+imageBean);
         if (null!=bitmap) {
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setImageBitmap(bitmap);
-        } else {
-            bitmap=ImageCache2.getInstance().getBitmapFromMemCache(mThumbPath);
-            if (null!=bitmap) {
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                imageView.setImageBitmap(bitmap);
-            }
+        }
 
-            if (!TextUtils.isEmpty(bmiddlePic)) {
-                downloadImage();
-            }
+        if (!TextUtils.isEmpty(bmiddlePic)) {
+            downloadImage();
         }
     }
 

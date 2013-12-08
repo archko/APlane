@@ -7,14 +7,8 @@ import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.User;
 import com.me.microblog.bean.SStatusData;
-import com.me.microblog.bean.User;
-import com.me.microblog.core.SinaUserApi;
-import com.me.microblog.util.Constants;
+import com.me.microblog.core.sina.SinaUserApi;
 import com.me.microblog.util.WeiboLog;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 /**
  * @author: archko Date: 13-1-28 Time: 下午7:10

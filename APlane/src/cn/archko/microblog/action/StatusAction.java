@@ -6,7 +6,7 @@ import com.me.microblog.WeiboException;
 import com.me.microblog.action.Action;
 import com.me.microblog.action.ActionResult;
 import com.me.microblog.bean.Status;
-import com.me.microblog.core.SinaStatusApi;
+import com.me.microblog.core.sina.SinaStatusApi;
 import com.me.microblog.util.WeiboLog;
 
 import java.util.ArrayList;

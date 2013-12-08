@@ -7,8 +7,7 @@ import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Status;
-import com.me.microblog.core.AbsApiImpl;
-import com.me.microblog.core.SinaStatusApi;
+import com.me.microblog.core.sina.SinaStatusApi;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 

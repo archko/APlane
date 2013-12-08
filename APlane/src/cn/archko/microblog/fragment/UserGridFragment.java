@@ -24,7 +24,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.me.microblog.App;
 import com.me.microblog.bean.User;
-import com.me.microblog.core.SinaUserApi;
+import com.me.microblog.core.sina.SinaUserApi;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;

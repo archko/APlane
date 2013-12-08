@@ -24,7 +24,7 @@ import com.me.microblog.App;
 import com.me.microblog.bean.AtUser;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.User;
-import com.me.microblog.core.SinaUserApi;
+import com.me.microblog.core.sina.SinaUserApi;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.SqliteWrapper;

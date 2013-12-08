@@ -3,7 +3,6 @@ package cn.archko.microblog.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -19,12 +18,9 @@ import com.me.microblog.App;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
 import com.me.microblog.cache.ImageCache2;
-import com.me.microblog.core.SinaUserApi;
-import com.me.microblog.thread.DownloadPool;
+import com.me.microblog.core.sina.SinaUserApi;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-
-import java.lang.ref.WeakReference;
 
 /**
  * 修改后继承ThreadBeanItemView,多了一个Touch,左边的头像点击后的处理.
