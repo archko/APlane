@@ -2,31 +2,23 @@ package cn.archko.microblog.fragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.util.LruCache;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import cn.archko.microblog.R;
-import com.andrew.apollo.cache.ImageFetcher;
+import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtil;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.thread.DownloadPool;
 import cn.archko.microblog.ui.ImageViewerActivity;
 import com.me.microblog.util.Constants;
-import com.me.microblog.util.WeiboLog;
-import com.me.microblog.view.ImageViewerDialog;
-
-import java.lang.ref.WeakReference;
 
 /**
  * @description:
@@ -46,6 +38,7 @@ public class ImageAdapter extends BaseAdapter {
     boolean updateFlag=true;
     boolean isShowLargeBitmap=false;
     boolean cache=true;
+    int mResId;
 
     public ImageAdapter(Context c, String cacheDir, String[] thumbs) {
         mContext=c;
@@ -53,6 +46,15 @@ public class ImageAdapter extends BaseAdapter {
         mInflater=LayoutInflater.from(c);
         mCacheDir=cacheDir;
         imageUrls=thumbs;
+
+        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        if ("1".equals(themeId)) {
+            mResId=R.drawable.image_loading_dark;
+        } else if ("2".equals(themeId)){
+            mResId=R.drawable.image_loading_light;
+        } else if ("0".equals(themeId)) {
+            mResId=R.drawable.image_loading_dark;
+        }
     }
 
     public void setImageUrls(String[] imageUrls) {
@@ -136,7 +138,7 @@ public class ImageAdapter extends BaseAdapter {
                 }
             }
         } else {
-            holder.picture.setImageResource(R.drawable.image_loading);
+            holder.picture.setImageResource(mResId);
         }
 
         return convertView;
@@ -193,7 +195,7 @@ public class ImageAdapter extends BaseAdapter {
             picture.setImageBitmap(tmp);
         } else {
             if (!updateFlag) {
-                picture.setImageResource(R.drawable.image_loading);
+                picture.setImageResource(mResId);
                 return;
             }
 
@@ -206,7 +208,7 @@ public class ImageAdapter extends BaseAdapter {
             if (isShowLargeBitmap) {
                 cache=true; //大图要缓存sdcard中，不然每次都下载，太慢了。
             }
-            picture.setImageResource(R.drawable.image_loading);
+            picture.setImageResource(mResId);
             /*DownloadPool.downloading.put(mPictureUrl, new WeakReference<View>(picture));
             ((App) App.getAppContext()).mDownloadPool.Push(
                 mHandler, mPictureUrl, Constants.TYPE_PICTURE, null, cache, mCacheDir+dir);*/

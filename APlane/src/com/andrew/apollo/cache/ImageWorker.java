@@ -25,9 +25,10 @@ import android.widget.ImageView;
 
 import cn.archko.microblog.R;
 import com.andrew.apollo.utils.ApolloUtils;
+import com.andrew.apollo.utils.PreferenceUtils;
+import com.me.microblog.App;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.thread.DownloadPool;
-import com.me.microblog.util.WeiboLog;
 
 import java.lang.ref.WeakReference;
 
@@ -90,7 +91,14 @@ public abstract class ImageWorker {
         // Create the default artwork
         /*final ThemeUtils theme = new ThemeUtils(context);*/
         //mDefault = ((BitmapDrawable)theme.getDrawable("default_artwork")).getBitmap();
-        mDefault=((BitmapDrawable)context.getResources().getDrawable(R.drawable.image_loading)).getBitmap();
+
+        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        int mResId=R.drawable.image_loading_dark;
+        if ("2".equals(themeId)){
+            mResId=R.drawable.image_loading_light;
+        }
+
+        mDefault=((BitmapDrawable)context.getResources().getDrawable(mResId)).getBitmap();
         mDefaultArtwork = new BitmapDrawable(mResources, mDefault);
         // No filter and no dither makes things much quicker
         mDefaultArtwork.setFilterBitmap(false);

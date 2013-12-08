@@ -46,7 +46,7 @@
     </style>
 
     <style name="text_view" parent="@android:style/TextAppearance">
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/yellow</item>
     </style>
 

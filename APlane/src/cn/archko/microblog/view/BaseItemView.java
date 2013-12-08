@@ -3,38 +3,31 @@ package cn.archko.microblog.view;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.TextUtils;
-import android.support.v4.util.LruCache;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.archko.microblog.R;
-import com.andrew.apollo.cache.ImageFetcher;
+import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtil;
 import com.me.microblog.bean.SAnnotation;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
 import com.me.microblog.cache.ImageCache2;
-import com.me.microblog.thread.DownloadPool;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
 import com.me.microblog.view.IBaseItemView;
 import com.me.microblog.view.ImageViewerDialog;
 
-import java.lang.ref.WeakReference;
-import java.util.Hashtable;
-import java.util.Map;
 import java.util.regex.Matcher;
 
 /**
@@ -78,6 +71,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
     protected SAnnotation sAnnotation;
     public final int[] sliderColors;
     public int mIndex=0;
+    int mResId;
 
     public BaseItemView(Context context, ListView view, String cacheDir, Status status, boolean updateFlag) {
         super(context);
@@ -93,6 +87,15 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
         sliderColors[5]=R.color.holo_purple;
         sliderColors[6]=R.color.holo_orange_light;
         sliderColors[7]=R.color.holo_orange_dark;
+
+        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        if ("1".equals(themeId)) {
+            mResId=R.drawable.image_loading_dark;
+        } else if ("2".equals(themeId)){
+            mResId=R.drawable.image_loading_light;
+        } else if ("0".equals(themeId)) {
+            mResId=R.drawable.image_loading_dark;
+        }
     }
 
     /**
@@ -269,7 +272,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
                 mStatusPicture.setImageBitmap(tmp);
             } else {
                 if (!updateFlag) {
-                    mStatusPicture.setImageResource(R.drawable.image_loading);
+                    mStatusPicture.setImageResource(mResId);
                     return;
                 }
 
@@ -282,7 +285,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
                 if (isShowLargeBitmap) {
                     cache=true; //大图要缓存sdcard中，不然每次都下载，太慢了。
                 }
-                mStatusPicture.setImageResource(R.drawable.image_loading);
+                mStatusPicture.setImageResource(mResId);
                 //DownloadPool.downloading.put(mPictureUrl, new WeakReference<View>(parent));
                 ((App) App.getAppContext()).mDownloadPool.Push(
                     mHandler, mPictureUrl, Constants.TYPE_PICTURE, cache, mCacheDir+dir, mStatusPicture);
