@@ -137,7 +137,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
     private void close() {
         if (mContext instanceof Activity) {
             if (null!=myWebView) {
-                //myWebView.clearCache(true);
+                removeView(myWebView);  //remove it first,dettach view, and close.
                 myWebView.destroy();
             }
 

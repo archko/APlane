@@ -66,6 +66,7 @@ public class WebviewActivity extends SkinFragmentActivity {
         settings.setJavaScriptEnabled(true);
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
+        settings.setPluginState(WebSettings.PluginState.ON);
         //settings.setJavaScriptCanOpenWindowsAutomatically(true);
         settings.setSavePassword(true);
 

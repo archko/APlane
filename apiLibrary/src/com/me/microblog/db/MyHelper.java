@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import com.me.microblog.oauth.SOauth2;
 import com.me.microblog.util.WeiboLog;
 
 /**
@@ -39,7 +40,7 @@ public class MyHelper extends SQLiteOpenHelper {
         updateDBToVer15(db);
         updateDBToVer16(db);
         updateDBToVer17(db);
-        //updateDBToVer18(db);
+        updateDBToVer18(db);
     }
 
     @Override
@@ -95,10 +96,10 @@ public class MyHelper extends SQLiteOpenHelper {
             oldVersion=17;
         }
 
-        /*if (oldVersion<18) {
+        if (oldVersion<18) {
             updateDBToVer18(db);
             oldVersion=18;
-        }*/
+        }
 
         if (oldVersion!=newVersion) {
             throw new IllegalStateException("error upgrading the database to version "+newVersion);
@@ -270,10 +271,15 @@ public class MyHelper extends SQLiteOpenHelper {
      */
     void updateDBToVer18(SQLiteDatabase db) {
         db.execSQL("ALTER TABLE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" ADD "+TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE+" integer;");
-        db.execSQL("UPDATE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" SET "+TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE+"=0;");
         db.execSQL("ALTER TABLE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" ADD "+TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY+" text;");
         db.execSQL("ALTER TABLE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" ADD "+TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET+" text;");
         db.execSQL("ALTER TABLE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" ADD "+TwitterTable.AUTbl.ACCOUNT_CALLBACK_URL+" text;");
+        db.execSQL("ALTER TABLE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" ADD "+TwitterTable.AUTbl.ACCOUNT_AUTHENTICATION_URL+" text;");
+
+        db.execSQL("UPDATE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" SET "+TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE+"=0;");    //is a bug.serviceprovider sina=1?
+        db.execSQL("UPDATE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" SET "+TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY+"='"+SOauth2.CONSUMER_KEY+"';");
+        db.execSQL("UPDATE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" SET "+TwitterTable.AUTbl.ACCOUNT_CALLBACK_URL+"='"+SOauth2.CALLBACK_URL+"';");
+        db.execSQL("UPDATE "+TwitterTable.AUTbl.ACCOUNT_TBNAME+" SET "+TwitterTable.AUTbl.ACCOUNT_AUTHENTICATION_URL+"='"+SOauth2.AUTHENTICATIONURL+"';");
     }
 
 

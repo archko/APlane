@@ -32,6 +32,8 @@ public class OauthBean implements Serializable{
     public int oauthType=Oauth2.OAUTH_TYPE_WEB;//网页认证还是密码认证.
     public String customKey;
     public String customSecret;
+    public String callbackUrl;  //回调地址
+    public String authenticationUrl;
 
     ServiceProvider serviceProvider;
 
@@ -69,6 +71,8 @@ public class OauthBean implements Serializable{
             ", oauthType="+oauthType+
             ", customKey='"+customKey+'\''+
             ", customSecret='"+customSecret+'\''+
+            ", callbackUrl='"+callbackUrl+'\''+
+            ", authenticationUrl='"+authenticationUrl+'\''+
             ", serviceProvider="+serviceProvider+
             '}';
     }

@@ -16,8 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
 import cn.archko.microblog.R;
 import com.me.microblog.db.TwitterTable;
@@ -40,6 +44,7 @@ public class AddAccountDialogFragment extends DialogFragment {
     int type=0;
     ProgressDialog mProgressDialog;
     AccountOauthListener mAccountOauthListener;
+    Spinner mSpinner;
 
     public AddAccountDialogFragment(AccountOauthListener accountOauthListener) {
         mAccountOauthListener=accountOauthListener;
@@ -60,7 +65,12 @@ public class AddAccountDialogFragment extends DialogFragment {
 
         imm=(InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Light_NoTitleBar);
+        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        int resId=android.R.style.Theme_Holo_NoActionBar;
+        if ("2".equals(themeId)) {
+            resId=android.R.style.Theme_Holo_Light_NoActionBar;
+        }
+        setStyle(DialogFragment.STYLE_NORMAL, resId);
     }
 
     View.OnClickListener clickListener=new View.OnClickListener() {
@@ -81,10 +91,8 @@ public class AddAccountDialogFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.login, container, false);
-        v.findViewById(R.id.regist_btn).setVisibility(View.GONE);   //hide regist_btn
-        v.findViewById(R.id.desc).setVisibility(View.GONE); //hide desc
-        v.findViewById(R.id.other_login_btn).setVisibility(View.GONE); //hide desc
+        View v=inflater.inflate(R.layout.ak_account_add, container, false);
+
         Button button=(Button) v.findViewById(R.id.exit);
         button.setOnClickListener(clickListener);
 
@@ -101,8 +109,29 @@ public class AddAccountDialogFragment extends DialogFragment {
             email.setText(name);
         }
         pwd=(EditText) v.findViewById(R.id.pwd);
+        mSpinner=(Spinner) v.findViewById(R.id.app_group);
 
         return v;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ArrayAdapter<CharSequence> adapter=ArrayAdapter.createFromResource(
+            getActivity(), R.array.app_label, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mSpinner.setAdapter(adapter);
+        mSpinner.setOnItemSelectedListener(
+            new AdapterView.OnItemSelectedListener() {
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    WeiboLog.d("Spinner1: position="+position+" id="+id);
+                }
+
+                public void onNothingSelected(AdapterView<?> parent) {
+                    WeiboLog.d("Spinner1: unselected");
+                }
+            });
     }
 
     /**
@@ -140,7 +169,16 @@ public class AddAccountDialogFragment extends DialogFragment {
             Object[] params=new Object[]{username, password};
             SOauth2 ouath2=new SOauth2();
 
-            ouath2.oauthByWebView(new Object[]{username, password, App.getAppContext(), mOauthHandler, params});
+            String key=SOauth2.CONSUMER_KEY;
+            String url=SOauth2.CALLBACK_URL;
+            String secret="";
+            if (mSpinner.getSelectedItemPosition()==1) {
+                key=SOauth2.DESKTOP_KEY;
+                secret=SOauth2.DESKTOP_SECRET;
+                url=SOauth2.DESKTOP_CALLBACK;
+            }
+            ouath2.oauthByWebView(new Object[]{username, password, App.getAppContext(), mOauthHandler, params,
+                key, secret, url});
             if (null==mProgressDialog) {
                 mProgressDialog=new ProgressDialog(getActivity());
             }
@@ -210,9 +248,11 @@ public class AddAccountDialogFragment extends DialogFragment {
                 if (type==1) {
                     username=password="";
                 }
+                oauthBean.name=username;
+                oauthBean.pass=password;
 
-                Uri uri=SqliteWrapper.addAccount(App.getAppContext(), oauthBean, username, password, TwitterTable.AUTbl.WEIBO_SINA, "-1");
-                WeiboLog.d(TAG, "保存新用户："+uri);
+                Uri uri=SqliteWrapper.addAccount(App.getAppContext(), oauthBean, "-1");
+                WeiboLog.d(TAG, "保存新用户："+uri+" bean:"+oauthBean);
                 if (null!=uri) {
                     AKUtils.showToast(R.string.account_add_suc);
                     //newTaskNoNet(new Object[]{true, -1l, -1l, 1, page, false}, null);

@@ -246,7 +246,12 @@ public class LoginActivity extends NavModeActivity {
         } else if (v.getId()==R.id.regist_btn) {  //注册
             Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse("http://weibo.cn"));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            try {
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+                AKUtils.showToast("您的系统没有浏览器.");
+            }
             this.finish();
         } else if (v.getId()==R.id.login2) {  //web认证
             type=0;
@@ -341,53 +346,6 @@ public class LoginActivity extends NavModeActivity {
             e.printStackTrace();
         }
     }
-
-    /**
-     * 高级认证。
-     *
-     * @param username
-     * @param password
-     */
-    @Deprecated
-    private void advancedOauth(final String username, final String password) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                WeiboLog.i("登录成功，开始权限高级认证！"+username);
-                SOauth2 ouath2=new SOauth2();
-                OauthBean bean=ouath2.fetchAccessTokenByPass(username, password, SOauth2.DESKTOP_KEY, SOauth2.DESKTOP_SECRET);
-
-                WeiboLog.i("登录时的高级认证！"+bean);
-                if (null!=bean) {
-                    Object[] objects=new Object[]{bean, username, password};
-                    Oauth2Handler.saveAdvancedWeiboApi(objects, App.getAppContext());
-                }
-            }
-        }).start();
-    }
-
-    /*class OauthDialogFragment extends DialogFragment {
-
-        public OauthDialogFragment() {
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setTitle(R.string.oauth_token_expired_dialog_title);
-
-            imm=(InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-            setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Light);
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            SOauth2 ouath2=new SOauth2();
-            WebView webView=ouath2.oauthByWebView(new Object[]{"", "", App.getAppContext(), mHandler, null});
-            return webView;
-        }
-    }*/
 
     //--------------------- 帐户操作 ---------------------
 

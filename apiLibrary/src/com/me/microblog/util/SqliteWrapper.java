@@ -195,6 +195,11 @@ public final class SqliteWrapper {
                 String openId=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_USERID));
                 int type=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TYPE));
                 int isDefault=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT));
+                int oauthType=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE));;
+                String customKey=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY));;
+                String customSecret=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET));;
+                String callbackUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CALLBACK_URL));;
+                String authenticationUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AUTHENTICATION_URL));
 
                 OauthBean bean=new OauthBean();
                 bean.id=id;
@@ -206,6 +211,12 @@ public final class SqliteWrapper {
                 bean.pass=pass;
                 bean.type=type;
                 bean.isDefault=isDefault;
+                bean.oauthType=oauthType;
+                bean.setServiceProvider(oauthType);
+                bean.customKey=customKey;
+                bean.customSecret=customSecret;
+                bean.callbackUrl=callbackUrl;
+                bean.authenticationUrl=authenticationUrl;
                 return bean;
             }
         } catch (Exception e) {
@@ -246,6 +257,11 @@ public final class SqliteWrapper {
                 String openId=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_USERID));
                 int type=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TYPE));
                 int isDefault=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT));
+                int oauthType=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE));;
+                String customKey=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY));;
+                String customSecret=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET));;
+                String callbackUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CALLBACK_URL));;
+                String authenticationUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AUTHENTICATION_URL));
 
                 OauthBean bean=new OauthBean();
                 bean.id=id;
@@ -257,6 +273,12 @@ public final class SqliteWrapper {
                 bean.pass=pass;
                 bean.type=type;
                 bean.isDefault=isDefault;
+                bean.oauthType=oauthType;
+                bean.setServiceProvider(oauthType);
+                bean.customKey=customKey;
+                bean.customSecret=customSecret;
+                bean.callbackUrl=callbackUrl;
+                bean.authenticationUrl=authenticationUrl;
                 return bean;
             }
         } catch (Exception e) {
@@ -298,6 +320,11 @@ public final class SqliteWrapper {
                     String openId=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_USERID));
                     int type=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TYPE));
                     int isDefault=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT));
+                    int oauthType=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE));;
+                    String customKey=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY));;
+                    String customSecret=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET));;
+                    String callbackUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CALLBACK_URL));;
+                    String authenticationUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AUTHENTICATION_URL));
 
                     tmp=new OauthBean();
                     tmp.id=id;
@@ -311,6 +338,12 @@ public final class SqliteWrapper {
                     tmp.pass=pass;
                     tmp.type=type;
                     tmp.isDefault=isDefault;
+                    tmp.oauthType=oauthType;
+                    tmp.setServiceProvider(oauthType);
+                    tmp.customKey=customKey;
+                    tmp.customSecret=customSecret;
+                    tmp.callbackUrl=callbackUrl;
+                    tmp.authenticationUrl=authenticationUrl;
                     oauthBeanList.add(tmp);
                 } while (cursor.moveToNext());
             }
@@ -350,6 +383,11 @@ public final class SqliteWrapper {
                     String openId=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_USERID));
                     int type=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TYPE));
                     int isDefault=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT));
+                    int oauthType=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE));;
+                    String customKey=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY));;
+                    String customSecret=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET));;
+                    String callbackUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CALLBACK_URL));;
+                    String authenticationUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AUTHENTICATION_URL));
 
                     tmp=new OauthBean();
                     tmp.id=id;
@@ -361,6 +399,12 @@ public final class SqliteWrapper {
                     tmp.pass=pass;
                     tmp.type=type;
                     tmp.isDefault=isDefault;
+                    tmp.oauthType=oauthType;
+                    tmp.setServiceProvider(oauthType);
+                    tmp.customKey=customKey;
+                    tmp.customSecret=customSecret;
+                    tmp.callbackUrl=callbackUrl;
+                    tmp.authenticationUrl=authenticationUrl;
                     oauthBeanList.add(tmp);
                 } while (cursor.moveToNext());
             }
@@ -432,11 +476,51 @@ public final class SqliteWrapper {
      * 添加帐户
      *
      * @param context
+     * @param bean 认证的结果,包含token,key,secret,callback_url,等信息.
+     * @param username
+     * @param password
+     * @param sType 是否是默认帐户,-1表示非默认帐户,
+     * @return
+     */
+    public static Uri addAccount(Context context, OauthBean bean, String sType) {
+        try {
+            bean.time=bean.expireTime*1000+System.currentTimeMillis()-100l; //re caculate expireTime
+            ContentResolver resolver=context.getContentResolver();
+            ContentValues cv=new ContentValues();
+            if (!TextUtils.isEmpty(bean.name)&&!TextUtils.isEmpty(bean.pass)) {
+                cv.put(TwitterTable.AUTbl.ACCOUNT_NAME, RC4.RunRC4(bean.name, App.KEY));
+                cv.put(TwitterTable.AUTbl.ACCOUNT_PASS, RC4.RunRC4(bean.pass, App.KEY));
+            }
+            cv.put(TwitterTable.AUTbl.ACCOUNT_TOKEN, bean.accessToken);
+            cv.put(TwitterTable.AUTbl.ACCOUNT_TIME, bean.time);
+            //cv.put(TwitterTable.AUTbl.ACCOUNT_TYPE, TwitterTable.AUTbl.WEIBO_SINA);
+            cv.put(TwitterTable.AUTbl.ACCOUNT_TYPE, bean.getServiceProvider().getSpNo());
+            cv.put(TwitterTable.AUTbl.ACCOUNT_USERID, bean.openId);
+            //cv.put(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT, -1);
+            cv.put(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT, sType);
+            cv.put(TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY, bean.customKey);
+            cv.put(TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET, bean.customSecret);
+            cv.put(TwitterTable.AUTbl.ACCOUNT_CALLBACK_URL, bean.callbackUrl);
+            cv.put(TwitterTable.AUTbl.ACCOUNT_AUTHENTICATION_URL, bean.authenticationUrl);
+
+            return resolver.insert(TwitterTable.AUTbl.CONTENT_URI, cv);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * 添加帐户,废除了, 新的已经包含了类型,key,secret等信息.
+     *
+     * @param context
      * @param oauthBean 认证结果
      * @param username  用户名
      * @param password  密码
      * @return
      */
+    @Deprecated
     public static Uri addAccount(Context context, OauthBean bean, String username, String password,
         int type, String sType) {
         try {

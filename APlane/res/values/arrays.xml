@@ -29,4 +29,14 @@
         <item>仅自己可见</item>
         <item>密友可见</item>
     </string-array>
+
+    <string-array name="app_label">
+        <item>APlane</item>
+        <item>微博桌面</item>
+    </string-array>
+
+    <string-array name="app_var">
+        <item>APlane</item>
+        <item>微博桌面</item>
+    </string-array>
 </resources>

@@ -9,7 +9,9 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 import cn.archko.microblog.R;
+import cn.archko.microblog.fragment.AccountUsersFragment;
 import cn.archko.microblog.ui.CommentStatusActivity;
+import cn.archko.microblog.ui.EmptyFragmentActivity;
 import cn.archko.microblog.ui.NewStatusActivity;
 import cn.archko.microblog.ui.RepostStatusActivity;
 import cn.archko.microblog.ui.SplashActivity;
@@ -234,6 +236,15 @@ public class WeiboOperation {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         activity.startActivity(intent);
         activity.finish();
+    }
+
+    public static void startAccountActivity(Activity activity){
+        Intent loginIntent=new Intent(activity, EmptyFragmentActivity.class);
+        loginIntent.putExtra("title", "添加帐户");
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        loginIntent.putExtra("fragment_class", AccountUsersFragment.class.getName());
+        loginIntent.putExtra("mode", "1");
+        activity.startActivity(loginIntent);
     }
 
     /**

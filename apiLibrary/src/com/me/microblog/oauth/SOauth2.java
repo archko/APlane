@@ -54,12 +54,10 @@ import org.json.JSONObject;
 public class SOauth2 extends BaseOauth2 {
 
     public static final String CONSUMER_KEY="1199047716";
-    public final String AUTHENTICATIONURL="https://api.weibo.com/oauth2/authorize";
-    public final String CALLBACK_URL="http://archko.oauth.com";
+    public static final String AUTHENTICATIONURL="https://api.weibo.com/oauth2/authorize";
+    public static final String CALLBACK_URL="http://archko.oauth.com";
     public static final String DESKTOP_KEY="140226478";
     public static final String DESKTOP_SECRET="42fcc96d3e64d9e248649369d61632a6";
-    public static final String WEICO_IPHONE_KEY="82966982";
-    public static final String WEICO_IPHONE_SECRET="72d4545a28a46a6f329c4f2b1e949e6a";
     public static final String DESKTOP_CALLBACK="https://api.weibo.com/oauth2/default.html";
 
     @Override
@@ -210,9 +208,17 @@ public class SOauth2 extends BaseOauth2 {
         Context context=(Context) params[2];
         Handler handler=(Handler) params[3];
         Object[] objects=(Object[]) params[4]; //这个是参数列表
+        String key=CONSUMER_KEY;
+        String secret="";
+        String url=CALLBACK_URL;
+        if (params.length==8) {
+            key=(String) params[5];
+            secret=(String) params[6];
+            url=(String) params[7];
+        }
         oauthFlag=false;
         reload=false;
-        return bindViews(username, password, context, handler, objects);
+        return bindViews(username, password, context, handler, key, url, secret, objects);
     }
 
     /**
@@ -224,14 +230,17 @@ public class SOauth2 extends BaseOauth2 {
     /**
      * 通过webview认证
      *
+     *
      * @param username 用户名
      * @param password 密码
      * @param context
      * @param handler  认证中的ui处理器，用于回调的
-     * @param objects  在认证前执行方法的参数。
-     * @return webview，可以直接添加到ui上显示网页。
-     */
-    public WebView bindViews(final String username, final String password, Context context, final Handler handler, final Object[] objects) {
+     * @param s
+     * @param key
+     * @param objects  在认证前执行方法的参数。  @return webview，可以直接添加到ui上显示网页。
+     * */
+    public WebView bindViews(final String username, final String password, Context context, final Handler handler,
+        final String key, final String callback_url, final String secret, final Object[] objects) {
         WeiboLog.v("binds:"+username+" p:"+password);
         final OauthWebView webView=new OauthWebView(context, handler);
         WebSettings settings=webView.getSettings();
@@ -329,8 +338,13 @@ public class SOauth2 extends BaseOauth2 {
                         mOauthBean=oauthBean;
                         mAccessToken=oauthBean.accessToken;
                         mExpireTime=oauthBean.expireTime;
-                        mOauthBean.openId=map.get("uid");
-                        mOauthBean.customKey=CONSUMER_KEY;
+                        oauthBean.openId=map.get("uid");
+                        oauthBean.name=username;
+                        oauthBean.pass=password;
+                        oauthBean.customKey=key;
+                        oauthBean.customSecret=secret;
+                        oauthBean.callbackUrl=callback_url;
+                        oauthBean.authenticationUrl=AUTHENTICATIONURL;
                         WeiboLog.d("认证成功 oauthbean:"+oauthBean);
                         Message message=Message.obtain();
                         message.what=0;
@@ -409,7 +423,7 @@ public class SOauth2 extends BaseOauth2 {
         };
         webView.setWebChromeClient(webChromeClient);
 
-        String url=buildOauthTokenUrl(CONSUMER_KEY, CALLBACK_URL);
+        String url=buildOauthTokenUrl(key, callback_url);
         webView.loadUrl(url);
 
         return webView;

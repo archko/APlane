@@ -1,6 +1,5 @@
 package cn.archko.microblog.fragment;
 
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -10,20 +9,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
+import android.support.v4.view.MenuItemCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -32,14 +25,13 @@ import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.impl.SinaAccountImpl;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.utils.WeiboOperation;
+import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtil;
 import com.me.microblog.db.MyHelper;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.oauth.OauthBean;
-import com.me.microblog.oauth.SOauth2;
 import com.me.microblog.util.Constants;
-import com.me.microblog.util.SqliteWrapper;
 import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
 
@@ -53,15 +45,47 @@ import cn.archko.microblog.utils.AKUtils;
  * 覆盖basePostOperation方法，因为它与网络数据相关，而且当数据为空时，会在footerview中显示
  * @author: archko 12-10-17
  */
-public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> implements AddAccountDialogFragment.AccountOauthListener{
+public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> implements AddAccountDialogFragment.AccountOauthListener {
 
     public static final String TAG="AccountUsersFragment";
     ProgressDialog mProgressDialog;
+    private static final int MENU_ADD=Menu.FIRST;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //mStatusImpl=new SinaAccountImpl();
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem actionItem=menu.add(0, MENU_ADD, 0, "Add");
+
+        // Items that show as actions should favor the "if room" setting, which will
+        // prevent too many buttons from crowding the bar. Extra items will show in the
+        // overflow area.
+        MenuItemCompat.setShowAsAction(actionItem, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+
+        // Items that show as actions are strongly encouraged to use an icon.
+        // These icons are shown without a text description, and therefore should
+        // be sufficiently descriptive on their own.
+
+        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        int resId=R.drawable.content_new_light;
+        if ("2".equals(themeId)) {
+            resId=R.drawable.content_new_dark;
+        }
+        actionItem.setIcon(resId);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId()==MENU_ADD) {
+            addNewData();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void initApi() {
@@ -140,12 +164,12 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
 
         private AUItemView(Context context) {
             super(context);
-            ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(
-                R.layout.sidebar_item, this);
+            ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.sidebar_item, this);
             setMinimumHeight(48);
             mTitle=(TextView) findViewById(R.id.title);
             mMsg=(TextView) findViewById(R.id.msg);
             icon=(ImageView) findViewById(R.id.image);
+            mMsg.setVisibility(VISIBLE);
         }
 
         public void update(String text1, String text2) {

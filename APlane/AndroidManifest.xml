@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="1400" android:installLocation="auto"
+    android:versionCode="1407" android:installLocation="auto"
     android:versionName="1.4.0"
     package="cn.archko.microblog">
 
@@ -176,7 +176,9 @@
         </activity>
 
         <activity android:name=".ui.WebviewActivity" android:allowTaskReparenting="true"
+            android:windowSoftInputMode="stateHidden"
             android:launchMode="singleInstance" android:excludeFromRecents="true"
+
             android:taskAffinity="cn.archko.microblog.webview"></activity>
 
         <activity android:name=".ui.ImageViewerActivity" android:excludeFromRecents="true"

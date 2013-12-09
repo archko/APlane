@@ -13,12 +13,15 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
+import cn.archko.microblog.fragment.AccountUsersFragment;
+import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtil;
 import com.me.microblog.bean.UpdateInfo;
@@ -226,14 +229,15 @@ public class SplashActivity extends NavModeActivity {
         App.getAdvancedWeiboApi(SplashActivity.this);*/
         App app=(App) App.getAppContext();
         app.initOauth2(false);
-        if (null==app.getOauthBean()) {
+        if (null==app.getOauthBean()||TextUtils.isEmpty(app.getOauthBean().accessToken)) {
             mHandler.post(new Runnable() {
 
                 @Override
                 public void run() {
-                    Intent loginIntent=new Intent(SplashActivity.this, LoginActivity.class);
+                    /*Intent loginIntent=new Intent(SplashActivity.this, LoginActivity.class);
                     loginIntent.putExtra("mode", "1");
-                    startActivity(loginIntent);
+                    startActivity(loginIntent);*/
+                    WeiboOperation.startAccountActivity(SplashActivity.this);
                     WeiboLog.d(TAG, "not logined.");
                     finish();
                 }

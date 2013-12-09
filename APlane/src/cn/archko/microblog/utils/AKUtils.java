@@ -156,10 +156,11 @@ public class AKUtils {
         activity.stopService(intent);
 
         WeiboLog.d("logout.");
-        Intent loginIntent=new Intent(activity, LoginActivity.class);
+        /*Intent loginIntent=new Intent(activity, LoginActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         loginIntent.putExtra("mode", "1");
-        activity.startActivity(loginIntent);
+        activity.startActivity(loginIntent);*/
+        WeiboOperation.startAccountActivity(activity);
         activity.finish();
     }
 

@@ -57,7 +57,7 @@ public enum ServiceProvider {
     }
 
     //平台编号
-    public static final int SP_SINA=1;     // 新浪的SP编号
+    public static final int SP_SINA=0;     // 新浪的SP编号
     public static final int SP_TENCENT=2;     // 腾讯的SP编号
     public static final int SP_QQZONE=3;     // QQ空间的SP编号
     public static final int SP_TWITTER=4;     // 推特的SP编号
@@ -108,7 +108,7 @@ public enum ServiceProvider {
                 sp=Facebook;
                 break;
             default:
-                sp=None;
+                sp=Sina;
                 break;
         }
         return sp;

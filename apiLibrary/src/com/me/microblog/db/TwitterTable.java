@@ -13,7 +13,7 @@ public class TwitterTable {
     //数据库名
     public static final String DB_NAME="twitter.db";
     //数据库版本
-    public static final int VERSION=17;
+    public static final int VERSION=18;
     public static final String AUTHORITY="cn.archko.microblog";
 
     /**
@@ -151,6 +151,7 @@ public class TwitterTable {
         public static final String ACCOUNT_CUSTOM_KEY="custom_key";//自定义的key
         public static final String ACCOUNT_CUSTOM_SECRET="custom_secret";//密钥
         public static final String ACCOUNT_CALLBACK_URL="callback_url";//回调地址.如果是web认证,需要填写
+        public static final String ACCOUNT_AUTHENTICATION_URL="authentication_url";//认证地址
 
         //常量
         public static final int WEIBO_SINA=0;   //新浪的号
