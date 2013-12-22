@@ -567,15 +567,15 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         }
 
         //if (showBitmap) {
-            if (null!=user) {
-                imgUrl=user.profileImageUrl;
-            }
-            if (!TextUtils.isEmpty(imgUrl)) {
-                portraitUrl=imgUrl;
-                new Thread(portraitRunnable).start();
-            }
+        if (null!=user) {
+            imgUrl=user.profileImageUrl;
+        }
+        if (!TextUtils.isEmpty(imgUrl)) {
+            portraitUrl=imgUrl;
+            new Thread(portraitRunnable).start();
+        }
         //} else {
-            //TODO load portrait
+        //TODO load portrait
         //}
 
         Status retweetStatus=mStatus.retweetedStatus;
@@ -704,8 +704,8 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             }
 
             //if (!hasImage) {
-                menu.findItem(R.id.menu_show_in_gallery).setVisible(false);
-                menu.findItem(R.id.menu_download_ori_img).setVisible(false);
+            menu.findItem(R.id.menu_show_in_gallery).setVisible(false);
+            menu.findItem(R.id.menu_download_ori_img).setVisible(false);
             //}
 
             //menu.findItem(R.id.menu_more).setVisible(true);
@@ -727,6 +727,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
 
     /**
      * 处理菜单，因为多了一个菜单，所以要放在一起，如果这个可行，以后就不用硬件菜单按钮了。
+     * Activity的菜单事件也会传入这里.
      *
      * @param itemId
      */
@@ -827,7 +828,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     };
 
     private void udpatePortrait(final Bitmap bitmap) {
-        if (!isResumed()){
+        if (!isResumed()) {
             return;
         }
         mHandler.post(new Runnable() {
@@ -1108,7 +1109,8 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         if (null==mAdapter) {
             mAdapter=new ImageAdapter(getActivity(), mCacheDir, mStatus.thumbs);
             //mTagsViewGroup.setAdapter(mAdapter);
-        } /*else*/ {
+        } /*else*/
+        {
             mAdapter.setUpdateFlag(updateFlag);
             mAdapter.setCache(cache);
             mAdapter.setShowLargeBitmap(false);

@@ -85,14 +85,15 @@ public class BaseOauthFragmentActivity extends SkinFragmentActivity implements
      *
      * @param anchorView 菜单显示的锚点View。
      */
-    public void prepareMenu(View anchorView) {
+    /*public void prepareMenu(View anchorView) {
         PopupMenu popupMenu=new PopupMenu(this, anchorView);
 
         onCreateCustomMenu(popupMenu);
         onPrepareCustomMenu(popupMenu);
         //return showCustomMenu(anchorView);
+        popupMenu.setOnMenuItemClickListener(this);
         popupMenu.show();
-    }
+    }*/
 
     /**
      * 显示自定义菜单
@@ -118,26 +119,26 @@ public class BaseOauthFragmentActivity extends SkinFragmentActivity implements
      *
      * @param menuBuilder
      */
-    public void onCreateCustomMenu(PopupMenu menuBuilder) {
-        /*menuBuilder.add(0, 1, 0, "title1");*/
-    }
+    /*public void onCreateCustomMenu(PopupMenu menuBuilder) {
+        *//*menuBuilder.add(0, 1, 0, "title1");*//*
+    }*/
 
     /**
      * 创建菜单项，供子类覆盖，以便动态地添加菜单项。
      *
      * @param menuBuilder
      */
-    public void onPrepareCustomMenu(PopupMenu menuBuilder) {
-        /*menuBuilder.add(0, 1, 0, "title1");*/
-    }
+    /*public void onPrepareCustomMenu(PopupMenu menuBuilder) {
+        *//*menuBuilder.add(0, 1, 0, "title1");*//*
+    }*/
 
     /*public boolean onMenuItemSelected(PopupMenu menu, MenuItem item) {
         return false;
     }*/
 
-    @Override
+    /*@Override
     public boolean onMenuItemClick(MenuItem item) {
 
         return false;
-    }
+    }*/
 }

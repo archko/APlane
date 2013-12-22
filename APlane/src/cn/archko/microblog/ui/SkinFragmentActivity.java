@@ -85,6 +85,7 @@ public class SkinFragmentActivity extends Activity implements PopupMenu.OnMenuIt
         onCreateCustomMenu(popupMenu);
         onPrepareCustomMenu(popupMenu);
         //return showCustomMenu(anchorView);
+        popupMenu.setOnMenuItemClickListener(this);
         popupMenu.show();
     }
 

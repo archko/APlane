@@ -219,7 +219,7 @@ public class ViewStatusDetailActivity extends BaseOauthFragmentActivity implemen
     public void onPageSelected(int position) {
         if (position==0) {
             finish();
-        } else if (position==1) {
+        } else if (position==2) {
             getStatusCommentsFragment().refresh();
         }
     }
@@ -385,13 +385,13 @@ public class ViewStatusDetailActivity extends BaseOauthFragmentActivity implemen
      */
     public void onPrepareCustomMenu(PopupMenu menuBuilder) {
         menuBuilder.getMenu().clear();
-        WeiboLog.d(TAG, "onPrepareCustomMenu:"+hasInitMoreAction);
+        WeiboLog.d(TAG, "onPrepareCustomMenu:"+hasInitMoreAction+" size:"+menuBuilder.getMenu().size());
         if (!hasInitMoreAction) {
             hasInitMoreAction=true;
             initMoreAction(menuBuilder);
-            for (ActionItem item : actionItems) {
-                menuBuilder.getMenu().add(0, item.actionId, 0, item.title);
-            }
+        }
+        for (ActionItem item : actionItems) {
+            menuBuilder.getMenu().add(0, item.actionId, 0, item.title);
         }
     }
 
