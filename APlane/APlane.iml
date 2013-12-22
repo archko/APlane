@@ -14,7 +14,7 @@
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
-        <option name="CUSTOM_DEBUG_KEYSTORE_PATH" value="file://D:/Yoomob/all-debug.keystore" />
+        <option name="CUSTOM_DEBUG_KEYSTORE_PATH" value="file://$MODULE_DIR$/aplane-debug.keystore" />
         <includeAssetsFromLibraries>true</includeAssetsFromLibraries>
         <notImportedProperties>
           <property>MANIFEST_FILE_PATH</property>
