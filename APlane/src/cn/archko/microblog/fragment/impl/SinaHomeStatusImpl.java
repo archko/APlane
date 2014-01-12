@@ -15,6 +15,7 @@ import com.me.microblog.bean.User;
 import com.me.microblog.core.sina.SinaGroupApi;
 import com.me.microblog.core.sina.SinaStatusApi;
 import com.me.microblog.db.TwitterTable;
+import com.me.microblog.oauth.OauthBean;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.SqliteWrapper;
 import com.me.microblog.util.WeiboLog;
@@ -79,6 +80,21 @@ public class SinaHomeStatusImpl extends AbsStatusImpl<Status> {
                 sStatusData=mSinaGroupApi.getGroupTimeLine(mGroup.id, sinceId, maxId, c, p, -1);
             }
             /*sStatusData=sWeiboApi2.getFriendsTimeline(sinceId, maxId, c, p, -1);*/
+            if (null!=sStatusData&&sStatusData.mStatusData!=null&&sStatusData.mStatusData.size()>0) {
+                final ArrayList<Status> statuses=sStatusData.mStatusData;
+                final ArrayList<Status> removeStatuses=new ArrayList<Status>();
+                for (Status s : statuses) {
+                    if (!s.user.following) {
+                        removeStatuses.add(s);
+                    }
+                }
+                if (removeStatuses.size()>0){
+                    for (Status s:removeStatuses){
+                        statuses.remove(s);
+                        WeiboLog.d(TAG, "去除广告d:"+s);
+                    }
+                }
+            }
         }
 
         return sStatusData;

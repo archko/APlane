@@ -454,7 +454,7 @@ public class PrefsActivity extends PreferenceActivity implements
         final SeekBarPref seekBarPref=(SeekBarPref) findPreference("pref_thread_count");
         SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(this);
         int pref_thread_count=options.getInt(Constants.PREF_THREAD_COUNT, Constants.THREAD_COUNT);
-        seekBarPref.setInitialValue(pref_thread_count, false, 2, 4);
+        seekBarPref.setInitialValue(pref_thread_count, false, 1, 12);
     }
 
 }

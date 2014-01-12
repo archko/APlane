@@ -47,8 +47,8 @@ public class DownloadPool extends Thread {
     private HttpParams params;
     ClientConnectionManager connectionManager;
     private boolean isStop=false;
-    public static final int READ_TIMEOUT=20000;
-    public static final int CONNECT_TIMEOUT=20000;
+    public static final int READ_TIMEOUT=24000;
+    public static final int CONNECT_TIMEOUT=12000;
     //public static Map<String, WeakReference<View>> downloading=new Hashtable<String, WeakReference<View>>();
 
     {
@@ -415,6 +415,7 @@ public class DownloadPool extends Thread {
     //=======================================
 
     Handler mHandler;
+    int count=10;
 
     private void init() {
         initDecodeThread();
@@ -500,6 +501,10 @@ public class DownloadPool extends Thread {
                     mQuery.remove(piece);
                     break;
                 }
+            }
+            int size=mQuery.size();
+            if (mQuery.size()>=count) {
+                mQuery=mQuery.subList(size-count, size);
             }
             mQuery.add(mpiece);
 

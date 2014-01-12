@@ -490,11 +490,11 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
         menu.add(0, R.id.menu_refresh, 1, R.string.opb_refresh)
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);*/
         menu.add(0, R.id.menu_search, 1, R.string.action_search)
-            .setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+            .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         menu.add(0, R.id.menu_exit, 1, R.string.action_exit)
-            .setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+            .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         menu.add(0, R.id.menu_pref, 1, R.string.action_pref)
-            .setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+            .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
         /*String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         int menuNewStatus=R.drawable.content_edit_dark;
@@ -550,7 +550,8 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
             checkUpdate();
         } else if (itemId==R.id.menu_exit) {
             mode=PrefsFragment.MODE_EXIT;
-            exitConfirm(R.string.exit_title, R.string.exit_msg);
+            //exitConfirm(R.string.exit_title, R.string.exit_msg);
+            AKUtils.exit(HomeActivity.this);
         } else if (itemId==R.id.menu_refresh) {
             refresh();
         }

@@ -113,7 +113,7 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
     public void update(final Status bean, boolean updateFlag, boolean cache, boolean showLargeBitmap,
         boolean showBitmap) {
         if (mStatus==bean) {
-            WeiboLog.v(TAG, "相同的内容不更新。");
+            WeiboLog.v(TAG, "相同的内容不更新。"+updateFlag);
             if (updateFlag) {   //需要加载数据,否则会无法更新列表的图片.
                 loadPicture(updateFlag, cache);
                 isShowBitmap=showBitmap;
