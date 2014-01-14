@@ -25,6 +25,7 @@ import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
 import cn.archko.microblog.fragment.impl.AbsStatusImpl;
+import cn.archko.microblog.ui.ImageViewerActivity;
 import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.utils.BitmapThread;
 import cn.archko.microblog.utils.TakePictureUtil;
@@ -263,6 +264,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         int index=0;
         menuBuilder.getMenu().add(0, Constants.OP_ID_QUICK_REPOST, index++, "修改");
         menuBuilder.getMenu().add(0, Constants.OP_ID_COMMENT, index++, "删除");
+        menuBuilder.getMenu().add(0, Constants.OP_ID_ORITEXT, index++, "查看");
     }
 
     @Override
@@ -276,6 +278,10 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
             }
             case Constants.OP_ID_COMMENT: {
                 commentStatus();
+                break;
+            }
+            case Constants.OP_ID_ORITEXT: {
+                viewOriginalStatus(null);
                 break;
             }
         }
@@ -309,6 +315,23 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         mAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * 查看图片
+     *
+     * @param achor
+     */
+    @Override
+    protected void viewOriginalStatus(View achor) {
+        Intent intent=new Intent(getActivity(), ImageViewerActivity.class);
+        UploadImage image=mDataList.get(selectedPos);
+        String[] imageUrls=new String[]{image.path};
+        WeiboLog.d(TAG, "view :"+image);
+        intent.putExtra("thumbs", imageUrls);
+        intent.putExtra("pos", 0);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -320,16 +343,17 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
             } else if (requestCode==TakePictureUtil.CAMERA_WITH_DATA) {
                 // 照相机程序返回的,再次调用图 片剪辑程序去修剪图片
                 //doCropPhoto();
-                String path=null;//=mCurrentPhotoFile.getAbsolutePath();
+                String path=takePictureUtil.getCurrentPhotoFile().getAbsolutePath();
                 WeiboLog.i(TAG, "path:"+path);
                 if (!TextUtils.isEmpty(path)) {
-                    String imgUrl=path;
+                    /*String imgUrl=path;
                     //showPhoto(imgUrl);
                     try {
                       Uri mPhotoUri=Uri.fromFile(new File(path));
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
+                    }*/
+                    updateImageList(path);
                 }
             } /*else if (requestCode==REQUEST_DRAFT) {
                 Draft draft=(Draft) data.getSerializableExtra("draft");
@@ -366,6 +390,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
                 }
                 /*mPhotoUri=imageFileUri;
                 showPhoto(imageFileUri);*/
+                updateImageList(imgUrl);
             }
 
         } catch (Exception e) {
@@ -375,6 +400,14 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
                 cur.close();
             }
         }
+    }
+
+    private void updateImageList(String imgUrl) {
+        UploadImage image=mDataList.get(selectedPos);
+        image.path=imgUrl;
+        image.pic_id="";
+        mAdapter.notifyDataSetChanged();
+        loadBitmap(mDataList);
     }
 
     //---------------------------------------

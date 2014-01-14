@@ -9,6 +9,7 @@ import android.util.Log;
 import cn.archko.microblog.fragment.PickImageFragment;
 import com.android.gallery3d.common.BitmapUtils;
 import com.me.microblog.bean.UploadImage;
+import com.me.microblog.util.WeiboLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,8 +122,12 @@ public class BitmapThread {
                     if (null!=bitmap) {
                     } else {
                         BitmapFactory.Options options=new BitmapFactory.Options();
+                        options.inJustDecodeBounds=true;
+                        BitmapFactory.decodeFile(image.path, options);
                         options.inSampleSize=BitmapUtils.computeSampleSizeLarger(options.outWidth, options.outHeight, 120);
+                        WeiboLog.d("inSampleSize:"+options.inSampleSize+" width:"+options.outWidth+" height:"+options.outHeight);
                         options.inPreferredConfig=Bitmap.Config.RGB_565;
+                        options.inJustDecodeBounds=false;
                         bitmap=BitmapFactory.decodeFile(image.path, options);
                     }
 

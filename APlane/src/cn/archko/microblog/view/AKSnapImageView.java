@@ -81,7 +81,14 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
 
     public void update(String bean){
         if (TextUtils.isEmpty(bean)||!bean.startsWith("http")) {
-            WeiboLog.d(TAG, "TextUtils.isEmpty(bean).");
+            File file=new File(bean);
+            if (file.exists()) {
+                mBmidPath=bean;
+                loadView(bean);
+                updateBitmap(null);
+            } else {
+                WeiboLog.d(TAG, "TextUtils.isEmpty(bean)."+bean);
+            }
             return;
         }
 
@@ -100,6 +107,10 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         name=WeiboUtil.getWeiboUtil().getMd5(bmiddlePic)+WeiboUtil.getExt(bmiddlePic);
         mBmidPath=dir+name;
 
+        loadView(bean);
+    }
+
+    private void loadView(String bean) {
         if (getChildCount()>0){
             removeAllViews();
         }

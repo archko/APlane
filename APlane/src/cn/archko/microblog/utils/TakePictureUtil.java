@@ -62,6 +62,10 @@ public class TakePictureUtil {
         this.mFragment=mFragment;
     }
 
+    public File getCurrentPhotoFile() {
+        return mCurrentPhotoFile;
+    }
+
     /**
      * 编辑照片
      */
