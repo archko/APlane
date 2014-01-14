@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import cn.archko.microblog.fragment.PickImageFragment;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
 import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
@@ -30,7 +31,7 @@ public class EmptyFragmentActivity extends SkinFragmentActivity implements OnRef
         mActionBar.setHomeButtonEnabled(true);
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 
-        initFragment();
+        initFragment(PickImageFragment.class.getName());
     }
 
     public void initFragment() {
@@ -44,6 +45,28 @@ public class EmptyFragmentActivity extends SkinFragmentActivity implements OnRef
         String title=intent.getStringExtra("title");
         mActionBar.setTitle(title);
         String className=intent.getStringExtra("fragment_class");
+
+        try {
+            WeiboLog.d("start a fragment:"+title+" fragment Class:"+className);
+            Fragment newFragment=Fragment.instantiate(this, className);
+            FragmentTransaction ft=getFragmentManager().beginTransaction();
+            ft.add(android.R.id.content, newFragment).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void initFragment(String className) {
+        Intent intent=getIntent();
+        if (null==intent) {
+            AKUtils.showToast("System error, no intent!");
+            finish();
+            return;
+        }
+
+        String title=intent.getStringExtra("title");
+        mActionBar.setTitle(title);
+        //String className=intent.getStringExtra("fragment_class");
 
         try {
             WeiboLog.d("start a fragment:"+title+" fragment Class:"+className);
