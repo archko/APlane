@@ -10,8 +10,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.v4.view.MenuItemCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,8 @@ import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.utils.BitmapThread;
 import cn.archko.microblog.utils.TakePictureUtil;
 import com.andrew.apollo.cache.LruCache;
+import com.andrew.apollo.utils.PreferenceUtils;
+import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.UploadImage;
@@ -47,6 +52,8 @@ import java.util.ArrayList;
 public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
     private static final String TAG="PickImage";
+    private static final int MENU_ADD=Menu.FIRST;
+    private static final int MENU_SAVE=Menu.FIRST+1;
     Handler mHandler=new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -80,6 +87,12 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
     public PickImageFragment(Handler handler) {
         mHandler=handler;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -245,6 +258,72 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem actionItem=menu.add(0, MENU_ADD, 0, "Add");
+
+        // Items that show as actions should favor the "if room" setting, which will
+        // prevent too many buttons from crowding the bar. Extra items will show in the
+        // overflow area.
+        MenuItemCompat.setShowAsAction(actionItem, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+
+        // Items that show as actions are strongly encouraged to use an icon.
+        // These icons are shown without a text description, and therefore should
+        // be sufficiently descriptive on their own.
+
+        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        int resId=R.drawable.content_new_light;
+        if ("2".equals(themeId)) {
+            resId=R.drawable.content_new_dark;
+        }
+        actionItem.setIcon(resId);
+
+        actionItem=menu.add(0, MENU_SAVE, 0, "SAVE");
+
+        // Items that show as actions should favor the "if room" setting, which will
+        // prevent too many buttons from crowding the bar. Extra items will show in the
+        // overflow area.
+        MenuItemCompat.setShowAsAction(actionItem, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+
+        // Items that show as actions are strongly encouraged to use an icon.
+        // These icons are shown without a text description, and therefore should
+        // be sufficiently descriptive on their own.
+
+        resId=R.drawable.ic_cab_done_holo_dark;
+        if ("2".equals(themeId)) {
+            resId=R.drawable.ic_cab_done_holo_light;
+        }
+        actionItem.setIcon(resId);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId()==MENU_ADD) {
+            addNewPicture();
+        } else if (item.getItemId()==MENU_SAVE) {
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void addNewPicture() {
+        int count=mAdapter.getCount();
+        if (count>=9) {
+            AKUtils.showToast("最多只能添加9张图片.");
+            return;
+        }
+
+        selectedPos=-1; //设置-1,则在选择照片后,进行添加,否则视为编辑.
+        if (null==takePictureUtil) {
+            takePictureUtil=new TakePictureUtil();
+            //takePictureUtil.setActivity(getActivity());
+            takePictureUtil.setContext(getActivity());
+            takePictureUtil.setFragment(this);
+        }
+        takePictureUtil.doPickPhotoAction();
+    }
+
+    @Override
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
 
     }
@@ -378,10 +457,10 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
             cur=getActivity().getContentResolver().query(imageFileUri, proj, null, null, null);
             int imageIdx=cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cur.moveToFirst();
-            String imgUrl=cur.getString(imageIdx);
-            WeiboLog.i(TAG, "imgUrl:"+imgUrl);
+            String imagePath=cur.getString(imageIdx);
+            WeiboLog.i(TAG, "imagePath:"+imagePath);
 
-            File file=new File(imgUrl);
+            File file=new File(imagePath);
             if (file.exists()) {
                 if (file.length()>TakePictureUtil.MAX_IMAGE_SIZE) {
                     AKUtils.showToast("上传的图片超过了5m，新浪不支持！");
@@ -390,7 +469,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
                 }
                 /*mPhotoUri=imageFileUri;
                 showPhoto(imageFileUri);*/
-                updateImageList(imgUrl);
+                updateImageList(imagePath);
             }
 
         } catch (Exception e) {
@@ -402,10 +481,16 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         }
     }
 
-    private void updateImageList(String imgUrl) {
-        UploadImage image=mDataList.get(selectedPos);
-        image.path=imgUrl;
-        image.pic_id="";
+    private void updateImageList(String imagePath) {
+        if (selectedPos>-1) {
+            UploadImage image=mDataList.get(selectedPos);
+            image.path=imagePath;
+            image.pic_id="";
+        } else {
+            UploadImage image=new UploadImage();
+            image.path=imagePath;
+            mDataList.add(image);
+        }
         mAdapter.notifyDataSetChanged();
         loadBitmap(mDataList);
     }
