@@ -40,6 +40,21 @@ public class UserFriendsFragment extends UserListFragment {
         this.currentUserId=aUserId;
     }
 
+    @Override
+    public void initApi() {
+        /*mStatusImpl=new SinaPlaceUserImpl();
+
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
+        try {
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.placeApiFactory());
+        } catch (WeiboException e) {
+            e.printStackTrace();
+            AKUtils.showToast("初始化api异常.");
+            //getActivity().finish();
+        }*/
+    }
+
     //--------------------- 数据加载 ---------------------
     @Override
     protected void loadData() {
@@ -62,7 +77,7 @@ public class UserFriendsFragment extends UserListFragment {
             userId=currentUserId;
         }
 
-        if(userId==100){
+        if (userId==100) {
             AKUtils.showToast(R.string.user_id_error);
             WeiboLog.w(TAG, "人员的id没有，有可能是只传来昵称！");
             return;
@@ -174,7 +189,7 @@ public class UserFriendsFragment extends UserListFragment {
             super.onPreExecute();
             following=true;
             User user=mDataList.get(selectedPos);
-            followingType=user.following?1:0;
+            followingType=user.following ? 1 : 0;
         }
 
         @Override

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.UserListFragment;
 import cn.archko.microblog.fragment.impl.SinaPlaceUserImpl;
 import cn.archko.microblog.ui.NewStatusActivity;
@@ -17,7 +18,11 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.me.microblog.App;
+import com.me.microblog.WeiboException;
 import com.me.microblog.bean.User;
+import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.ApiConfigFactory;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 
@@ -43,6 +48,21 @@ public class PlaceUserListFragment extends UserListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //mStatusImpl=new SinaPlaceUserImpl();
+    }
+
+    @Override
+    public void initApi() {
+        mStatusImpl=new SinaPlaceUserImpl();
+
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
+        try {
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.placeApiFactory());
+        } catch (WeiboException e) {
+            e.printStackTrace();
+            AKUtils.showToast("初始化api异常.");
+            //getActivity().finish();
+        }
     }
 
     /**
@@ -147,6 +167,41 @@ public class PlaceUserListFragment extends UserListFragment {
             User st;
             st=(User) mAdapter.getItem(mAdapter.getCount()-1);
             fetchData(-1, st.id, false, false);
+        }
+    }
+
+    /**
+     * 位置信息数量限制在50个内
+     *
+     * @param sinceId
+     * @param maxId
+     * @param isRefresh   是否是更新的，如果是更新的，应该把原来的列表清空。
+     * @param isHomeStore 是否是主页,只有主页有存储
+     */
+    @Override
+    public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
+        WeiboLog.i(TAG, "sinceId:"+sinceId+", maxId:"+maxId+", isRefresh:"+isRefresh+", isHomeStore:"+isHomeStore);
+        if (!App.hasInternetConnection(getActivity())) {
+            AKUtils.showToast(R.string.network_error);
+            if (mRefreshListener!=null) {
+                mRefreshListener.onRefreshFinished();
+            }
+            refreshAdapter(false, false);
+            return;
+        }
+
+        int count=weibo_count;
+        if (!isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
+            //count++;
+        } else {
+            //page=1;
+        }
+        if (count>50) {
+            count=50;
+        }
+
+        if (!isLoading) {
+            newTask(new Object[]{isRefresh, sinceId, maxId, count, page, isHomeStore}, null);
         }
     }
 
@@ -351,9 +406,9 @@ public class PlaceUserListFragment extends UserListFragment {
             //logMsg(sb.toString());
             WeiboLog.v(TAG, " sb:"+sb.toString());
 
-            ((App)App.getAppContext()).longitude=location.getLongitude();
-            ((App)App.getAppContext()).latitude=location.getLatitude();
-            ((App)App.getAppContext()).mLocationTimestamp=System.currentTimeMillis();
+            ((App) App.getAppContext()).longitude=location.getLongitude();
+            ((App) App.getAppContext()).latitude=location.getLatitude();
+            ((App) App.getAppContext()).mLocationTimestamp=System.currentTimeMillis();
 
             stopMap();
             WeiboLog.v(TAG, " geo:"+sb.toString());

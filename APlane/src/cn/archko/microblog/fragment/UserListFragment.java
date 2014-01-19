@@ -9,18 +9,11 @@ import android.widget.AbsListView;
 import android.widget.PopupMenu;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
-import cn.archko.microblog.fragment.impl.SinaPlaceUserImpl;
 import cn.archko.microblog.ui.NewStatusActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.UserItemView;
-import com.me.microblog.App;
-import com.me.microblog.WeiboException;
 import com.me.microblog.bean.User;
-import com.me.microblog.core.AbsApiImpl;
-import com.me.microblog.core.factory.AbsApiFactory;
-import com.me.microblog.core.factory.ApiConfigFactory;
-import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
@@ -31,7 +24,7 @@ import cn.archko.microblog.utils.AKUtils;
  * getStatuses需要子类来实现，暂时不设为抽象类。
  * @author: archko 12-9-12
  */
-public class UserListFragment extends AbsBaseListFragment<User> {   //TODO 需要与UserGridFragment合并
+public abstract class UserListFragment extends AbsBaseListFragment<User> {   //TODO 需要与UserGridFragment合并
 
     public static final String TAG="UserListFragment";
 
@@ -39,21 +32,6 @@ public class UserListFragment extends AbsBaseListFragment<User> {   //TODO 需�
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //mStatusImpl=new SinaPlaceUserImpl();
-    }
-
-    @Override
-    public void initApi() {
-        mStatusImpl=new SinaPlaceUserImpl();
-
-        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
-        try {
-            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
-            mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.placeApiFactory());
-        } catch (WeiboException e) {
-            e.printStackTrace();
-            AKUtils.showToast("初始化api异常.");
-            //getActivity().finish();
-        }
     }
 
     /*@Override

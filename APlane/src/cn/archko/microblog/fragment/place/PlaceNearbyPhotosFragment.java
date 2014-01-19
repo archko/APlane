@@ -2,7 +2,12 @@ package cn.archko.microblog.fragment.place;
 
 import android.os.Bundle;
 import cn.archko.microblog.R;
+import cn.archko.microblog.fragment.impl.SinaPlaceStatusImpl;
 import com.me.microblog.App;
+import com.me.microblog.WeiboException;
+import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.factory.AbsApiFactory;
+import com.me.microblog.core.factory.ApiConfigFactory;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
@@ -30,6 +35,20 @@ public class PlaceNearbyPhotosFragment extends PlaceStatusListFragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+    @Override
+    public void initApi() {
+        mStatusImpl=new SinaPlaceStatusImpl();
+
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
+        try {
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.placeApiFactory());
+        } catch (WeiboException e) {
+            e.printStackTrace();
+            AKUtils.showToast("初始化api异常.");
+            //getActivity().finish();
+        }
+    }
     /*@Override
     public SStatusData<Status> getStatuses(Long sinceId, Long maxId, int c, int p)
         throws WeiboException {
@@ -72,7 +91,7 @@ public class PlaceNearbyPhotosFragment extends PlaceStatusListFragment {
         } else {
             //page=1;
         }
-        if (count>50){
+        if (count>50) {
             count=50;
         }
 
