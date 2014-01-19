@@ -368,5 +368,5 @@
     <string name="webview_receive_err">加載失敗！</string>
     <string name="webview_out_app">外置瀏覽器</string>
 
-    <string name="clear_data">清除了列表微博</string>
+    <string name="clear_data">清除数据,节约了内存</string>
 </resources>

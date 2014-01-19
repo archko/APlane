@@ -472,6 +472,9 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
         AKUtils.showToast(R.string.clear_data);
         mDataList.clear();
         mAdapter.notifyDataSetChanged();
+        if (null!=((App)App.getAppContext()).mDownloadPool) {
+            ((App)App.getAppContext()).mDownloadPool.cleanAllQuery();
+        }
     }
 
     /**

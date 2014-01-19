@@ -373,7 +373,7 @@
     <string name="webview_receive_err">加载失败！</string>
     <string name="webview_out_app">外置浏览器</string>
 
-    <string name="clear_data">清除了列表微博</string>
+    <string name="clear_data">清除数据,节约了内存</string>
 
     <!-- filter -->
     <string name="filters">Filters</string>
