@@ -11,13 +11,13 @@
     <RelativeLayout android:id="@+id/right"
         android:layout_alignParentRight="true"
         android:layout_marginTop="4dp" android:layout_marginBottom="4dp"
-        android:layout_height="40dp" android:layout_width="wrap_content">
+        android:layout_height="wrap_content" android:layout_width="wrap_content">
 
         <com.makeramen.RoundedImageView android:id="@+id/iv_portrait"
             android:layout_alignParentRight="true"
             makeramen:corner_radius="24dip"
-            makeramen:border_width="0dip"
-            android:layout_width="38dip" android:layout_height="38dip"
+            makeramen:border_width="0dip" android:layout_marginRight="24dp"
+            android:layout_width="40dip" android:layout_height="40dip"
             android:src="@drawable/user_default_photo"
             android:scaleType="center"
             android:focusable="false"/>
@@ -32,14 +32,14 @@
         <TextView android:id="@+id/comment_num"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="@string/item_comment"
-            android:layout_below="@id/tv_name" android:layout_toLeftOf="@id/iv_portrait"
+            android:layout_marginTop="20dp" android:layout_toLeftOf="@id/iv_portrait"
             android:textSize="12sp" android:layout_marginRight="8dip"
             android:paddingTop="2dip" android:textColor="?attr/textColorItemNum"/>
 
         <TextView android:id="@+id/repost_num"
             android:layout_toLeftOf="@id/comment_num"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="@string/item_repost" android:layout_below="@id/tv_name"
+            android:text="@string/item_repost" android:layout_marginTop="20dp"
             android:textSize="12sp" android:paddingRight="4dip"
             android:paddingTop="2dip" android:textColor="?attr/textColorItemNum"/>
 

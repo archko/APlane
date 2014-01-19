@@ -213,7 +213,7 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
             }
         }
 
-        if (mDataList.size()>0) {
+        if (null!=mDataList&&mDataList.size()>0) {
             if (mEmptyTxt.getVisibility()==View.VISIBLE) {
                 mEmptyTxt.setVisibility(View.GONE);
             }

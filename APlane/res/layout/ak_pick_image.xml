@@ -9,7 +9,13 @@
         android:text="最多可以添加9张图片."
         android:textColor="?attr/textColorItemName"
         android:minHeight="40dp" android:gravity="center"
-        android:textSize="18sp"
+        android:textSize="17sp"
+        android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <TextView
+        android:text="目前未完成多图上传,所以只有第一张图片有效被返回."
+        android:textColor="@color/red"
+        android:minHeight="32dp" android:gravity="center"
+        android:textSize="14sp"
         android:layout_width="match_parent" android:layout_height="wrap_content"/>
     <GridView
         android:id="@+id/gridview"

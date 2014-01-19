@@ -9,6 +9,7 @@ import java.util.Date;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
@@ -34,9 +35,11 @@ import android.text.TextWatcher;
 
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.DraftListFragment;
+import cn.archko.microblog.fragment.PickImageFragment;
 import cn.archko.microblog.fragment.SearchDialogFragment;
 import cn.archko.microblog.fragment.abs.AtUserListener;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
+import cn.archko.microblog.listeners.OnPickPhotoListener;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.utils.AKUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
@@ -58,7 +61,7 @@ import com.me.microblog.util.WeiboLog;
 /**
  * @author root
  */
-public class NewStatusActivity extends BaseOauthFragmentActivity implements ActionBar.OnNavigationListener {
+public class NewStatusActivity extends BaseOauthFragmentActivity implements ActionBar.OnNavigationListener, OnPickPhotoListener {
 
     private static final String TAG="NewStatusActivity";
     private ActionBar mActionBar;
@@ -128,6 +131,10 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
      * 选中的位置。
      */
     int selectedPos=0;
+
+    public static final int MODE_NORMAL=0;
+    public static final int MODE_PICK_PHOTO=1;
+    int mode=MODE_NORMAL;
     //--------------------- 认证 ---------------------
 
     /**
@@ -159,7 +166,8 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             case R.id.btn_picture: {
                 //mEmotionGridview.setVisibility(View.GONE);
                 mEmojiPanelView.setVisibility(View.GONE);
-                doPickPhotoAction();
+                //doPickPhotoAction();  //TODO
+                pickPhoto();
                 break;
             }
 
@@ -231,12 +239,55 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             }
 
             case R.id.edit_btn: {
-                doEditPhoto();
+                //doEditPhoto();    //TODO
                 break;
             }
 
             default:
                 break;
+        }
+    }
+
+    private void pickPhoto() {
+        Fragment newFragment=new PickImageFragment();
+        WeiboLog.v(TAG, "pickPhoto:"+imgUrl);
+        if (!TextUtils.isEmpty(imgUrl)) {
+            Bundle args=new Bundle();
+            args.putString(PickImageFragment.KEY_PHOTO, imgUrl);
+            newFragment.setArguments(args);
+        }
+        // Add the fragment to the activity, pushing this transaction
+        // on to the back stack.
+        FragmentTransaction ft=getFragmentManager().beginTransaction();
+        ft.add(android.R.id.content, newFragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.addToBackStack(null);
+        ft.commit();
+
+        mode=MODE_PICK_PHOTO;
+        updateActionBar();
+    }
+
+    @Override
+    public void onPickOne(String path) {
+        imgUrl=path;
+        WeiboLog.v(TAG, "pick:"+path);
+        getFragmentManager().popBackStack(getFragmentManager().getBackStackEntryAt(0).getId(),
+            FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        mode=MODE_NORMAL;
+        updateActionBar();
+    }
+
+    /**
+     * 对于不同的状态,处理不同的ActionBar.
+     */
+    private void updateActionBar() {
+        if (mode==MODE_NORMAL) {
+            mActionBar.setTitle(R.string.text_new_status);
+            mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        } else {
+            mActionBar.setTitle(R.string.txt_pick_photo);
+            mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         }
     }
 
@@ -464,6 +515,15 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId=item.getItemId();
         if (itemId==android.R.id.home) {
+            WeiboLog.d(TAG, "onOptionsItemSelected:"+mode);
+            if (mode==MODE_NORMAL) {
+            } else {
+                getFragmentManager().popBackStack(getFragmentManager().getBackStackEntryAt(0).getId(),
+                    FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                mode=MODE_NORMAL;
+                updateActionBar();
+                return true;
+            }
             showExistDialog();
         } else if (MENU_FIRST==itemId) {
             getDraft();
@@ -567,11 +627,20 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         });
     }
 
-    @Override
+    /*@Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         WeiboLog.i(TAG, "dispatchKeyEvent.code:"+event.getKeyCode());
         if (event.getKeyCode()==KeyEvent.KEYCODE_BACK) {
             if (event.getAction()==KeyEvent.ACTION_DOWN&&event.getRepeatCount()==0) {
+                if (mode==MODE_NORMAL) {
+                } else {
+                    getFragmentManager().popBackStack(getFragmentManager().getBackStackEntryAt(0).getId(),
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    mode=MODE_NORMAL;
+                    updateActionBar();
+                    return true;
+                }
+
                 if (!isDone) {
                     showExistDialog();
                     return true;
@@ -579,13 +648,13 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             }
         }
         return super.dispatchKeyEvent(event);
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode==RESULT_OK) {    //TODO 需要处理返回的视频的情况.
-            if (requestCode==CAMERA_WITH_DATA_TO_THUMB) {
+            /*if (requestCode==CAMERA_WITH_DATA_TO_THUMB) {
                 processGalleryData(data.getData());
             } else if (requestCode==PHOTO_PICKED_WITH_DATA) {
                 processGalleryData(data.getData());
@@ -603,15 +672,16 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
                         e.printStackTrace();
                     }
                 }
-            } else if (requestCode==REQUEST_DRAFT) {
+            } else*/
+            if (requestCode==REQUEST_DRAFT) {
                 Draft draft=(Draft) data.getSerializableExtra("draft");
                 if (null!=draft) {
                     mDraft=draft;
                     initDraft(draft);
                 }
-            } else if (requestCode==EDIT_PHOTO_PICKED_WITH_DATA) {
+            }/* else if (requestCode==EDIT_PHOTO_PICKED_WITH_DATA) {
                 processGalleryData(data.getData());
-            }
+            }*/
         } else {
             //clearImagePreview();
         }
@@ -716,7 +786,20 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        WeiboLog.d(TAG, "onBackPressed:"+mode);
+        if (mode==MODE_NORMAL) {
+            if (!isDone) {
+                showExistDialog();
+            } else {
+                super.onBackPressed();
+            }
+        } else {
+            getFragmentManager().popBackStack(getFragmentManager().getBackStackEntryAt(0).getId(),
+                FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            mode=MODE_NORMAL;
+            updateActionBar();
+        }
+
         if (mEmojiPanelView.getVisibility()==View.VISIBLE) {
             mEmojiPanelView.setVisibility(View.GONE);
         }
@@ -765,7 +848,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             final String url=draft.imgUrl;
             if (!TextUtils.isEmpty(url)) {
                 imgUrl=url;
-                showPhoto(imgUrl);
+                //showPhoto(imgUrl);    //TODO
             } else {
                 imgUrl=null;
                 mPreview.setImageBitmap(null);
@@ -974,10 +1057,10 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
     /**
      * 编辑照片
      */
-    private void doEditPhoto() {
+    /*private void doEditPhoto() {
         try { // 启动 gallery 去剪辑这个照片
             Intent intent=new Intent("android.intent.action.EDIT");
-            intent.setDataAndType(mPhotoUri, "image/*");
+            intent.setDataAndType(mPhotoUri, "image*//*");
             startActivityForResult(intent, EDIT_PHOTO_PICKED_WITH_DATA);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(this, "没有找到相关的编辑程序，现在裁剪。", Toast.LENGTH_LONG).show();
@@ -985,7 +1068,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * 处理从相册中选择图片
@@ -1012,7 +1095,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
                     return;
                 }
                 mPhotoUri=imageFileUri;
-                showPhoto(imageFileUri);
+                //showPhoto(imageFileUri);
             }
 
         } catch (Exception e) {
@@ -1024,7 +1107,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         }
     }
 
-    private void doPickPhotoAction() {
+    /*private void doPickPhotoAction() {
         // Wrap our context to inflate list items using correct theme
         final Context dialogContext=new ContextThemeWrapper(NewStatusActivity.this, android.R.style.Theme_Light);
         String cancel=getString(R.string.new_back);
@@ -1063,12 +1146,12 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             }
         });
         builder.create().show();
-    }
+    }*/
 
     /**
      * 拍照获取图片
      */
-    protected void doTakePhoto() {
+    /*protected void doTakePhoto() {
         try {
             // Launch camera to take photo for selected contact
             PHOTO_DIR.mkdirs();
@@ -1087,12 +1170,12 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE, null);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
         return intent;
-    }
+    }*/
 
     /**
      * 用当前时间给取得的图片命名,需要注意，如果文件名有空格，这货还取不到返回值
      */
-    private String getPhotoFileName() {
+    /*private String getPhotoFileName() {
         Date date=new Date(System.currentTimeMillis());
         SimpleDateFormat dateFormat=new SimpleDateFormat("'IMG'_yyyyMMdd_HHmmss");
         return dateFormat.format(date)+".jpg";
@@ -1115,7 +1198,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
     // 封装请求 Gallery 的 intent 
     public static Intent getPhotoPickIntent() {
         Intent intent=new Intent(Intent.ACTION_GET_CONTENT, null);
-        intent.setType("image/*");
+        intent.setType("image*//*");
         intent.putExtra("crop", "true");
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
@@ -1136,31 +1219,31 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         } catch (Exception e) {
             //Toast.makeText(this, R.string.photoPickerNotFoundText, Toast.LENGTH_LONG).show();
         }
-    }
+    }*/
 
     /**
      * 裁剪，直接使用uri来处理。在没有图片编辑软件后调用这个裁剪功能。
      */
-    protected void startCropPhoto() {
+    /*protected void startCropPhoto() {
         try { // 启动 gallery 去剪辑这个照片
             final Intent intent=getCropImageIntent(mPhotoUri);
             startActivityForResult(intent, PHOTO_PICKED_WITH_DATA);
         } catch (Exception e) {
             Toast.makeText(this, "系统没有裁剪的程序！", Toast.LENGTH_LONG).show();
         }
-    }
+    }*/
 
     /**
      * Constructs an intent for image cropping. 调用图片剪辑程序
      */
-    public static Intent getCropImageIntent(Uri photoUri) {
+    /*public static Intent getCropImageIntent(Uri photoUri) {
         Intent intent=new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(photoUri, "image/*");
+        intent.setDataAndType(photoUri, "image*//*");
         intent.putExtra("crop", "true");
-        /*intent.putExtra("aspectX", 1);
+        *//*intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
         intent.putExtra("outputX", 80);
-        intent.putExtra("outputY", 80);*/
+        intent.putExtra("outputY", 80);*//*
         intent.putExtra("return-data", true);
         return intent;
     }
@@ -1229,5 +1312,5 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         mPreview.setVisibility(View.VISIBLE);
         mCloseImage.setVisibility(View.VISIBLE);
         mImageOperaBar.setVisibility(View.VISIBLE);
-    }
+    }*/
 }

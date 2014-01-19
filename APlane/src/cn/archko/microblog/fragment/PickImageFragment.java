@@ -28,6 +28,7 @@ import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
 import cn.archko.microblog.fragment.impl.AbsStatusImpl;
+import cn.archko.microblog.listeners.OnPickPhotoListener;
 import cn.archko.microblog.ui.ImageViewerActivity;
 import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.utils.BitmapThread;
@@ -52,8 +53,9 @@ import java.util.ArrayList;
 public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
     private static final String TAG="PickImage";
-    private static final int MENU_ADD=Menu.FIRST;
-    private static final int MENU_SAVE=Menu.FIRST+1;
+    private static final int MENU_ADD=Menu.FIRST+100;
+    private static final int MENU_SAVE=Menu.FIRST+101;
+    public static final String KEY_PHOTO="key_photo";
     Handler mHandler=new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -69,6 +71,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
     int width=120;
     int height=120;
     TakePictureUtil takePictureUtil;
+    public OnPickPhotoListener mPickPhotoListener;
     public static LruCache<String, Bitmap> bitmapLruCache=new LruCache<String, Bitmap>(12);
 
     public PickImageFragment() {
@@ -90,9 +93,32 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        WeiboLog.v(TAG, "onAttach:"+this);
+        try {
+            mPickPhotoListener=(OnPickPhotoListener) activity;
+        } catch (ClassCastException e) {
+            //throw new ClassCastException(activity.toString()+" must implement OnRefreshListener");
+            mPickPhotoListener=null;
+        }
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        //WeiboLog.d(TAG, "args:"+getArguments());
+        if (null!=getArguments()&&null!=getArguments().getString(KEY_PHOTO)) {
+            String url=getArguments().getString(KEY_PHOTO);
+            WeiboLog.d(TAG, "url:"+url);
+            if (null==mDataList) {
+                mDataList=new ArrayList<UploadImage>();
+            }
+            UploadImage image=new UploadImage();
+            image.path=url;
+            mDataList.add(image);
+        }
     }
 
     @Override
@@ -133,10 +159,13 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
             }
         });
 
-        mDataList=new ArrayList<UploadImage>();
-        loadTestData();
+        /*mDataList=new ArrayList<UploadImage>();
+        loadTestData();*/
         if (mAdapter==null) {
             mAdapter=new AbsBaseListFragment.TimeLineAdapter();
+        }
+        if (null==mDataList||mDataList.size()<1) {
+            AKUtils.showToast("您可以开始添加图片了.");
         }
 
         mGridView.setAdapter(mAdapter);
@@ -260,6 +289,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
         MenuItem actionItem=menu.add(0, MENU_ADD, 0, "Add");
 
         // Items that show as actions should favor the "if room" setting, which will
@@ -301,9 +331,9 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         if (item.getItemId()==MENU_ADD) {
             addNewPicture();
         } else if (item.getItemId()==MENU_SAVE) {
-
+            completePick();
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     private void addNewPicture() {
@@ -321,6 +351,17 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
             takePictureUtil.setFragment(this);
         }
         takePictureUtil.doPickPhotoAction();
+    }
+
+    private void completePick() {
+        if (null!=mPickPhotoListener) {
+            String path=null;
+            if (null!=mDataList&&mDataList.size()>0) {
+                path=mDataList.get(0).path;
+            }
+            //WeiboLog.v(TAG, "completePick:"+path);
+            mPickPhotoListener.onPickOne(path);
+        }
     }
 
     @Override

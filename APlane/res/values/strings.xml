@@ -244,6 +244,7 @@
     <string name="text_count">140</string>
     <string name="text_hint">可以输入140个文字.</string>
     <string name="text_new_status">发表新微博</string>
+    <string name="txt_pick_photo">选择照片</string>
     <string name="text_exceed_max_num">超过了140个文字.</string>
     <string name="text_repost_num">转发 %s</string>
     <string name="text_comment_num">评论 %s</string>

@@ -41,7 +41,7 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
     private String portraitUrl=null;
     private String mCacheDir;    //图片缓存目录
     private User user;    //微博
-    LinearLayout right;
+    View right;
 
     public static final int TYPE_PORTRAIT=1;
     private int followingType=-1;   //0表示未关注,1表示已关注,-1表示未知
@@ -50,7 +50,7 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
         super(context);
         ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.friend_item, this);
 
-        right=(LinearLayout) findViewById(R.id.right);
+        right= findViewById(R.id.right);
         status_content=(TextView) findViewById(R.id.status_content);
         followBtn=(Button) findViewById(R.id.follow_btn);
         mPortrait=(ImageView) findViewById(R.id.iv_portrait);
