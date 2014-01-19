@@ -20,6 +20,7 @@ import cn.archko.microblog.ui.NewStatusActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.UserGridItemView;
+import com.andrew.apollo.utils.ApolloUtils;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.me.microblog.App;
@@ -111,8 +112,27 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         nav_down.setBackgroundColor(Color.TRANSPARENT);
         zoomLayout=(RelativeLayout) root.findViewById(R.id.zoomLayout);
         zoomAnim=AnimationUtils.loadAnimation(getActivity(), R.anim.zoom);*/
-
+        //initGridView();
         return root;
+    }
+
+    private void initGridView() {
+        // Set up the helpers
+        if (ApolloUtils.isLandscape(getActivity())) {
+            /*if (isDetailedLayout()) {
+                mAdapter.setLoadExtraData(true);
+                mGridView.setNumColumns(TWO);
+            } else {
+                mGridView.setNumColumns(FOUR);
+            }*/
+        } else {
+            /*if (isDetailedLayout()) {
+                mAdapter.setLoadExtraData(true);
+                mGridView.setNumColumns(ONE);
+            } else {
+                mGridView.setNumColumns(TWO);
+            }*/
+        }
     }
 
     public void _onActivityCreated(Bundle savedInstanceState) {

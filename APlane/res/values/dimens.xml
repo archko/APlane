@@ -21,6 +21,8 @@
     <dimen name="bottom_action_bar_group_width">68dp</dimen>
 
     <!-- GridView items -->
+    <!-- grid view vertical and horizontal spacing -->
+    <dimen name="grid_item_spacing">4.0dip</dimen>
     <dimen name="gridview_image_width">120dp</dimen>
     <dimen name="gridview_image_height">120dp</dimen>
     <dimen name="gridview_item_ccontainer_height">64dp</dimen>
