@@ -115,6 +115,10 @@ public class PrefsActivity extends PreferenceActivity implements
      */
     public final static String PREF_UPDATE_INCREMENT="pref_update_increment";
     /**
+     * 图片查看器,加载原图与中等图片
+     */
+    public final static String PREF_IMAGEVIEWER="pref_imageviewer";
+    /**
      * 后退键的行为,直接退出,结束服务.
      */
     public final static String PREF_BACK_PRESSED="pref_back_pressed";
@@ -360,6 +364,7 @@ public class PrefsActivity extends PreferenceActivity implements
                             .remove(PREF_AUTO_CHK_NEW_STATUS)
                             .remove(PREF_CHK_NEW_STATUS_TIME)
                             .remove(PREF_UPDATE_INCREMENT)
+                            .remove(PREF_IMAGEVIEWER)
                             .remove(PreferenceUtils.PREF_TITLE_FONT_SIZE)
                             .remove(PreferenceUtils.PREF_CONTENT_FONT_SIZE)
                             .remove(PreferenceUtils.PREF_RET_CONTENT_FONT_SIZE)

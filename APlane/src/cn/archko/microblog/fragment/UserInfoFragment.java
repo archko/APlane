@@ -7,7 +7,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -23,6 +25,8 @@ import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsStatusAbstraction;
 import cn.archko.microblog.fragment.impl.SinaUserImpl;
 import cn.archko.microblog.ui.UserFragmentActivity;
+import cn.archko.microblog.ui.WebviewActivity;
+import com.andrew.apollo.utils.PreferenceUtils;
 import com.andrew.apollo.utils.ThemeUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
@@ -43,6 +47,8 @@ import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
 
 import java.io.Serializable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @version 1.00.00
@@ -54,8 +60,8 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
     public static final String TAG="UserInfoFragment";
     private TextView screeName;
     private ImageView profileImage;
-    private TextView statusTitle;
-    TextView mRetweetText;
+    private TextView mContentFirst;
+    TextView mContentSencond;
     private String profileImageUrl, pictureUrl;
     private TextView description;
     private TextView statuses, friends, followers, favourites;
@@ -135,8 +141,8 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
         friendsBtn=(LinearLayout) root.findViewById(R.id.friends_btn);
         followersBtn=(LinearLayout) root.findViewById(R.id.followers_btn);
 
-        statusTitle=(TextView) root.findViewById(R.id.tv_content_first);
-        mRetweetText=(TextView) root.findViewById(R.id.tv_content_sencond);
+        mContentFirst=(TextView) root.findViewById(R.id.tv_content_first);
+        mContentSencond=(TextView) root.findViewById(R.id.tv_content_sencond);
 
         followButton=(Button) root.findViewById(R.id.follow);
 
@@ -359,7 +365,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
                         favourites.setText(String.valueOf(user.favouritesCount));
                         statuses.setText(String.valueOf(user.statusesCount));
 
-                        profileImageUrl=user.profileImageUrl;
+                        profileImageUrl=TextUtils.isEmpty(user.avatar_large) ? user.profileImageUrl : user.avatar_large;
                         LoadImageTask loadImageTask=new LoadImageTask();
                         loadImageTask.execute();
 
@@ -367,9 +373,11 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
                         if (null!=status) {
                             String title=status.text+" ";
                             SpannableString spannableString=new SpannableString(title);
-                            WeiboUtil.highlightContent(getActivity(), spannableString, getResources().getColor(R.color.holo_dark_item_at));
-                            statusTitle.setText(spannableString, TextView.BufferType.SPANNABLE);
-                            statusTitle.setMovementMethod(LinkMovementMethod.getInstance());
+                            //WeiboUtil.highlightContent(getActivity(), spannableString, getResources().getColor(R.color.holo_dark_item_at));
+                            highlightAtClickable(spannableString, WeiboUtil.ATPATTERN);
+                            highlightUrlClickable(spannableString, WeiboUtil.getWebPattern());
+                            mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
+                            mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
                             Status retStatus=status.retweetedStatus;
                             if (null!=retStatus) {
@@ -378,10 +386,12 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
                                 }
                                 title=retStatus.text+" ";
                                 spannableString=new SpannableString(title);
-                                WeiboUtil.highlightContent(getActivity(), spannableString, getResources().getColor(R.color.holo_dark_item_highliht_link));
-                                mRetweetText.setText(spannableString, TextView.BufferType.SPANNABLE);
-                                mRetweetText.setMovementMethod(LinkMovementMethod.getInstance());
-                                mRetweetText.setVisibility(View.VISIBLE);
+                                //WeiboUtil.highlightContent(getActivity(), spannableString, getResources().getColor(R.color.holo_dark_item_highliht_link));
+                                highlightAtClickable(spannableString, WeiboUtil.ATPATTERN);
+                                highlightUrlClickable(spannableString, WeiboUtil.getWebPattern());
+                                mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
+                                mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
+                                mContentSencond.setVisibility(View.VISIBLE);
                             }
                         }
 
@@ -394,7 +404,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
                                 setFollowingButton();
                             }
                         } else {
-                            statusTitle.setText(null);
+                            mContentFirst.setText(null);
                             //mContentSencond.setVisibility(View.GONE);
                         }
 
@@ -439,7 +449,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
         @Override
         public void onClick(View view) {
-            if(null==mUser){
+            if (null==mUser) {
                 AKUtils.showToast("需要先加载用户信息！");
                 return;
             }
@@ -732,4 +742,107 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
             }
         }
     }*/
+    //--------------------- 内容点击器 ---------------------
+
+    private class AtClicker extends WeiboUtil.MyClicker {
+
+        @Override
+        public void updateDrawState(TextPaint textPaint) {
+            try {
+                if (isResumed()) {
+                    textPaint.setColor(getResources().getColor(R.color.holo_dark_item_highliht_link));
+                    textPaint.setUnderlineText(true);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onClick(View view) {
+            WeiboLog.d("AtClicker:"+name);
+            if (TextUtils.isEmpty(name)) {
+                WeiboLog.e(TAG, "nick name is null.");
+                return;
+            }
+            WeiboOperation.toViewStatusUser(UserInfoFragment.this.getActivity(), name,
+                -1, UserFragmentActivity.TYPE_USER_INFO);
+        }
+
+    }
+
+    public void highlightAtClickable(Spannable spannable, Pattern pattern) {
+        Matcher atMatcher=pattern.matcher(spannable);
+
+        while (atMatcher.find()) {
+            int start=atMatcher.start();
+            int end=atMatcher.end();
+            //WeiboLog.d("weibo", "start:"+start+" end:"+end);
+            if (end-start==2) {
+            } else {
+                if (end-start<=2) {
+                    break;
+                }
+            }
+
+            String name=spannable.subSequence(start, end).toString();
+            AtClicker clicker=new AtClicker();
+            clicker.name=name;
+            spannable.setSpan(clicker, start, end, 34);
+        }
+    }
+
+    public void highlightUrlClickable(Spannable spannable, Pattern pattern) {
+        Matcher atMatcher=pattern.matcher(spannable);
+
+        while (atMatcher.find()) {
+            int start=atMatcher.start();
+            int end=atMatcher.end();
+            //WeiboLog.d("weibo", "start:"+start+" end:"+end);
+            if (end-start==2) {
+            } else {
+                if (end-start<=2) {
+                    break;
+                }
+            }
+
+            String name=spannable.subSequence(start, end).toString();
+            UrlClicker clicker=new UrlClicker();
+            clicker.name=name;
+            spannable.setSpan(clicker, start, end, 34);
+        }
+    }
+
+    private class UrlClicker extends WeiboUtil.MyClicker {
+
+        @Override
+        public void updateDrawState(TextPaint textPaint) {
+            try {
+                if (isResumed()) {
+                    textPaint.setColor(getResources().getColor(R.color.holo_dark_item_highliht_link));
+                    textPaint.setUnderlineText(true);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onClick(View view) {
+            WeiboLog.d("UrlClicker:"+name);
+            if (TextUtils.isEmpty(name)) {
+                WeiboLog.e(TAG, "url is null.");
+                return;
+            }
+            //String str1=URLEncoder.encode(this.name);
+            boolean prefWebview=mPrefs.getBoolean(PreferenceUtils.PREF_WEBVIEW, true);
+            if (!prefWebview) {
+                WeiboUtil.openUrlByDefaultBrowser(getActivity(), name);
+            } else {
+                Intent intent=new Intent(getActivity(), WebviewActivity.class);
+                intent.putExtra("url", name);
+                getActivity().startActivity(intent);
+            }
+        }
+    }
 }

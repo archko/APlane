@@ -572,7 +572,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
      */
     void showExistDialog() {
         String contentString=content.getEditableText().toString();
-        if (TextUtils.isEmpty(contentString)) {
+        if (TextUtils.isEmpty(contentString)&&TextUtils.isEmpty(imgUrl)) {
             finish();
             return;
         }
@@ -626,29 +626,6 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             }
         });
     }
-
-    /*@Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        WeiboLog.i(TAG, "dispatchKeyEvent.code:"+event.getKeyCode());
-        if (event.getKeyCode()==KeyEvent.KEYCODE_BACK) {
-            if (event.getAction()==KeyEvent.ACTION_DOWN&&event.getRepeatCount()==0) {
-                if (mode==MODE_NORMAL) {
-                } else {
-                    getFragmentManager().popBackStack(getFragmentManager().getBackStackEntryAt(0).getId(),
-                        FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    mode=MODE_NORMAL;
-                    updateActionBar();
-                    return true;
-                }
-
-                if (!isDone) {
-                    showExistDialog();
-                    return true;
-                }
-            }
-        }
-        return super.dispatchKeyEvent(event);
-    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -791,7 +768,11 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             if (!isDone) {
                 showExistDialog();
             } else {
-                super.onBackPressed();
+                if (TextUtils.isEmpty(imgUrl)) {
+                    super.onBackPressed();
+                } else {
+                    showExistDialog();
+                }
             }
         } else {
             getFragmentManager().popBackStack(getFragmentManager().getBackStackEntryAt(0).getId(),

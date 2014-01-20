@@ -2,10 +2,12 @@ package cn.archko.microblog.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import cn.archko.microblog.ui.PrefsActivity;
 import com.me.microblog.App;
 import cn.archko.microblog.R;
 import com.me.microblog.WeiboUtil;
@@ -79,7 +82,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         return mBmidPath;
     }
 
-    public void update(String bean){
+    public void update(String bean) {
         if (TextUtils.isEmpty(bean)||!bean.startsWith("http")) {
             File file=new File(bean);
             if (file.exists()) {
@@ -94,7 +97,13 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
 
         imageBean=bean;
 
-        bmiddlePic=bean.replace("thumbnail", "bmiddle");
+        SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(mContext);
+        boolean showOriginal=mPrefs.getBoolean(PrefsActivity.PREF_IMAGEVIEWER, true);
+        if (showOriginal) {
+            bmiddlePic=bean.replace("thumbnail", "bmiddle");
+        } else {
+            bmiddlePic=bean.replace("thumbnail", "originalPic");
+        }
 
         String dir=App.mCacheDir+Constants.PICTURE_DIR;
         if (bean.endsWith("gif")) {
@@ -111,7 +120,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
     }
 
     private void loadView(String bean) {
-        if (getChildCount()>0){
+        if (getChildCount()>0) {
             removeAllViews();
         }
 

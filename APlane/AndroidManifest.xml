@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="1433" android:installLocation="auto"
-    android:versionName="1.5.0"
+    android:versionCode="1441" android:installLocation="auto"
+    android:versionName="1.5.1"
     package="cn.archko.microblog">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -167,10 +167,10 @@
         </activity>
 
         <activity android:name=".ui.EmptyFragmentActivity" android:label="twitter/Empty">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="archko.test"/>
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <activity android:name=".ui.TestApiActivity" android:label="twitter/TestApi">

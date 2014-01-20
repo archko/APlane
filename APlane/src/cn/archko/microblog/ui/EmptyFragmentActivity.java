@@ -31,7 +31,7 @@ public class EmptyFragmentActivity extends SkinFragmentActivity implements OnRef
         mActionBar.setHomeButtonEnabled(true);
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 
-        initFragment(PickImageFragment.class.getName());
+        initFragment();
     }
 
     public void initFragment() {
@@ -49,6 +49,10 @@ public class EmptyFragmentActivity extends SkinFragmentActivity implements OnRef
         try {
             WeiboLog.d("start a fragment:"+title+" fragment Class:"+className);
             Fragment newFragment=Fragment.instantiate(this, className);
+            Bundle args=intent.getExtras();
+            if (null!=args) {
+                newFragment.setArguments(args);
+            }
             FragmentTransaction ft=getFragmentManager().beginTransaction();
             ft.add(android.R.id.content, newFragment).commit();
         } catch (Exception e) {

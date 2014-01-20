@@ -214,7 +214,6 @@ public class AddAccountDialogFragment extends DialogFragment {
                 return;
             }
 
-            super.handleMessage(msg);
             int what=msg.what;
             if (what==0) {
                 oauthResult(msg);

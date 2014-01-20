@@ -23,7 +23,7 @@ public class EmptyFragment extends AbstractBaseFragment {
         LinearLayout root=new LinearLayout(getActivity());
         TextView textView=new TextView(getActivity());
         textView.setText("滑动关闭");
-        textView.setTextSize(24);
+        textView.setTextSize(20);
         textView.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         lp.gravity=Gravity.CENTER;

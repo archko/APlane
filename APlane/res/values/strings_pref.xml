@@ -68,6 +68,9 @@
     <string name="pref_increment">主页增量加载</string>
     <string name="pref_increment_sum">只获取未读消息数,以减少流量消耗!</string>
 
+    <string name="pref_imageviewer">图片查看器</string>
+    <string name="pref_imageviewer_sum">加载原图(中等图也不小)</string>
+
     <string name="pref_status_comment">详细微博及评论</string>
     <string name="pref_status_comment_sum">微博详细页面图片及评论头像</string>
     <string name="pref_comment">评论列表参数</string>

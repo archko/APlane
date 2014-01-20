@@ -25,6 +25,12 @@
             android:key="pref_update_increment"
             android:summary="@string/pref_increment_sum"/>
 
+        <CheckBoxPreference
+            android:title="@string/pref_imageviewer"
+            android:defaultValue="true"
+            android:key="pref_imageviewer"
+            android:summary="@string/pref_imageviewer_sum"/>
+
         <PreferenceCategory android:title="@string/pref_status_comment"
             android:summary="@string/pref_status_comment_sum">
             <CheckBoxPreference
