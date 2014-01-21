@@ -282,6 +282,16 @@ public class DownloadPoolThread extends Thread {
             httpGet.setHeader("User-Agent", BaseApi.USERAGENT);
             DefaultHttpClient httpClient=new DefaultHttpClient(connectionManager, params);
             ImageTask imageTask=new ImageTask(mApp, httpClient, httpGet, piece);
+            //final AsyncDrawable asyncDrawable=new AsyncDrawable(imageTask);
+            AsyncDrawable asyncDrawable;
+            Drawable drawable=imageView.getDrawable();
+            if (null==drawable) {
+                asyncDrawable=new AsyncDrawable(null, null, imageTask);
+            } else {
+                asyncDrawable=new AsyncDrawable(null, imageTask.mDefault, imageTask);
+            }
+            imageView.setImageDrawable(asyncDrawable);
+            imageTask.startThread();
         }
     }
 

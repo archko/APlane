@@ -61,7 +61,7 @@ public class ImageTask extends Thread {
     /**
      * Default album art
      */
-    Bitmap mDefault;
+    public Bitmap mDefault;
 
     /**
      * Default artwork
@@ -119,22 +119,10 @@ public class ImageTask extends Thread {
         // A transparent image (layer 0) and the new result (layer 1)
         mArrayDrawable=new Drawable[2];
         mArrayDrawable[0]=mCurrentDrawable;
-
-        startThread();
     }
 
-    private void startThread() {
+    public void startThread() {
         setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-        ImageView imageView=mPiece.mImageReference.get();
-        //final AsyncDrawable asyncDrawable=new AsyncDrawable(imageTask);
-        AsyncDrawable asyncDrawable;
-        Drawable drawable=imageView.getDrawable();
-        if (null==drawable) {
-            asyncDrawable=new AsyncDrawable(null, null, this);
-        } else {
-            asyncDrawable=new AsyncDrawable(null, mDefault, this);
-        }
-        imageView.setImageDrawable(asyncDrawable);
         start();
     }
 
