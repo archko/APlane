@@ -238,6 +238,15 @@ public class WebviewActivity extends SkinFragmentActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (mWebView.canGoBack()) {
+            mWebView.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         /*mWebView.clearView();
