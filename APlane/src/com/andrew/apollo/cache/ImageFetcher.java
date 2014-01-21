@@ -25,6 +25,7 @@ import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.cache.Md5Digest;
 import com.me.microblog.core.BaseApi;
 import com.me.microblog.core.ImageManager;
+import com.me.microblog.thread.DownloadPiece;
 import com.me.microblog.thread.DownloadPool;
 import com.me.microblog.util.WeiboLog;
 import org.apache.http.HttpResponse;
@@ -116,7 +117,7 @@ public class ImageFetcher extends ImageWorker {
      * {@inheritDoc}
      */
     @Override
-    protected Bitmap processBitmap(final String url, final DownloadPool.DownloadPiece piece) {
+    protected Bitmap processBitmap(final String url, final DownloadPiece piece) {
         if (piece == null) {
             WeiboLog.w("piece == null");
             return null;
@@ -134,7 +135,7 @@ public class ImageFetcher extends ImageWorker {
         return downloadBitmap(url, piece);
     }
 
-    private Bitmap downloadBitmap(final String url, final DownloadPool.DownloadPiece piece) {
+    private Bitmap downloadBitmap(final String url, final DownloadPiece piece) {
         HttpGet httpGet=new HttpGet(piece.uri);
         httpGet.setHeader("User-Agent", BaseApi.USERAGENT);
         DefaultHttpClient httpClient=new DefaultHttpClient(connectionManager, params);
@@ -175,7 +176,7 @@ public class ImageFetcher extends ImageWorker {
      * @param key
      * @param imageView
      */
-    public void loadHomeImage(final String key, final ImageView imageView, DownloadPool.DownloadPiece piece) {
+    public void loadHomeImage(final String key, final ImageView imageView, DownloadPiece piece) {
         Log.v("", "loadHomeImage:"+key+" imv:"+imageView);
         loadImage(key, imageView, piece);
     }

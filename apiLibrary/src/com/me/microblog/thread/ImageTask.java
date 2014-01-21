@@ -1,19 +1,17 @@
 package com.me.microblog.thread;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-
+import android.preference.PreferenceManager;
 import android.widget.ImageView;
+import com.me.microblog.App;
 import com.me.microblog.R;
 import com.me.microblog.WeiboUtil;
 import com.me.microblog.cache.ImageCache2;
@@ -21,19 +19,21 @@ import com.me.microblog.cache.Md5Digest;
 import com.me.microblog.core.ImageManager;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
+import com.me.microblog.thread.DownloadPoolThread.AsyncDrawable;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import com.me.microblog.App;
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 
 /**
  * 下载图片线程。
  *
  * @author archko
  */
-public class FetchImage extends Thread {
+public class ImageTask extends Thread {
 
     public static final String TAG="FetchImage";
     private DefaultHttpClient httpClient;
@@ -51,12 +51,22 @@ public class FetchImage extends Thread {
      * 是否缓存在sdcard中
      */
     private boolean cache;
-    DownloadPiece mPiece;
+    public DownloadPiece mPiece;
 
     /**
      * Default transition drawable fade time
      */
-    public static final int FADE_IN_TIME = 200;
+    public static final int FADE_IN_TIME=200;
+
+    /**
+     * Default album art
+     */
+    Bitmap mDefault;
+
+    /**
+     * Default artwork
+     */
+    private BitmapDrawable mDefaultArtwork;
 
     /**
      * First layer of the transition drawable
@@ -68,38 +78,9 @@ public class FetchImage extends Thread {
      */
     private Drawable[] mArrayDrawable;
 
-    /**
-     * @param context
-     * @param handler
-     * @param client
-     * @param httpGet
-     * @param type     类型，主要用于获取微博或转发微博的图片
-     * @param filepath 图片名字，是md5加密后的
-     * @param uri      图片url
-     * @param dir      图片存储目录
-     */
-    public FetchImage(Context context, Handler handler, DefaultHttpClient client, HttpGet httpGet,
-        int type, String filepath, String uri, boolean cache, String dir) {
-        this.httpClient=client;
-        this.mHttpGet=httpGet;
-        this.mType=type;
-        //this.mFilepath=filepath;
-        this.mHandler=handler;
-        this.mContext=context;
-        this.uri=uri;
-        this.dir=dir;
-        this.cache=cache;
-        init();
-    }
+    public boolean isCancled=false;
 
-    private void init() {
-        mCurrentDrawable = new ColorDrawable(App.getAppContext().getResources().getColor(R.color.transparent));
-        // A transparent image (layer 0) and the new result (layer 1)
-        mArrayDrawable = new Drawable[2];
-        mArrayDrawable[0] = mCurrentDrawable;
-    }
-
-    public FetchImage(Context context, DefaultHttpClient client, HttpGet httpGet, DownloadPiece piece) {
+    public ImageTask(Context context, DefaultHttpClient client, HttpGet httpGet, DownloadPiece piece) {
         this.httpClient=client;
         this.mHttpGet=httpGet;
         this.mType=piece.type;
@@ -109,7 +90,47 @@ public class FetchImage extends Thread {
         this.dir=piece.dir;
         this.cache=piece.cache;
         mPiece=piece;
-        init();
+        init(context);
+    }
+
+    public final String getDefaultTheme(Context context) {
+        SharedPreferences mPreferences=PreferenceManager.getDefaultSharedPreferences(context);
+        String themeId=mPreferences.getString("theme", "2");
+        return themeId;
+    }
+
+    private void init(Context context) {
+        String themeId=getDefaultTheme(context);
+        int mResId=R.drawable.image_loading_dark;
+        if ("2".equals(themeId)) {
+            mResId=R.drawable.image_loading_light;
+        }
+        mDefault=((BitmapDrawable) context.getResources().getDrawable(mResId)).getBitmap();
+        mDefaultArtwork=new BitmapDrawable(context.getResources(), mDefault);
+        // No filter and no dither makes things much quicker
+        mDefaultArtwork.setFilterBitmap(false);
+        mDefaultArtwork.setDither(false);
+        mCurrentDrawable=new ColorDrawable(App.getAppContext().getResources().getColor(R.color.transparent));
+        // A transparent image (layer 0) and the new result (layer 1)
+        mArrayDrawable=new Drawable[2];
+        mArrayDrawable[0]=mCurrentDrawable;
+
+        startThread();
+    }
+
+    private void startThread() {
+        setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+        ImageView imageView=mPiece.mImageReference.get();
+        //final AsyncDrawable asyncDrawable=new AsyncDrawable(imageTask);
+        AsyncDrawable asyncDrawable;
+        Drawable drawable=imageView.getDrawable();
+        if (null==drawable) {
+            asyncDrawable=new AsyncDrawable(null, null, this);
+        } else {
+            asyncDrawable=new AsyncDrawable(null, mDefault, this);
+        }
+        imageView.setImageDrawable(asyncDrawable);
+        start();
     }
 
     @Override
@@ -117,7 +138,7 @@ public class FetchImage extends Thread {
         App app=(App) this.mContext.getApplicationContext();
         HttpResponse response;
 
-        if (ImageCache2.getInstance().isScrolling()||DownloadPool.cancelWork(mPiece)) {
+        if (ImageCache2.getInstance().isScrolling()||DownloadPoolThread.cancelWork(mPiece)||isCancled) {
             app.mDownloadPool.ActiveThread_Pop();
             return;
         }
@@ -139,13 +160,13 @@ public class FetchImage extends Thread {
 
             bitmap=ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(imagepath, -1);
             if (null!=bitmap) {
-                if (!DownloadPool.cancelWork(mPiece)) {
+                if (!DownloadPoolThread.cancelWork(mPiece)) {
                     SendMessage(mPiece.handler, mPiece, bitmap);
                 }
                 return;
             }
 
-            if (DownloadPool.cancelWork(mPiece)) {
+            if (DownloadPoolThread.cancelWork(mPiece)||isCancled) {
                 app.mDownloadPool.ActiveThread_Pop();
                 return;
             }
@@ -162,7 +183,7 @@ public class FetchImage extends Thread {
                 }
                 //WeiboLog.d(TAG, "cache:"+cache+" uri:"+uri+" length:"+bytes.length+" mFilepath:"+mFilepath+" dir:"+dir+" bitmap:"+bitmap);
 
-                if (DownloadPool.cancelWork(mPiece)) {   //下载过程,如果View已经销毁,不需要返回.
+                if (DownloadPoolThread.cancelWork(mPiece)) {   //下载过程,如果View已经销毁,不需要返回.
                     return;
                 }
 
@@ -182,13 +203,13 @@ public class FetchImage extends Thread {
     }
 
     public void SendMessage(Handler handler, final DownloadPiece piece, final Bitmap bitmap) {
-        if (null==piece||null==bitmap||handler==null) {
+        if (null==piece||null==bitmap||handler==null||isCancled) {
             WeiboLog.d(TAG, "SendMessage,bitmap is null.");
             return;
         }
 
         //if (!mPiece.isShowLargeBitmap) {   //大图暂时不缓存内存，但是缓存小图
-            ImageCache2.getInstance().addBitmapToMemCache(piece.uri, bitmap);
+        ImageCache2.getInstance().addBitmapToMemCache(piece.uri, bitmap);
         /*} else {
             LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
             lruCache.put(piece.uri, bitmap);
@@ -201,8 +222,8 @@ public class FetchImage extends Thread {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (!DownloadPool.cancelWork(mPiece)) {
-                    WeakReference<ImageView> viewWeakReference=mPiece.mImageReference;//DownloadPool.downloading.get(uri);
+                if (!DownloadPoolThread.cancelWork(mPiece)) {
+                    WeakReference<ImageView> viewWeakReference=mPiece.mImageReference;//DownloadPoolThread.downloading.get(uri);
                     ImageView view=(ImageView) viewWeakReference.get();
                     if (null!=view) {
                         //WeiboLog.v(TAG, "SendMessage "+uri);
@@ -218,18 +239,18 @@ public class FetchImage extends Thread {
 
             private void setBitmap(ImageView view, Bitmap bitmap, int type) {
                 if (type==Constants.TYPE_PORTRAIT) {
-                     view.setImageBitmap(bitmap);
+                    view.setImageBitmap(bitmap);
                 } else {
                     final BitmapDrawable layerTwo=new BitmapDrawable(App.getAppContext().getResources(), bitmap);
-                    layerTwo.setFilterBitmap(false);
+                    /*layerTwo.setFilterBitmap(false);
                     layerTwo.setDither(false);
                     mArrayDrawable[1]=layerTwo;
 
                     // Finally, return the image
                     final TransitionDrawable result=new TransitionDrawable(mArrayDrawable);
                     result.setCrossFadeEnabled(true);
-                    result.startTransition(FADE_IN_TIME);
-                    view.setImageDrawable(result);
+                    result.startTransition(FADE_IN_TIME);*/
+                    view.setImageDrawable(layerTwo);
                 }
             }
         });
@@ -245,5 +266,9 @@ public class FetchImage extends Thread {
         message.obj=uri;
         message.setData(bundle);
         handler.sendMessage(message);
+    }
+
+    public void cancel(boolean b) {
+        isCancled=true;
     }
 }

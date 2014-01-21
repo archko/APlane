@@ -28,6 +28,7 @@ import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
 import com.me.microblog.cache.ImageCache2;
+import com.me.microblog.thread.DownloadPiece;
 import com.me.microblog.thread.DownloadPool;
 
 import java.lang.ref.WeakReference;
@@ -190,9 +191,9 @@ public abstract class ImageWorker {
          * The URL of an image to download
          */
         private String mUrl;
-        DownloadPool.DownloadPiece mPiece;
+        DownloadPiece mPiece;
 
-        public BitmapWorkerTask(final ImageView imageView, DownloadPool.DownloadPiece piece) {
+        public BitmapWorkerTask(final ImageView imageView, DownloadPiece piece) {
             imageView.setBackgroundDrawable(mDefaultArtwork);
             mImageReference = new WeakReference<ImageView>(imageView);
             mPiece=piece;
@@ -399,7 +400,7 @@ public abstract class ImageWorker {
     }
 
     //======================== =========================
-    protected void loadImage(final String key, final ImageView imageView, DownloadPool.DownloadPiece piece) {
+    protected void loadImage(final String key, final ImageView imageView, DownloadPiece piece) {
         if (key == null || imageView == null){// || mImageCache == null) {
             Log.d("worker", "mImageCache == null");
             return;
@@ -431,7 +432,7 @@ public abstract class ImageWorker {
         }
     }
 
-    protected void loadImage(final String key, final ImageView imageView, DownloadPool.DownloadPiece piece,
+    protected void loadImage(final String key, final ImageView imageView, DownloadPiece piece,
         int maxWidth, int maxHeight) {
         if (key==null||mImageCache==null||imageView==null) {
             return;
@@ -465,5 +466,5 @@ public abstract class ImageWorker {
      * @return The processed {@link Bitmap}.
      */
     //protected abstract Bitmap processBitmap(String key);
-    protected abstract Bitmap processBitmap(String key, DownloadPool.DownloadPiece piece);
+    protected abstract Bitmap processBitmap(String key, DownloadPiece piece);
 }

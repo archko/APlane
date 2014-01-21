@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.oauth.OauthBean;
 import com.me.microblog.thread.DownloadPool;
+import com.me.microblog.thread.DownloadPoolThread;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.SqliteWrapper;
 import com.me.microblog.util.WeiboLog;
@@ -27,7 +28,7 @@ public class App extends Application {
     private static App instance;
     private OauthBean mOauthBean;
     public static boolean isLogined=false;
-    public DownloadPool mDownloadPool=null;
+    public DownloadPoolThread mDownloadPool=null;
     public static String mCacheDir; //图片存储上级目录
     public static final String KEY="abcdefgopqrstuvwxyzhijklmn";
     //public static String OAUTH_MODE=Constants.SOAUTH_TYPE_WEB;   //默认使用的是客户端认证。
@@ -226,7 +227,7 @@ public class App extends Application {
         }
 
         WeiboLog.d(TAG, "initDownloadPool.");
-        DownloadPool downloadPool=new DownloadPool(this);
+        DownloadPoolThread downloadPool=new DownloadPoolThread(this);
         downloadPool.setThreadCount(threadCount);
         this.mDownloadPool=downloadPool;
         this.mDownloadPool.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);

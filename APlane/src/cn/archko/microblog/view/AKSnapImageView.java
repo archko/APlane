@@ -99,11 +99,11 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
 
         SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(mContext);
         boolean showOriginal=mPrefs.getBoolean(PrefsActivity.PREF_IMAGEVIEWER, true);
-        //if (showOriginal) {
+        if (!showOriginal) {
             bmiddlePic=bean.replace("thumbnail", "bmiddle");
-        /*} else {
-            bmiddlePic=bean.replace("thumbnail", "originalPic");
-        }*/
+        } else {
+            bmiddlePic=bean.replace("thumbnail", "large");
+        }
 
         String dir=App.mCacheDir+Constants.PICTURE_DIR;
         if (bean.endsWith("gif")) {

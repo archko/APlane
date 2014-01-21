@@ -1,13 +1,15 @@
 package com.me.microblog.thread;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.*;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
-
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import com.me.microblog.App;
@@ -31,14 +33,18 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 图片下载线程池,暂时可允许最多三个线程同时下载。
  *
  * @author archko
  */
-public class DownloadPool extends Thread {
+public class DownloadPoolThread extends Thread {
 
-    public static final String TAG="DownloadPool";
+    public static final String TAG="DownloadPoolThread";
     public static int MAX_THREAD_COUNT=2;
     //private DefaultHttpClient httpClient;
     private int mActiveThread=0;
@@ -49,7 +55,6 @@ public class DownloadPool extends Thread {
     private boolean isStop=false;
     public static final int READ_TIMEOUT=24000;
     public static final int CONNECT_TIMEOUT=12000;
-    //public static Map<String, WeakReference<View>> downloading=new Hashtable<String, WeakReference<View>>();
 
     {
         params=new BasicHttpParams();
@@ -65,8 +70,8 @@ public class DownloadPool extends Thread {
         //  HttpConnectionManagerParams.setMaxTotalConnections(params, 3000);
 
         //  HttpConnectionParams.setSoTimeout(params, 60*1000);
-        //  HttpConnectionParams.setConnectionTimeout(params, 60*1000); 
-        //  ConnManagerParams.setTimeout(params, 60*1000); 
+        //  HttpConnectionParams.setConnectionTimeout(params, 60*1000);
+        //  ConnManagerParams.setTimeout(params, 60*1000);
 
         HttpConnectionParams.setConnectionTimeout(params, CONNECT_TIMEOUT);// Set the default socket timeout (SO_TIMEOUT) // in milliseconds which is the timeout for waiting for data.
         HttpConnectionParams.setSoTimeout(params, READ_TIMEOUT);
@@ -90,7 +95,7 @@ public class DownloadPool extends Thread {
         MAX_THREAD_COUNT=threadCount;
     }
 
-    public DownloadPool(App app) {
+    public DownloadPoolThread(App app) {
         this.mQuery=new ArrayList<DownloadPiece>();
         //this.httpClient=new DefaultHttpClient(params);
         this.mApp=app;
@@ -185,22 +190,6 @@ public class DownloadPool extends Thread {
      * @param cache     是否缓存
      */
     public void Push(DownloadPiece mpiece) {
-        /*if (TextUtils.isEmpty(mpiece.uri)) {
-            WeiboLog.d(TAG, "uri is null.");
-            return;
-        }
-        synchronized (this) {   //这里的同步造成了ui缓慢。
-            for (DownloadPiece piece : mQuery) {    //在这里先排除总比在FrechImg_Impl()中查找文件要快.
-                if (piece.uri.equals(mpiece.uri)) {
-                    WeiboLog.d(TAG, "已经存在url:"+mpiece.uri);
-                    mQuery.remove(piece);
-                    break;
-                }
-            }
-            mQuery.add(mpiece);
-
-            notifyAll();
-        }*/
         Message msg=Message.obtain();
         msg.obj=mpiece;
         msg.what=0;
@@ -218,20 +207,6 @@ public class DownloadPool extends Thread {
      * @param imageView 图片视图
      */
     public void Push(Handler handler, String uri, int type, boolean cache, String dir, ImageView imageView) {
-        //downloading.put(uri, new WeakReference<View>(imageView));
-        /*synchronized (this) {   //这里的同步造成了ui缓慢。
-            for (DownloadPiece piece : mQuery) {    //在这里先排除总比在FrechImg_Impl()中查找文件要快.
-                if (piece.uri.equals(uri)) {
-                    //WeiboLog.v(TAG, "已经存在url:"+uri);
-                    mQuery.remove(piece);
-                    break;
-                }
-            }
-            DownloadPiece piece=new DownloadPiece(handler, uri, type, cache, dir, false, imageView);
-            mQuery.add(piece);
-
-            notifyAll();
-        }*/
         Message msg=Message.obtain();
         DownloadPiece piece=new DownloadPiece(handler, uri, type, cache, dir, false, imageView);
         msg.obj=piece;
@@ -282,6 +257,7 @@ public class DownloadPool extends Thread {
 
         final Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(uri);
         final WeakReference<ImageView> viewWeakReference=piece.mImageReference;
+        ImageView imageView=(ImageView) viewWeakReference.get();
         if (null!=bitmap) {
             if (!cancelWork(piece)&&null!=piece.handler) {
                 piece.handler.post(new Runnable() {
@@ -299,22 +275,69 @@ public class DownloadPool extends Thread {
                 WeiboLog.v(TAG, "null==viewWeakReference:"+uri);
             }
             return;
-        }
-
-        //synchronized (this) {
+        } else if (executePotentialWork(piece.uri, viewWeakReference.get())) {
             mApp.mDownloadPool.ActiveThread_Push();
             String str3=Uri.encode(uri, ":/");
             HttpGet httpGet=new HttpGet(str3);
             httpGet.setHeader("User-Agent", BaseApi.USERAGENT);
             DefaultHttpClient httpClient=new DefaultHttpClient(connectionManager, params);
-            FetchImage fetchImage=new FetchImage(mApp, httpClient, httpGet, piece);
-            fetchImage.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-            fetchImage.start();
-        //}
+            ImageTask imageTask=new ImageTask(mApp, httpClient, httpGet, piece);
+        }
+    }
+
+    public static final boolean executePotentialWork(final Object data, final ImageView imageView) {
+        final ImageTask bitmapWorkerTask=getBitmapWorkerTask(imageView);
+        if (bitmapWorkerTask!=null) {
+            final Object bitmapData=bitmapWorkerTask.mPiece;
+            if (bitmapData==null||!((DownloadPiece) bitmapData).uri.equals(data)) {
+                bitmapWorkerTask.cancel(true);
+            } else {
+                // The same work is already in progress
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static final ImageTask getBitmapWorkerTask(final ImageView imageView) {
+        if (imageView!=null) {
+            final Drawable drawable=imageView.getDrawable();
+            if (drawable instanceof AsyncDrawable) {
+                final AsyncDrawable asyncDrawable=(AsyncDrawable) drawable;
+                return asyncDrawable.getBitmapWorkerTask();
+            }
+        }
+        return null;
+    }
+
+    public static final class AsyncDrawable extends BitmapDrawable {
+
+        private final WeakReference<ImageTask> mBitmapWorkerTaskReference;
+
+        /*public AsyncDrawable(final ImageTask mBitmapWorkerTask) {
+            super(Color.TRANSPARENT);
+            mBitmapWorkerTaskReference=new WeakReference<ImageTask>(mBitmapWorkerTask);
+        }*/
+
+        /**
+         * Constructor of <code>AsyncDrawable</code>
+         */
+        public AsyncDrawable(final Resources res, final Bitmap bitmap,
+            final ImageTask mBitmapWorkerTask) {
+            super(bitmap);
+            mBitmapWorkerTaskReference=new WeakReference<ImageTask>(mBitmapWorkerTask);
+        }
+
+        /**
+         * @return The {@link BitmapWorkerTask} associated with this drawable
+         */
+        public ImageTask getBitmapWorkerTask() {
+            return mBitmapWorkerTaskReference.get();
+        }
     }
 
     public static boolean cancelWork(DownloadPiece piece) {
-        if (null==piece){
+        if (null==piece) {
             return false;
         }
         WeakReference<ImageView> viewWeakReference=piece.mImageReference;//DownloadPool.downloading.get(uri);
@@ -406,7 +429,7 @@ public class DownloadPool extends Thread {
             return;
         }
 
-        synchronized (DownloadPool.this) {   //这里的同步造成了ui缓慢。
+        synchronized (DownloadPoolThread.this) {   //这里的同步造成了ui缓慢。
             for (DownloadPiece piece : mQuery) {    //在这里先排除总比在FrechImg_Impl()中查找文件要快.
                 if (piece.uri.equals(mpiece.uri)) {
                     WeiboLog.d(TAG, "已经存在url:"+mpiece.uri);
@@ -420,7 +443,7 @@ public class DownloadPool extends Thread {
             }*/
             mQuery.add(mpiece);
 
-            DownloadPool.this.notifyAll();
+            DownloadPoolThread.this.notifyAll();
         }
     }
 
