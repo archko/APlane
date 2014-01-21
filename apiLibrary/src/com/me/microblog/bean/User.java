@@ -125,6 +125,7 @@ public class User implements Serializable {
             ", profileImageUrl='"+profileImageUrl+'\''+
             ", province='"+province+'\''+
             ", screenName='"+screenName+'\''+
+            ", avatar_large='"+avatar_large+'\''+
             ", status="+status+
             ", statusesCount="+statusesCount+
             ", url='"+url+'\''+

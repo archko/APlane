@@ -99,11 +99,11 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
 
         SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(mContext);
         boolean showOriginal=mPrefs.getBoolean(PrefsActivity.PREF_IMAGEVIEWER, true);
-        if (showOriginal) {
+        //if (showOriginal) {
             bmiddlePic=bean.replace("thumbnail", "bmiddle");
-        } else {
+        /*} else {
             bmiddlePic=bean.replace("thumbnail", "originalPic");
-        }
+        }*/
 
         String dir=App.mCacheDir+Constants.PICTURE_DIR;
         if (bean.endsWith("gif")) {
@@ -169,7 +169,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
     private void loadImageView() {
         mImageDownloaded=false;
         Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(imageBean);
-        WeiboLog.d(TAG, "loadImageView:"+bitmap+" url:"+imageBean);
+        //WeiboLog.d(TAG, "loadImageView:"+bitmap+" url:"+imageBean);
         if (null!=bitmap) {
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setImageBitmap(bitmap);
@@ -311,7 +311,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         @Override
         public void run() {
             loadPictureRunning=true;
-            WeiboLog.d(TAG, "DownloadThread.path:"+mBmidPath);
+            WeiboLog.v(TAG, "DownloadThread.path:"+mBmidPath+" bmid:"+bmiddlePic+" thumb:"+imageBean);
             final File file=new File(mBmidPath);
             if (file.exists()) {
                 Message msg;
@@ -419,7 +419,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                         msg.what=3;
                         //mHandler.sendMessage(msg);
                         sendMessage(msg);*/
-                        WeiboLog.d(TAG, "下载完成.");
+                        WeiboLog.d(TAG, "下载完成."+fileSize);
                         result=true;
                     } else {
                         WeiboLog.d(TAG, "code:"+conn.getResponseCode()+" message:"+conn.getResponseMessage());

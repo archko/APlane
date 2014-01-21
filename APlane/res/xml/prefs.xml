@@ -19,11 +19,11 @@
             android:dependency="show_bitmap"
             android:summary="@string/show_bitmap_sum"/>
 
-        <CheckBoxPreference
+        <!--<CheckBoxPreference
             android:title="@string/pref_increment"
             android:defaultValue="true"
             android:key="pref_update_increment"
-            android:summary="@string/pref_increment_sum"/>
+            android:summary="@string/pref_increment_sum"/>-->
 
         <CheckBoxPreference
             android:title="@string/pref_imageviewer"

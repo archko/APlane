@@ -338,7 +338,7 @@ public class SOauth2 extends BaseOauth2 {
                         mOauthBean=oauthBean;
                         mAccessToken=oauthBean.accessToken;
                         mExpireTime=oauthBean.expireTime;
-                        oauthBean.openId=map.get("uid");
+                        oauthBean.userId=map.get("uid");
                         oauthBean.name=username;
                         oauthBean.pass=password;
                         oauthBean.customKey=key;

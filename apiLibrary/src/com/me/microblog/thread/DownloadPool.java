@@ -502,10 +502,10 @@ public class DownloadPool extends Thread {
                     break;
                 }
             }
-            int size=mQuery.size();
+            /*int size=mQuery.size();
             if (mQuery.size()>=count) {
                 mQuery=mQuery.subList(size-count, size);
-            }
+            }*/
             mQuery.add(mpiece);
 
             DownloadPool.this.notifyAll();
