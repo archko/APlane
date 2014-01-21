@@ -100,10 +100,15 @@ public class ImageTask extends Thread {
     }
 
     private void init(Context context) {
-        String themeId=getDefaultTheme(context);
         int mResId=R.drawable.image_loading_dark;
-        if ("2".equals(themeId)) {
-            mResId=R.drawable.image_loading_light;
+        if (mPiece.type==Constants.TYPE_PORTRAIT) {
+            mResId=R.drawable.user_default_photo;
+        } else {
+            String themeId=getDefaultTheme(context);
+            mResId=R.drawable.image_loading_dark;
+            if ("2".equals(themeId)) {
+                mResId=R.drawable.image_loading_light;
+            }
         }
         mDefault=((BitmapDrawable) context.getResources().getDrawable(mResId)).getBitmap();
         mDefaultArtwork=new BitmapDrawable(context.getResources(), mDefault);
