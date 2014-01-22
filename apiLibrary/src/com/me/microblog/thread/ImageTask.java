@@ -132,7 +132,8 @@ public class ImageTask extends Thread {
         HttpResponse response;
 
         if (ImageCache2.getInstance().isScrolling()||DownloadPoolThread.cancelWork(mPiece)||isCancled) {
-            app.mDownloadPool.ActiveThread_Pop();
+            //app.mDownloadPool.ActiveThread_Pop();
+            DownloadPoolThread.getDownloadPoolThread().popDownloadQuery(mPiece.uri);
             return;
         }
 
@@ -146,7 +147,8 @@ public class ImageTask extends Thread {
             String ext=WeiboUtil.getExt(uri);
             String name=Md5Digest.getInstance().getMd5(uri)+ext;
             if (null==name) {
-                app.mDownloadPool.ActiveThread_Pop();
+                //app.mDownloadPool.ActiveThread_Pop();
+                DownloadPoolThread.getDownloadPoolThread().popDownloadQuery(mPiece.uri);
                 return;
             }
             String imagepath=dir+name;
@@ -160,7 +162,8 @@ public class ImageTask extends Thread {
             }
 
             if (DownloadPoolThread.cancelWork(mPiece)||isCancled) {
-                app.mDownloadPool.ActiveThread_Pop();
+                //app.mDownloadPool.ActiveThread_Pop();
+                DownloadPoolThread.getDownloadPoolThread().popDownloadQuery(mPiece.uri);
                 return;
             }
             response=httpClient.execute(mHttpGet);
@@ -188,7 +191,8 @@ public class ImageTask extends Thread {
             WeiboLog.d(TAG, "uri:"+uri+" exception:"+e.toString());
         } finally {
             // 默认把它移出，不再下载。
-            app.mDownloadPool.ActiveThread_Pop();
+            //app.mDownloadPool.ActiveThread_Pop();
+            DownloadPoolThread.getDownloadPoolThread().popDownloadQuery(mPiece.uri);
             if (null!=mHttpGet) {
                 mHttpGet.abort();
             }
@@ -196,6 +200,7 @@ public class ImageTask extends Thread {
     }
 
     public void SendMessage(Handler handler, final DownloadPiece piece, final Bitmap bitmap) {
+        DownloadPoolThread.getDownloadPoolThread().popDownloadQuery(mPiece.uri);
         if (null==piece||null==bitmap||handler==null||isCancled) {
             WeiboLog.d(TAG, "SendMessage,bitmap is null.");
             return;

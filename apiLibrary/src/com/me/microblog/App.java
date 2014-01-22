@@ -28,7 +28,7 @@ public class App extends Application {
     private static App instance;
     private OauthBean mOauthBean;
     public static boolean isLogined=false;
-    public DownloadPoolThread mDownloadPool=null;
+    public DownloadPool mDownloadPool=null;
     public static String mCacheDir; //图片存储上级目录
     public static final String KEY="abcdefgopqrstuvwxyzhijklmn";
     //public static String OAUTH_MODE=Constants.SOAUTH_TYPE_WEB;   //默认使用的是客户端认证。
@@ -227,7 +227,7 @@ public class App extends Application {
         }
 
         WeiboLog.d(TAG, "initDownloadPool.");
-        DownloadPoolThread downloadPool=new DownloadPoolThread(this);
+        DownloadPool downloadPool=new DownloadPool(this);
         downloadPool.setThreadCount(threadCount);
         this.mDownloadPool=downloadPool;
         this.mDownloadPool.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);

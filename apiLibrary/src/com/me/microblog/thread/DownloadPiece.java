@@ -42,4 +42,18 @@ public class DownloadPiece {
         this.isShowLargeBitmap=isShowLargeBitmap;
         this.mImageReference=new WeakReference<ImageView>(imageView);
     }
+
+    @Override
+    public String toString() {
+        return "DownloadPiece{"+
+            "handler="+handler+
+            ", dir='"+dir+'\''+
+            ", uri='"+uri+'\''+
+            ", type="+type+
+            ", filepath='"+filepath+'\''+
+            ", cache="+cache+
+            ", isShowLargeBitmap="+isShowLargeBitmap+
+            ", mImageReference="+mImageReference+
+            '}';
+    }
 }

@@ -188,7 +188,7 @@ public class FetchImage extends Thread {
         }
 
         //if (!mPiece.isShowLargeBitmap) {   //大图暂时不缓存内存，但是缓存小图
-            ImageCache2.getInstance().addBitmapToMemCache(piece.uri, bitmap);
+        ImageCache2.getInstance().addBitmapToMemCache(piece.uri, bitmap);
         /*} else {
             LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
             lruCache.put(piece.uri, bitmap);
@@ -218,7 +218,7 @@ public class FetchImage extends Thread {
 
             private void setBitmap(ImageView view, Bitmap bitmap, int type) {
                 if (type==Constants.TYPE_PORTRAIT) {
-                     view.setImageBitmap(bitmap);
+                    view.setImageBitmap(bitmap);
                 } else {
                     final BitmapDrawable layerTwo=new BitmapDrawable(App.getAppContext().getResources(), bitmap);
                     layerTwo.setFilterBitmap(false);

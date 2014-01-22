@@ -109,6 +109,58 @@ public class DownloadPool extends Thread {
         }
     }
 
+    /**
+     * 处理图片下载
+     *
+     * @param handler
+     * @param name     图片名字废除
+     * @param filepath 图片绝对路径
+     * @param type     类型，只是作为参数传递，在这无其它用处
+     * @param uri      图片url地址
+     * @param dir      图片存储目录
+     * @param cache    是否缓存本地文件
+     */
+    /*private void FrechImg_Impl(Handler handler, String filepath, int type, String uri, boolean cache, String dir) {
+        //WeiboLog.d(TAG, "FrechImg_Impl.type:"+type);
+
+        if (uri==null||dir==null) {
+            WeiboLog.w(TAG, "名字不存在。");
+            return;
+        }
+
+        WeakReference<View> viewWeakReference=downloading.get(uri);
+        if (null==viewWeakReference) {
+            WeiboLog.i(TAG, "viewWeakRef is null."+uri);
+            downloading.remove(uri);
+            return;
+        }
+
+        if (null==viewWeakReference.get()) {
+            WeiboLog.i(TAG, "viewWeakRef get is null."+uri);
+            downloading.remove(uri);
+            return;
+        }
+
+        Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(uri);
+        if (null!=bitmap) {
+            Bundle bundle=new Bundle();
+            bundle.putParcelable("name", bitmap);
+            FetchImage.SendMessage(handler, type, bundle, uri);
+            return;
+        }
+
+        synchronized (this) {
+            mApp.mDownloadPool.ActiveThread_Push();
+            String str3=Uri.encode(uri, ":/");
+            HttpGet httpGet=new HttpGet(str3);
+            httpGet.setHeader("User-Agent", BaseApi.USERAGENT);
+            DefaultHttpClient httpClient=new DefaultHttpClient(connectionManager, params);
+            //FetchImage fetchImage=new FetchImage(mApp, handler, httpClient, httpGet, type, imagepath, uri, cache);
+            FetchImage fetchImage=new FetchImage(mApp, handler, httpClient, httpGet, type, null, uri, cache, dir);
+            fetchImage.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+            fetchImage.start();
+        }
+    }*/
     public void ActiveThread_Pop() {
         synchronized (this) {
             int i=this.mActiveThread-1;
@@ -281,9 +333,9 @@ public class DownloadPool extends Thread {
         }
 
         final Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(uri);
-        final WeakReference<ImageView> viewWeakReference=piece.mImageReference;
         if (null!=bitmap) {
             if (!cancelWork(piece)&&null!=piece.handler) {
+                final WeakReference<ImageView> viewWeakReference=piece.mImageReference;
                 piece.handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -302,14 +354,14 @@ public class DownloadPool extends Thread {
         }
 
         //synchronized (this) {
-            mApp.mDownloadPool.ActiveThread_Push();
-            String str3=Uri.encode(uri, ":/");
-            HttpGet httpGet=new HttpGet(str3);
-            httpGet.setHeader("User-Agent", BaseApi.USERAGENT);
-            DefaultHttpClient httpClient=new DefaultHttpClient(connectionManager, params);
-            FetchImage fetchImage=new FetchImage(mApp, httpClient, httpGet, piece);
-            fetchImage.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-            fetchImage.start();
+        mApp.mDownloadPool.ActiveThread_Push();
+        String str3=Uri.encode(uri, ":/");
+        HttpGet httpGet=new HttpGet(str3);
+        httpGet.setHeader("User-Agent", BaseApi.USERAGENT);
+        DefaultHttpClient httpClient=new DefaultHttpClient(connectionManager, params);
+        FetchImage fetchImage=new FetchImage(mApp, httpClient, httpGet, piece);
+        fetchImage.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+        fetchImage.start();
         //}
     }
 
@@ -414,10 +466,10 @@ public class DownloadPool extends Thread {
                     break;
                 }
             }
-            /*int size=mQuery.size();
+            int size=mQuery.size();
             if (mQuery.size()>=count) {
                 mQuery=mQuery.subList(size-count, size);
-            }*/
+            }
             mQuery.add(mpiece);
 
             DownloadPool.this.notifyAll();
