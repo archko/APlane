@@ -4,11 +4,9 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.Handler;
@@ -18,24 +16,18 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
-import android.text.TextUtils;
 import android.widget.RemoteViews;
 import cn.archko.microblog.R;
 import cn.archko.microblog.ui.PrefsActivity;
 import com.me.microblog.App;
-import com.me.microblog.bean.Status;
 import com.me.microblog.bean.Unread;
 import com.me.microblog.core.sina.SinaUnreadApi;
-import com.me.microblog.db.TwitterTable;
 import com.me.microblog.oauth.Oauth2;
 import com.me.microblog.oauth.OauthBean;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * 当前服务要做的事就是不断查询是否有新的消息.
@@ -55,13 +47,13 @@ public class WeiboService extends Service {
      * 查询新微博时间
      */
     public static int DELAY_TIME=10*1000*60;
-    Timer timer;
 
     public static final String REFRESH="cn.archko.microblog.refresh";
 
     private static final String OAUTH="cn.archko.microblog.oauth";
 
     public boolean isOauthing=false;
+    private Looper mServiceLooper;
     private ServiceHandler mServiceHandler;
 
     @Override
@@ -119,6 +111,7 @@ public class WeiboService extends Service {
 
             switch (msg.what) {
                 default:
+                    service.doTask();
                     break;
             }
         }
@@ -155,6 +148,7 @@ public class WeiboService extends Service {
             android.os.Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
 
+        mServiceLooper = thread.getLooper();
         // Initialize the handler
         mServiceHandler = new ServiceHandler(this, thread.getLooper());
     }
@@ -166,12 +160,13 @@ public class WeiboService extends Service {
 
         try {
             mNM.cancel(R.string.local_service_started);
-            timer.cancel();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mServiceHandler.removeCallbacksAndMessages(null);
-        mServiceHandler.getLooper().quit();
+        if (null!=mServiceHandler) {
+            mServiceHandler.removeCallbacksAndMessages(null);
+            mServiceHandler.getLooper().quit();
+        }
     }
 
     @Override
@@ -182,7 +177,7 @@ public class WeiboService extends Service {
         if (intent!=null) {
             final String action=intent.getAction();
             if (REFRESH.equals(action)) {
-                fetchNewStatuses(intent);
+                fetchNewStatuses(intent, startId);
             } else if (OAUTH.equals(action)) {
                 oauth2(intent);
             }
@@ -203,7 +198,7 @@ public class WeiboService extends Service {
         App app=(App) App.getAppContext();
         if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB&&
             System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
-            timer.cancel();
+            WeiboLog.w(TAG, "token expired.");
             return;
         }
 
@@ -233,18 +228,16 @@ public class WeiboService extends Service {
                     intent.putExtra("unread", unread);
                     WeiboService.this.sendBroadcast(intent);
 
-                    //int count=statusCount>=Constants.WEIBO_COUNT ? Constants.WEIBO_COUNT : statusCount;
-                        /*SStatusData<Status> sStatusData=((SWeiboApi2) App.getMicroBlog(this))
-                            .getHomeTimeline(-1, -1, 1, -1, -1);*/
                     //showNotification(unread, null);
-                    //修改为广播
-                    //saveStatuses(sStatusData.mStatusData);
                 } else {
                     WeiboLog.d(TAG, "没有新微博:");
                 }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+        } finally {
+            Message msg=mServiceHandler.obtainMessage();
+            mServiceHandler.sendMessageDelayed(msg, DELAY_TIME);
         }
     }
 
@@ -252,17 +245,14 @@ public class WeiboService extends Service {
      * 获取新的微博内容，由于高级api没有开放，只能在有新微博时再获取最新的一条微博内容。
      *
      * @param intent
+     * @param startId
      */
-    private void fetchNewStatuses(Intent intent) {
+    private void fetchNewStatuses(Intent intent, int startId) {
         WeiboLog.d(TAG, "fetchNewStatuses.");
         boolean chk_new_status=settings.getBoolean(PrefsActivity.PREF_AUTO_CHK_NEW_STATUS, true);
         if (!chk_new_status) {
             WeiboLog.d(TAG, "no chk_new_status.");
-            try {
-                timer.cancel();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            mServiceHandler.removeCallbacksAndMessages(null);
             return;
         }
 
@@ -270,97 +260,15 @@ public class WeiboService extends Service {
         if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB&&
             System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
             WeiboLog.e(TAG, "web认证，token过期了.不能启动定时器:"+app.getOauthBean().expireTime);
-            if (null!=timer) {
-                timer.cancel();
-            }
+
             return;
         }
 
         try {
-            if (null!=timer) {
-                timer.cancel();
-            }
-            timer=new Timer();
-
             WeiboLog.d(TAG, "WeiboService.onStartCommand.");
-            timer.scheduleAtFixedRate(
-                new TimerTask() {
-
-                    @Override
-                    public void run() {
-                        doTask();
-                    }
-                }, 6000,
-                DELAY_TIME);
-        } catch (Exception e) {
-        }
-    }
-
-    protected void saveStatuses(ArrayList<Status> list) {
-        try {
-            int len=list.size();
-            if (len<Constants.WEIBO_COUNT/2) {
-                WeiboLog.d(TAG, "新数据太少，暂时不作保存。");
-                return;
-            }
-            WeiboLog.d(TAG, "saveStatuses:"+len);
-            ContentValues[] contentValueses=new ContentValues[len];
-            ContentValues cv;
-            Status status;
-            for (int i=len-1; i>=0; i--) {
-                status=list.get(i);
-                cv=new ContentValues();
-                cv.put(TwitterTable.SStatusTbl.STATUS_ID, status.id);
-                cv.put(TwitterTable.SStatusTbl.CREATED_AT, status.createdAt.getTime());
-                cv.put(TwitterTable.SStatusTbl.TEXT, status.text);
-                cv.put(TwitterTable.SStatusTbl.SOURCE, status.source);
-                cv.put(TwitterTable.SStatusTbl.PIC_THUMB, status.thumbnailPic);
-                cv.put(TwitterTable.SStatusTbl.PIC_MID, status.bmiddlePic);
-                cv.put(TwitterTable.SStatusTbl.PIC_ORIG, status.originalPic);
-                cv.put(TwitterTable.SStatusTbl.R_NUM, status.r_num);
-                cv.put(TwitterTable.SStatusTbl.C_NUM, status.c_num);
-                if (status.retweetedStatus!=null) {
-                    cv.put(TwitterTable.SStatusTbl.R_STATUS_NAME, status.retweetedStatus.user.screenName);
-                    cv.put(TwitterTable.SStatusTbl.R_STATUS, status.retweetedStatus.text);
-                    if (!TextUtils.isEmpty(status.retweetedStatus.thumbnailPic)) {
-                        cv.put(TwitterTable.SStatusTbl.R_PIC_THUMB, status.retweetedStatus.thumbnailPic);
-                        cv.put(TwitterTable.SStatusTbl.R_PIC_MID, status.retweetedStatus.bmiddlePic);
-                        cv.put(TwitterTable.SStatusTbl.R_PIC_ORIG, status.retweetedStatus.originalPic);
-                    }
-                }
-                cv.put(TwitterTable.SStatusTbl.USER_ID, status.user.id);
-                cv.put(TwitterTable.SStatusTbl.USER_SCREEN_NAME, status.user.screenName);
-                cv.put(TwitterTable.SStatusTbl.PORTRAIT, status.user.profileImageUrl);
-                contentValueses[i]=cv;
-            }
-
-            if (list.size()>=Constants.WEIBO_COUNT) {
-                len=getContentResolver().delete(TwitterTable.SStatusTbl.CONTENT_URI, null, null);
-                WeiboLog.d(TAG, "删除旧微博记录:"+len);
-            } else {
-                Cursor cursor=null;
-                try {
-                    cursor=getContentResolver().query(TwitterTable.SStatusTbl.CONTENT_URI, null, null, null, null);
-                    if (null==cursor||cursor.getCount()<1) {
-                        WeiboLog.d(TAG, "查询数据为空，直接插入新数据.");
-                    } else {
-                        int curCount=cursor.getCount();
-                        if (curCount>=Constants.WEIBO_COUNT*2) {
-                            len=getContentResolver().delete(TwitterTable.SStatusTbl.CONTENT_URI, null, null);
-                            WeiboLog.d(TAG, "，旧数据太多，删除旧微博记录:"+len);
-                        }
-                    }
-                } catch (Exception e) {
-                    WeiboLog.d(TAG, "查询出错:"+e);
-                } finally {
-                    if (cursor!=null) {
-                        cursor.close();
-                    }
-                }
-            }
-
-            len=getContentResolver().bulkInsert(TwitterTable.SStatusTbl.CONTENT_URI, contentValueses);
-            WeiboLog.d(TAG, "保存新微博记录:"+len);
+            Message msg=mServiceHandler.obtainMessage();
+            msg.arg1=startId;
+            mServiceHandler.sendMessage(msg);
         } catch (Exception e) {
             e.printStackTrace();
         }
