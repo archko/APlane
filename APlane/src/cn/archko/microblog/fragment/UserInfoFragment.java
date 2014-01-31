@@ -24,6 +24,7 @@ import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsStatusAbstraction;
 import cn.archko.microblog.fragment.impl.SinaUserImpl;
+import cn.archko.microblog.ui.ImageViewerActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.ui.WebviewActivity;
 import com.andrew.apollo.utils.PreferenceUtils;
@@ -156,6 +157,25 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
         mController=(LinearLayout) root.findViewById(R.id.controller);
 
         //loadOtherLayout();
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String imageUrl=mUser.profileImageUrl;
+                if (!TextUtils.isEmpty(mUser.avatar_hd)) {
+                    imageUrl=mUser.avatar_hd;
+                } else if (!TextUtils.isEmpty(mUser.avatar_large)) {
+                    imageUrl=mUser.avatar_large;
+                }
+                if (!TextUtils.isEmpty(imageUrl)) {
+                    String[] imageUrls=new String[]{imageUrl};
+                    Intent intent=new Intent(getActivity(), ImageViewerActivity.class);
+                    intent.putExtra("thumbs", imageUrls);
+                    intent.putExtra("pos", 0);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getActivity().startActivity(intent);
+                }
+            }
+        });
 
         return root;
     }
@@ -291,56 +311,6 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
         }).start();*/
     }
 
-    /**
-     * 根据用户id加载用户信息
-     *
-     * @param intent
-     */
-    /*private void loadUserById(Intent intent) {
-        long userid=intent.getLongExtra("user_id", -1);
-        if (-1!=userid) {
-            try {
-                mUser=((SWeiboApi2) App.getMicroBlog(getActivity())).getUser(userid);
-                setContent(mUser);
-            } catch (Exception e) {
-                processGetUserError(new WeiboException(e.toString(), 500));
-            }
-        } else {
-            String screeName=intent.getStringExtra("scree_name");
-            if (null!=screeName&&!"".equals(screeName)) {
-                try {
-                    mUser=((SWeiboApi2) App.getMicroBlog(getActivity())).getUser(screeName);
-                    setContent(mUser);
-                } catch (Exception e) {
-                    processGetUserError(new WeiboException(e.toString(), 500));
-                }
-            } else {
-                WeiboLog.i(TAG, "screeName is null.");
-            }
-        }
-    }*/
-
-    /**
-     * 根据用户昵称加载用户信息
-     *
-     * @param nickName 昵称
-     */
-    /*private void loadUserByName(String nickName) {
-        try {
-            if (nickName.indexOf("：")!=-1) {
-                nickName=nickName.substring(0, nickName.indexOf("："));
-            }
-            if (nickName.startsWith("@")) {
-                nickName=nickName.substring(1);
-            }
-            nickName.trim();
-            WeiboLog.i(TAG, "要查询的nickName为:"+nickName+" ...");
-            mUser=((SWeiboApi2) App.getMicroBlog(getActivity())).getUser(nickName);
-            setContent(mUser);
-        } catch (Exception e) {
-            processGetUserError(new WeiboException(e.toString(), 500));
-        }
-    }*/
     private void setContent(final User user) {
         isUserLoaded=true;
         mHandler.post(new Runnable() {
@@ -437,13 +407,6 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
         friendsBtn.setOnClickListener(listener);
         followersBtn.setOnClickListener(listener);
     }
-
-    /*private void processGetUserError(WeiboException e) {
-        if (e.getStatusCode()!=-1&&e.getStatusCode()==400) {
-            showToast("对不起,您所查找的用户不存在.", Toast.LENGTH_LONG);
-            e.printStackTrace();
-        }
-    }*/
 
     View.OnClickListener listener=new View.OnClickListener() {
 
@@ -704,44 +667,6 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
         return mStatusImpl.loadData(params);
     }
 
-    /**
-     * 加载两个用户id对应用户的关系，新的api中返回的用户信息里面已经包含了是否关注的关系。
-     */
-    /*@Deprecated
-    class LoadRelationTask extends AsyncTask<Long, Void, Relationship> {
-
-        @Override
-        protected Relationship doInBackground(Long... params) {
-            try {
-                long sourceId=params[0];
-                long targetId=params[1];
-                Relationship relationship=null;
-                //relationship=((SWeiboApi2) App.getMicroBlog(getActivity())).getFriendship(sourceId, targetId);
-                WeiboLog.i(TAG, "relationship:"+relationship);
-                return relationship;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Relationship resultObj) {
-            if (resultObj==null) {
-                WeiboLog.e(TAG, "can't not find the relationship.");
-                return;
-            }
-
-            Relationship relationship=resultObj;
-            RelationInfo source=relationship.source;
-            if (source.following) {
-                setUnFollowingButton();
-            } else {
-                setFollowingButton();
-            }
-        }
-    }*/
     //--------------------- 内容点击器 ---------------------
 
     private class AtClicker extends WeiboUtil.MyClicker {

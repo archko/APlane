@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="1467" android:installLocation="auto"
+    android:versionCode="1470" android:installLocation="auto"
     android:versionName="1.5.2"
     package="cn.archko.microblog">
 

@@ -1,6 +1,7 @@
 package com.me.microblog.bean;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 
 public class Status implements Serializable {
@@ -85,6 +86,10 @@ public class Status implements Serializable {
     public Geo geo;
 
     public int distance;    //位置服务中的距离.
+    /**
+     * 表态数
+     */
+    public int attitudes_count;
 
     public Status() {
     }
@@ -128,11 +133,9 @@ public class Status implements Serializable {
     @Override
     public String toString() {
         return "Status{"+
-            "_id='"+_id+'\''+
             "bmiddlePic='"+bmiddlePic+'\''+
             ", createdAt="+createdAt+
             ", favorited="+favorited+
-            ", id="+id+
             ", inReplyToScreenName='"+inReplyToScreenName+'\''+
             ", inReplyToStatusId='"+inReplyToStatusId+'\''+
             ", inReplyToUserId='"+inReplyToUserId+'\''+
@@ -140,10 +143,17 @@ public class Status implements Serializable {
             ", source='"+source+'\''+
             ", text='"+text+'\''+
             ", thumbnailPic='"+thumbnailPic+'\''+
-            ", truncated="+truncated+
             ", user="+user+
-            ", retweetedStatus='"+retweetedStatus+'\''+
-            ", annotations:"+annotations+
+            ", retweetedStatus="+retweetedStatus+
+            ", thumbs="+Arrays.toString(thumbs)+
+            ", r_num="+r_num+
+            ", c_num="+c_num+
+            ", mid='"+mid+'\''+
+            ", geo="+geo+
+            ", distance="+distance+
+            ", attitudes_count="+attitudes_count+
+            ", id="+id+
+            ", annotations="+annotations+
             '}';
     }
 }

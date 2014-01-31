@@ -13,15 +13,16 @@
             android:layout_height="wrap_content" android:layout_width="fill_parent">
             <ImageView android:id="@+id/iv_portrait"
                 android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
-                android:layout_height="90dp" android:layout_width="90dp"
-                android:src="@drawable/user_default_photo"
+                android:layout_height="80dp" android:layout_width="80dp"
+                android:src="@drawable/user_default_photo" android:padding="1dp"
+                android:background="@drawable/bg_profile"
                 android:layout_marginLeft="6dip"
                 android:layout_marginTop="6dip"/>
 
             <TextView android:id="@+id/screen_name" android:layout_toRightOf="@id/iv_portrait"
                 android:layout_alignParentTop="true" android:layout_height="wrap_content"
                 android:layout_width="wrap_content" android:text="@string/test_status"
-                android:layout_marginLeft="10dip" android:textSize="18dip"
+                android:layout_marginLeft="10dip" android:textSize="17sp"
                 android:layout_marginTop="10dip" android:textColor="?attr/textColorItemUserInfo"/>
 
             <ImageView android:id="@+id/gender"

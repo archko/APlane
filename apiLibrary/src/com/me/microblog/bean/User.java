@@ -89,6 +89,10 @@ public class User implements Serializable {
      * 用户大头像地址
      */
     public String avatar_large;
+    /**
+     * 用户头像地址（高清），高清头像原图
+     */
+    public String avatar_hd;
     public String verified_reason;//认证原因
     public boolean follow_me;//该用户是否关注当前登录用户
     public int online_status;//用户的在线状态，0：不在线、1：在线
@@ -126,6 +130,7 @@ public class User implements Serializable {
             ", province='"+province+'\''+
             ", screenName='"+screenName+'\''+
             ", avatar_large='"+avatar_large+'\''+
+            ", avatar_hd='"+avatar_hd+'\''+
             ", status="+status+
             ", statusesCount="+statusesCount+
             ", url='"+url+'\''+
