@@ -134,9 +134,9 @@ public class TagsViewGroup extends ViewGroup {
             mDataSetObserver=null;
         } else {
             //System.out.println("adapter == null remove all view.");
-            removeAllViews();
+            removeAllViewsInLayout();
             tvs.clear();
-            requestLayout();
+            invalidate();
         }
 
         if (null!=adapter) {
@@ -146,6 +146,7 @@ public class TagsViewGroup extends ViewGroup {
 
             handleDataChanged();
         }
+        requestLayout();
     }
 
 	@Override
@@ -445,8 +446,9 @@ public class TagsViewGroup extends ViewGroup {
 
     private void handleDataChanged() {
         //System.out.println("handleDataChanged.");
-        removeAllViews();
+        removeAllViewsInLayout();
         tvs.clear();
+        invalidate();
 
         // Cache any pre-existing children, from being recycled.
         int ccount = this.getChildCount();
@@ -463,6 +465,6 @@ public class TagsViewGroup extends ViewGroup {
             }*/
             this.addView(tv, i, params);
         }
-        requestLayout();
+        //requestLayout();
     }
 }
