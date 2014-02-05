@@ -259,13 +259,8 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
             mAdapter.setCache(cache);
             mAdapter.setShowLargeBitmap(isShowLargeBitmap);
             mAdapter.setImageUrls(mStatus.thumbs);
-            mAdapter.notifyDataSetChanged();
         }
-        //不能使用更新的,需要重新设置Adapter
-        /*ImageAdapter adapter=new ImageAdapter(mContext, mCacheDir, mStatus.thumbs);
-        adapter.setUpdateFlag(updateFlag);
-        adapter.setCache(cache);
-        adapter.setShowLargeBitmap(isShowLargeBitmap);*/
+        mAdapter.notifyDataSetChanged();
         //mTagsViewGroup.setAdapter(mAdapter);
     }
 

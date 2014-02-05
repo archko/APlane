@@ -136,6 +136,7 @@ public class TagsViewGroup extends ViewGroup {
             //System.out.println("adapter == null remove all view.");
             removeAllViewsInLayout();
             tvs.clear();
+            requestLayout();
             invalidate();
         }
 
@@ -146,7 +147,6 @@ public class TagsViewGroup extends ViewGroup {
 
             handleDataChanged();
         }
-        requestLayout();
     }
 
 	@Override
@@ -448,6 +448,7 @@ public class TagsViewGroup extends ViewGroup {
         //System.out.println("handleDataChanged.");
         removeAllViewsInLayout();
         tvs.clear();
+        requestLayout();
         invalidate();
 
         // Cache any pre-existing children, from being recycled.
@@ -465,6 +466,5 @@ public class TagsViewGroup extends ViewGroup {
             }*/
             this.addView(tv, i, params);
         }
-        //requestLayout();
     }
 }
