@@ -83,16 +83,18 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
     }
 
     public void update(String bean) {
-        if (TextUtils.isEmpty(bean)||!bean.startsWith("http")) {
+        if (TextUtils.isEmpty(bean)) {
+            WeiboLog.d(TAG, "TextUtils.isEmpty(bean)."+bean);
+            return;
+        }
+
+        if (!bean.startsWith("http")) {
             File file=new File(bean);
             if (file.exists()) {
                 mBmidPath=bean;
                 loadView(bean);
                 updateBitmap(null);
-            } else {
-                WeiboLog.d(TAG, "TextUtils.isEmpty(bean)."+bean);
             }
-            return;
         }
 
         imageBean=bean;
