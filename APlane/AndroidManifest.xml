@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="1470" android:installLocation="auto"
-    android:versionName="1.5.2"
+    android:versionCode="1490" android:installLocation="auto"
+    android:versionName="1.6.0"
     package="cn.archko.microblog">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -35,7 +35,7 @@
 
     <application android:hardwareAccelerated="false" android:icon="@drawable/logo"
         android:label="@string/app_name" android:name="com.me.microblog.App"
-        android:theme="@style/Theme.AK"
+        android:theme="@style/Theme.AK.Light"
         android:allowBackup="true"
         android:taskAffinity="cn.archko.microblog" android:largeHeap="true">
 
@@ -116,14 +116,6 @@
             </intent-filter>-->
         </activity>
 
-        <!--<activity android:name=".ui.WeatherActivity"
-            android:label="twitter/weather">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="archko.test"/>
-            </intent-filter>
-        </activity>-->
-
         <activity android:name=".ui.PrefsActivity" android:theme="@style/Theme.AK"
             android:label="@string/pref" android:excludeFromRecents="true">
             <!--<intent-filter>
@@ -141,7 +133,7 @@
         </activity>
 
         <activity android:name=".ui.HomeActivity" android:label="@string/app_name"
-            android:uiOptions="none"
+            android:uiOptions="none" android:hardwareAccelerated="false"
             android:launchMode="singleTask" android:configChanges="orientation|keyboardHidden|screenSize">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -174,10 +166,10 @@
         </activity>
 
         <activity android:name=".ui.TestApiActivity" android:label="twitter/TestApi">
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="archko.test"/>
-            </intent-filter>-->
+            </intent-filter>
         </activity>
 
         <activity android:name=".ui.WebviewActivity" android:allowTaskReparenting="true"
@@ -187,7 +179,7 @@
             android:taskAffinity="cn.archko.microblog.webview"></activity>
 
         <activity android:name=".ui.ImageViewerActivity" android:excludeFromRecents="true"
-            android:theme="@style/Theme.AK"
+            android:theme="@style/Theme.AK" android:hardwareAccelerated="false"
             android:taskAffinity="cn.archko.microblog.webview"></activity>
 
         <provider android:exported="true" android:name="com.me.microblog.db.TwitterProvider" android:authorities="cn.archko.microblog"
@@ -198,7 +190,7 @@
         <service android:name=".service.SendTaskService" android:enabled="true"/>
         <service android:name=".service.AKWidgetService" android:enabled="true"/>
 
-        <receiver
+        <!--<receiver
             android:name=".appwidgets.AppWidgetLarge"
             android:enabled="true"
             android:exported="false"
@@ -210,7 +202,7 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/app_widget_large"/>
-        </receiver>
+        </receiver>-->
 
     </application>
 </manifest>

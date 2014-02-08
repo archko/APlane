@@ -12,43 +12,53 @@
 
             <Button android:id="@+id/btn_emoji_picture" android:visibility="visible"
                 android:text="@string/emoji_picture"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
             <Button android:id="@+id/btn_emoji_love" android:visibility="visible"
                 android:text="@string/emoji_love"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
             <Button android:id="@+id/btn_emoji_pig" android:visibility="gone"
                 android:text="@string/emoji_pig"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
             <Button android:id="@+id/btn_emoji_wakeup"
                 android:text="@string/emoji_wakeup"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
             <Button android:id="@+id/btn_emoji_kiss" android:visibility="visible"
                 android:text="@string/emoji_kiss"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
             <Button android:id="@+id/btn_emoji_happy" android:visibility="visible"
                 android:text="@string/emoji_happy"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
             <Button android:id="@+id/btn_emoji_embarrased" android:visibility="visible"
                 android:text="@string/emoji_embarrased"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
             <Button android:id="@+id/btn_emoji_cry" android:visibility="visible"
                 android:text="@string/emoji_cry"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
             <Button android:id="@+id/btn_emoji_angry" android:visibility="visible"
                 android:text="@string/emoji_angry"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
             <Button android:id="@+id/btn_emoji_animal" android:visibility="visible"
                 android:text="@string/emoji_animal"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_weight="1"/>
         </LinearLayout>
     </HorizontalScrollView>
 

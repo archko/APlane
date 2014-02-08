@@ -87,7 +87,7 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
     }
 
     public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FrameLayout root=(FrameLayout) inflater.inflate(R.layout.user_grid, null);
+        View root= inflater.inflate(R.layout.user_grid, null);
         mEmptyTxt=(TextView) root.findViewById(R.id.empty_txt);
         mPullRefreshGridView=(PullToRefreshGridView) root.findViewById(R.id.pull_refresh_grid);
         mGridView=mPullRefreshGridView.getRefreshableView();

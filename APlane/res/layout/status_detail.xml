@@ -31,7 +31,7 @@
                 android:id="@+id/repost_num"
                 android:layout_toRightOf="@id/repost_label"
                 android:layout_height="wrap_content" android:layout_width="wrap_content"
-                android:text="@string/test_num" android:textColor="?attr/textColorItemNum"
+                android:text="@string/test_num" android:textColor="@color/holo_light_item_num"
                 android:layout_marginLeft="8dip" android:layout_marginTop="4dp"/>
 
             <TextView
@@ -44,7 +44,7 @@
                 android:id="@+id/comment_num"
                 android:layout_toRightOf="@id/comment_label" android:layout_below="@id/repost_num"
                 android:layout_height="wrap_content" android:layout_width="wrap_content"
-                android:text="@string/test_num" android:textColor="?attr/textColorItemNum"
+                android:text="@string/test_num" android:textColor="@color/holo_light_item_num"
                 android:layout_marginLeft="8dip" android:layout_marginTop="4dp"/>
 
             <TextView
@@ -53,14 +53,14 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true" android:layout_marginRight="4dp"
                 android:layout_height="wrap_content" android:layout_width="wrap_content"
-                android:text="@string/text_time" android:textColor="?attr/textColorItemNum"/>
+                android:text="@string/text_time" android:textColor="@color/holo_light_item_num"/>
             <TextView
                 android:id="@+id/source_from"
                 android:layout_marginLeft="4dip" android:layout_marginTop="4dp"
                 android:layout_below="@id/send_time" android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true" android:layout_marginRight="4dp"
                 android:layout_height="wrap_content" android:layout_width="wrap_content"
-                android:text="@string/my_profile" android:textColor="?attr/textColorItemNum"/>
+                android:text="@string/my_profile" android:textColor="@color/holo_light_item_num"/>
             <TextView
                 android:id="@+id/come_from_label" android:layout_alignBaseline="@id/source_from"
                 android:layout_alignParentBottom="true" android:layout_toLeftOf="@id/source_from"
@@ -103,7 +103,7 @@
 
             <LinearLayout android:id="@+id/ly_view_comment"
                 android:clickable="true"
-                android:background="@drawable/abs__list_selector_holo_dark"
+                android:background="@drawable/abs__list_selector_holo_light"
                 android:layout_width="fill_parent" android:layout_height="@dimen/bottom_action_bar_height">
                 <TextView android:textColor="@color/btn_default_normal_holo_dark_color"
                     android:text="@string/text_view_comments" android:textSize="16sp"

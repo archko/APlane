@@ -99,7 +99,7 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
         //TODO需要处理搜索按钮的切换，黑色时看不清楚。
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         WeiboLog.d(TAG, "themeid;"+themeId);
-        if ("0".equals(themeId)) {
+        /*if ("0".equals(themeId)) {
             mSearchBtn.setImageResource(R.drawable.action_search_dark);
         } else if ("1".equals(themeId)) {
             mSearchBtn.setImageResource(R.drawable.action_search_dark);
@@ -107,7 +107,7 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
             mSearchBtn.setImageResource(R.drawable.action_search_light);
         } else if ("3".equals(themeId)) {
             mSearchBtn.setImageResource(R.drawable.action_search_light);
-        }
+        }*/
 
         mStatusRb=(RadioButton) findViewById(R.id.status_rb);
         mUserRb=(RadioButton) findViewById(R.id.user_rb);

@@ -17,7 +17,6 @@ import android.widget.BaseAdapter;
 import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.AboutAppFragment;
@@ -26,6 +25,7 @@ import cn.archko.microblog.fragment.AtmeFragment;
 import cn.archko.microblog.fragment.CommentsFragment;
 import cn.archko.microblog.fragment.DirectMessageFragment;
 import cn.archko.microblog.fragment.HomeFragment;
+import cn.archko.microblog.fragment.HomeGridFragment;
 import cn.archko.microblog.fragment.MyFavFragment;
 import cn.archko.microblog.fragment.MyPostFragment;
 import cn.archko.microblog.fragment.PrefsFragment;
@@ -36,9 +36,9 @@ import cn.archko.microblog.fragment.UserFollowersGridFragment;
 import cn.archko.microblog.fragment.UserFriendsGridFragment;
 import cn.archko.microblog.fragment.place.PlaceFriendsFragment;
 import cn.archko.microblog.fragment.place.PlaceNearbyPhotosFragment;
+import cn.archko.microblog.fragment.place.PlaceNearbyPhotosGridFragment;
 import cn.archko.microblog.fragment.place.PlaceNearbyUsersFragment;
 import com.andrew.apollo.utils.PreferenceUtils;
-import cn.archko.microblog.ui.PrefsActivity;
 import com.me.microblog.App;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
@@ -297,12 +297,15 @@ public class SidebarAdapter extends BaseAdapter {
         //主页
         int home=0;
         SidebarAdapter.SidebarEntry entry;
-        int drawableId=R.drawable.tab_home_dark;
+        int drawableId=R.drawable.tab_home_light;
         if (theme==2) {
             drawableId=R.drawable.tab_home_light;
         }
         entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_HOME, mContext.getString(R.string.tab_label_home),
-            drawableId, HomeFragment.class, true);
+            drawableId, HomeGridFragment.class, true);
+        addEntry(entry, init);
+        entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_HOME, mContext.getString(R.string.tab_label_home)+"2",
+            drawableId, HomeFragment.class, false);
         addEntry(entry, init);
 
         //热门数据，包含热门用户与精选微博, api过期了。
@@ -322,7 +325,7 @@ public class SidebarAdapter extends BaseAdapter {
         boolean show=mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_MY_POST, true);
         if (show) {
             if (theme==0) {
-                drawableId=R.drawable.tab_expression_dark;
+                drawableId=R.drawable.tab_expression_light;
             } else if (theme==2) {
                 drawableId=R.drawable.tab_expression_light;
             }
@@ -333,7 +336,7 @@ public class SidebarAdapter extends BaseAdapter {
 
         //评论时间线，是我收到的评论
         if (theme==0) {
-            drawableId=R.drawable.tab_other_dark;
+            drawableId=R.drawable.tab_other_light;
         } else if (theme==2) {
             drawableId=R.drawable.tab_other_light;
         }
@@ -343,7 +346,7 @@ public class SidebarAdapter extends BaseAdapter {
 
         //我的关注列表
         if (theme==0) {
-            drawableId=R.drawable.tab_other_dark;
+            drawableId=R.drawable.tab_other_light;
         } else if (theme==2) {
             drawableId=R.drawable.tab_other_light;
         }
@@ -353,7 +356,7 @@ public class SidebarAdapter extends BaseAdapter {
 
         //我的粉丝
         if (theme==0) {
-            drawableId=R.drawable.tab_other_dark;
+            drawableId=R.drawable.tab_other_light;
         } else if (theme==2) {
             drawableId=R.drawable.tab_other_light;
         }
@@ -363,7 +366,7 @@ public class SidebarAdapter extends BaseAdapter {
 
         //@我的微博
         if (theme==0) {
-            drawableId=R.drawable.tab_at_dark;
+            drawableId=R.drawable.tab_at_light;
         } else if (theme==2) {
             drawableId=R.drawable.tab_at_light;
         }
@@ -373,7 +376,7 @@ public class SidebarAdapter extends BaseAdapter {
 
         //@我的评论
         if (theme==0) {
-            drawableId=R.drawable.tab_at_dark;
+            drawableId=R.drawable.tab_at_light;
         } else if (theme==2) {
             drawableId=R.drawable.tab_at_light;
         }
@@ -383,7 +386,7 @@ public class SidebarAdapter extends BaseAdapter {
 
         //发送队列
         if (theme==0) {
-            drawableId=R.drawable.tab_profile_dark;
+            drawableId=R.drawable.tab_profile_light;
         } else if (theme==2) {
             drawableId=R.drawable.tab_profile_light;
         }
@@ -395,7 +398,7 @@ public class SidebarAdapter extends BaseAdapter {
         show=mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_PUBLIC, true);
         if (show) {
             if (theme==0) {
-                drawableId=R.drawable.tab_public_dark;
+                drawableId=R.drawable.tab_public_light;
             } else if (theme==2) {
                 drawableId=R.drawable.tab_public_light;
             }
@@ -408,7 +411,7 @@ public class SidebarAdapter extends BaseAdapter {
         show=mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_PROFILE, true);
         if (show) {
             if (theme==0) {
-                drawableId=R.drawable.tab_profile_dark;
+                drawableId=R.drawable.tab_profile_light;
             } else if (theme==2) {
                 drawableId=R.drawable.tab_profile_light;
             }
@@ -421,7 +424,7 @@ public class SidebarAdapter extends BaseAdapter {
         show=mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_MY_FAV, true);
         if (show) {
             if (theme==0) {
-                drawableId=R.drawable.tab_fav_dark;
+                drawableId=R.drawable.tab_fav_light;
             } else if (theme==2) {
                 drawableId=R.drawable.tab_fav_light;
             }
@@ -435,6 +438,10 @@ public class SidebarAdapter extends BaseAdapter {
         if (show) {
             entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_PLACE_NEARBY_PHOTOS, mContext.getString(R.string.tab_label_place_nearby_photos),
                 R.drawable.location, PlaceNearbyPhotosFragment.class, false);
+            addEntry(entry, init);
+
+            entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_PLACE_NEARBY_PHOTOS, mContext.getString(R.string.tab_label_place_nearby_photos)+"2",
+                R.drawable.location, PlaceNearbyPhotosGridFragment.class, false);
             addEntry(entry, init);
         }
 
@@ -458,7 +465,7 @@ public class SidebarAdapter extends BaseAdapter {
         show=mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_DM, false);
         if (show) {
             if (theme==0) {
-                drawableId=R.drawable.tab_profile_dark;
+                drawableId=R.drawable.tab_profile_light;
             } else if (theme==2) {
                 drawableId=R.drawable.tab_profile_light;
             }
@@ -468,7 +475,7 @@ public class SidebarAdapter extends BaseAdapter {
         }
 
         if (theme==0) {
-            drawableId=R.drawable.tab_profile_dark;
+            drawableId=R.drawable.tab_profile_light;
         } else if (theme==2) {
             drawableId=R.drawable.tab_profile_light;
         }
@@ -478,7 +485,7 @@ public class SidebarAdapter extends BaseAdapter {
 
         //设置
         if (theme==0) {
-            drawableId=R.drawable.tab_setting_dark;
+            drawableId=R.drawable.tab_setting_light;
         } else if (theme==2) {
             drawableId=R.drawable.tab_setting_light;
         }

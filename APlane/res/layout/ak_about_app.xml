@@ -4,7 +4,7 @@
     tools:ignore="ContentDescription"
     android:layout_height="fill_parent" android:layout_width="fill_parent"
     android:fillViewport="true"
-    android:scrollbars="none" style="?attr/bgView">
+    android:scrollbars="none">
     <LinearLayout android:orientation="vertical"
         android:layout_width="fill_parent" android:layout_marginBottom="8dp"
         android:layout_height="wrap_content">
@@ -23,7 +23,7 @@
                 android:paddingLeft="10dp" android:paddingRight="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:text="@string/about_app_ver_label"
-                android:textColor="?attr/textColorItemTitle"
+                android:textColor="@color/holo_light_item_title"
                 android:gravity="center_vertical"/>
 
             <TextView android:id="@+id/version"
@@ -32,7 +32,7 @@
                 android:paddingLeft="10dp" android:paddingRight="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:text=""
-                android:textColor="?attr/textColorItemTitle"
+                android:textColor="@color/holo_light_item_title"
                 android:gravity="center_vertical"/>
         </RelativeLayout>
 
@@ -44,12 +44,12 @@
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="fill_parent" android:text="@string/about_app_author_label"
-                android:textColor="?attr/textColorItemTitle"
+                android:textColor="@color/holo_light_item_title"
                 android:gravity="center_vertical"/>
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" android:text="@string/about_app_author"
-                android:textColor="?attr/textColorItemNum"
+                android:textColor="@color/holo_light_item_num"
                 android:gravity="center_vertical"/>
         </LinearLayout>
         <include layout="@layout/ak_colorstrip"/>
@@ -62,12 +62,12 @@
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="fill_parent" android:text="@string/about_app_email_label"
-                android:textColor="?attr/textColorItemTitle"
+                android:textColor="@color/holo_light_item_title"
                 android:gravity="center_vertical"/>
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" android:text="@string/about_app_email"
-                android:textColor="?attr/textColorItemNum"
+                android:textColor="@color/holo_light_item_num"
                 android:gravity="center_vertical"/>
         </LinearLayout>
         <include layout="@layout/ak_colorstrip"/>
@@ -81,12 +81,12 @@
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="fill_parent" android:text="@string/about_app_play"
-                android:textColor="?attr/textColorItemTitle"
+                android:textColor="@color/holo_light_item_title"
                 android:gravity="center_vertical"/>
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" android:text="@string/about_app_play_url"
-                android:textColor="?attr/textColorItemNum"
+                android:textColor="@color/holo_light_item_num"
                 android:autoLink="all"
                 android:gravity="center_vertical"/>
         </LinearLayout>
@@ -101,12 +101,12 @@
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="fill_parent" android:text="@string/about_app_home"
-                android:textColor="?attr/textColorItemTitle"
+                android:textColor="@color/holo_light_item_title"
                 android:gravity="center_vertical"/>
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" android:text="@string/about_app_home_url"
-                android:textColor="?attr/textColorItemNum"
+                android:textColor="@color/holo_light_item_num"
                 android:autoLink="all"
                 android:gravity="center_vertical"/>
         </LinearLayout>
@@ -122,37 +122,37 @@
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="fill_parent" android:text="@string/about_app_author"
-                android:textColor="?attr/textColorItemTitle"
+                android:textColor="@color/holo_light_item_title"
                 android:gravity="center_vertical"/>
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" android:text="@string/about_app_author_url"
-                android:textColor="?attr/textColorItemNum"
+                android:textColor="@color/holo_light_item_num"
                 android:gravity="center_vertical"/>
         </LinearLayout>
         <include layout="@layout/ak_colorstrip"/>
 
         <Button android:id="@+id/follow_btn"
             android:layout_marginTop="6dp"
-            style="?attr/holoButtonStyle" android:layout_gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
             android:text="@string/about_app_follow_label"
             android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
             android:layout_width="fill_parent" android:layout_height="wrap_content"/>
 
         <Button android:id="@+id/sugguest_btn"
-            style="?attr/holoButtonStyle" android:layout_gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
             android:text="@string/about_app_suggesst_label"
             android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
             android:layout_width="fill_parent" android:layout_height="wrap_content"/>
 
         <Button android:id="@+id/chk_udpate_btn"
-            style="?attr/holoButtonStyle" android:layout_gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
             android:text="@string/about_app_chk_update"
             android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
             android:layout_width="fill_parent" android:layout_height="wrap_content"/>
 
         <Button android:id="@+id/feedback_btn"
-            style="?attr/holoButtonStyle" android:layout_gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
             android:text="@string/about_app_feedback" android:visibility="gone"
             android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
             android:layout_width="fill_parent" android:layout_height="wrap_content"/>
@@ -162,14 +162,14 @@
             android:paddingLeft="10dp" android:paddingRight="10dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:text="@string/about_app_plan"
-            android:textColor="?attr/textColorItemTitle"
+            android:textColor="@color/holo_light_item_title"
             android:gravity="center_vertical"/>
         <TextView
             android:layout_marginTop="4dp"
             android:paddingLeft="10dp" android:paddingRight="10dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:text="@string/about_app_plan_content"
-            android:textColor="?attr/textColorItemTitle"
+            android:textColor="@color/holo_light_item_title"
             android:gravity="center_vertical"/>
 
         <TextView
@@ -177,7 +177,7 @@
             android:paddingLeft="10dp" android:paddingRight="10dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:text="@string/about_app_about"
-            android:textColor="?attr/textColorItemTitle"
+            android:textColor="@color/holo_light_item_title"
             android:gravity="center_vertical"/>
         <TextView
             android:layout_marginTop="4dp"
@@ -185,7 +185,7 @@
             android:layout_marginBottom="10dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:text="@string/about_app_about_function"
-            android:textColor="?attr/textColorItemTitle"
+            android:textColor="@color/holo_light_item_title"
             android:gravity="center_vertical"/>
 
     </LinearLayout>

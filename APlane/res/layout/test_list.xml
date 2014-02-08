@@ -4,7 +4,7 @@
     <!--<eu.erikw.PullToRefreshListView-->
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/statusList"
-        android:listSelector="@drawable/abs__list_selector_holo_dark"
+        android:listSelector="@drawable/abs__list_selector_holo_light"
         android:layout_width="fill_parent" android:layout_height="fill_parent"
         android:cacheColorHint="@color/transparent" android:dividerHeight="0dp"
         android:drawSelectorOnTop="false" android:fastScrollEnabled="true"

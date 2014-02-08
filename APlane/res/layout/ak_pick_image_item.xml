@@ -4,7 +4,7 @@
     tools:ignore="ContentDescription"
     android:layout_height="fill_parent" android:layout_width="fill_parent"
     android:padding="8dp"
-    android:scrollbars="none" style="?attr/bgView">
+    android:scrollbars="none">
     <com.makeramen.RoundedImageView android:id="@+id/iv_portrait"
         android:layout_width="@dimen/gridview_image_width"
         android:layout_height="@dimen/gridview_image_height"

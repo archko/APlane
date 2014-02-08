@@ -304,7 +304,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         int resId=R.drawable.content_new_light;
         if ("2".equals(themeId)) {
-            resId=R.drawable.content_new_dark;
+            //resId=R.drawable.content_new_dark;
         }
         actionItem.setIcon(resId);
 
@@ -319,7 +319,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         // These icons are shown without a text description, and therefore should
         // be sufficiently descriptive on their own.
 
-        resId=R.drawable.ic_cab_done_holo_dark;
+        resId=R.drawable.ic_cab_done_holo_light;
         if ("2".equals(themeId)) {
             resId=R.drawable.ic_cab_done_holo_light;
         }

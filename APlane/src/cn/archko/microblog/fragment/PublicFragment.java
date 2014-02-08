@@ -13,7 +13,6 @@ import com.me.microblog.bean.Status;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.factory.AbsApiFactory;
 import com.me.microblog.core.factory.ApiConfigFactory;
-import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.WeiboLog;
 
 /**
@@ -21,7 +20,7 @@ import com.me.microblog.util.WeiboLog;
  * @description: 随便看看
  * @author: archko 11-11-17
  */
-public class PublicFragment extends StatusListFragment {
+public class PublicFragment extends StaggeredGridFragment {
 
     public static final String TAG="PublicFragment";
 

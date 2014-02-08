@@ -224,7 +224,7 @@ public class FavItemView extends LinearLayout implements View.OnClickListener, C
                 try {
                     String title="@"+mRetweetedStatus.user.screenName+":"+mRetweetedStatus.text+" ";
                     SpannableString spannableString=new SpannableString(title);
-                    WeiboUtil.highlightContent(mContext, spannableString, getResources().getColor(R.color.holo_dark_item_highliht_link));
+                    WeiboUtil.highlightContent(mContext, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
                     mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
                 } catch (Exception e) {
                     e.printStackTrace();

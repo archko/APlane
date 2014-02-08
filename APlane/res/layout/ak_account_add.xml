@@ -6,7 +6,7 @@
 <LinearLayout
     android:orientation="vertical" android:layout_width="fill_parent"
     android:layout_height="wrap_content" android:gravity="center_horizontal"
-    android:background="?attr/bgView">
+    >
 
     <TextView android:id="@+id/title"
         android:layout_width="fill_parent" android:layout_height="wrap_content"
@@ -31,14 +31,14 @@
         android:inputType="textEmailAddress|text"
         android:layout_width="fill_parent" android:layout_height="wrap_content"
         android:text="@string/test_email" android:padding="4dip"
-        android:layout_marginTop="18dip" android:textColor="?attr/textColorItemStatus"
+        android:layout_marginTop="18dip" android:textColor="@color/holo_light_item_status"
         android:layout_marginLeft="20dip" android:layout_marginRight="20dip"
         android:windowSoftInputMode="stateHidden"/>
 
     <EditText android:id="@+id/pwd"
         android:layout_width="fill_parent" android:layout_height="wrap_content"
         android:inputType="textPassword" android:text=""
-        android:padding="4dip" android:textColor="?attr/textColorItemStatus"
+        android:padding="4dip" android:textColor="@color/holo_light_item_status"
         android:layout_marginBottom="0dip" android:layout_marginTop="8dip"
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip" android:windowSoftInputMode="stateHidden"/>
@@ -49,11 +49,11 @@
         <Button android:id="@+id/login2"
             android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:text="@string/login2" android:layout_weight="1"
-            style="?attr/holoButtonStyle" android:layout_marginLeft="20dip"/>
+            android:layout_marginLeft="20dip"/>
 
         <Button android:id="@+id/exit" android:layout_weight="1"
             android:layout_width="fill_parent" android:layout_height="wrap_content"
-            android:text="@string/exit" style="?attr/holoButtonStyle"
+            android:text="@string/exit"
             android:layout_marginRight="20dip"/>
     </LinearLayout>
 
@@ -70,13 +70,13 @@
         <Button android:id="@+id/btn" android:visibility="gone"
             android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:text="@string/login" android:layout_weight="1"
-            style="?attr/holoButtonStyle" android:layout_marginLeft="20dip"/>
+             android:layout_marginLeft="20dip"/>
 
         <Button android:id="@+id/login_show_webview_btn" android:visibility="visible"
             android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:text="@string/login_show_webview" android:layout_weight="1"
             android:layout_marginRight="20dp"
-            style="?attr/holoButtonStyle" android:layout_marginLeft="20dip"/>
+             android:layout_marginLeft="20dip"/>
     </LinearLayout>
 
 </LinearLayout>

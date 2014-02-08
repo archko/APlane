@@ -343,7 +343,7 @@ public class MyPostFragment extends StatusListFragment {
             WeiboLog.d(TAG, "onCreateActionMode");
             getActivity().getMenuInflater().inflate(R.menu.status_mode_menu, menu);
 
-            int selectId=R.drawable.ic_action_select_invert_dark;
+            int selectId=R.drawable.ic_action_select_invert_light;
             String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
             if ("0".equals(themeId)) {
             } else if ("1".equals(themeId)) {

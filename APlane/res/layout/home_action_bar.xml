@@ -21,7 +21,7 @@
         </RelativeLayout>
 
         <ImageButton android:id="@+id/action_new_status"
-            android:src="@drawable/content_edit_dark" android:contentDescription="@string/action_new_status"
+            android:src="@drawable/content_edit_light" android:contentDescription="@string/action_new_status"
             android:background="@drawable/holo_selector"
             style="@style/TopActionBarItem"/>
 

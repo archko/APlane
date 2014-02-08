@@ -75,7 +75,7 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         int resId=R.drawable.content_new_light;
         if ("2".equals(themeId)) {
-            resId=R.drawable.content_new_dark;
+            //resId=R.drawable.content_new_dark;
         }
         actionItem.setIcon(resId);
     }

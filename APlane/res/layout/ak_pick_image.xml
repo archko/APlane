@@ -4,10 +4,10 @@
     tools:ignore="ContentDescription"
     android:layout_height="fill_parent" android:layout_width="fill_parent"
     android:padding="8dp" android:orientation="vertical"
-    android:scrollbars="none" style="?attr/bgView">
+    android:scrollbars="none">
     <TextView
         android:text="最多可以添加9张图片."
-        android:textColor="?attr/textColorItemName"
+        android:textColor="@color/holo_light_item_name"
         android:minHeight="40dp" android:gravity="center"
         android:textSize="17sp"
         android:layout_width="match_parent" android:layout_height="wrap_content"/>

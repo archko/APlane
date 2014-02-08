@@ -4,7 +4,7 @@
     tools:ignore="ContentDescription"
     android:layout_width="fill_parent" android:layout_height="@dimen/bottom_action_bar_height">
 
-    <ImageView android:id="@+id/btn_comment" android:src="@drawable/send_dark"
+    <ImageView android:id="@+id/btn_comment" android:src="@drawable/send_light"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"

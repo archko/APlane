@@ -119,6 +119,7 @@ public class FetchImage extends Thread {
 
         if (ImageCache2.getInstance().isScrolling()||DownloadPool.cancelWork(mPiece)) {
             app.mDownloadPool.ActiveThread_Pop();
+            mHttpGet.abort();
             return;
         }
 
@@ -130,12 +131,12 @@ public class FetchImage extends Thread {
             }
 
             String ext=WeiboUtil.getExt(uri);
-            String name=Md5Digest.getInstance().getMd5(uri)+ext;
+            String name=Md5Digest.getInstance().getMd5(uri);
             if (null==name) {
                 app.mDownloadPool.ActiveThread_Pop();
                 return;
             }
-            String imagepath=dir+name;
+            String imagepath=dir+name+ext;
 
             bitmap=ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(imagepath, -1);
             if (null!=bitmap) {

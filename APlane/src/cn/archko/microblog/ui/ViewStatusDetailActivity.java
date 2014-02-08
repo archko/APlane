@@ -455,8 +455,8 @@ public class ViewStatusDetailActivity extends BaseOauthFragmentActivity implemen
 
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         //int resId=R.drawable.abs__ic_menu_moreoverflow_normal_holo_dark;
-        int favId=R.drawable.rating_favorite_dark;
-        int refreshId=R.drawable.navigation_refresh_dark;
+        int favId=R.drawable.rating_favorite_light;
+        int refreshId=R.drawable.navigation_refresh_light;
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
         } else {
@@ -559,7 +559,7 @@ public class ViewStatusDetailActivity extends BaseOauthFragmentActivity implemen
         mQuickCommentBtn.setOnClickListener(clickListener);
 
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        int resId=R.drawable.send_dark;
+        int resId=R.drawable.send_light;
 
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {

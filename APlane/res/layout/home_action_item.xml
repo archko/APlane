@@ -11,7 +11,7 @@
         android:layout_centerVertical="true"/>
 
     <TextView android:id="@+id/title" android:text=""
-        android:textColor="?attr/textColorItemSidebar"
+        android:textColor="@color/holo_light_item_sidebar"
         style="@style/TopActionBarItem.Home"/>
 
     <TextView android:id="@+id/msg" android:text=""

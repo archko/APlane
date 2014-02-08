@@ -37,6 +37,7 @@ public class SkinActivity extends Activity implements PopupMenu.OnMenuItemClickL
         } else if ("3".equals(themeId)) {
             //theme=R.style.Theme_AndroidDevelopers;
         }
+        theme=R.style.Theme_AK_Light;
         setTheme(theme);
         getActionBar().hide();
     }

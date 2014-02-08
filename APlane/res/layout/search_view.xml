@@ -23,7 +23,7 @@
         android:layout_width="fill_parent" android:layout_height="wrap_content">
 
         <RadioButton android:id="@+id/user_rb"
-            android:text="@string/search_user" android:textColor="?attr/textColorItemTitle"
+            android:text="@string/search_user" android:textColor="@color/holo_light_item_title"
             android:paddingTop="4dip"
             android:paddingBottom="2dip"
             android:gravity="center" android:checked="true"
@@ -33,7 +33,7 @@
 
         <RadioButton android:id="@+id/status_rb"
             android:text="@string/search_status" android:layout_marginLeft="10dp"
-            android:paddingTop="4dip" android:textColor="?attr/textColorItemTitle"
+            android:paddingTop="4dip" android:textColor="@color/holo_light_item_title"
             android:paddingBottom="2dip"
             android:gravity="center"
             android:layout_weight="1"
@@ -47,6 +47,6 @@
         <ListView android:id="@+id/statusList"
             android:layout_width="fill_parent" android:layout_height="fill_parent"
             android:cacheColorHint="@color/transparent" android:dividerHeight="0dp"
-            android:listSelector="@drawable/abs__list_selector_holo_dark"/>
+            android:listSelector="@drawable/abs__list_selector_holo_light"/>
     </FrameLayout>
 </LinearLayout>

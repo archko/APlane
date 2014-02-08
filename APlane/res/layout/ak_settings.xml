@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dip" android:layout_toRightOf="@+id/pref_account_setting_img"
-                android:text="@string/action_account_user_manager" android:textColor="?attr/textColorItemSidebar"/>
+                android:text="@string/action_account_user_manager"/>
 
         </RelativeLayout>
         <ImageView android:src="@drawable/dialog_divider_horizontal_light"
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dip" android:layout_toRightOf="@+id/pref_account_setting_img"
-                android:text="@string/action_search" android:textColor="?attr/textColorItemSidebar"/>
+                android:text="@string/action_search"/>
 
         </RelativeLayout>
         <ImageView android:src="@drawable/dialog_divider_horizontal_light"
@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dip" android:layout_toRightOf="@+id/pref_account_setting_img"
-                android:text="@string/action_home_user" android:textColor="?attr/textColorItemSidebar"/>
+                android:text="@string/action_home_user"/>
 
         </RelativeLayout>
         <ImageView android:src="@drawable/dialog_divider_horizontal_light"
@@ -93,7 +93,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dip" android:layout_toRightOf="@+id/pref_account_setting_img"
-                android:text="@string/action_at_author" android:textColor="?attr/textColorItemSidebar"/>
+                android:text="@string/action_at_author"/>
 
         </RelativeLayout>
         <ImageView android:src="@drawable/dialog_divider_horizontal_light"
@@ -116,7 +116,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dip" android:layout_toRightOf="@+id/pref_account_setting_img"
-                android:text="@string/action_pref" android:textColor="?attr/textColorItemSidebar"/>
+                android:text="@string/action_pref"/>
 
         </RelativeLayout>
         <ImageView android:src="@drawable/dialog_divider_horizontal_light"
@@ -139,7 +139,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dip" android:layout_toRightOf="@+id/pref_account_setting_img"
-                android:text="@string/action_logout" android:textColor="?attr/textColorItemSidebar"/>
+                android:text="@string/action_logout"/>
 
         </RelativeLayout>
         <ImageView android:src="@drawable/dialog_divider_horizontal_light"
@@ -162,7 +162,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dip" android:layout_toRightOf="@+id/pref_account_setting_img"
-                android:text="@string/action_update" android:textColor="?attr/textColorItemSidebar"/>
+                android:text="@string/action_update"/>
 
         </RelativeLayout>
         <ImageView android:src="@drawable/dialog_divider_horizontal_light"
@@ -185,7 +185,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dip" android:layout_toRightOf="@+id/pref_account_setting_img"
-                android:text="@string/action_exit" android:textColor="?attr/textColorItemSidebar"/>
+                android:text="@string/action_exit"/>
 
         </RelativeLayout>
 

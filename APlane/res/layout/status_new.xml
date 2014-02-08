@@ -33,7 +33,7 @@
                 android:layout_width="64dip"
                 android:layout_height="fill_parent" android:text="@string/text_count"
                 android:layout_alignParentRight="true" android:padding="2dip"
-                style="?attr/bottomActionBarItem" android:textColor="@color/red"/>
+                android:gravity="center" android:textColor="@color/red"/>
 
             <ProgressBar android:id="@+id/loc_progress_bar"
                 android:layout_width="24dp" android:layout_height="24dp"
@@ -72,27 +72,27 @@
 
             <Button android:id="@+id/btn_location" android:visibility="visible"
                 android:text="@string/new_status_loc" android:layout_weight="1"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
             <Button android:id="@+id/btn_draft" android:visibility="gone"
                 android:text="@string/new_status_drafts" android:layout_weight="1"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
             <Button android:id="@+id/btn_picture"
                 android:text="@string/new_status_capture" android:layout_weight="1"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
             <Button android:id="@+id/btn_trend" android:visibility="visible"
                 android:text="@string/new_status_trend" android:layout_weight="1"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
             <Button android:id="@+id/btn_emo" android:visibility="visible"
                 android:text="@string/new_status_emo" android:layout_weight="1"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
             <Button android:id="@+id/btn_at" android:visibility="visible"
                 android:text="@string/new_status_at" android:layout_weight="1"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
         </LinearLayout>
     </LinearLayout>
     <RelativeLayout
@@ -116,19 +116,19 @@
 
             <Button android:id="@+id/edit_btn" android:visibility="visible"
                 android:text="@string/new_status_img_edit" android:layout_weight="1"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
             <Button android:id="@+id/crop_btn" android:visibility="gone"
                 android:text="@string/new_status_img_crop" android:layout_weight="1"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
             <Button android:id="@+id/rotate_btn" android:visibility="gone"
                 android:text="@string/new_status_img_rotate" android:layout_weight="1"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
             <Button android:id="@+id/filter_btn" android:visibility="gone"
                 android:text="@string/new_status_img_filter" android:layout_weight="1"
-                style="?attr/bottomActionBarItem"/>
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
         </LinearLayout>
     </RelativeLayout>
 

@@ -434,7 +434,7 @@ public class CommentStatusActivity extends BaseOauthFragmentActivity {
         if (retweetedStatus!=null) {
             String title="@"+retweetedStatus.user.screenName+":"+retweetedStatus.text+" ";
             SpannableString spannableString=new SpannableString(title);
-            WeiboUtil.highlightContent(CommentStatusActivity.this, spannableString, getResources().getColor(R.color.holo_dark_item_highliht_link));
+            WeiboUtil.highlightContent(CommentStatusActivity.this, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
             mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
         } else {
             mContentSencond.setVisibility(View.GONE);

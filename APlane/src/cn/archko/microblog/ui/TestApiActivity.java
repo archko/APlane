@@ -22,7 +22,7 @@ public class TestApiActivity extends EmptyFragmentActivity {
             TextView txt=new TextView(TestApiActivity.this);
             setContentView(txt);
             txt.setTextSize(30f);
-            txt.setTextColor(R.color.DeepSkyBlue);
+            txt.setTextColor(getResources().getColor(R.color.DeepSkyBlue));
             String action=getIntent().getStringExtra("action");
             Log.d("", "action:"+action);
             txt.setText(action);

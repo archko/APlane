@@ -499,7 +499,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
 
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         //int overFlowId=R.drawable.abs__ic_menu_moreoverflow_normal_holo_dark;
-        int postId=R.drawable.send_dark;
+        int postId=R.drawable.send_light;
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
         } else {

@@ -391,6 +391,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
+        WeiboLog.d(TAG, "onScrollStateChanged.scrollState:"+scrollState);
         if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING
             || scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
             ImageCache2.getInstance().setPauseDiskCache(true);

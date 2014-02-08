@@ -1,69 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--<declare-styleable name="AKTheme">-->
-    <!--<attr name="actionBarItemBackground" format="reference"/>
-    <attr name="actionBarSize" format="dimension">
-        <enum name="wrap_content" value="0"/>
-    </attr>
-    <attr name="selectableItemBackground" format="reference"/>-->
-    <attr name="buttonStyle" format="reference"/>
-    <attr name="bottomActionBarItem" format="reference"/>
+    <!-- These are the attributes that we want to retrieve for
+         app/FragmentArguments.java -->
 
-    <attr name="holoButtonStyle" format="reference"/>
-    <attr name="holoActionBarTabStyle" format="reference"/>
+    <declare-styleable name="FragmentArguments">
+        <attr name="android:label"/>
+    </declare-styleable>
 
-    <!-- 转发微博的style,有背景的. -->
-    <attr name="itemRetStatusStyle" format="reference"/>
+    <declare-styleable name="SeekBarPreference">
+        <attr name="defaultValue" format="string|boolean|integer|reference|float"/>
+    </declare-styleable>
 
-    <!-- ================ text background color ================= -->
+    <declare-styleable name="TagsViewGroup">
+        <attr name="verticalSpacing" format="dimension"/>
+        <attr name="horizontalSpacing" format="dimension"/>
+        <attr name="minRows" format="integer"/>
+    </declare-styleable>
 
-    <!-- ================ text color ================= -->
-    <!-- sidebar item color -->
-    <attr name="textColorItemSidebar" format="color"/>
-
-    <!-- 标题的颜色,比如对话框 -->
-    <attr name="textColorItemTitle" format="color"/>
-
-    <!-- 第一行的颜色,目前多数是名字 -->
-    <attr name="textColorItemName" format="color"/>
-
-    <!-- 列表项的正文内容与转发的内容颜色 -->
-    <attr name="textColorItemStatus" format="color"/>
-    <attr name="textColorItemRetStatus" format="color"/>
-
-    <!-- 顶部或底部来自与时间的颜色 -->
-    <attr name="textColorItemTopBottom" format="color"/>
-
-    <!-- bottom button bar -->
-    <attr name="textColorItemBottomBar" format="color"/>
-
-    <!-- repost,comment number color -->
-    <attr name="textColorItemNum" format="color"/>
-
-    <!-- user status,friendscount,followerscount favorites number -->
-    <attr name="textColorItemUserNum" format="color"/>
-
-    <!-- user info -->
-    <attr name="textColorItemUserInfo" format="color"/>
-
-    <!-- @,#,url highlight color -->
-    <attr name="textColorItemHighlightLink" format="color"/>
-
-    <!-- list @,# item color -->
-    <attr name="textColorItemAt" format="color"/>
-
-    <!-- ================ background color ================= -->
-    <!-- 作为列表的背景色 -->
-    <attr name="bgColorList" format="color"/>
-
-    <!-- view viewpager,all view background -->
-    <attr name="bgView" format="color"/>
-
-    <!-- sidebar background -->
-    <attr name="bgColorSidebar" format="color"/>
-
-    <!-- tab background -->
-    <attr name="bgColorActionBarTab" format="color"/>
-
-    <!--</declare-styleable>-->
+    <declare-styleable name="RoundedImageView">
+        <attr name="corner_radius" format="dimension"/>
+        <attr name="border_width" format="dimension"/>
+        <attr name="border_color" format="color"/>
+        <attr name="round_background" format="boolean"/>
+        <attr name="is_oval" format="boolean"/>
+        <attr name="android:scaleType"/>
+    </declare-styleable>
 </resources>

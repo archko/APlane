@@ -122,7 +122,7 @@ public class RepostStatusActivity extends CommentStatusActivity {
         if (retweetedStatus!=null) {
             String title="@"+retweetedStatus.user.screenName+":"+retweetedStatus.text+" ";
             SpannableString spannableString=new SpannableString(title);
-            WeiboUtil.highlightContent(RepostStatusActivity.this, spannableString, getResources().getColor(R.color.holo_dark_item_highliht_link));
+            WeiboUtil.highlightContent(RepostStatusActivity.this, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
             mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
             repost_ori_btn.setText(retweetedStatus.user.screenName);
         } else {

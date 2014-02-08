@@ -135,7 +135,7 @@ public final class PreferenceUtils {
     public final int getDefaultThemeColor(final Context context) {
         SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(context);
         String themeId=options.getString(PrefsActivity.PREF_THEME, "0");
-        int colorId=R.color.holo_dark_item_title;
+        int colorId=R.color.holo_light_item_title;
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
         } else if ("2".equals(themeId)) {
@@ -191,7 +191,7 @@ public final class PreferenceUtils {
     public final int getDefaultStatusThemeColor(final Context context) {
         SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(context);
         String themeId=options.getString(PrefsActivity.PREF_THEME, "0");
-        int colorId=R.color.holo_dark_item_status;
+        int colorId=R.color.holo_light_item_status;
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
         } else if ("2".equals(themeId)) {
@@ -229,7 +229,7 @@ public final class PreferenceUtils {
     public final int getDefaultRetContentThemeColor(final Context context) {
         SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(context);
         String themeId=options.getString(PrefsActivity.PREF_THEME, "0");
-        int colorId=R.color.holo_dark_item_ret_status;
+        int colorId=R.color.holo_light_item_ret_status;
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
         } else if ("2".equals(themeId)) {
@@ -249,7 +249,7 @@ public final class PreferenceUtils {
     public final int getDefaultSidebarThemeColor(final Context context) {
         SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(context);
         String themeId=options.getString(PrefsActivity.PREF_THEME, "0");
-        int colorId=R.color.holo_dark_item_sidebar;
+        int colorId=R.color.holo_light_item_sidebar;
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
         } else if ("2".equals(themeId)) {

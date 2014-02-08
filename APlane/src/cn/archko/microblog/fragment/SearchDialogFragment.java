@@ -147,7 +147,7 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
         mFooterLayout=new RelativeLayout(getActivity());
 
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        if ("0".equals(themeId)) {
+        /*if ("0".equals(themeId)) {
             mSearchBtn.setImageResource(R.drawable.action_search_dark);
         } else if ("1".equals(themeId)) {
             mSearchBtn.setImageResource(R.drawable.action_search_dark);
@@ -155,7 +155,7 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
             mSearchBtn.setImageResource(R.drawable.action_search_light);
         } else if ("3".equals(themeId)) {
             mSearchBtn.setImageResource(R.drawable.action_search_light);
-        }
+        }*/
 
         listView.addHeaderView(mHeaderLayout);
         listView.addFooterView(mFooterLayout);

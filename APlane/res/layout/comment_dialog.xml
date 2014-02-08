@@ -15,7 +15,7 @@
             <TextView android:id="@+id/title"
                 android:layout_height="wrap_content" android:layout_width="wrap_content"
                 android:text="@string/comment_dialog_title" android:layout_gravity="center_vertical"
-                android:textSize="20sp" android:textColor="?attr/textColorItemTitle"/>
+                android:textSize="20sp" android:textColor="@color/holo_light_item_title"/>
         </LinearLayout>
         <!--<include layout="@layout/header" android:id="@+id/ll_title"/>-->
         <LinearLayout android:layout_marginTop="12dip"
@@ -24,12 +24,12 @@
             <Button android:id="@+id/btn_back"
                 android:layout_width="fill_parent" android:layout_height="wrap_content"
                 android:text="@string/cancel" android:layout_weight="1"
-                style="?attr/holoButtonStyle" android:layout_marginLeft="20dip"/>
+                android:layout_marginLeft="20dip"/>
 
             <Button android:id="@+id/btn_save"
                 android:layout_width="fill_parent" android:layout_height="wrap_content"
                 android:text="@string/confirm" android:layout_weight="1"
-                style="?attr/holoButtonStyle" android:layout_marginRight="20dip"/>
+                android:layout_marginRight="20dip"/>
         </LinearLayout>
 
         <RelativeLayout
@@ -45,7 +45,7 @@
                 android:padding="6dip"/>
 
             <Button android:id="@+id/btn_emo" android:layout_below="@id/content"
-                android:textColor="?attr/textColorItemBottomBar"
+                android:textColor="@color/holo_light_item_bottombar"
                 android:text="@string/new_status_emo" android:background="@drawable/holo_selector"
                 android:paddingLeft="8dp" android:paddingRight="8dp"
                 android:layout_width="60dp" android:layout_height="42dp"/>
@@ -54,7 +54,7 @@
                 android:layout_width="64dip" android:layout_below="@id/content"
                 android:layout_height="42dp" android:text="@string/text_count"
                 android:layout_alignParentRight="true" android:padding="2dip"
-                style="?attr/bottomActionBarItem" android:textColor="@color/red"/>
+                android:gravity="center" android:textColor="@color/red"/>
 
             <cn.archko.microblog.view.EmojiPanelView android:layout_below="@id/btn_emo"
                 android:id="@+id/emoji_panel" android:visibility="gone"

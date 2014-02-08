@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.PopupMenu;
 import cn.archko.microblog.R;
+import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
 import cn.archko.microblog.fragment.impl.SinaDMImpl;
 import cn.archko.microblog.ui.SkinFragmentActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
@@ -33,7 +34,7 @@ import cn.archko.microblog.utils.AKUtils;
  * @description: 私信，需要使用全功能的key。
  * @author: archko 12-11-2
  */
-public class DirectMessageFragment extends AdvancedOauth2ListFragment<DirectMessage> {
+public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
 
     public static final String TAG="DirectMessageFragment";
 

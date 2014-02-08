@@ -63,6 +63,8 @@ public class SkinFragmentActivity extends Activity implements PopupMenu.OnMenuIt
             //theme=R.style.Theme_AndroidDevelopers;
             mThemeId="3";
         }
+        mThemeId="2";
+        theme=R.style.Theme_AK_Light;
         setTheme(theme);
     }
 

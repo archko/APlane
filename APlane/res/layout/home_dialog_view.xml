@@ -5,7 +5,7 @@
     android:layout_height="wrap_content" android:layout_width="wrap_content">
 
     <TextView android:id="@+id/update_msg"
-        android:textColor="?attr/textColorItemNum"
+        android:textColor="@color/holo_light_item_num"
         android:textSize="18sp"
         android:paddingLeft="8dp" android:paddingRight="8dp"
         android:paddingTop="8dp" android:paddingBottom="8dp"
@@ -16,17 +16,17 @@
         android:layout_marginTop="10dip"
         android:layout_height="wrap_content" android:layout_width="fill_parent">
         <Button android:id="@+id/cancel"
-            style="?attr/holoButtonStyle"
+            android:gravity="center"
             android:layout_weight="1" android:text="@string/cancel"
             android:layout_width="0dp" android:layout_height="wrap_content"/>
 
         <Button android:id="@+id/ok" android:visibility="visible"
-            style="?attr/holoButtonStyle"
+            android:gravity="center"
             android:layout_weight="1" android:text="@string/update_btn"
             android:layout_width="0dp" android:layout_height="wrap_content"/>
 
         <Button android:id="@+id/install" android:visibility="visible"
-            style="?attr/holoButtonStyle"
+            android:gravity="center"
             android:layout_weight="1" android:text="@string/update_install"
             android:layout_width="0dp" android:layout_height="wrap_content"/>
     </LinearLayout>

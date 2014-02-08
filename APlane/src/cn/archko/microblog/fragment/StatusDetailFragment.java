@@ -993,7 +993,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         public void updateDrawState(TextPaint textPaint) {
             try {
                 if (isResumed()) {
-                    textPaint.setColor(getResources().getColor(R.color.holo_dark_item_highliht_link));
+                    textPaint.setColor(getResources().getColor(R.color.holo_light_item_highliht_link));
                     textPaint.setUnderlineText(true);
                 }
             } catch (Exception e) {
@@ -1062,7 +1062,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         public void updateDrawState(TextPaint textPaint) {
             try {
                 if (isResumed()) {
-                    textPaint.setColor(getResources().getColor(R.color.holo_dark_item_highliht_link));
+                    textPaint.setColor(getResources().getColor(R.color.holo_light_item_highliht_link));
                     textPaint.setUnderlineText(true);
                 }
             } catch (Exception e) {

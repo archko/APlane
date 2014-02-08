@@ -33,6 +33,7 @@ import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.action.GroupAction;
 import cn.archko.microblog.fragment.HomeFragment;
+import cn.archko.microblog.fragment.HomeGridFragment;
 import cn.archko.microblog.fragment.PrefsFragment;
 import cn.archko.microblog.fragment.abs.BaseFragment;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
@@ -57,7 +58,6 @@ import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.update.UmengDownloadListener;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
@@ -175,10 +175,10 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
     }
 
     private void changeMenuOffset(SlidingMenu sm) {
-        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
+        WindowManager wm=(WindowManager) getSystemService(WINDOW_SERVICE);
+        Display display=wm.getDefaultDisplay();
         @SuppressWarnings("deprecation")
-        int behindOffset_dp = AKUtils.convertPxToDp(display.getWidth()) - 208;
+        int behindOffset_dp=AKUtils.convertPxToDp(display.getWidth())-208;
         sm.setBehindOffset(AKUtils.convertDpToPx(behindOffset_dp));
         //sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
     }
@@ -236,9 +236,9 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
         clearItem.setOnClickListener(mActionItemListener);
 
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        int menuNewStatus=R.drawable.content_edit_dark;
-        int refreshId=R.drawable.navigation_refresh_dark;
-        int clearId=R.drawable.content_discard_dark;
+        int menuNewStatus=R.drawable.content_edit_light;
+        int refreshId=R.drawable.navigation_refresh_light;
+        int clearId=R.drawable.content_discard_light;
         //int groupdId=R.drawable.social_group_dark;
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
@@ -317,7 +317,7 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
             }
             registerReceiver(mExitReceiver, new IntentFilter(Constants.EXIT_APP));
         }
-        MobclickAgent.onError(this);
+        //MobclickAgent.onError(this);
     }
 
     /**
@@ -381,7 +381,7 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
             receiver=new MsgBroadcastReceiver();
         }
         registerReceiver(receiver, new IntentFilter(Constants.SERVICE_NOTIFY_UNREAD));
-        MobclickAgent.onResume(this);
+        //MobclickAgent.onResume(this);
 
         //apply theme
         applyTheme();
@@ -437,7 +437,7 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
             unregisterReceiver(receiver);
             receiver=null;
         }
-        MobclickAgent.onPause(this);
+        //MobclickAgent.onPause(this);
     }
 
     @Override
@@ -957,8 +957,13 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
                 @Override
                 public void run() {
                     try {
-                        HomeFragment homeFragment=(HomeFragment) current;
-                        homeFragment.updateGroupTimeline(mGroupList.get(pos));
+                        if (current instanceof HomeFragment) {
+                            HomeFragment homeFragment=(HomeFragment) current;
+                            homeFragment.updateGroupTimeline(mGroupList.get(pos));
+                        } else if (current instanceof HomeGridFragment) {
+                            HomeGridFragment homeFragment=(HomeGridFragment) current;
+                            homeFragment.updateGroupTimeline(mGroupList.get(pos));
+                        }
                     } catch (Exception e) {
                         AKUtils.showToast("分组切换异常！");
                         e.printStackTrace();

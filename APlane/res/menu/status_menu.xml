@@ -34,7 +34,7 @@
         android:title="@string/opb_quick_comment"/>
 
     <item android:id="@+id/menu_favorite" android:showAsAction="always"
-        android:title="@string/opb_favorite" android:icon="@drawable/rating_favorite_dark"/>
+        android:title="@string/opb_favorite" android:icon="@drawable/rating_favorite_light"/>
 
     <item android:id="@+id/menu_nav" android:showAsAction="always"
         android:title="@string/opb_more_hint">
