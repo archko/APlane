@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.impl.SinaUserStatusImpl;
 import cn.archko.microblog.view.ThreadBeanItemView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.Status;
@@ -59,6 +62,113 @@ public class UserTimelineFragment extends StatusListFragment {
             AKUtils.showToast("初始化api异常.");
             //getActivity().finish();
         }
+    }
+
+    public void _onActivityCreated(Bundle savedInstanceState) {
+        WeiboLog.v(TAG, "onActivityCreated");
+
+        // Give some text to display if there is no data.  In a real
+        // application this would come from a resource.
+        //setEmptyText("No phone numbers");
+
+        // We have a menu item to show in action bar.
+        //setHasOptionsMenu(true);
+
+        //mDataList=(ArrayList<Status>) getActivity().getLastNonConfigurationInstance();
+
+        //mListView.setFocusable(true);
+
+        //mListView.setOnScrollListener(this);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+                int position=pos;
+                if (mListView.getHeaderViewsCount()>0) {
+                    position--;
+                }
+                if (position==-1) {
+                    WeiboLog.v("选中的是头部，不可点击");
+                    return;
+                }
+
+                selectedPos=position;
+                WeiboLog.v(TAG, "itemClick:"+pos+" selectedPos:"+selectedPos);
+
+                if (view==footerView) {   //if (mAdapter.getCount()>0&&position>=mAdapter.getCount()) {
+                    mMoreProgressBar.setVisibility(View.VISIBLE);
+                    fetchMore();
+                    return;
+                }
+                UserTimelineFragment.this.itemClick(view);
+            }
+        });
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
+                WeiboLog.v(TAG, "itemLongClick:"+pos);
+                int position=pos;
+                if (mListView.getHeaderViewsCount()>0) {
+                    position--;
+                }
+                selectedPos=position;
+
+                if (mAdapter.getCount()>0&&position>=mAdapter.getCount()) {
+                    WeiboLog.v(TAG, "footerView.click.");
+                    return true;
+                }
+
+                if (view!=footerView) {
+                    //showButtonBar(view);
+                    return UserTimelineFragment.this.itemLongClick(view);
+                }
+                return true;
+            }
+        });
+        /*mPullRefreshListView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                pullToRefreshData();
+            }
+        });*/
+        mPullRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
+        mPullRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                pullToRefreshData();
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                pullUpRefreshData();
+            }
+        });
+
+        // Add an end-of-list listener
+        mPullRefreshListView.setOnLastItemVisibleListener(new PullToRefreshBase.OnLastItemVisibleListener() {
+
+            @Override
+            public void onLastItemVisible() {
+                //showMoreView();
+            }
+        });
+        //mPullRefreshListView.setOnScrollListener(this);
+        mListView.addFooterView(footerView);
+        //mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+        if (mAdapter==null) {
+            mAdapter=new TimeLineAdapter();
+        }
+        mListView.setAdapter(mAdapter);
+
+        //loadData();
+    }
+
+    @Override
+    public void refresh() {
+        WeiboLog.v(TAG, "isLoading:"+isLoading+" status:"+(null==mDataList ? "null" : mDataList.size()));
+        loadData();
     }
 
     @Override
