@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--评价布局-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ContentDescription" android:id="@+id/root"
@@ -10,7 +11,7 @@
         <EditText android:id="@+id/status_comment_content"
             android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:lines="7" android:hint="@string/text_hint" android:gravity="top|left"/>
+            android:lines="8" android:hint="@string/text_hint" android:gravity="top|left"/>
 
         <RelativeLayout android:id="@+id/status_bar"
             android:layout_below="@id/status_comment_content"
@@ -23,15 +24,26 @@
                 android:layout_alignParentRight="true" android:padding="2dip"
                 android:gravity="center" android:textColor="@color/red"/>
 
-            <LinearLayout android:id="@+id/button_bar" android:layout_toLeftOf="@id/char_num"
+            <LinearLayout android:id="@+id/opera_bar" android:layout_toLeftOf="@id/char_num"
                 android:layout_width="fill_parent" android:layout_height="@dimen/bottom_action_bar_height2"
                 android:layout_gravity="bottom" android:layout_marginBottom="0dip">
 
-                <!--<Button android:id="@+id/repost_btn" android:visibility="visible"
-                    android:text="@string/repost_btn"
-                    android:layout_weight="1" style="?attr/bottomActionBarItem"/>-->
+                <!--<Button android:id="@+id/comment_btn"
+                    android:text="@string/comment_btn"
+                    android:layout_weight="1" android:gravity="center"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
-                <Button android:id="@+id/btn_trend" android:visibility="visible"
+                <Button android:id="@+id/comment_retweet_btn"
+                    android:text="@string/comment_retweet_btn"
+                    android:layout_weight="1" android:gravity="center"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+                <Button android:id="@+id/comment_and_post_btn" android:visibility="gone"
+                    android:text="@string/comment_and_post_btn"
+                    android:layout_weight="1" android:gravity="center"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"/>-->
+
+                <Button android:id="@+id/btn_trend"
                     android:text="@string/new_status_trend"
                     android:layout_weight="1" android:gravity="center"
                     android:layout_width="match_parent" android:layout_height="wrap_content"/>
@@ -41,38 +53,19 @@
                     android:gravity="center"
                     android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
-                <Button android:id="@+id/btn_at" android:visibility="visible"
+                <Button android:id="@+id/btn_at"
                     android:text="@string/new_status_at"
                     android:layout_weight="1" android:gravity="center"
                     android:layout_width="match_parent" android:layout_height="wrap_content"/>
             </LinearLayout>
         </RelativeLayout>
-
-        <LinearLayout android:id="@+id/repost_layout"
-            android:layout_below="@+id/status_bar"
-            android:orientation="vertical" android:layout_marginLeft="8dip"
-            android:layout_width="wrap_content" android:layout_height="wrap_content">
-            <TextView android:textColor="@color/holo_light_item_bottombar"
-                android:layout_marginTop="4dip" android:layout_marginLeft="4dip"
-                android:layout_width="fill_parent" android:layout_height="wrap_content"
-                android:textSize="12sp" android:text="@string/repost_to_btn"/>
-
-            <CheckBox android:id="@+id/repost_cur_btn"
-                android:textColor="@color/holo_light_item_bottombar"
-                android:layout_width="wrap_content" android:layout_height="25dip"
-                android:text="@string/repost_to_btn" android:textSize="12sp"/>
-
-            <CheckBox android:id="@+id/repost_ori_btn"
-                android:textColor="@color/holo_light_item_bottombar"
-                android:layout_width="wrap_content" android:layout_height="25dip"
-                android:text="@string/repost_to_btn" android:textSize="12sp"/>
-        </LinearLayout>
         <cn.archko.microblog.view.EmojiPanelView android:layout_below="@id/status_bar"
             android:id="@+id/emoji_panel" android:visibility="gone"
             android:layout_width="match_parent" android:layout_height="match_parent"/>
     </RelativeLayout>
 
-    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <include layout="@layout/respost_comment_status"/>
+    <ScrollView android:scrollbars="none" android:fadingEdge="none"
+        android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <include layout="@layout/status_repost_comment"/>
     </ScrollView>
 </LinearLayout>

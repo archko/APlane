@@ -275,7 +275,7 @@ public class CommentStatusActivity extends BaseOauthFragmentActivity {
     }
 
     protected void _onCreate() {
-        setContentView(R.layout.comment_status);
+        setContentView(R.layout.status_comment);
         initViews();
 
         /*int theme=R.color.holo_dark_bg_view;

@@ -48,7 +48,7 @@ public class RepostStatusActivity extends CommentStatusActivity {
 
     @Override
     protected void _onCreate() {
-        setContentView(R.layout.repost_status);
+        setContentView(R.layout.status_repost);
         initViews();
 
         /*int theme=R.color.holo_dark_bg_view;
