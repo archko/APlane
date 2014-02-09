@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import cn.archko.microblog.R;
-import com.me.microblog.util.WeiboLog;
 
 /**
  * @author Brion Emde
@@ -463,7 +462,6 @@ public class TagsViewGroup extends ViewGroup {
     }
 
     private void handleDataChanged() {
-        //System.out.println("handleDataChanged.");
         removeAllViewsInLayout();
         tvs.clear();
         requestLayout();
