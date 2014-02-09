@@ -35,6 +35,7 @@ import cn.archko.microblog.utils.AKUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.andrew.apollo.utils.ThemeUtils;
 import cn.archko.microblog.utils.WeiboOperation;
+import com.bulletnoid.android.widget.SwipeAwayLayout;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtil;
 import com.me.microblog.bean.ContentItem;
@@ -130,14 +131,25 @@ public class ViewStatusDetailActivity extends BaseOauthFragmentActivity implemen
         setContentView(R.layout.status_details);
         imm=(InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
 
+        SwipeAwayLayout view_root=(SwipeAwayLayout) findViewById(R.id.view_root);
+        view_root.setSwipeOrientation(SwipeAwayLayout.RIGHT_ONLY);
+
+        view_root.setOnSwipeAwayListener(new SwipeAwayLayout.OnSwipeAwayListener() {
+            @Override
+            public void onSwipedAway() {
+                finish();
+                overridePendingTransition(0, 0);
+            }
+        });
+
         mPagerAdapter=new PagerAdapter(this);
         mViewPager=(LazyViewPager) findViewById(R.id.pager);
 
-        mPagerAdapter.add(EmptyFragment.class, null);
+        //mPagerAdapter.add(EmptyFragment.class, null);
         mPagerAdapter.add(StatusDetailFragment.class, null);
         mPagerAdapter.add(StatusCommentsFragment.class, null);
         mViewPager.setAdapter(mPagerAdapter);
-        mViewPager.setCurrentItem(1);
+        mViewPager.setCurrentItem(0);
         // Offscreen limit
         mViewPager.setOffscreenPageLimit(2);
         // Attach the page change listener
@@ -218,8 +230,8 @@ public class ViewStatusDetailActivity extends BaseOauthFragmentActivity implemen
     @Override
     public void onPageSelected(int position) {
         if (position==0) {
-            finish();
-        } else if (position==2) {
+            //finish();
+        } else if (position==1) {
             getStatusCommentsFragment().refresh();
         }
     }
@@ -364,7 +376,7 @@ public class ViewStatusDetailActivity extends BaseOauthFragmentActivity implemen
     }
 
     private StatusCommentsFragment getStatusCommentsFragment() {
-        return (StatusCommentsFragment) mPagerAdapter.getFragment(2);
+        return (StatusCommentsFragment) mPagerAdapter.getFragment(1);
     }
 
     @Override
