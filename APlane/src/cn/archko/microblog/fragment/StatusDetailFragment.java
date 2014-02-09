@@ -23,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.archko.microblog.R;
@@ -74,9 +73,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
      */
     public long currentUserId=-1l;
     private ImageView mPortrait;
-    //private TextView mName;
+    private TextView mName;
     TextView mRepostNum, mCommentNum, mCreateAt, mSourceFrom;
-    TextView mRepostLabel, mCommentLabel;
+    //TextView mRepostLabel, mCommentLabel;
     /**
      * 用户头像
      */
@@ -102,15 +101,15 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             Integer progress=(Integer) msg.obj;
             switch (what) {
                 case 1:
-                    mProgressBar.setProgress(progress);
+                    //mProgressBar.setProgress(progress);
                     break;
 
                 case 2:
-                    mProgressBar.setMax(progress);
+                    //mProgressBar.setMax(progress);
                     break;
 
                 case 3:
-                    mProgressBar.setVisibility(View.GONE);
+                    //mProgressBar.setVisibility(View.GONE);
                     break;
             }
         }
@@ -118,7 +117,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     /**
      * 下载进度
      */
-    private ProgressBar mProgressBar;
+    //private ProgressBar mProgressBar;
     int lastItem=0;   //ListView中最后一项位置
     boolean autoLoading=true;   //暂时无用
     int page=1;//当前页序号,需要靠它识别已经加载的页.
@@ -126,6 +125,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     //ImageView mStatusPictureLay;
     String mBmiddlePic; //中等图片url。
     TextView mRetRepostNum, mRetCommentNum;
+    View mLayRetNum;
     /**
      * 是否需要下载
      */
@@ -142,7 +142,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
      * 是否显示大图片
      */
     protected boolean showBitmap=true;
-    RelativeLayout mTitleBar;
+    //RelativeLayout mTitleBar;
     LinearLayout mViewComment;
 
     //TODO 需要更新主页的存储数据。
@@ -286,8 +286,8 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         }
 
         isDownloadingOri=true;
-        mProgressBar.setVisibility(View.VISIBLE);
-        mProgressBar.setProgress(0);
+        //mProgressBar.setVisibility(View.VISIBLE);
+        //mProgressBar.setProgress(0);
         doDownloadOrig(originalPic, file);
     }
 
@@ -412,7 +412,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                 } else {
                     if (!showBitmap) {
                         //showToast("开始下载中等图片！");
-                        mProgressBar.setVisibility(View.VISIBLE);
+                        //mProgressBar.setVisibility(View.VISIBLE);
                         new Thread(pictureRunnable).start();
                     }
                 }
@@ -454,18 +454,21 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     }
 
     private void initViews(View view) {
-        //mName=(TextView) findViewById(R.id.screen_name);
+        mName=(TextView) view.findViewById(R.id.tv_name);
         mRepostNum=(TextView) view.findViewById(R.id.repost_num);
         mCommentNum=(TextView) view.findViewById(R.id.comment_num);
         mCreateAt=(TextView) view.findViewById(R.id.send_time);
+        mCreateAt.setVisibility(View.VISIBLE);
         mSourceFrom=(TextView) view.findViewById(R.id.source_from);
         mPortrait=(ImageView) view.findViewById(R.id.iv_portrait);
-        mProgressBar=(ProgressBar) view.findViewById(R.id.progress_bar);
+        //mProgressBar=(ProgressBar) view.findViewById(R.id.progress_bar);
 
-        mRepostLabel=(TextView) view.findViewById(R.id.repost_label);
+        /*mRepostLabel=(TextView) view.findViewById(R.id.repost_label);
         mCommentLabel=(TextView) view.findViewById(R.id.comment_label);
         mRepostLabel.setOnClickListener(clickListener);
-        mCommentLabel.setOnClickListener(clickListener);
+        mCommentLabel.setOnClickListener(clickListener);*/
+
+        view.findViewById(R.id.lay_from).setVisibility(View.GONE);
 
         // content
         mHeaderLayout=(RelativeLayout) view.findViewById(R.id.header_layout);
@@ -476,8 +479,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         mStatusPictureLay=(ImageView) view.findViewById(R.id.status_picture_lay);*/
         mRetRepostNum=(TextView) view.findViewById(R.id.ret_repost_num);
         mRetCommentNum=(TextView) view.findViewById(R.id.ret_comment_num);
+        mLayRetNum=view.findViewById(R.id.lay_ret_num);
 
-        mTitleBar=(RelativeLayout) view.findViewById(R.id.title_bar);
+        //mTitleBar=(RelativeLayout) view.findViewById(R.id.title_bar);
         mViewComment=(LinearLayout) view.findViewById(R.id.ly_view_comment);
         mViewComment.setOnClickListener(clickListener);
         mTagsViewGroup=(TagsViewGroup) view.findViewById(R.id.tags);
@@ -531,9 +535,13 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         }
 
         User user=mStatus.user;
+        try {
+            mName.setText(user.screenName);
+        } catch (Exception e) {
+        }
 
-        mRepostNum.setText(String.valueOf(mStatus.r_num));
-        mCommentNum.setText(String.valueOf(mStatus.c_num));
+        mRepostNum.setText(getResources().getString(R.string.text_repost_num, mStatus.r_num));
+        mCommentNum.setText(getResources().getString(R.string.text_comment_num, mStatus.c_num));
 
         WeiboLog.v(TAG, "createAt:"+mStatus.createdAt);
         mCreateAt.setText(DateUtils.getDateString(mStatus.createdAt));
@@ -548,7 +556,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                 mSourceFrom.setText(cfString);
             }
         }
-        WeiboLog.v(TAG, "source:"+source);
+        WeiboLog.v(TAG, "source:"+source+" showBitmap:"+showBitmap);
 
         String title=mStatus.text;
         WeiboLog.v(TAG, "title:"+title);
@@ -559,24 +567,21 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
         mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
-        String imgUrl=mStatus.bmiddlePic;
-        String thumbUrl=mStatus.thumbnailPic;
+        String imgUrl=null;
 
         if (!TextUtils.isEmpty(imgUrl)) {
             mBmiddlePic=imgUrl;
         }
 
-        //if (showBitmap) {
         if (null!=user) {
             imgUrl=user.profileImageUrl;
         }
+
+        WeiboLog.v(TAG, "imgUrl:"+imgUrl);
         if (!TextUtils.isEmpty(imgUrl)) {
             portraitUrl=imgUrl;
             new Thread(portraitRunnable).start();
         }
-        //} else {
-        //TODO load portrait
-        //}
 
         Status retweetStatus=mStatus.retweetedStatus;
         if (null!=retweetStatus) {
@@ -592,6 +597,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             highlightUrlClickable(spannableString, WeiboUtil.getWebPattern());
             mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
             mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
+            mLayRetNum.setVisibility(View.VISIBLE);
 
             try {
                 mRetRepostNum.setText(getString(R.string.text_repost_num, retweetStatus.r_num));
@@ -600,43 +606,13 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            imgUrl=retweetStatus.bmiddlePic;
-            //WeiboLog.d(TAG, "retweetStatus.bmiddlePic:"+imgUrl);
-            if (!TextUtils.isEmpty(imgUrl)) {
-                mBmiddlePic=imgUrl;
-                thumbUrl=retweetStatus.thumbnailPic;
-            }
         } else {
             mContentSencond.setVisibility(View.GONE);
             mContentSecondLayout.setVisibility(View.GONE);
             mHeaderLayout.findViewById(R.id.ret_layout).setVisibility(View.GONE);
+            mLayRetNum.setVisibility(View.GONE);
         }
 
-        //load image
-        /*WeiboLog.v(TAG, "mStatus.bmiddlePic:"+mBmiddlePic);
-        if (!TextUtils.isEmpty(mBmiddlePic)) {
-            if (!mBmiddlePic.endsWith("gif")) {
-                mStatusPictureLay.setVisibility(View.GONE);
-            }
-
-            if (!TextUtils.isEmpty(thumbUrl)) {
-                Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(thumbUrl);
-                if (null!=bitmap) {
-                    mStatusPicture.setImageBitmap(bitmap);
-                }
-            }
-
-            if (showBitmap) {
-                new Thread(pictureRunnable).start();
-            }
-        } else {
-            mProgressBar.setVisibility(View.GONE);
-            mStatusPicture.setVisibility(View.GONE);
-            mStatusPictureLay.setVisibility(View.GONE);
-
-            //invalidateOptionsMenu();
-        }*/
         loadPicture(true, true);
     }
 
@@ -942,8 +918,8 @@ public class StatusDetailFragment extends AbstractBaseFragment {
 
             @Override
             public void run() {
-                mProgressBar.setProgress(100);
-                StatusDetailFragment.this.mProgressBar.setVisibility(View.GONE);
+                //mProgressBar.setProgress(100);
+                //StatusDetailFragment.this.mProgressBar.setVisibility(View.GONE);
                 if (mBmiddlePic.endsWith("gif")) {
                     Bitmap bitmap=null;
                     bitmap=ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(file.getAbsolutePath(), -1);
@@ -1095,9 +1071,31 @@ public class StatusDetailFragment extends AbstractBaseFragment {
 
     void loadPicture(boolean updateFlag, boolean cache) {
         String[] thumbs=mStatus.thumbs; //不重复检查,在解析完成后处理.
+        /*if (null==thumbs||thumbs.length==0) {
+            if (null!=mStatus.retweetedStatus) {
+                thumbs=mStatus.retweetedStatus.thumbs;
+            }
+        }*/
+        if (null==thumbs) {
+            thumbs=new String[]{};
+        }
+
+        ImageAdapter adapter=(ImageAdapter) mTagsViewGroup.getAdapter();
+        //WeiboLog.d(TAG, "update adapter:"+mAdapter+" tvg:"+adapter+" mTagsViewGroup:"+mTagsViewGroup);
+        mAdapter=adapter;
+        if (null==mAdapter) {
+            mAdapter=new ImageAdapter(getActivity(), mCacheDir, mStatus.thumbs);
+            mTagsViewGroup.setAdapter(mAdapter);
+        } else {
+        }
+        mAdapter.setUpdateFlag(updateFlag);
+        mAdapter.setCache(cache);
+        mAdapter.setShowLargeBitmap(false);
+        mAdapter.setImageUrls(thumbs);
+        mAdapter.notifyDataSetChanged();
 
         if (null==thumbs||thumbs.length==0) {
-            mTagsViewGroup.setAdapter(null);
+            //mTagsViewGroup.setAdapter(null);
             mTagsViewGroup.setVisibility(View.GONE);
             //WeiboLog.v(TAG, "setAdapter.没有图片需要显示。"+mStatus.text);
             return;
@@ -1105,23 +1103,5 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         //WeiboLog.v(TAG, "setAdapter.有图片显示。"+mStatus.thumbs[0]);
 
         mTagsViewGroup.setVisibility(View.VISIBLE);
-        //ImageAdapter adapter=(ImageAdapter) mTagsViewGroup.getAdapter();
-        if (null==mAdapter) {
-            mAdapter=new ImageAdapter(getActivity(), mCacheDir, mStatus.thumbs);
-            //mTagsViewGroup.setAdapter(mAdapter);
-        } /*else*/
-        {
-            mAdapter.setUpdateFlag(updateFlag);
-            mAdapter.setCache(cache);
-            mAdapter.setShowLargeBitmap(false);
-            mAdapter.setImageUrls(mStatus.thumbs);
-            //mAdapter.notifyDataSetInvalidated();
-        }
-        //不能使用更新的,需要重新设置Adapter
-        /*ImageAdapter adapter=new ImageAdapter(mContext, mCacheDir, mStatus.thumbs);
-        adapter.setUpdateFlag(updateFlag);
-        adapter.setCache(cache);
-        adapter.setShowLargeBitmap(isShowLargeBitmap);*/
-        mTagsViewGroup.setAdapter(mAdapter);
     }
 }

@@ -3,9 +3,12 @@
     xmlns:makeramen="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:orientation="vertical"
     tools:ignore="ContentDescription"
+    android:paddingTop="4dp"
+    android:paddingLeft="8dip" android:paddingRight="8dp"
     android:layout_width="fill_parent" android:layout_height="fill_parent">
 
-    <RelativeLayout
+    <include layout="@layout/home_time_line_item_title"/>
+    <!--<RelativeLayout
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
@@ -13,13 +16,6 @@
             android:layout_marginLeft="40dp" android:paddingLeft="40dp"
             android:layout_height="@dimen/bottom_action_bar_height" android:layout_width="fill_parent"
             android:background="@color/holo_blue_light">
-            <!--<TextView
-                android:id="@+id/screen_name" android:layout_toRightOf="@id/iv_portrait"
-                android:layout_height="wrap_content" android:layout_width="wrap_content"
-                android:text="@string/app_name" android:textColor="@color/black"
-                android:layout_marginLeft="4dip" android:layout_marginTop="2dp"
-                android:textColorLink="@color/blue"
-                android:clickable="true" android:linksClickable="true"/>-->
 
             <TextView
                 android:id="@+id/repost_label"
@@ -91,18 +87,35 @@
             android:minHeight="4dip" android:maxHeight="4dip"
             android:progressDrawable="@drawable/custom_yellow_color_seekbar_style"/>
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 
     <ScrollView
+        android:scrollbars="none" android:fadingEdge="none"
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="fill_parent">
         <LinearLayout android:orientation="vertical"
             tools:ignore="ContentDescription"
             android:layout_width="fill_parent" android:layout_height="wrap_content">
-            <include layout="@layout/status_detail_header_item"/>
+            <include layout="@layout/home_time_line_item_content"/>
+
+            <LinearLayout android:id="@+id/lay_ret_num"
+                android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <TextView android:id="@+id/ret_comment_num"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/item_comment"
+                    android:textSize="12sp" android:paddingLeft="8dip"
+                    android:textColor="@color/holo_light_item_num"
+                    android:paddingTop="0dip"/>
+
+                <TextView android:id="@+id/ret_repost_num"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/item_repost" android:textColor="@color/holo_light_item_num"
+                    android:textSize="12sp" android:paddingLeft="8dip"
+                    android:paddingTop="0dip"/>
+            </LinearLayout>
 
             <LinearLayout android:id="@+id/ly_view_comment"
-                android:clickable="true"
+                android:clickable="true" android:layout_marginTop="8dp"
                 android:background="@drawable/abs__list_selector_holo_light"
                 android:layout_width="fill_parent" android:layout_height="@dimen/bottom_action_bar_height">
                 <TextView android:textColor="@color/btn_default_normal_holo_dark_color"
