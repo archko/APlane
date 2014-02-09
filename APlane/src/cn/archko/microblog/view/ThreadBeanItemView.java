@@ -238,9 +238,26 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
                 thumbs=mStatus.retweetedStatus.thumbs;
             }
         }*/
+        if (null==thumbs) {
+            thumbs=new String[]{};
+        }
+
+        ImageAdapter adapter=(ImageAdapter) mTagsViewGroup.getAdapter();
+        //WeiboLog.d(TAG, "update adapter:"+mAdapter+" tvg:"+adapter+" mTagsViewGroup:"+mTagsViewGroup);
+        mAdapter=adapter;
+        if (null==mAdapter) {
+            mAdapter=new ImageAdapter(mContext, mCacheDir, mStatus.thumbs);
+            mTagsViewGroup.setAdapter(mAdapter);
+        } else {
+        }
+        mAdapter.setUpdateFlag(updateFlag);
+        mAdapter.setCache(cache);
+        mAdapter.setShowLargeBitmap(isShowLargeBitmap);
+        mAdapter.setImageUrls(thumbs);
+        mAdapter.notifyDataSetChanged();
 
         if (!isShowBitmap||null==thumbs||thumbs.length==0) {
-            mTagsViewGroup.setAdapter(null);
+            //mTagsViewGroup.setAdapter(null);
             mTagsViewGroup.setVisibility(GONE);
             //WeiboLog.v(TAG, "setAdapter.没有图片需要显示。"+mStatus.text);
             return;
@@ -250,18 +267,6 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
         if (mTagsViewGroup.getVisibility()==GONE) {
             mTagsViewGroup.setVisibility(VISIBLE);
         }
-        //ImageAdapter adapter=(ImageAdapter) mTagsViewGroup.getAdapter();
-        if (null==mAdapter) {
-            mAdapter=new ImageAdapter(mContext, mCacheDir, mStatus.thumbs);
-            mTagsViewGroup.setAdapter(mAdapter);
-        } else {
-            mAdapter.setUpdateFlag(updateFlag);
-            mAdapter.setCache(cache);
-            mAdapter.setShowLargeBitmap(isShowLargeBitmap);
-            mAdapter.setImageUrls(mStatus.thumbs);
-        }
-        mAdapter.notifyDataSetChanged();
-        //mTagsViewGroup.setAdapter(mAdapter);
     }
 
     @Override

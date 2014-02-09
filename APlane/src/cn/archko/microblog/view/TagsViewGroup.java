@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cn.archko.microblog.view;
 
@@ -24,9 +24,9 @@ import com.me.microblog.util.WeiboLog;
 public class TagsViewGroup extends ViewGroup {
 	@SuppressWarnings("unused")
 	private static final String TAG = "TagsAdapterView";
-	
+
 	private static final int MIN_ROWS = 1;
-	
+
 	private ListAdapter mAdapter;
 	private int mHorizontalSpacing = 0;
 	private int mVerticalSpacing = 0;
@@ -49,15 +49,16 @@ public class TagsViewGroup extends ViewGroup {
      * Should be used by subclasses to listen to changes in the dataset
      */
     AdapterDataSetObserver mDataSetObserver;
-	
+    private boolean mInLayout=false;
+
 	private MarginLayoutParams params =
 		new MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
-	public TagsViewGroup(Context context) {
+    public TagsViewGroup(Context context) {
 		super(context);
 		initTagsViewGroup();
 	}
-	
+
 	public TagsViewGroup(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initTagsViewGroup();
@@ -69,10 +70,10 @@ public class TagsViewGroup extends ViewGroup {
 		initTagsViewGroup();
 		initFromAttributes(context, attrs, defStyle);
 	}
-	
+
 	public void initTagsViewGroup() {
 	}
-	
+
 	public void initFromAttributes(Context context, AttributeSet attrs, int defStyle) {
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TagsViewGroup, 0, defStyle);
 
@@ -100,53 +101,60 @@ public class TagsViewGroup extends ViewGroup {
 				break;
 			}
 		}
-		
+
 		a.recycle();
 	}
-	
+
 	public void setHorizontalSpacing(int hSpacing) {
 		if(hSpacing < 0)
 			hSpacing = 0;
 		mHorizontalSpacing = hSpacing;
 	}
-	
+
 	public void setVerticalSpacing(int vSpacing) {
 		if(vSpacing < 0)
 			vSpacing = 0;
 		mVerticalSpacing = vSpacing;
 	}
-	
+
 	public void setMinimumRows(int minRows) {
 		if(minRows > 0)
 			mMinRows = minRows;
 	}
-	
+
 	public ListAdapter getAdapter() {
 		return mAdapter;
 	}
-	
+
 	private Stack<View> tvs = new Stack<View>();
 
 	public void setAdapter(ListAdapter adapter) {
-		//if((mAdapter = adapter) == null) return;
+        Log.d(TAG, "setAdapter:"+this+" adapter:"+adapter+" old:"+mAdapter);
+
+        if (adapter==null) {
+            mAdapter=null;
+            removeAllViews();
+            return;
+        }
+
         if (mAdapter != null && mDataSetObserver != null) {
             mAdapter.unregisterDataSetObserver(mDataSetObserver);
             mDataSetObserver=null;
         } else {
             //System.out.println("adapter == null remove all view.");
-            removeAllViewsInLayout();
+            /*removeAllViewsInLayout();
             tvs.clear();
             requestLayout();
-            invalidate();
+            invalidate();*/
         }
 
-        if (null!=adapter) {
+        //if (null!=adapter) {
             mAdapter=adapter;
             mDataSetObserver=new AdapterDataSetObserver();
             mAdapter.registerDataSetObserver(mDataSetObserver);
 
             handleDataChanged();
-        }
+        //}
     }
 
 	@Override
@@ -259,32 +267,32 @@ public class TagsViewGroup extends ViewGroup {
 		int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 		int widthSize = MeasureSpec.getSize(widthMeasureSpec);
 		int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-		
+
 		// Log.d(TAG, "-----------------------------------------");
-		// Log.d(TAG, "Measure Dimensions: widthSize = " + String.valueOf(widthSize) 
+		// Log.d(TAG, "Measure Dimensions: widthSize = " + String.valueOf(widthSize)
 		//		+ " heightSize: " + String.valueOf(heightSize));
 
-		
+
 		mPaddingTop = getPaddingTop();
 		mPaddingBottom = getPaddingBottom();
 		mPaddingLeft = getPaddingLeft();
 		mPaddingRight = getPaddingRight();
-		
-		// Log.d(TAG, "Measure Padding: Top = " + String.valueOf(mPaddingTop) + "Bottom: " + String.valueOf(mPaddingBottom) 
+
+		// Log.d(TAG, "Measure Padding: Top = " + String.valueOf(mPaddingTop) + "Bottom: " + String.valueOf(mPaddingBottom)
 		// 		+ " Left = " + String.valueOf(mPaddingLeft) + " Right = " + String.valueOf(mPaddingRight));
-		
+
 		int measuredHeight = 0;
 		int measuredWidth= 0;
 		int children_height = 0;
 		int children_width = 0;
-		
+
 		int suggestedMinWidth = this.getSuggestedMinimumWidth();
 		int suggestedMinHeight = this.getSuggestedMinimumHeight();
 
 		@SuppressWarnings("unused")
 		int height = 0;
 		int width = 0;
-		
+
 		if(widthMode == MeasureSpec.UNSPECIFIED) {
 			// Log.d(TAG, "Unspecified");
 			// we'll have a single row of tags, respecing the padding.
@@ -304,7 +312,7 @@ public class TagsViewGroup extends ViewGroup {
 			// Log.d(TAG, "-----------------------------------------");
             measuredHeight = mPaddingTop + measuredHeight + mPaddingBottom+ mVerticalSpacing;
 			measuredWidth = children_width + mPaddingLeft + mPaddingRight;
-		} else {	// MeasureSpec.AT_MOST or MeasureSpec.EXACTLY 
+		} else {	// MeasureSpec.AT_MOST or MeasureSpec.EXACTLY
             if (null==mRowsHeight) {
                 mRowsHeight=new SparseIntArray();
             } else {
@@ -352,7 +360,7 @@ public class TagsViewGroup extends ViewGroup {
             allMeasureHeight+=lineMaxHeight;    //add last line height
             measuredHeight=allMeasureHeight;
             // Log.d(TAG, "-----------------------------------------");
-			
+
             //int rows_written=row<=1 ? row : row+1;
 			switch(heightMode){
 			case MeasureSpec.AT_MOST:
@@ -383,18 +391,26 @@ public class TagsViewGroup extends ViewGroup {
 		if(measuredWidth < suggestedMinWidth)
 			measuredWidth = suggestedMinWidth;
 		setMeasuredDimension(measuredWidth, measuredHeight);
-        //Log.d(TAG, "Measurement: width = "+String.valueOf(measuredWidth)+" height: "+String.valueOf(measuredHeight));
+        //Log.d(TAG,"measure:"+this+ " Measurement: width = "+String.valueOf(measuredWidth)+" height: "+String.valueOf(measuredHeight));
 	}
-	
+
+    @Override
+    public void requestLayout() {
+        if (!mInLayout) {
+            super.requestLayout();
+        }
+    }
+
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 
-		// Log.d(TAG, "Layout Dimensions: Top = " + String.valueOf(t) + "Bottom: " + String.valueOf(b) 
+        mInLayout = true;
+		// Log.d(TAG, "Layout Dimensions: Top = " + String.valueOf(t) + "Bottom: " + String.valueOf(b)
 		//		+ " Left = " + String.valueOf(l) + " Right = " + String.valueOf(r));
 
-		// Log.d(TAG, "Layout Padding: Top = " + String.valueOf(mPaddingTop) + "Bottom: " + String.valueOf(mPaddingBottom) 
+		// Log.d(TAG, "Layout Padding: Top = " + String.valueOf(mPaddingTop) + "Bottom: " + String.valueOf(mPaddingBottom)
 		//		+ " Left = " + String.valueOf(mPaddingLeft) + " Right = " + String.valueOf(mPaddingRight));
-		
+
 		int pos = mPaddingLeft;
 		int row = 0;
 		//r -= mPaddingRight;
@@ -424,10 +440,12 @@ public class TagsViewGroup extends ViewGroup {
             //int child_top=(rowHeight-height)/2+top;
             //Log.d(TAG, "top:"+child_top+" height:"+height+" rh:"+rowHeight+" allh:"+allHeight);
 			tv.layout(pos, child_top, pos + width, child_top + height);
-			// Log.d(TAG, "child: Top = " + String.valueOf(child_top) + "Bottom: " + String.valueOf(child_top+height) 
+			// Log.d(TAG, "child: Top = " + String.valueOf(child_top) + "Bottom: " + String.valueOf(child_top+height)
 			//		+ " Left = " + String.valueOf(pos) + " Right = " + String.valueOf(pos + width));
 			pos += width + mHorizontalSpacing;
 		}
+        //Log.d(TAG, "onLayout:"+this+" adapter:"+mAdapter);
+        mInLayout=false;
 	}
 
     class AdapterDataSetObserver extends DataSetObserver {

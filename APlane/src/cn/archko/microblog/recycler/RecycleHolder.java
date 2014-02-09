@@ -19,10 +19,6 @@ public class RecycleHolder implements RecyclerListener {
     public void onMovedToScrapHeap(final View view) {
         if (view instanceof ThreadBeanItemView) {
             ThreadBeanItemView itemView=(ThreadBeanItemView) view;
-            ImageAdapter adapter=itemView.mAdapter;
-            if (null!=adapter) {
-                adapter.setImageUrls(new String[]{""});
-            }
 
             TagsViewGroup tagsViewGroup=itemView.mTagsViewGroup;
             if (null!=tagsViewGroup) {
