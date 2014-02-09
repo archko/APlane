@@ -178,7 +178,7 @@
 
             android:taskAffinity="cn.archko.microblog.webview"></activity>
 
-        <activity android:name=".ui.ImageViewerActivity" android:excludeFromRecents="true"
+        <activity android:name=".ui.ImageViewerActivity" android:excludeFromRecents="true" android:screenOrientation="sensor"
             android:theme="@style/Theme.AK" android:hardwareAccelerated="false"
             android:taskAffinity="cn.archko.microblog.webview"></activity>
 

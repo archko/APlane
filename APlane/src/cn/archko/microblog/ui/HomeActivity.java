@@ -22,6 +22,7 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
@@ -133,6 +134,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawer = (ListView)findViewById(R.id.start_drawer);
+        mDrawer.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         //mRightDrawer=(ListView) findViewById(R.id.right_drawer);
 
         // set the Behind View
@@ -345,6 +347,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         ft.commit();
         //mCurrentFragment=entry.id;
         mActionBar.setTitle(entry.name);
+        selectItem(position);
     }
 
     @Override

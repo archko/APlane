@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ContentDescription"
     android:orientation="vertical" android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content" android:background="@color/holo_light_bg_view">
     <HorizontalScrollView android:fillViewport="true" android:scrollbars="none"
         android:layout_width="fill_parent" android:layout_height="wrap_content">
         <LinearLayout android:id="@+id/button_bar"

@@ -4,7 +4,7 @@
     tools:ignore="ContentDescription"
     android:layout_height="fill_parent" android:layout_width="fill_parent"
     android:padding="8dp" android:orientation="vertical"
-    android:scrollbars="none">
+    android:scrollbars="none" android:background="@color/holo_light_bg_view">
     <TextView
         android:text="最多可以添加9张图片."
         android:textColor="@color/holo_light_item_name"
