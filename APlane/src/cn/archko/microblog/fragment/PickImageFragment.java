@@ -302,7 +302,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         // be sufficiently descriptive on their own.
 
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        int resId=R.drawable.content_new_light;
+        int resId=R.drawable.content_new_dark;
         if ("2".equals(themeId)) {
             //resId=R.drawable.content_new_dark;
         }
