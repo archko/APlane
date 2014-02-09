@@ -129,7 +129,7 @@ public class TagsViewGroup extends ViewGroup {
 	private Stack<View> tvs = new Stack<View>();
 
 	public void setAdapter(ListAdapter adapter) {
-        Log.d(TAG, "setAdapter:"+this+" adapter:"+adapter+" old:"+mAdapter);
+        //Log.d(TAG, "setAdapter:"+this+" adapter:"+adapter+" old:"+mAdapter);
 
         if (adapter==null) {
             mAdapter=null;
