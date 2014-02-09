@@ -66,6 +66,7 @@ public class UserFragmentActivity extends AbstractFragmentTabsPager {
     protected void _onCreate(Bundle bundle) {
         super._onCreate(bundle);
         //mActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
+        mViewPager.setOffscreenPageLimit(3);
     }
 
     @Override
@@ -125,6 +126,11 @@ public class UserFragmentActivity extends AbstractFragmentTabsPager {
             addItem(UserFollowersGridFragment.class, -1, getString(R.string.followers), R.string.followers, bar, bundle);
             addItem(UserTimelineFragment.class, -1, getString(R.string.statuses), R.string.statuses, bar, null);
         }
+    }
+
+    @Override
+    protected void selectPage(int position) {
+        ((BaseFragment) mTabsAdapter.getItem(position)).refresh();
     }
 
     /**
