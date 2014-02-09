@@ -20,7 +20,7 @@ import com.me.microblog.util.WeiboLog;
  * @description: 随便看看
  * @author: archko 11-11-17
  */
-public class PublicFragment extends StaggeredGridFragment {
+public class PublicFragment extends StatusListFragment {
 
     public static final String TAG="PublicFragment";
 

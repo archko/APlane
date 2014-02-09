@@ -302,10 +302,10 @@ public class SidebarAdapter extends BaseAdapter {
             drawableId=R.drawable.tab_home_light;
         }
         entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_HOME, mContext.getString(R.string.tab_label_home),
-            drawableId, HomeGridFragment.class, true);
+            drawableId, HomeFragment.class, true);
         addEntry(entry, init);
-        /*entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_HOME, mContext.getString(R.string.tab_label_home)+"2",
-            drawableId, HomeFragment.class, false);
+        /*entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_HOME, mContext.getString(R.string.tab_label_home),
+            drawableId, HomeGridFragment.class, false);
         addEntry(entry, init);*/
 
         //热门数据，包含热门用户与精选微博, api过期了。
@@ -440,9 +440,9 @@ public class SidebarAdapter extends BaseAdapter {
                 R.drawable.location, PlaceNearbyPhotosFragment.class, false);
             addEntry(entry, init);
 
-            entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_PLACE_NEARBY_PHOTOS, mContext.getString(R.string.tab_label_place_nearby_photos)+"2",
+            /*entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_PLACE_NEARBY_PHOTOS, mContext.getString(R.string.tab_label_place_nearby_photos)+"2",
                 R.drawable.location, PlaceNearbyPhotosGridFragment.class, false);
-            addEntry(entry, init);
+            addEntry(entry, init);*/
         }
 
         //附近的用户
