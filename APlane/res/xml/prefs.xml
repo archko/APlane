@@ -87,13 +87,13 @@
             android:defaultValue="true" android:dependency="show_nav_btn"
             android:key="show_nav_page_btn" android:summary="@string/show_nav_page_btn_sum"/>
 
-        <ListPreference
+        <!--<ListPreference
             android:title="@string/nav_sidebar_touch"
             android:summary="@string/nav_sidebar_touch_sum"
             android:defaultValue="@string/default_nav_sidebar_touch"
             android:entries="@array/default_nav_sidebar_touch_labels"
             android:entryValues="@array/default_nav_sidebar_touch_val"
-            android:key="nav_sidebar_touch"/>
+            android:key="nav_sidebar_touch"/>-->
 
         <!--<CheckBoxPreference
             android:title="@string/nav_mode"

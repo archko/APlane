@@ -87,7 +87,7 @@ public class PrefsActivity extends PreferenceActivity implements
     /**
      * 侧边栏右侧的手势。
      */
-    public final static String PREF_NAV_SIDEBAR_TOUCH="nav_sidebar_touch";
+    //public final static String PREF_NAV_SIDEBAR_TOUCH="nav_sidebar_touch";
 
     //--------------------- other ---------------------
     /**
