@@ -1061,6 +1061,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                 Intent intent=new Intent(getActivity(), WebviewActivity.class);
                 intent.putExtra("url", name);
                 getActivity().startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
             }
         }
     }
