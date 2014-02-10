@@ -321,11 +321,12 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
             }
             case Constants.OP_ID_VIEW_USER: {
                 final Comment comment=mDataList.get(selectedPos);
-                Intent intent=new Intent(getActivity(), UserFragmentActivity.class);
+                /*Intent intent=new Intent(getActivity(), UserFragmentActivity.class);
                 intent.putExtra("nickName", comment.user.screenName);
                 intent.putExtra("user_id", comment.user.id);
                 intent.putExtra("type", UserFragmentActivity.TYPE_USER_INFO);
                 startActivity(intent);
+                ((Activity)context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);*/
 
                 WeiboOperation.toViewStatusUser(getActivity(), comment.user, UserFragmentActivity.TYPE_USER_INFO);
                 break;

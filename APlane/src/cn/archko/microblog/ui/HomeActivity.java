@@ -526,6 +526,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         } else if (itemId==R.id.menu_account_user_manager) {
             Intent intent=new Intent(HomeActivity.this, AccountUserActivity.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
         } else if (itemId==R.id.menu_update) {
             checkUpdate();
         } else if (itemId==R.id.menu_exit) {

@@ -66,7 +66,7 @@ public class AddAccountDialogFragment extends DialogFragment {
         imm=(InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        int resId=android.R.style.Theme_Holo_NoActionBar;
+        int resId=android.R.style.Theme_Holo_Light_NoActionBar;
         if ("2".equals(themeId)) {
             resId=android.R.style.Theme_Holo_Light_NoActionBar;
         }

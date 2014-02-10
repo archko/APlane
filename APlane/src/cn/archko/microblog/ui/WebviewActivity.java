@@ -137,7 +137,7 @@ public class WebviewActivity extends SkinFragmentActivity {
             @Override
             public void onSwipedAway() {
                 finish();
-                overridePendingTransition(0, 0);
+                overridePendingTransition(0, R.anim.exit_left);
             }
         });
     }

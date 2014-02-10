@@ -59,6 +59,7 @@ public class WeiboOperation {
                 intent.putExtra("status", status);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+                ((Activity)context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,6 +95,8 @@ public class WeiboOperation {
                 intent.putExtra("status", status);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+                ((Activity)context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);   //只动画新的,从右到左.
+                //((Activity)context).overridePendingTransition(R.anim.enter_left, R.anim.enter_right);//连续的动画.两个页面从右到左
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -109,6 +112,7 @@ public class WeiboOperation {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("refresh", refresh);
                 context.startActivity(intent);
+                ((Activity)context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,6 +133,7 @@ public class WeiboOperation {
                 intent.putExtra("status", status);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+                ((Activity)context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,6 +156,7 @@ public class WeiboOperation {
                 intent.putExtra("type", type);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+                ((Activity)context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
 
                 AtUser atUser=new AtUser();
                 atUser.name=user.screenName;
@@ -178,6 +184,7 @@ public class WeiboOperation {
             intent.putExtra("user_id", id);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
+            ((Activity)context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
 
             AtUser atUser=new AtUser();
             atUser.name=screenName;
@@ -207,6 +214,7 @@ public class WeiboOperation {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setAction(Constants.INTENT_NEW_BLOG);
             context.startActivity(intent);
+            ((Activity)context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -245,6 +253,7 @@ public class WeiboOperation {
         loginIntent.putExtra("fragment_class", AccountUsersFragment.class.getName());
         loginIntent.putExtra("mode", "1");
         activity.startActivity(loginIntent);
+        activity.overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
     }
 
     /**

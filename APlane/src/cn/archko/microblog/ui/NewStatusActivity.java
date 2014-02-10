@@ -818,6 +818,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         intent.putExtra("type", AccountUserActivity.TYPE_DRAFT_ONLY);
         intent.putExtra("mode", DraftListFragment.GET_DRAFT);
         startActivityForResult(intent, REQUEST_DRAFT);
+        overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
     }
 
     /**

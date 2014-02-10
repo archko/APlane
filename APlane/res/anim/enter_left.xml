@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--启动时调用的,用于从右向左运动,这是旧的ui.现在作为旧的,但不动.-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:anim/accelerate_decelerate_interpolator">
+
+    <translate
+        android:duration="350"
+        android:fromXDelta="0%p"
+        android:toXDelta="0%p"/>
+
+    <!--<objectAnimator
+       android:interpolator="@android:interpolator/decelerate_quint"
+       android:valueFrom="853dp" android:valueTo="0dp"
+       android:valueType="floatType"
+       android:propertyName="translationX"
+       android:duration="1000" />-->
+
+</set>

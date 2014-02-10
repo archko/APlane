@@ -362,6 +362,7 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
         intent.putExtra("type", UserFragmentActivity.TYPE_USER_INFO);
         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
     }
 
     @Override

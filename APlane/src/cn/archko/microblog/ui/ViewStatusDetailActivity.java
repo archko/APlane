@@ -27,7 +27,6 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.archko.microblog.R;
-import cn.archko.microblog.fragment.EmptyFragment;
 import cn.archko.microblog.fragment.StatusCommentsFragment;
 import cn.archko.microblog.fragment.StatusDetailFragment;
 import cn.archko.microblog.service.SendTaskService;
@@ -77,14 +76,14 @@ public class ViewStatusDetailActivity extends BaseOauthFragmentActivity implemen
      * 跳转到到评论界面
      */
     protected void commentStatus() {
-        WeiboOperation.toCommentStatus(getApplicationContext(), mStatus);
+        WeiboOperation.toCommentStatus(this, mStatus);
     }
 
     /**
      * 到转发界面
      */
     protected void repostStatus() {
-        WeiboOperation.toRepostStatus(getApplicationContext(), mStatus);
+        WeiboOperation.toRepostStatus(this, mStatus);
     }
 
     /**
@@ -138,7 +137,7 @@ public class ViewStatusDetailActivity extends BaseOauthFragmentActivity implemen
             @Override
             public void onSwipedAway() {
                 finish();
-                overridePendingTransition(0, 0);
+                overridePendingTransition(0, R.anim.exit_left);
             }
         });
 

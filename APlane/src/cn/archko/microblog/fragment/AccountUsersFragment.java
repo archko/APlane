@@ -73,7 +73,7 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
         // be sufficiently descriptive on their own.
 
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        int resId=R.drawable.content_new_light;
+        int resId=R.drawable.content_new_dark;
         if ("2".equals(themeId)) {
             //resId=R.drawable.content_new_dark;
         }
@@ -436,15 +436,16 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
 
     private int doDeleteAccount(OauthBean oauthBean) {
         try {
+            String uid=oauthBean.openId;
             ContentResolver resolver=getActivity().getContentResolver();
             //清除当前用户的主页数据
-            resolver.delete(TwitterTable.SStatusTbl.CONTENT_URI, TwitterTable.SStatusTbl.UID+"='"+oauthBean.openId+"'", null);
+            resolver.delete(TwitterTable.SStatusTbl.CONTENT_URI, TwitterTable.SStatusTbl.UID+"='"+uid+"'", null);
             //清除当前用户的认证数据
-            resolver.delete(TwitterTable.AUTbl.CONTENT_URI, TwitterTable.AUTbl.ACCOUNT_USERID+"='"+oauthBean.openId+"'", null);
+            resolver.delete(TwitterTable.AUTbl.CONTENT_URI, TwitterTable.AUTbl.ACCOUNT_USERID+"='"+uid+"'", null);
             //清除当前用户的@用户数据
-            resolver.delete(TwitterTable.UserTbl.CONTENT_URI, TwitterTable.UserTbl.UID+"='"+oauthBean.openId+"'", null);
+            resolver.delete(TwitterTable.UserTbl.CONTENT_URI, TwitterTable.UserTbl.UID+"='"+uid+"'", null);
             //清除当前用户的草稿数据
-            resolver.delete(TwitterTable.DraftTbl.CONTENT_URI, TwitterTable.DraftTbl.UID+"='"+oauthBean.openId+"'", null);
+            resolver.delete(TwitterTable.DraftTbl.CONTENT_URI, TwitterTable.DraftTbl.UID+"='"+uid+"'", null);
             //清除当前用户的队列数据
             resolver.delete(TwitterTable.SendQueueTbl.CONTENT_URI, TwitterTable.SendQueueTbl.USER_ID+"='"+currentUserId+"'", null);
             return 1;

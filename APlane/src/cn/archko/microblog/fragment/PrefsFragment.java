@@ -79,6 +79,7 @@ public class PrefsFragment extends BaseFragment {
         if (id==R.id.menu_account_user_manager) {
             Intent intent=new Intent(getActivity(), AccountUserActivity.class);
             getActivity().startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
         } else if (id==R.id.menu_search) {
             Intent intent=new Intent(getActivity(), SearchActivity.class);
             getActivity().startActivity(intent);

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
 import com.andrew.apollo.utils.ThemeUtils;
+import com.bulletnoid.android.widget.SwipeAwayLayout;
 import com.me.microblog.util.WeiboLog;
 
 import java.lang.ref.WeakReference;
@@ -36,6 +37,16 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
         super.onCreate(savedInstanceState);
 
         _onCreate(savedInstanceState);
+        SwipeAwayLayout view_root=(SwipeAwayLayout) findViewById(R.id.view_root);
+        view_root.setSwipeOrientation(SwipeAwayLayout.LEFT_RIGHT);
+
+        view_root.setOnSwipeAwayListener(new SwipeAwayLayout.OnSwipeAwayListener() {
+            @Override
+            public void onSwipedAway() {
+                finish();
+                overridePendingTransition(0, R.anim.exit_left);
+            }
+        });
     }
 
     /**
