@@ -43,7 +43,7 @@ public class SinaTrendApi extends AbsApiImpl {
         nvps.add(pair);
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult(TAG, "rs:"+rs);
         if (!TextUtils.isEmpty(rs)&&!"[]".equals(rs)&&"daily".equals(type)) {
             WeiboUtil.saveStatus(rs, App.getAppContext().getFilesDir().getAbsolutePath(), Constants.TREND_FILE);
         }
@@ -89,7 +89,7 @@ public class SinaTrendApi extends AbsApiImpl {
         nvps.add(pair);
 
         String rs=get(urlString, true, nvps);
-        WeiboLog.v(rs);
+        WeiboUtil.printResult(TAG, "unfollowTrend:"+rs);
         return WeiboParser.parseResult(rs);
     }
 }

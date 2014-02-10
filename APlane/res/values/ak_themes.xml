@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.AK" parent="android:Theme.Holo">
+        <!--<item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>-->
     </style>
 
     <style name="Theme.AK.Light" parent="android:Theme.Holo.Light">
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowActionBar">true</item>
+
+        <!--<item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>-->
+    </style>
+
+    <style name="Widget.Styled.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/bg_striped_split</item>
+
+        <item name="android:backgroundSplit">@drawable/bg_striped_split</item>
     </style>
 
     <!-- no action bar -->

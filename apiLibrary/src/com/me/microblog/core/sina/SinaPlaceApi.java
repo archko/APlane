@@ -2,6 +2,7 @@ package com.me.microblog.core.sina;
 
 import android.text.TextUtils;
 import com.me.microblog.WeiboException;
+import com.me.microblog.WeiboUtil;
 import com.me.microblog.bean.PlacePoi;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Status;
@@ -72,7 +73,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult(TAG, "rs:"+rs);
         return WeiboParser.parseStatuses2(rs);
     }
 
@@ -119,7 +120,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult(TAG, "rs:"+rs);
         return WeiboParser.parseStatuses2(rs);
     }
 
@@ -169,7 +170,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult("rs:"+rs);
         return WeiboParser.parseStatuses2(rs);
     }
 
@@ -217,7 +218,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult("rs:"+rs);
         return WeiboParser.parseStatuses2(rs);
     }
 
@@ -242,7 +243,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         nvps.add(pair);
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult("rs:"+rs);
         return WeiboParser.parseStatus(rs);
     }
 
@@ -266,7 +267,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         nvps.add(pair);
 
         String rs=get(urlString, true, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult("rs:"+rs);
     }
 
     /**
@@ -299,7 +300,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v("getUserPhotos:"+rs);
+        WeiboUtil.printResult("getUserPhotos:"+rs);
         return WeiboParser.parseStatuses2(rs);
     }
 
@@ -337,7 +338,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult("rs:"+rs);
         return WeiboParser.parseStatuses2(rs);
     }
 
@@ -375,7 +376,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult("rs:"+rs);
         return WeiboParser.parseStatuses2(rs);
     }
 
@@ -401,7 +402,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         nvps.add(pair);
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult("rs:"+rs);
         return WeiboParser.parsePlacePoi(rs);
     }
 
@@ -437,7 +438,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult("rs:"+rs);
         return WeiboParser.getUserObjs2(rs);
     }
 
@@ -476,7 +477,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult("rs:"+rs);
         return WeiboParser.parseStatuses2(rs);
     }
 
@@ -515,7 +516,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult("rs:"+rs);
         return WeiboParser.parseStatuses2(rs);
     }
 
@@ -564,7 +565,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         }
 
         String rs=get(urlString, true, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult("rs:"+rs);
         return WeiboParser.parsePlacePois(rs);
     }
 
@@ -597,7 +598,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         }
 
         String rs=get(urlString, true, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult("rs:"+rs);
         return WeiboParser.parsePlacePois(rs);
     }
 
@@ -629,7 +630,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         nvps.add(pair);
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v("getPlaceNearbyPoi:"+rs);
+        WeiboUtil.printResult("getPlaceNearbyPoi:"+rs);
         return WeiboParser.parsePlacePois(rs);
     }
 
@@ -677,7 +678,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult("rs:"+rs);
         return WeiboParser.getUserObjs2(rs);
     }
 
@@ -724,7 +725,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v("getNearbyPhotos:"+rs);
+        WeiboUtil.printResult("getNearbyPhotos:"+rs);
         return WeiboParser.parseStatuses2(rs);
     }
 
@@ -750,7 +751,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         nvps.add(pair);
 
         String rs=post(urlString, true, nvps);
-        WeiboLog.v(TAG, "addCheckin:"+rs);
+        WeiboUtil.printResult(TAG, "addCheckin:"+rs);
         return WeiboParser.parseStatus(rs);
     }
 
@@ -783,7 +784,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         }
 
         String rs=post(urlString, true, nvps);
-        WeiboLog.v(TAG, "addPhotos:"+rs);
+        WeiboUtil.printResult(TAG, "addPhotos:"+rs);
     }
 
     /**
@@ -812,7 +813,7 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
         }
 
         String rs=post(urlString, false, nvps);
-        WeiboLog.v(TAG, "addPlaceTip:"+rs);
+        WeiboUtil.printResult(TAG, "addPlaceTip:"+rs);
         return WeiboParser.parseStatus(rs);
     }
 }

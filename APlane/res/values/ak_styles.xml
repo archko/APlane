@@ -32,7 +32,7 @@
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:paddingLeft">@dimen/bottom_action_bar_item_padding_left_right</item>
         <item name="android:paddingRight">@dimen/bottom_action_bar_item_padding_left_right</item>
-        <item name="android:layout_marginBottom">@dimen/bottom_action_bar_item_margin_bottom</item>
+        <!--<item name="android:layout_marginBottom">@dimen/bottom_action_bar_item_margin_bottom</item>-->
         <item name="android:scaleType">centerInside</item>
     </style>
 

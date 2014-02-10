@@ -1,6 +1,7 @@
 package com.me.microblog.core.sina;
 
 import com.me.microblog.WeiboException;
+import com.me.microblog.WeiboUtil;
 import com.me.microblog.bean.DirectMessage;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.core.AbsApiImpl;
@@ -52,7 +53,7 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v(TAG, "dm:"+rs);
+        WeiboUtil.printResult(TAG, "dm:"+rs);
         return WeiboParser.parseDirectMessages(rs);
     }
 
@@ -93,7 +94,7 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboLog.v(TAG, "rs:"+rs);
+        WeiboUtil.printResult(TAG, "rs:"+rs);
         return WeiboParser.parseDirectMessages(rs);
     }
 
@@ -113,7 +114,7 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
         urlString+="?access_token="+mAccessToken;
 
         String rs=get(urlString, false, null);
-        WeiboLog.v(TAG, "rs:"+rs);
+        WeiboUtil.printResult(TAG, "rs:"+rs);
         return WeiboParser.parseDirectMessages(rs);
     }
 
@@ -137,7 +138,7 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
         nvps.add(pair);
 
         String rs=post(urlString, false, nvps);
-        WeiboLog.v(TAG, "rs:"+rs);
+        WeiboUtil.printResult(TAG, "rs:"+rs);
         return WeiboParser.parseDirectMessage(rs);
     }
 
@@ -161,7 +162,7 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
         nvps.add(pair);
 
         String rs=post(urlString, false, nvps);
-        WeiboLog.v(TAG, "rs:"+rs);
+        WeiboUtil.printResult(TAG, "rs:"+rs);
         return WeiboParser.parseDirectMessage(rs);
     }
 
@@ -181,7 +182,7 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
         nvps.add(pair);
 
         String rs=post(urlString, false, nvps);
-        WeiboLog.v(TAG, "rs:"+rs);
+        WeiboUtil.printResult(TAG, "rs:"+rs);
         return WeiboParser.parseDirectMessage(rs);
     }
 }

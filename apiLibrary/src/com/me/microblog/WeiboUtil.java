@@ -483,6 +483,10 @@ public class WeiboUtil {
         return false;
     }
 
+    public static void printResult(String tempData) {
+        printResult("printResult", tempData);
+    }
+
     public static void printResult(String TAG, String tempData) {
         if (TextUtils.isEmpty(tempData)) {
             WeiboLog.d(TAG, "result is null.");

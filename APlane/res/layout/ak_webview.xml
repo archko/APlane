@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<com.bulletnoid.android.widget.SwipeAwayLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" android:layout_height="wrap_content">
-    <RelativeLayout android:visibility="visible" android:id="@+id/url_layout"
+    <RelativeLayout android:visibility="gone" android:id="@+id/url_layout"
         android:layout_width="fill_parent" android:layout_height="wrap_content">
         <ImageButton
             android:id="@+id/webview_forward"
@@ -36,3 +41,4 @@
         style="?android:attr/progressBarStyleSmall" android:visibility="visible"/>
 
 </RelativeLayout>
+</com.bulletnoid.android.widget.SwipeAwayLayout>

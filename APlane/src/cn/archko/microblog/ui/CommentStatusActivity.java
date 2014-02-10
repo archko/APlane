@@ -31,6 +31,7 @@ import cn.archko.microblog.fragment.abs.AtUserListener;
 import cn.archko.microblog.service.SendTaskService;
 import com.andrew.apollo.utils.ThemeUtils;
 import cn.archko.microblog.view.EmojiPanelView;
+import com.bulletnoid.android.widget.SwipeAwayLayout;
 import com.me.microblog.WeiboUtil;
 import com.me.microblog.bean.AtUser;
 import com.me.microblog.bean.SendTask;
@@ -272,6 +273,17 @@ public class CommentStatusActivity extends BaseOauthFragmentActivity {
         mActionBar.setDisplayShowHomeEnabled(true);   //整个标题栏
         mActionBar.setTitle(R.string.send_comment);
         _onCreate();
+
+        SwipeAwayLayout view_root=(SwipeAwayLayout) findViewById(R.id.view_root);
+        view_root.setSwipeOrientation(SwipeAwayLayout.LEFT_RIGHT);
+
+        view_root.setOnSwipeAwayListener(new SwipeAwayLayout.OnSwipeAwayListener() {
+            @Override
+            public void onSwipedAway() {
+                finish();
+                overridePendingTransition(0, 0);
+            }
+        });
     }
 
     protected void _onCreate() {

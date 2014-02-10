@@ -600,7 +600,7 @@ public class SwipeAwayLayout extends RelativeLayout {
             return;
         }
 
-        if (mIsClose) {
+        if (mIsClose&&mSwipeAwayListener!=null) {
             mSwipeAwayListener.onSwipedAway();
         }
 

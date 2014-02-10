@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--评价布局-->
+<com.bulletnoid.android.widget.SwipeAwayLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ContentDescription" android:id="@+id/root"
@@ -69,3 +74,4 @@
         <include layout="@layout/status_repost_comment"/>
     </ScrollView>
 </LinearLayout>
+</com.bulletnoid.android.widget.SwipeAwayLayout>
