@@ -69,7 +69,7 @@ public class UserFragmentActivity extends AbstractFragmentTabsPager {
         //mActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         mViewPager.setOffscreenPageLimit(3);
         SwipeAwayLayout view_root=(SwipeAwayLayout) findViewById(R.id.view_root);
-        view_root.setSwipeOrientation(SwipeAwayLayout.RIGHT_ONLY);
+        view_root.setSwipeOrientation(SwipeAwayLayout.LEFT_RIGHT);
 
         view_root.setOnSwipeAwayListener(new SwipeAwayLayout.OnSwipeAwayListener() {
             @Override

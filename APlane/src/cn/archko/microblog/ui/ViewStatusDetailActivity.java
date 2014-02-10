@@ -132,7 +132,7 @@ public class ViewStatusDetailActivity extends BaseOauthFragmentActivity implemen
         imm=(InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         SwipeAwayLayout view_root=(SwipeAwayLayout) findViewById(R.id.view_root);
-        view_root.setSwipeOrientation(SwipeAwayLayout.RIGHT_ONLY);
+        view_root.setSwipeOrientation(SwipeAwayLayout.LEFT_RIGHT);
 
         view_root.setOnSwipeAwayListener(new SwipeAwayLayout.OnSwipeAwayListener() {
             @Override

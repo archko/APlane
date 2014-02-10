@@ -49,7 +49,7 @@
         </RelativeLayout>
 
         <!-- 简介 -->
-        <TextView android:id="@+id/description" android:layout_below="@id/header"
+        <TextView android:id="@+id/description"
             android:layout_marginTop="4dip" android:text="@string/test_status"
             android:textSize="14sp" android:textColor="@color/holo_light_item_title"
             android:layout_height="wrap_content" android:layout_width="fill_parent"
@@ -67,7 +67,7 @@
             android:fadingEdgeLength="0dip"
             android:scrollbars="none">-->
 
-            <LinearLayout  android:layout_below="@id/description"
+            <LinearLayout
                 android:id="@+id/controller"
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
@@ -155,7 +155,7 @@
 
         <!-- 控制区 -->
 
-        <LinearLayout android:orientation="vertical" android:layout_below="@id/controller"
+        <LinearLayout android:orientation="vertical"
             android:layout_height="wrap_content" android:layout_width="fill_parent">
 
             <TextView android:layout_marginTop="10dp"
@@ -165,7 +165,8 @@
                 android:layout_height="wrap_content" android:layout_width="fill_parent"
                 android:text="@string/user_lastest_status" android:background="@null"/>
 
-            <TextView android:id="@+id/tv_content_first"
+            <include layout="@layout/status_repost_comment"/>
+            <!--<TextView android:id="@+id/tv_content_first"
                 android:layout_height="wrap_content" android:layout_width="fill_parent"
                 android:text="@string/test_status"
                 android:textSize="16sp" android:textColor="@color/holo_light_item_status"
@@ -178,7 +179,7 @@
                 android:textColor="@color/holo_light_item_ret_status"
                 android:layout_marginTop="4dp" android:layout_marginBottom="2dp"
                 android:layout_marginLeft="6dip" android:layout_marginRight="6dip"
-                android:paddingLeft="8dip" android:paddingRight="4dip"/>
+                android:paddingLeft="8dip" android:paddingRight="4dip"/>-->
 
             <TextView android:layout_marginTop="10dp"
                 android:minHeight="40dp" android:gravity="center_vertical"

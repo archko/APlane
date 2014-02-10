@@ -7,6 +7,7 @@ import com.me.microblog.bean.User;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.WeiboParser;
 import com.me.microblog.core.abs.IUserApi;
+import com.me.microblog.util.WeiboLog;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
@@ -69,6 +70,7 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi{
         nvps.add(pair);
 
         String rs=get(urlString, true, nvps);
+        WeiboLog.v(TAG, "getUser:"+id+" rs:"+rs);
         return WeiboParser.parseUser(rs);
     }
 
@@ -91,6 +93,7 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi{
         nvps.add(pair);
 
         String rs=get(urlString, true, nvps);
+        WeiboLog.v(TAG, "getUser:"+screenName+" rs:"+rs);
         return WeiboParser.parseUser(rs);
     }
 

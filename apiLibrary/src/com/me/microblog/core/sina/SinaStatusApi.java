@@ -2,6 +2,7 @@ package com.me.microblog.core.sina;
 
 import android.text.TextUtils;
 import com.me.microblog.WeiboException;
+import com.me.microblog.WeiboUtil;
 import com.me.microblog.bean.Count;
 import com.me.microblog.bean.Favorite;
 import com.me.microblog.bean.SStatusData;
@@ -30,7 +31,7 @@ import java.util.List;
  * @author: archko Date: 13-1-28 Time: 下午7:15
  * @description:
  */
-public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
+public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
 
     public static final String TAG="SinaStatusApi";
 
@@ -64,6 +65,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
 
         String rs=get(urlString, true, nvps);
         //WeiboUtil.savePublicTimeLine(rs);
+        WeiboUtil.printResult(TAG, "getPublicTimeline:"+rs);
         return getStatuses2(rs);
     }
 
@@ -81,7 +83,6 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Status> getHomeTimeline(long sinceId, long maxId, int count, int page, int feature)
         throws WeiboException {
@@ -136,7 +137,6 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
      * @param j
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Status> getFriendsTimeline(long sinceId, long maxId, int count, int page, int feature)
         throws WeiboException {
@@ -187,7 +187,6 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public void getFriendsTimelineIDS(long sinceId, long maxId, int count, int page, int feature)
         throws WeiboException {
@@ -221,7 +220,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
         }
 
         String rs=get(urlString, true, nvps);
-        WeiboLog.v(TAG, "rs:"+rs);
+        WeiboUtil.printResult(TAG, "rs:"+rs);
     }
 
     /**
@@ -242,7 +241,6 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Status> getUserTimeLine(long uid, long sinceId, long maxId, int count,
         int page, int feature) throws WeiboException {
@@ -299,7 +297,6 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Status> getUserTimeLine(String screenName, long sinceId, long maxId, int count,
         int page, int feature) throws WeiboException {
@@ -349,7 +346,6 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
      * @param page：     可选参数. 分页返回。注意：最多返回200条分页内容。
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Status> getRepostByMe(long sinceId, long maxId, int count, int page)
         throws WeiboException {
@@ -398,7 +394,6 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
      * @param j
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Status> getMentions(long sinceId, long maxId, int count, int page,
         int filter_by_author, int filter_by_source, int filter_by_type) throws WeiboException {
@@ -479,7 +474,6 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
      * @param repost_type
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     @Deprecated
     public ArrayList<Status> getHotComment(int count, int page, String repost_type)
@@ -509,7 +503,6 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
      * @param al
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public ArrayList<Count> getCounts(long al[]) throws WeiboException {
         String urlString=getBaseUrl()+"statuses/count.json";
@@ -542,7 +535,6 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
      * @param status
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public Status repostStatus(long id, String status, String is_comment) throws WeiboException {
         String urlString=getBaseUrl()+"statuses/repost.json";
@@ -580,7 +572,6 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public Status updateStatus(String status, double lat, double llong, int visible) throws WeiboException {
         String urlString=getBaseUrl()+"statuses/update.json";
@@ -683,7 +674,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
 
         String rs=post(urlString, false, nvps);
 
-        WeiboLog.v("uploadPic:"+rs);
+        WeiboUtil.printResult(TAG, "uploadPic:"+rs);
         return WeiboParser.parseStatus(rs);
     }
 
@@ -718,7 +709,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
         httppost.setEntity(multipartentity);
 
         String rs=TwitterOAuth2.execute(httppost);
-        WeiboLog.v("uploadPic:"+rs);
+        WeiboUtil.printResult(TAG, "uploadPic:"+rs);
         //return WeiboParser.parseStatus(rs);
     }
 
@@ -751,7 +742,6 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public Status getStatusShow(long id) throws WeiboException {
         String urlString=getBaseUrl()+"statuses/show.json";
@@ -763,7 +753,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
         nvps.add(pair);
 
         String rs=get(urlString, true, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult(TAG, "rs:"+rs);
         return WeiboParser.parseStatus(rs);
     }
 
@@ -866,7 +856,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
         nvps.add(pair);
 
         String rs=post(urlString, true, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult(TAG, "rs:"+rs);
         return WeiboParser.parseFavorite(rs);
     }
 
@@ -887,7 +877,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
         nvps.add(pair);
 
         String rs=post(urlString, true, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult(TAG, "rs:"+rs);
         return WeiboParser.parseFavorite(rs);
     }
 
@@ -908,7 +898,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
         nvps.add(pair);
 
         String rs=post(urlString, true, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult(TAG, "rs:"+rs);
         return WeiboParser.parseResult(rs);
     }
 
@@ -937,7 +927,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
         }
 
         String rs=get(urlString, true, nvps);
-        //WeiboLog.v("rs:"+rs);
+        //WeiboUtil.printResult("rs:"+rs);
         return WeiboParser.parseFavorites(rs);
     }
 
@@ -958,7 +948,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi{
         nvps.add(pair);
 
         String rs=get(urlString, true, nvps);
-        WeiboLog.v("rs:"+rs);
+        WeiboUtil.printResult(TAG, "rs:"+rs);
         return WeiboParser.parseFavorite(rs);
     }
 }

@@ -63,6 +63,10 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
     private ImageView profileImage;
     private TextView mContentFirst;
     TextView mContentSencond;
+    protected LinearLayout mContentSecondLayout;
+    TextView mName;
+    TextView comment_num;
+    TextView repost_num;
     private String profileImageUrl, pictureUrl;
     private TextView description;
     private TextView statuses, friends, followers, favourites;
@@ -144,6 +148,10 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
         mContentFirst=(TextView) root.findViewById(R.id.tv_content_first);
         mContentSencond=(TextView) root.findViewById(R.id.tv_content_sencond);
+        mName=(TextView) root.findViewById(R.id.tv_name);
+        comment_num=(TextView) root.findViewById(R.id.comment_num);
+        repost_num=(TextView) root.findViewById(R.id.repost_num);
+        mContentSecondLayout=(LinearLayout) root.findViewById(R.id.tv_content_sencond_layout);
 
         followButton=(Button) root.findViewById(R.id.follow);
 
@@ -341,6 +349,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
                         Status status=user.status;
                         if (null!=status) {
+                            mName.setText(DateUtils.getDateString(status.createdAt));
                             String title=status.text+" ";
                             SpannableString spannableString=new SpannableString(title);
                             //WeiboUtil.highlightContent(getActivity(), spannableString, getResources().getColor(R.color.holo_dark_item_at));
@@ -348,6 +357,9 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
                             highlightUrlClickable(spannableString, WeiboUtil.getWebPattern());
                             mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
                             mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
+
+                            comment_num.setText(getString(R.string.text_comment)+status.c_num);
+                            repost_num.setText(getString(R.string.text_repost)+status.r_num);
 
                             Status retStatus=status.retweetedStatus;
                             if (null!=retStatus) {
@@ -361,8 +373,12 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
                                 highlightUrlClickable(spannableString, WeiboUtil.getWebPattern());
                                 mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
                                 mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
-                                mContentSencond.setVisibility(View.VISIBLE);
+                                mContentSecondLayout.setVisibility(View.VISIBLE);
+                            } else {
+                                mContentSecondLayout.setVisibility(View.GONE);
                             }
+                        } else {
+                            mName.setText(null);
                         }
 
                         followButton.setText("");

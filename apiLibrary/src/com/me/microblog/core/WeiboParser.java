@@ -1082,7 +1082,7 @@ public class WeiboParser {
                 user.status = status;
                 status.createdAt = parseDate(jsonobject1.optString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
                 status.id = jsonobject1.optLong("id");
-
+                status.mid=jsonobject1.optString("mid");
                 status.text = jsonobject1.optString("text");
                 status.source = jsonobject1.optString("source");
                 status.favorited = parseBoolean("favorited", jsonobject1);
@@ -1090,6 +1090,8 @@ public class WeiboParser {
                 status.inReplyToStatusId = jsonobject1.optString("in_reply_to_status_id");
                 status.inReplyToUserId = jsonobject1.optString("in_reply_to_user_id");
                 status.inReplyToScreenName = jsonobject1.optString("in_reply_to_screen_name");
+                status.r_num=jsonobject1.optInt("reposts_count");
+                status.c_num=jsonobject1.optInt("comments_count");
             }
             return user;
         } catch (Exception jsonexception) {

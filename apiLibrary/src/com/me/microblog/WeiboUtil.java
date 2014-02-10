@@ -20,6 +20,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.style.ClickableSpan;
 import com.me.microblog.bean.ContentItem;
 import com.me.microblog.bean.Status;
@@ -480,5 +481,26 @@ public class WeiboUtil {
             }
         }
         return false;
+    }
+
+    public static void printResult(String TAG, String tempData) {
+        if (TextUtils.isEmpty(tempData)) {
+            WeiboLog.d(TAG, "result is null.");
+            return;
+        }
+        final int len=tempData.length();
+        final int div=1000;
+        int count=len/div;
+        if (count>0) {
+            for (int i=0; i<count; i++) {
+                WeiboLog.d(TAG, "result:"+tempData.substring(i*div, (i+1)*div));
+            }
+            int mode=len%div;
+            if (mode>0) {
+                WeiboLog.d(TAG, "result:"+tempData.substring(div*count, len));
+            }
+        } else {
+            WeiboLog.d(TAG, "result:"+tempData);
+        }
     }
 }
