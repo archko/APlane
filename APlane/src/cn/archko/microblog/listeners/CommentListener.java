@@ -1,4 +1,4 @@
-package cn.archko.microblog.view;
+package cn.archko.microblog.listeners;
 
 /**
  * @version 1.00.00

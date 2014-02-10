@@ -16,7 +16,7 @@ import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.CommentDialog;
 import cn.archko.microblog.view.CommentItemView;
-import cn.archko.microblog.view.CommentListener;
+import cn.archko.microblog.listeners.CommentListener;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.Comment;

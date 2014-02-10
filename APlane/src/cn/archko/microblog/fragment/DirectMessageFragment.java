@@ -14,7 +14,7 @@ import cn.archko.microblog.ui.SkinFragmentActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.CommentDialog;
-import cn.archko.microblog.view.CommentListener;
+import cn.archko.microblog.listeners.CommentListener;
 import cn.archko.microblog.view.DirectMessageItemView;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;

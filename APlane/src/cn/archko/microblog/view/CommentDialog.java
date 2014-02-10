@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
+import cn.archko.microblog.listeners.CommentListener;
 import com.andrew.apollo.utils.ThemeUtils;
 import com.me.microblog.bean.Comment;
 import com.me.microblog.util.Constants;
