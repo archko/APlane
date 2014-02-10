@@ -152,6 +152,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
         comment_num=(TextView) root.findViewById(R.id.comment_num);
         repost_num=(TextView) root.findViewById(R.id.repost_num);
         mContentSecondLayout=(LinearLayout) root.findViewById(R.id.tv_content_sencond_layout);
+        mContentSecondLayout.setVisibility(View.GONE);
 
         followButton=(Button) root.findViewById(R.id.follow);
 

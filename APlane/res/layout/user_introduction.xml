@@ -13,8 +13,8 @@
             android:layout_height="wrap_content" android:layout_width="fill_parent">
             <ImageView android:id="@+id/iv_portrait"
                 android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
-                android:layout_height="80dp" android:layout_width="80dp"
-                android:src="@drawable/user_default_photo" android:padding="1dp"
+                android:layout_height="88dp" android:layout_width="88dp"
+                android:src="@drawable/user_default_photo" android:padding="2dp"
                 android:background="@drawable/bg_profile"
                 android:layout_marginLeft="6dip"
                 android:layout_marginTop="6dip"/>
