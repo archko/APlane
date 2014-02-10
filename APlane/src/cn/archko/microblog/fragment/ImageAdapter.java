@@ -76,6 +76,9 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+        if (null==imageUrls) {
+            return 0;
+        }
         return imageUrls.length;
     }
 

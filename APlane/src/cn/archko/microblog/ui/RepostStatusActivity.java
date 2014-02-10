@@ -48,7 +48,7 @@ public class RepostStatusActivity extends CommentStatusActivity {
 
     @Override
     protected void _onCreate() {
-        setContentView(R.layout.repost_status);
+        setContentView(R.layout.status_repost);
         initViews();
 
         /*int theme=R.color.holo_dark_bg_view;
@@ -125,8 +125,9 @@ public class RepostStatusActivity extends CommentStatusActivity {
             WeiboUtil.highlightContent(RepostStatusActivity.this, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
             mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
             repost_ori_btn.setText(retweetedStatus.user.screenName);
+            mContentSecondLayout.setVisibility(View.VISIBLE);
         } else {
-            mContentSencond.setVisibility(View.GONE);
+            mContentSecondLayout.setVisibility(View.GONE);
             findViewById(R.id.retweet_content).setVisibility(View.GONE);
             repost_ori_btn.setVisibility(View.GONE);
         }

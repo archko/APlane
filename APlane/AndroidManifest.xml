@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="1490" android:installLocation="auto"
+    android:versionCode="1509" android:installLocation="auto"
     android:versionName="1.6.0"
     package="cn.archko.microblog">
 
@@ -178,7 +178,7 @@
 
             android:taskAffinity="cn.archko.microblog.webview"></activity>
 
-        <activity android:name=".ui.ImageViewerActivity" android:excludeFromRecents="true"
+        <activity android:name=".ui.ImageViewerActivity" android:excludeFromRecents="true" android:screenOrientation="sensor"
             android:theme="@style/Theme.AK" android:hardwareAccelerated="false"
             android:taskAffinity="cn.archko.microblog.webview"></activity>
 

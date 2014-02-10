@@ -251,6 +251,7 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
             WeiboLog.d("onPageSelected:"+position);
             mTabHost.selectTab(mTabHost.getTabAt(position));
             updateTitle(position);
+            selectPage(position);
         }
 
         @Override
@@ -272,6 +273,9 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
         public CharSequence getPageTitle(int position) {
             return mTabs.get(position).tag;
         }
+    }
+
+    protected void selectPage(int position) {
     }
 
     protected void updateTitle(int index) {

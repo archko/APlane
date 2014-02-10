@@ -178,6 +178,11 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
 
         mGridView.setAdapter(mAdapter);
 
+        //loadData();
+    }
+
+    @Override
+    public void refresh() {
         WeiboLog.i(TAG, "isLoading:"+isLoading+" status:"+(null==mDataList ? "null" : mDataList.size()));
         loadData();
     }

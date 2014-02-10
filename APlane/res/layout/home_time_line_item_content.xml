@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--时间线的布局内容部分,-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:makeramen="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription"
+    android:paddingLeft="4dp" android:paddingBottom="4dp"
+    android:id="@+id/header_layout"
+    android:layout_below="@id/right"
+    android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+    <TextView android:id="@+id/tv_content_first"
+        android:layout_alignParentLeft="true" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:text="@string/test"
+        android:paddingLeft="4dip" android:paddingTop="4dp"
+        android:paddingBottom="2dp" android:bufferType="spannable"
+        android:textSize="16sp" android:textColor="@color/holo_light_item_status"/>
+
+    <cn.archko.microblog.view.TagsViewGroup android:id="@+id/tags"
+        android:layout_below="@id/tv_content_first" android:layout_alignParentRight="true"
+        style="@style/tags" android:layout_marginRight="16dp"/>
+
+    <LinearLayout android:id="@+id/tv_content_sencond_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tags"
+        android:layout_alignParentLeft="true">
+        <TextView android:id="@+id/left_slider" android:background="@color/holo_blue_light"
+            android:layout_marginTop="4dp" android:layout_marginBottom="2dp"
+            android:layout_marginLeft="6dp"
+            android:layout_width="4dp" android:layout_height="match_parent"/>
+        <TextView android:id="@+id/tv_content_sencond"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:text="@string/test"
+            android:textSize="16sp" android:clickable="false"
+            android:textColor="@color/holo_light_item_ret_status" android:bufferType="spannable"
+            android:layout_marginTop="4dp" android:layout_marginBottom="2dp"
+            android:layout_marginLeft="0dip" android:layout_marginRight="6dip"
+            android:paddingLeft="8dip" android:paddingRight="4dip"/>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/ret_layout" android:orientation="vertical"
+        android:layout_marginTop="4dp" android:layout_marginBottom="2dp"
+        android:layout_below="@id/tv_content_sencond_layout"
+        android:layout_height="wrap_content" android:layout_width="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="6dip" android:layout_marginRight="6dip">
+
+        <LinearLayout android:id="@+id/loctation_ll"
+            android:orientation="horizontal" android:visibility="gone"
+            android:paddingBottom="4dp" android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content" android:layout_width="fill_parent">
+
+            <ImageView android:src="@drawable/location" android:layout_marginRight="4dp"
+                android:layout_width="20dp" android:layout_height="20dp"/>
+
+            <TextView android:id="@+id/location"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/item_time" android:layout_alignParentRight="true"
+                android:textSize="12sp" android:singleLine="true"
+                android:textColor="@color/holo_light_item_topbottom"
+                android:layout_gravity="center_vertical" android:gravity="center_vertical"/>
+        </LinearLayout>
+
+        <RelativeLayout android:id="@+id/lay_from" android:layout_marginTop="4dp"
+            android:layout_height="wrap_content" android:layout_width="fill_parent">
+
+            <TextView android:id="@+id/source_from"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/item_from" android:layout_alignParentLeft="true"
+                android:textSize="12sp" android:paddingBottom="4dp"
+                android:singleLine="true" android:textColor="@color/holo_light_item_topbottom"/>
+
+            <TextView android:id="@+id/send_time"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/item_time" android:layout_alignParentRight="true"
+                android:textSize="12sp" android:paddingBottom="4dp"
+                android:singleLine="true" android:textColor="@color/holo_light_item_topbottom"/>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

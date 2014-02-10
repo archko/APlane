@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
@@ -77,6 +78,7 @@ public class CommentStatusActivity extends BaseOauthFragmentActivity {
      * 转发微博的内容
      */
     TextView mContentSencond;
+    protected LinearLayout mContentSecondLayout;
     TextView ret_comment_num, ret_repost_num;
     /**
      * 是否处理完成了
@@ -273,7 +275,7 @@ public class CommentStatusActivity extends BaseOauthFragmentActivity {
     }
 
     protected void _onCreate() {
-        setContentView(R.layout.comment_status);
+        setContentView(R.layout.status_comment);
         initViews();
 
         /*int theme=R.color.holo_dark_bg_view;
@@ -304,6 +306,7 @@ public class CommentStatusActivity extends BaseOauthFragmentActivity {
         repost_num=(TextView) findViewById(R.id.repost_num);
         mContentFirst=(TextView) findViewById(R.id.tv_content_first);
         mContentSencond=(TextView) findViewById(R.id.tv_content_sencond);
+        mContentSecondLayout=(LinearLayout) findViewById(R.id.tv_content_sencond_layout);
         ret_comment_num=(TextView) findViewById(R.id.ret_comment_num);
         ret_repost_num=(TextView) findViewById(R.id.ret_repost_num);
         initOperationBar();
@@ -436,8 +439,9 @@ public class CommentStatusActivity extends BaseOauthFragmentActivity {
             SpannableString spannableString=new SpannableString(title);
             WeiboUtil.highlightContent(CommentStatusActivity.this, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
             mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
+            mContentSecondLayout.setVisibility(View.VISIBLE);
         } else {
-            mContentSencond.setVisibility(View.GONE);
+            mContentSecondLayout.setVisibility(View.GONE);
             findViewById(R.id.retweet_content).setVisibility(View.GONE);
             //commentRetBtn.setVisibility(View.GONE);
             showCommentRetBtn=false;

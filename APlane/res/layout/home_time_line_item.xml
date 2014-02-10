@@ -4,11 +4,12 @@
     xmlns:makeramen="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_rl"  tools:ignore="ContentDescription"
-    android:layout_marginLeft="6dip" android:layout_marginRight="8dp"
+    android:layout_marginLeft="8dip" android:layout_marginRight="8dp"
     android:layout_marginBottom="6dp" android:layout_marginTop="2dp"
     android:layout_width="fill_parent" android:layout_height="wrap_content">
 
-    <RelativeLayout android:id="@+id/right"
+    <include layout="@layout/home_time_line_item_title"/>
+    <!--<RelativeLayout android:id="@+id/right"
         android:layout_alignParentRight="true"
         android:layout_marginTop="4dp" android:layout_marginBottom="4dp"
         android:layout_height="wrap_content" android:layout_width="match_parent">
@@ -43,57 +44,20 @@
             android:textSize="12sp" android:paddingRight="4dip"
             android:paddingTop="2dip" android:textColor="@color/holo_light_item_num"/>
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 
-    <RelativeLayout
+    <include layout="@layout/home_time_line_item_content"/>
+    <!--<RelativeLayout
         android:layout_below="@id/right"
         android:layout_alignParentLeft="true" android:paddingLeft="4dp" android:paddingBottom="4dp"
         android:layout_width="fill_parent" android:layout_height="wrap_content">
 
-        <!--<RelativeLayout android:id="@+id/_title"
-            android:layout_marginTop="4dp" android:layout_marginBottom="2dp"
-            android:layout_width="fill_parent" android:layout_height="wrap_content">
-            <TextView android:id="@+id/tv_name"
-                android:layout_alignParentLeft="true" android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="@string/item_test_title"
-                android:textSize="14sp" android:textColor="?attr/textColorItemName"
-                android:paddingLeft="4dip" android:paddingTop="4dip"
-                android:clickable="false"/>
-
-            <TextView android:id="@+id/comment_num"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="@string/item_comment" android:layout_alignParentRight="true"
-                android:textSize="12sp" android:paddingRight="4dip"
-                android:paddingTop="2dip" android:textColor="?attr/textColorItemNum"/>
-
-            <TextView android:id="@+id/repost_num"
-                android:layout_toLeftOf="@id/comment_num"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="@string/item_repost"
-                android:textSize="12sp" android:paddingRight="4dip"
-                android:paddingTop="2dip" android:textColor="?attr/textColorItemNum"/>
-        </RelativeLayout>-->
-
-            <!--android:layout_below="@id/_title"-->
         <TextView android:id="@+id/tv_content_first"
             android:layout_alignParentLeft="true" android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:text="@string/test"
             android:paddingLeft="4dip" android:paddingTop="4dp"
             android:paddingBottom="2dp" android:bufferType="spannable"
             android:textSize="16sp" android:textColor="@color/holo_light_item_status"/>
-
-        <!--<ImageView android:id="@+id/status_picture"
-            android:layout_below="@id/tv_content_first" android:layout_alignParentRight="true"
-            android:minWidth="50dip"
-            android:scaleType="centerCrop"
-            android:layout_margin="4dip"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:src="@drawable/image_loading" android:visibility="visible"/>
-
-        <ImageView android:id="@+id/status_picture_lay" android:src="@drawable/gif"
-            android:layout_alignLeft="@id/status_picture" android:visibility="gone"
-            android:layout_alignBottom="@id/status_picture"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"/>-->
 
         <cn.archko.microblog.view.TagsViewGroup android:id="@+id/tags"
             android:layout_below="@id/tv_content_first" android:layout_alignParentRight="true"
@@ -118,7 +82,7 @@
                 android:paddingLeft="8dip" android:paddingRight="4dip"/>
         </LinearLayout>
 
-        <LinearLayout android:orientation="vertical"
+        <LinearLayout android:id="@+id/ret_layout" android:orientation="vertical"
             android:layout_marginTop="4dp" android:layout_marginBottom="2dp"
             android:layout_below="@id/tv_content_sencond_layout"
             android:layout_height="wrap_content" android:layout_width="fill_parent"
@@ -157,5 +121,5 @@
                     android:singleLine="true" android:textColor="@color/holo_light_item_topbottom"/>
             </RelativeLayout>
         </LinearLayout>
-    </RelativeLayout>
+    </RelativeLayout>-->
 </RelativeLayout>

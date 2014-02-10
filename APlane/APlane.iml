@@ -58,7 +58,6 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="apiLibrary" />
-    <orderEntry type="module" module-name="SlidingMenuLibrary" />
     <orderEntry type="module" module-name="pulltorefreshlibrary" />
     <orderEntry type="module-library">
       <library>

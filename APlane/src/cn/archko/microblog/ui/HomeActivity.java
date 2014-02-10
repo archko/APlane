@@ -16,17 +16,19 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,9 +43,6 @@ import cn.archko.microblog.service.AKWidgetService;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.service.WeiboService;
 import cn.archko.microblog.sliding.app.SidebarAdapter;
-import cn.archko.microblog.sliding.app.SidebarMenuFragment;
-import cn.archko.microblog.sliding.app.SlidingFragmentActivity;
-import cn.archko.microblog.sliding.app.SlidingMenuChangeListener;
 import cn.archko.microblog.utils.AKUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.andrew.apollo.utils.ThemeUtils;
@@ -56,7 +55,6 @@ import com.me.microblog.bean.Unread;
 import com.me.microblog.core.ImageManager;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
@@ -70,13 +68,12 @@ import java.util.HashMap;
  *
  * @author archko
  */
-public class HomeActivity extends SlidingFragmentActivity implements OnRefreshListener {
+public class HomeActivity extends SkinFragmentActivity implements OnRefreshListener {
 
     public final static String TAG="HomeActivity";
 
     private ActionBar mActionBar;
     private SidebarAdapter mSidebarAdapter;
-    SidebarMenuFragment mMenuFragment;
     boolean isInitialized=false;
     Handler mHandler;
     /**
@@ -85,12 +82,13 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
     HashMap<String, TextView> mActionMsgView=new HashMap<String, TextView>(8);
     Spinner mGroupItem;
     RelativeLayout mGrouplayout;
-    SlidingMenuChangeListener mMenuChangeListener=new SlidingMenuChangeListener() {
-        @Override
-        public void showMenu(int pos) {
-            navigationFragment(pos);
-        }
-    };
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawer;
+    ListView mRightDrawer;
+    /**
+     * 是否已经选中一个位置了.第一次为未选中.
+     */
+    boolean hasFocused=false;
 
     /**
      * 根据屏幕设置下载图片的分辨率，因为内存的限制，不处理横屏时的大小，全部按照竖屏处理
@@ -122,9 +120,7 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
 
         mHandler=new Handler();
 
-        //setSlidingActionBarEnabled(true);
-
-        setContentView(R.layout.home);
+        setContentView(R.layout.ak_main_drawer_layout);
 
         final ActionBar bar=getActionBar();
         mActionBar=bar;
@@ -136,51 +132,27 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
         mActionBar.setDisplayShowHomeEnabled(true);   //整个标题栏
         mActionBar.setTitle(R.string.tab_label_home);
 
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawer = (ListView)findViewById(R.id.start_drawer);
+        mDrawer.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+        //mRightDrawer=(ListView) findViewById(R.id.right_drawer);
+
         // set the Behind View
         mSidebarAdapter=new SidebarAdapter(getFragmentManager(), HomeActivity.this);
         int home=mSidebarAdapter.addFragment(true);
-
-        mMenuFragment=new SidebarMenuFragment();
-        mMenuFragment.setMenuChangeListener(mMenuChangeListener);
-        mMenuFragment.setSidebarAdapter(mSidebarAdapter);
-
-        setBehindContentView(R.layout.home_menu_frame);
-        getFragmentManager()
-            .beginTransaction()
-            .replace(R.id.menu_frame, mMenuFragment)
-            .commit();
-
-        SlidingMenu sm=getSlidingMenu();
-        sm.setShadowWidthRes(R.dimen.shadow_width);
-        sm.setShadowDrawable(R.drawable.shadow);
-        //sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-        changeMenuOffset(sm);
-        //sm.setFadeDegree(0.35f);
-        //sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-
-        //navigationFragment(home);
-        //这里如果不注释，无法显示侧边栏。
-        /*SidebarAdapter.SidebarEntry entry=(SidebarAdapter.SidebarEntry) mSidebarAdapter.getItem(home);
-        Fragment next=mSidebarAdapter.getFragment(entry, home);
-        getFragmentManager()
-            .beginTransaction()
-            .replace(R.id.fragment_placeholder, next)
-            .commit();
-        sm.showMenu();*/
+        mDrawer.setAdapter(mSidebarAdapter);
+        //mRightDrawer.setAdapter(mSidebarAdapter);
+        mDrawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                navigationFragment(position);
+            }
+        });
 
         setCustomActionBar();
         reloadPreferences();
         doInit();
         addGroupNav();
-    }
-
-    private void changeMenuOffset(SlidingMenu sm) {
-        WindowManager wm=(WindowManager) getSystemService(WINDOW_SERVICE);
-        Display display=wm.getDefaultDisplay();
-        @SuppressWarnings("deprecation")
-        int behindOffset_dp=AKUtils.convertPxToDp(display.getWidth())-208;
-        sm.setBehindOffset(AKUtils.convertDpToPx(behindOffset_dp));
-        //sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
     }
 
     View.OnClickListener mActionItemListener=new View.OnClickListener() {
@@ -199,25 +171,30 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
             clear();
         } else if (R.id.action_home==id) {
             int pos=mSidebarAdapter.getFragmentPos(Constants.TAB_ID_HOME);
-            mMenuFragment.selectItem(pos);
+            selectItem(pos);
             navigationFragment(pos);
         } else if (R.id.action_at_comment==id) {
             int pos=mSidebarAdapter.getFragmentPos(Constants.TAB_ID_AT_COMMENT);
-            mMenuFragment.selectItem(pos);
+            selectItem(pos);
             navigationFragment(pos);
         } else if (R.id.action_at_status==id) {
             int pos=mSidebarAdapter.getFragmentPos(Constants.TAB_ID_AT_STATUS);
-            mMenuFragment.selectItem(pos);
+            selectItem(pos);
             navigationFragment(pos);
         } else if (R.id.action_comment==id) {
             int pos=mSidebarAdapter.getFragmentPos(Constants.TAB_ID_COMMENT);
-            mMenuFragment.selectItem(pos);
+            selectItem(pos);
             navigationFragment(pos);
         } else if (R.id.action_follower==id) {
             int pos=mSidebarAdapter.getFragmentPos(Constants.TAB_ID_FOLLOWER);
-            mMenuFragment.selectItem(pos);
+            selectItem(pos);
             navigationFragment(pos);
         }
+    }
+
+    private void selectItem(int pos) {
+        mDrawer.setItemChecked(pos, true);
+        mSidebarAdapter.notifyDataSetChanged();
     }
 
     private void setCustomActionBar() {
@@ -326,6 +303,7 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
      * @param position 当前的Fragment位置
      */
     void navigationFragment(int position) {
+        mDrawerLayout.closeDrawer(mDrawer);
         SidebarAdapter.SidebarEntry entry=(SidebarAdapter.SidebarEntry) mSidebarAdapter.getItem(position);
         if (entry.navType==SidebarAdapter.SidebarEntry.NAV_TYPE_INTENT) {
             Intent intent=new Intent(HomeActivity.this, entry.clazz);
@@ -335,7 +313,6 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
 
         Fragment current=getFragmentManager().findFragmentById(R.id.fragment_placeholder);
         if (current.getTag().equals(entry.id)) {// Already selected
-            getSlidingMenu().showContent();
             return;
         }
 
@@ -369,8 +346,8 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
         ft.attach(next);
         ft.commit();
         //mCurrentFragment=entry.id;
-        getSlidingMenu().showContent();
         mActionBar.setTitle(entry.name);
+        selectItem(position);
     }
 
     @Override
@@ -386,6 +363,11 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
         //apply theme
         applyTheme();
         refreshSidebar();
+
+        if (!hasFocused) {
+            selectItem(0);
+            hasFocused=true;
+        }
     }
 
     /**
@@ -395,7 +377,7 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         if (!mThemeId.equals(themeId)) {
             ThemeUtils.getsInstance().themeActionBar(getActionBar(), this);
-            mMenuFragment.themeBackground(true);
+            //mMenuFragment.themeBackground(true);
             mThemeId=themeId;
             applyThemeId(themeId);
             final Fragment current=getFragmentManager().findFragmentById(R.id.fragment_placeholder);
@@ -520,13 +502,11 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
 
         int itemId=item.getItemId();
         if (itemId==android.R.id.home) {
-            // Toggle the sidebar
-            /*if (getSlidingMenu().isMenuShowing()) {
-                getSlidingMenu().showContent();
+            if (mDrawerLayout.isDrawerOpen(mDrawer)) {
+                mDrawerLayout.closeDrawer(mDrawer);
             } else {
-                getSlidingMenu().showMenu();
-            }*/
-            toggle();
+                mDrawerLayout.openDrawer(mDrawer);
+            }
         } else if (itemId==R.id.menu_new_status) {
             newStatus();
         } /*else if (itemId==R.id.menu_home_hot) {
@@ -597,7 +577,7 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
             }
         }
 
-        getSlidingMenu().setBehindScrollScale(0.0f);
+        /*getSlidingMenu().setBehindScrollScale(0.0f);
         getSlidingMenu().setFadeDegree(0.0f);
 
         String nav_sidebar_touch=mPrefs.getString(PrefsActivity.PREF_NAV_SIDEBAR_TOUCH, getString(R.string.default_nav_sidebar_touch));
@@ -607,7 +587,7 @@ public class HomeActivity extends SlidingFragmentActivity implements OnRefreshLi
             getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
         } else if ("2".equals(nav_sidebar_touch)) {
             getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        }
+        }*/
 
         /*int theme=R.color.holo_dark_bg_view;
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
