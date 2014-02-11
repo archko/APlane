@@ -132,7 +132,7 @@ public final class ImageCache {
      * @param cacheParams The cache parameters to initialize the cache
      */
     private void init(final Context context) {
-        /*ApolloUtils.execute(false, new AsyncTask<Void, Void, Void>() {
+        ApolloUtils.execute(false, new AsyncTask<Void, Void, Void>() {
 
             @Override
             protected Void doInBackground(final Void... unused) {
@@ -140,7 +140,7 @@ public final class ImageCache {
                 initDiskCache(context);
                 return null;
             }
-        }, (Void[]) null);*/
+        }, (Void[])null);
         // Set up the memory cache
         initLruCache(context);
     }
@@ -266,6 +266,17 @@ public final class ImageCache {
         if (cache==null) {
             cache=getInstance(appContext);
             retainFragment.setObject(cache);
+        }
+        return cache;
+    }
+
+    public static final ImageCache findOrCreateCache(final Context activity) {
+        // See if we already have an ImageCache stored in RetainFragment
+        ImageCache cache = null;
+
+        // No existing ImageCache, create one and store it in RetainFragment
+        if (cache == null) {
+            cache = getInstance(activity);
         }
         return cache;
     }
@@ -402,7 +413,9 @@ public final class ImageCache {
                 if (snapshot!=null) {
                     inputStream=snapshot.getInputStream(DISK_CACHE_INDEX);
                     if (inputStream!=null) {
-                        final Bitmap bitmap=BitmapFactory.decodeStream(inputStream);
+                        BitmapFactory.Options options=new BitmapFactory.Options();
+                        options.inPreferredConfig=Bitmap.Config.RGB_565;
+                        final Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
                         if (bitmap!=null) {
                             return bitmap;
                         }
