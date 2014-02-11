@@ -83,7 +83,7 @@
     <string name="pref_weibo_default_count">25</string>
     <string name="pref_thread_count_title">图片下载线程数(越大,滑动越卡)</string>
     <string name="pref_thread_count_sum">图片下载线程数(越大,滑动越卡)</string>
-    <string name="pref_thread_default_count">2</string>
+    <string name="pref_thread_default_count">1</string>
 
     <string name="pref_back_pressed">后退键行为</string>
     <string name="pref_back_pressed_sum">后退键直接退出,不保留服务!</string>

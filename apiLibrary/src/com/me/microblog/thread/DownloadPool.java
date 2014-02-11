@@ -6,9 +6,12 @@ import android.os.*;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import com.me.microblog.App;
 import com.me.microblog.cache.ImageCache2;
@@ -78,10 +81,9 @@ public class DownloadPool extends Thread {
         // required by the default operator to look up socket factories.
         SocketFactory sf=PlainSocketFactory.getSocketFactory();
         schemeRegistry.register(new Scheme("http", sf, 80));
-        //    sf = SSLSocketFactory.getSocketFactory();
 
-        SSLSocketFactory ssf=SSLSocketFactory.getSocketFactory();
-        schemeRegistry.register(new Scheme("https", ssf, 443));
+        /*SSLSocketFactory ssf=SSLSocketFactory.getSocketFactory();
+        schemeRegistry.register(new Scheme("https", ssf, 443));*/
 
         return schemeRegistry;
     }
