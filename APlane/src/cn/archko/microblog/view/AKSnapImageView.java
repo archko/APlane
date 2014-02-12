@@ -63,13 +63,14 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
      * 是否下载完成了.用于保存数据用的.
      */
     boolean mImageDownloaded=false;
+    int mBitmapType=0;
 
     public AKSnapImageView(Context context, String bean) {
         super(context);
         //((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.scroll_gif_view, this);
 
         mContext=context;
-        update(bean);
+        //update(bean);
 
         setOnClickListener(this);
     }
@@ -83,6 +84,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
     }
 
     public void update(String bean) {
+        WeiboLog.v(TAG, "update:"+bean);
         if (TextUtils.isEmpty(bean)) {
             WeiboLog.d(TAG, "TextUtils.isEmpty(bean)."+bean);
             return;
@@ -95,6 +97,10 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                 loadView(bean);
                 updateBitmap(null);
             }
+        }
+
+        if (null!=imageBean&&imageBean.equals(bean)) {
+            return;
         }
 
         imageBean=bean;
@@ -118,37 +124,105 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         name=WeiboUtil.getWeiboUtil().getMd5(bmiddlePic)+WeiboUtil.getExt(bmiddlePic);
         mBmidPath=dir+name;
 
-        loadView(bean);
+        //loadView(bean);
     }
 
+    /**
+     * 启动加载缩略图模式
+     */
+    public void loadThumb() {
+        mBitmapType=0;
+        WeiboLog.v(TAG, "loadThumb:"+imageBean);
+
+        stopDownload();
+
+        removeAllViews();
+
+        addImageView();
+        textProgressBar.setVisibility(View.GONE);
+
+        Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(imageBean);
+        if (null!=bitmap) {
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            imageView.setImageBitmap(bitmap);
+        } else {
+            imageView.setImageBitmap(null);
+        }
+    }
+
+    private void stopDownload() {
+        mShouldDownloadImage=false;
+    }
+
+    /**
+     * 启动加载大图模式
+     */
+    public void loadLargeBitmap() {
+        mBitmapType=1;
+        mShouldDownloadImage=true;
+        WeiboLog.v(TAG, "loadLargeBitmap:"+bmiddlePic);
+
+        removeAllViews();
+
+        if (imageBean.endsWith("gif")) {
+            addWebView();
+            textProgressBar.setVisibility(View.VISIBLE);
+            loadWebview();
+        } else {
+            addImageView();
+            textProgressBar.setVisibility(View.VISIBLE);
+
+            loadImageView();
+        }
+    }
+
+    /**
+     * 加载图片布局.仅用于本地图片.
+     *
+     * @param bean
+     */
     private void loadView(String bean) {
         if (getChildCount()>0) {
             removeAllViews();
         }
 
         if (bean.endsWith("gif")) {
-            ((LayoutInflater) mContext.getSystemService("layout_inflater")).inflate(R.layout.imageviewer_gif, this);
-            myWebView=(MyWebView) findViewById(R.id.webview);
-            textProgressBar=(TextProgressBar) findViewById(R.id.progress_bar);
+            addWebView();
             loadWebview();
         } else {
-            ((LayoutInflater) mContext.getSystemService("layout_inflater")).inflate(R.layout.imageviewer_png, this);
-            imageView=(PhotoView) findViewById(R.id.imageview);
-            textProgressBar=(TextProgressBar) findViewById(R.id.progress_bar);
-            imageView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
-                @Override
-                public void onViewTap(View view, float x, float y) {
-                    close();
-                }
-            });
-            imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
-                @Override
-                public void onPhotoTap(View view, float x, float y) {
-                    close();
-                }
-            });
+            addImageView();
             loadImageView();
         }
+    }
+
+    /**
+     * 添加webview布局,用于查看gif
+     */
+    private void addWebView() {
+        ((LayoutInflater) mContext.getSystemService("layout_inflater")).inflate(R.layout.imageviewer_gif, this);
+        myWebView=(MyWebView) findViewById(R.id.webview);
+        textProgressBar=(TextProgressBar) findViewById(R.id.progress_bar);
+    }
+
+    /**
+     * 添加普通的ImageView,可多点触摸.查看大图与缩略图共用.
+     */
+    private void addImageView() {
+        ((LayoutInflater) mContext.getSystemService("layout_inflater")).inflate(R.layout.imageviewer_png, this);
+        imageView=(PhotoView) findViewById(R.id.imageview);
+        textProgressBar=(TextProgressBar) findViewById(R.id.progress_bar);
+        imageView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
+            @Override
+            public void onViewTap(View view, float x, float y) {
+                close();
+            }
+        });
+        imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+            @Override
+            public void onPhotoTap(View view, float x, float y) {
+                close();
+            }
+        });
     }
 
     @Override
@@ -157,31 +231,43 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
     }
 
     private void close() {
+        if (null!=myWebView) {
+            removeView(myWebView);  //remove it first,dettach view, and close.
+            myWebView.destroy();
+        }
+
+        if (null!=imageView) {
+            imageView.setImageBitmap(null);
+        }
+
         if (mContext instanceof Activity) {
-            if (null!=myWebView) {
-                removeView(myWebView);  //remove it first,dettach view, and close.
-                myWebView.destroy();
-            }
 
             Activity activity=(Activity) mContext;
             activity.finish();
         }
     }
 
+    /**
+     * 加载大图
+     */
     private void loadImageView() {
         mImageDownloaded=false;
         Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(imageBean);
-        //WeiboLog.d(TAG, "loadImageView:"+bitmap+" url:"+imageBean);
+
         if (null!=bitmap) {
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setImageBitmap(bitmap);
         }
 
+        WeiboLog.d(TAG, "loadImageView:"+loadPictureRunning+" bmid:"+bmiddlePic);
         if (!TextUtils.isEmpty(bmiddlePic)) {
             downloadImage();
         }
     }
 
+    /**
+     * 加载gif大图
+     */
     private void loadWebview() {
         mImageDownloaded=false;
         File file=new File(mThumbPath);
@@ -194,6 +280,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
             myWebView.loadUrl("file://"+file.getAbsolutePath());
         }
 
+        WeiboLog.d(TAG, "loadWebview:"+loadPictureRunning+" bmid:"+bmiddlePic);
         if (!TextUtils.isEmpty(bmiddlePic)) {
             downloadImage();
         }
@@ -254,6 +341,11 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
     };
 
     public void updateBitmap(Message msg) {
+        WeiboLog.w(TAG, "updateBitmap."+mBitmapType);
+        if (mBitmapType==0) {
+            return;
+        }
+
         mImageDownloaded=true;
         textProgressBar.setVisibility(View.GONE);
         File file=new File(mBmidPath);
@@ -272,6 +364,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                     }
                 }
             } else {
+                WeiboLog.d(TAG, "loadImageview:"+mBmidPath);
                 if (null!=imageView) {
                     Bitmap bitmap=null;
                     try {
@@ -299,6 +392,8 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                     }
                 }
             }
+        } else {
+            WeiboLog.w(TAG, "file not exist.");
         }
     }
 
@@ -313,13 +408,14 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         @Override
         public void run() {
             loadPictureRunning=true;
-            WeiboLog.v(TAG, "DownloadThread.path:"+mBmidPath+" bmid:"+bmiddlePic+" thumb:"+imageBean);
+            WeiboLog.v(TAG, "DownloadThread: path:"+mBmidPath+" bmid:"+bmiddlePic+" thumb:"+imageBean);
             final File file=new File(mBmidPath);
             if (file.exists()) {
                 Message msg;
                 msg=Message.obtain();
                 msg.what=4;
                 sendMessage(msg);
+                loadPictureRunning=false;
                 return;
             }
 
@@ -368,6 +464,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    WeiboLog.v(TAG, "no connection.");
                     return false;
                 }
 
@@ -399,6 +496,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
+                                WeiboLog.v(TAG, "stop download.");
                                 return false;
                             }
 

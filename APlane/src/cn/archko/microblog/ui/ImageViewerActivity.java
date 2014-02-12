@@ -1,17 +1,18 @@
 package cn.archko.microblog.ui;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.FragmentManager;
-import android.support.v4.view.LazyViewPager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
@@ -32,7 +33,7 @@ import java.util.Date;
  */
 public class ImageViewerActivity extends Activity {
 
-    private LazyViewPager mViewPager;
+    private ViewPager mViewPager;
     SamplePagerAdapter mPagerAdapter;
     String[] mUrls;
     int mSelectedIdx;
@@ -59,7 +60,7 @@ public class ImageViewerActivity extends Activity {
         }
 
         setContentView(R.layout.imageviewer);
-        mViewPager=(LazyViewPager) findViewById(R.id.viewpager);
+        mViewPager=(ViewPager) findViewById(R.id.viewpager);
         mViewPager.setOffscreenPageLimit(0);
         mSave=(ImageView) findViewById(R.id.save);
         mSave.setOnClickListener(new View.OnClickListener() {
@@ -71,8 +72,27 @@ public class ImageViewerActivity extends Activity {
 
         mPagerAdapter=new SamplePagerAdapter(getFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
-        mViewPager.setCurrentItem(mSelectedIdx);
+        //mViewPager.setCurrentItem(mSelectedIdx);
+        mViewPager.setOnPageChangeListener(mPagerAdapter);
 
+        mViewPager.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                WeiboLog.d("onPreDraw:"+mSelectedIdx);
+                mViewPager.getViewTreeObserver().removeOnPreDrawListener(this);
+                if (mSelectedIdx==0) {
+                    mPagerAdapter.onPageSelected(mSelectedIdx);
+                } else {
+                    mViewPager.setCurrentItem(mSelectedIdx);
+                }
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     private void saveImage() {
@@ -102,7 +122,7 @@ public class ImageViewerActivity extends Activity {
         }
     }
 
-    class SamplePagerAdapter extends PagerAdapter {
+    class SamplePagerAdapter extends PagerAdapter implements ViewPager.OnPageChangeListener {
 
         private final SparseArray<WeakReference<AKSnapImageView>> mFragmentArray=new SparseArray<WeakReference<AKSnapImageView>>();
 
@@ -129,6 +149,7 @@ public class ImageViewerActivity extends Activity {
 
             itemView=new AKSnapImageView(ImageViewerActivity.this, bean);
             itemView.update(bean);
+            itemView.loadThumb();
             mFragmentArray.put(position, new WeakReference<AKSnapImageView>(itemView));
             container.addView(itemView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
@@ -156,6 +177,38 @@ public class ImageViewerActivity extends Activity {
                 itemView=mWeakFragment.get();
             }
             return itemView;
+        }
+
+        @Override
+        public void onPageScrolled(int i, float v, int i2) {
+        }
+
+        @Override
+        public void onPageSelected(int i) {
+            WeiboLog.d("onPageSelected."+i);
+            //addListener();
+
+            int size=mFragmentArray.size();
+            for (int k=0; k<size; k++) {
+                int key=mFragmentArray.keyAt(k);
+                WeakReference<AKSnapImageView> viewWeakReference=mFragmentArray.get(key);
+                if (null!=viewWeakReference&&null!=viewWeakReference.get()) {
+                    WeiboLog.d("size:"+size+" key:"+key+" view:"+viewWeakReference.get());
+                    AKSnapImageView imagePageView=(AKSnapImageView) viewWeakReference.get();
+                    if (key==i) {
+                        imagePageView.loadLargeBitmap();
+                    } else {
+                        imagePageView.loadThumb();
+                    }
+                } else {
+                    WeiboLog.d("key:"+key);
+                }
+            }
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int i) {
+
         }
     }
 
