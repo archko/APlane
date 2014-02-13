@@ -10,7 +10,6 @@ import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import com.bulletnoid.android.widget.StaggeredGridView.HeaderFooterListAdapter;
 import com.bulletnoid.android.widget.StaggeredGridView.StaggeredGridView;
-import com.bulletnoid.android.widget.StaggeredGridViewDemo.R;
 
 /**
  * @author archko
@@ -167,8 +166,8 @@ public class PullToRefreshStaggeredGridView extends PullToRefreshBase<StaggeredG
         }
     }
 
-    public final void setOnLoadmoreListener(StaggeredGridView.OnLoadmoreListener listener) {
+    /*public final void setOnLoadmoreListener(StaggeredGridView.OnLoadmoreListener listener) {
         mRefreshableView.setOnLoadmoreListener(listener);
-    }
+    }*/
 
 }
