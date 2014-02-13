@@ -20,6 +20,7 @@ import com.me.microblog.thread.DownloadPiece;
 import com.me.microblog.thread.DownloadPool;
 import cn.archko.microblog.ui.ImageViewerActivity;
 import com.me.microblog.util.Constants;
+import com.me.microblog.util.WeiboLog;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
@@ -163,10 +164,10 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public void onClickItem(View view, int pos) {
-        AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
+        /*AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
         builder.setTitle("显示图片");
 
-        /*String thumb=imageUrls[pos];
+        String thumb=imageUrls[pos];
 
         if (!TextUtils.isEmpty(thumb)) {
             String imgUrl=thumb.replace("thumbnail", "bmiddle");
@@ -198,12 +199,12 @@ public class ImageAdapter extends BaseAdapter {
         Bitmap tmp=null;
 
         if (!isShowLargeBitmap) {
-            tmp=ImageCache2.getInstance().getBitmapFromMemCache(mPictureUrl);
+            //tmp=ImageCache2.getInstance().getBitmapFromMemCache(mPictureUrl);
         } else {
             if (!mPictureUrl.endsWith("gif")) {
                 mPictureUrl=mPictureUrl.replace("thumbnail", "bmiddle");
             }
-            tmp=ImageCache2.getInstance().getBitmapFromMemCache(mPictureUrl);
+            //tmp=ImageCache2.getInstance().getBitmapFromMemCache(mPictureUrl);
             /*LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
             tmp=lruCache.get(mPictureUrl);*/
         }

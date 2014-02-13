@@ -387,7 +387,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         }
         mStatus=(Status) status;
         showBitmap=mPrefs.getBoolean(PrefsActivity.PREF_COMMENT_STATUS_BM, true);
-        showLargeBitmap="1".equals(mPrefs.getString(PrefsActivity.PREF_RESOLUTION, getString(R.string.default_resolution)));
+        showLargeBitmap=mPrefs.getBoolean(PrefsActivity.PREF_COMMENT_STATUS_BM, false);
 
         mCacheDir=((App) App.getAppContext()).mCacheDir;
 
@@ -1080,10 +1080,11 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             if (!prefWebview) {
                 WeiboUtil.openUrlByDefaultBrowser(getActivity(), name);
             } else {
-                Intent intent=new Intent(getActivity(), WebviewActivity.class);
+                /*Intent intent=new Intent(getActivity(), WebviewActivity.class);
                 intent.putExtra("url", name);
                 getActivity().startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
+                getActivity().overridePendingTransition(R.anim.enter_right, R.anim.enter_left);*/
+                WeiboOperation.startWebview(getActivity(), name);
             }
         }
     }
@@ -1107,7 +1108,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         //WeiboLog.d(TAG, "update adapter:"+mAdapter+" tvg:"+adapter+" mTagsViewGroup:"+mTagsViewGroup);
         mAdapter=adapter;
         if (null==mAdapter) {
-            mAdapter=new ImageAdapter(getActivity(), mCacheDir, mStatus.thumbs);
+            mAdapter=new ImageAdapter(getActivity(), mCacheDir, thumbs);
             mTagsViewGroup.setAdapter(mAdapter);
         } else {
         }
@@ -1123,8 +1124,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             //WeiboLog.v(TAG, "setAdapter.没有图片需要显示。"+mStatus.text);
             return;
         }
-        //WeiboLog.v(TAG, "setAdapter.有图片显示。"+mStatus.thumbs[0]);
 
-        mTagsViewGroup.setVisibility(View.VISIBLE);
+        if (mTagsViewGroup.getVisibility()==View.GONE) {
+            mTagsViewGroup.setVisibility(View.VISIBLE);
+        }
     }
 }

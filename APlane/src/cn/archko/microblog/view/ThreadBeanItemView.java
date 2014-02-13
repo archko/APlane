@@ -254,7 +254,7 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
         //WeiboLog.d(TAG, "update adapter:"+mAdapter+" tvg:"+adapter+" mTagsViewGroup:"+mTagsViewGroup);
         mAdapter=adapter;
         if (null==mAdapter) {
-            mAdapter=new ImageAdapter(mContext, mCacheDir, mStatus.thumbs);
+            mAdapter=new ImageAdapter(mContext, mCacheDir, thumbs);
             mTagsViewGroup.setAdapter(mAdapter);
         } else {
         }
@@ -266,7 +266,9 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
 
         if (!isShowBitmap||null==thumbs||thumbs.length==0) {
             //mTagsViewGroup.setAdapter(null);
-            mTagsViewGroup.setVisibility(GONE);
+            if (mTagsViewGroup.getVisibility()==VISIBLE) {
+                mTagsViewGroup.setVisibility(GONE);
+            }
             //WeiboLog.v(TAG, "setAdapter.没有图片需要显示。"+mStatus.text);
             return;
         }

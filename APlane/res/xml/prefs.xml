@@ -35,7 +35,7 @@
             android:summary="@string/pref_status_comment_sum">
             <CheckBoxPreference
                 android:title="@string/pref_comment_status_bm"
-                android:defaultValue="true"
+                android:defaultValue="false"
                 android:key="pref_comment_status_bm"
                 android:summary="@string/pref_comment_status_bm_sum"/>
 

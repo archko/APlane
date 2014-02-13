@@ -75,19 +75,23 @@ public class ImageViewerActivity extends Activity {
         //mViewPager.setCurrentItem(mSelectedIdx);
         mViewPager.setOnPageChangeListener(mPagerAdapter);
 
-        mViewPager.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                WeiboLog.d("onPreDraw:"+mSelectedIdx);
-                mViewPager.getViewTreeObserver().removeOnPreDrawListener(this);
-                if (mSelectedIdx==0) {
-                    mPagerAdapter.onPageSelected(mSelectedIdx);
-                } else {
-                    mViewPager.setCurrentItem(mSelectedIdx);
+        if (mSelectedIdx!=0) {
+            mViewPager.setCurrentItem(mSelectedIdx);
+        } else {
+            mViewPager.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    WeiboLog.d("onPreDraw:"+mSelectedIdx);
+                    mViewPager.getViewTreeObserver().removeOnPreDrawListener(this);
+                    if (mSelectedIdx==0) {
+                        mPagerAdapter.onPageSelected(mSelectedIdx);
+                    } else {
+                        mViewPager.setCurrentItem(mSelectedIdx);
+                    }
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
+        }
     }
 
     @Override

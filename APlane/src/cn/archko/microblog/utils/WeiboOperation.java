@@ -17,6 +17,7 @@ import cn.archko.microblog.ui.RepostStatusActivity;
 import cn.archko.microblog.ui.SplashActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.ui.ViewStatusDetailActivity;
+import cn.archko.microblog.ui.WebviewActivity;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.AtUser;
@@ -253,6 +254,13 @@ public class WeiboOperation {
         loginIntent.putExtra("fragment_class", AccountUsersFragment.class.getName());
         loginIntent.putExtra("mode", "1");
         activity.startActivity(loginIntent);
+        activity.overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
+    }
+
+    public static void startWebview(Activity activity, String name){
+        Intent intent=new Intent(activity, WebviewActivity.class);
+        intent.putExtra("url", name);
+        activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
     }
 

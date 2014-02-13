@@ -798,9 +798,11 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
             if (!prefWebview) {
                 WeiboUtil.openUrlByDefaultBrowser(getActivity(), name);
             } else {
-                Intent intent=new Intent(getActivity(), WebviewActivity.class);
+                /*Intent intent=new Intent(getActivity(), WebviewActivity.class);
                 intent.putExtra("url", name);
                 getActivity().startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.enter_right, R.anim.enter_left);*/
+                WeiboOperation.startWebview(getActivity(), name);
             }
         }
     }

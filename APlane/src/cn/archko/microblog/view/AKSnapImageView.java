@@ -26,6 +26,7 @@ import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
 import com.me.microblog.view.MyWebView;
 import com.me.microblog.view.TextProgressBar;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -141,7 +142,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         addImageView();
         textProgressBar.setVisibility(View.GONE);
 
-        Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(imageBean);
+        Bitmap bitmap=ImageLoader.getInstance().getMemoryCache().get(imageBean);//ImageCache2.getInstance().getBitmapFromMemCache(imageBean);
         if (null!=bitmap) {
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setImageBitmap(bitmap);
@@ -252,7 +253,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
      */
     private void loadImageView() {
         mImageDownloaded=false;
-        Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(imageBean);
+        Bitmap bitmap=ImageLoader.getInstance().getMemoryCache().get(imageBean);//ImageCache2.getInstance().getBitmapFromMemCache(imageBean);
 
         if (null!=bitmap) {
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
