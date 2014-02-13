@@ -27,6 +27,10 @@ import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
 import com.me.microblog.view.IBaseItemView;
 import com.me.microblog.view.ImageViewerDialog;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import java.util.regex.Matcher;
 
@@ -72,6 +76,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
     public final int[] sliderColors;
     public int mIndex=0;
     int mResId;
+    protected DisplayImageOptions options;
 
     public BaseItemView(Context context, ListView view, String cacheDir, Status status, boolean updateFlag) {
         super(context);
@@ -96,6 +101,16 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
         } else if ("0".equals(themeId)) {
             mResId=R.drawable.image_loading_dark;
         }
+        options = new DisplayImageOptions.Builder()
+            /*.showImageOnLoading(R.drawable.ic_stub)
+            .showImageForEmptyUri(R.drawable.ic_empty)
+            .showImageOnFail(R.drawable.ic_error)*/
+            .cacheInMemory(true)
+            .cacheOnDisc(true)
+            .considerExifParams(true)
+            .bitmapConfig(Bitmap.Config.RGB_565)
+            .displayer(new FadeInBitmapDisplayer(300))
+            .build();
     }
 
     /**
@@ -110,7 +125,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
     @Override
     public void update(final Status bean, boolean updateFlag, boolean cache, boolean showLargeBitmap,
         boolean showBitmap) {
-        if (mStatus==bean) {
+        /*if (mStatus==bean) {
             WeiboLog.v(TAG, "相同的内容不更新。");
             if (updateFlag) {   //需要加载数据,否则会无法更新列表的图片.
                 loadPicture(updateFlag, cache);
@@ -204,7 +219,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
             loadPortrait(updateFlag, cache);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     /**
@@ -287,8 +302,10 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
                 }
                 mStatusPicture.setImageResource(mResId);
                 //DownloadPool.downloading.put(mPictureUrl, new WeakReference<View>(parent));
-                ((App) App.getAppContext()).mDownloadPool.Push(
-                    mHandler, mPictureUrl, Constants.TYPE_PICTURE, cache, mCacheDir+dir, mStatusPicture);
+                /*((App) App.getAppContext()).mDownloadPool.Push(
+                    mHandler, mPictureUrl, Constants.TYPE_PICTURE, cache, mCacheDir+dir, mStatusPicture);*/
+                ImageLoader imageLoader = ImageLoader.getInstance();
+                imageLoader.displayImage(mPictureUrl, mStatusPicture, options);
             }
         } else {
             mStatusPicture.setVisibility(View.GONE);
@@ -328,12 +345,14 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
                 mPortrait.setImageResource(R.drawable.user_default_photo);
                 if (updateFlag) {
                     //DownloadPool.downloading.put(mPortraitUrl, new WeakReference<View>(mPortrait));
-                    ((App) App.getAppContext()).mDownloadPool
-                        .Push(mHandler, mPortraitUrl, Constants.TYPE_PORTRAIT, cache, mCacheDir+Constants.ICON_DIR, mPortrait);
+                    /*((App) App.getAppContext()).mDownloadPool
+                        .Push(mHandler, mPortraitUrl, Constants.TYPE_PORTRAIT, cache, mCacheDir+Constants.ICON_DIR, mPortrait);*/
                     /*DownloadPool.DownloadPiece piece=((App) App.getAppContext()).mDownloadPool.new DownloadPiece(
                         null, mPortraitUrl, Constants.TYPE_PICTURE, cache, mCacheDir+Constants.ICON_DIR, false);
                     ImageFetcher fetcher=ImageFetcher.getInstance(App.getAppContext());
                     fetcher.loadHomeImage(mPortraitUrl, mPortrait, piece);*/
+                    ImageLoader imageLoader = ImageLoader.getInstance();
+                    imageLoader.displayImage(mPortraitUrl, mPortrait, options);
                 }
             }
         }

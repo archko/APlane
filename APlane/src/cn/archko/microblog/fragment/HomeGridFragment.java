@@ -89,8 +89,8 @@ public class HomeGridFragment extends StaggeredGridFragment {
     @Override
     public void clear() {
         super.clear();
-        App app=(App) App.getAppContext();
-        app.mDownloadPool.cleanAllQuery();
+        /*App app=(App) App.getAppContext();
+        app.mDownloadPool.cleanAllQuery();*/
     }
 
     /**

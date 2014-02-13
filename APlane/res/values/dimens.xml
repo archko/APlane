@@ -77,4 +77,6 @@
     <dimen name="expanded_height">128dip</dimen>
 
     <dimen name="sidebar_width">208dp</dimen>
+
+    <dimen name="profile_width_height">44dp</dimen>
 </resources>

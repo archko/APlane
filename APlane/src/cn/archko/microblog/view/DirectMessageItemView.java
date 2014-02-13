@@ -28,6 +28,9 @@ import com.me.microblog.thread.DownloadPool;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import java.lang.ref.WeakReference;
 import java.util.regex.Matcher;
@@ -54,6 +57,7 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
     protected boolean isShowBitmap=true;
 
     private boolean checked=false;
+    protected DisplayImageOptions options;
 
     @Override
     public boolean isChecked() {
@@ -93,9 +97,9 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
 
         //update(directMessage, updateFlag, cache, showBitmap);
 
-        SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
-        float pref_title_font_size=options.getInt(PreferenceUtils.PREF_TITLE_FONT_SIZE, 14);
-        float pref_content_font_size=options.getInt(PreferenceUtils.PREF_CONTENT_FONT_SIZE, 16);
+        SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+        float pref_title_font_size=prefs.getInt(PreferenceUtils.PREF_TITLE_FONT_SIZE, 14);
+        float pref_content_font_size=prefs.getInt(PreferenceUtils.PREF_CONTENT_FONT_SIZE, 16);
 
         int pref_content_color=PreferenceUtils.getInstace(App.getAppContext()).getDefaultStatusThemeColor(App.getAppContext());
 
@@ -107,6 +111,17 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
         }
 
         mContentFirst.setTextColor(pref_content_color);
+
+        options = new DisplayImageOptions.Builder()
+            /*.showImageOnLoading(R.drawable.ic_stub)
+            .showImageForEmptyUri(R.drawable.ic_empty)
+            .showImageOnFail(R.drawable.ic_error)*/
+            .cacheInMemory(true)
+            .cacheOnDisc(true)
+            .considerExifParams(true)
+            .bitmapConfig(Bitmap.Config.RGB_565)
+            .displayer(new FadeInBitmapDisplayer(300))
+            .build();
     }
 
     @Override
@@ -170,8 +185,10 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
                 mPortrait.setImageResource(R.drawable.user_default_photo);
                 if (updateFlag) {
                     //DownloadPool.downloading.put(mPortraitUrl, new WeakReference<View>(parent));
-                    ((App) App.getAppContext()).mDownloadPool
-                        .Push(mHandler, mPortraitUrl, Constants.TYPE_PORTRAIT, cache, mCacheDir+Constants.ICON_DIR, mPortrait);
+                    /*((App) App.getAppContext()).mDownloadPool
+                        .Push(mHandler, mPortraitUrl, Constants.TYPE_PORTRAIT, cache, mCacheDir+Constants.ICON_DIR, mPortrait);*/
+                    ImageLoader imageLoader=ImageLoader.getInstance();
+                    imageLoader.displayImage(mPortraitUrl, mPortrait, options);
                 }
             }
         }

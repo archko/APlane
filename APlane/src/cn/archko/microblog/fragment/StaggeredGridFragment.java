@@ -96,7 +96,7 @@ public abstract class StaggeredGridFragment extends AbsBaseListFragment<Status> 
                 fetchMore();
             }
         });
-        //mGridView.setOnScrollListener(this);
+        mGridView.setOnScrollListener(this);
         mGridView.setOnItemClickListener(new StaggeredGridView.OnItemClickListener() {
             @Override
             public void onItemClick(StaggeredGridView parent, View view, int pos, long id) {

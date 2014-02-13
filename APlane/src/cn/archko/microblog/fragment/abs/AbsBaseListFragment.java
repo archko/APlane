@@ -36,6 +36,8 @@ import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 import java.util.ArrayList;
 
@@ -264,7 +266,8 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
         zoomAnim=AnimationUtils.loadAnimation(getActivity(), R.anim.zoom);
 
         mListView.setRecyclerListener(new RecycleHolder());
-        mListView.setOnScrollListener(this);
+        //mListView.setOnScrollListener(this);
+        mListView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
 
         return root;
     }
@@ -470,12 +473,12 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      */
     @Override
     public void clear() {
-        AKUtils.showToast(R.string.clear_data);
+        //AKUtils.showToast(R.string.clear_data);
         mDataList.clear();
         mAdapter.notifyDataSetChanged();
-        if (null!=((App)App.getAppContext()).mDownloadPool) {
+        /*if (null!=((App)App.getAppContext()).mDownloadPool) {
             ((App)App.getAppContext()).mDownloadPool.cleanAllQuery();
-        }
+        }*/
     }
 
     /**

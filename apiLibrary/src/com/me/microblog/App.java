@@ -18,6 +18,10 @@ import com.me.microblog.thread.DownloadPoolThread;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.SqliteWrapper;
 import com.me.microblog.util.WeiboLog;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 /**
  * @author archko
@@ -55,6 +59,8 @@ public class App extends Application {
 
         initDownloadPool(threadCount);
 
+        initImageLoader(this);
+
         initCacheDir();
 
         initOauth2(false);
@@ -84,7 +90,7 @@ public class App extends Application {
      * @return
      */
     public OauthBean getOauthBean() {
-        if (null==mOauthBean){
+        if (null==mOauthBean) {
             mOauthBean=new OauthBean();
         }
         return mOauthBean;
@@ -233,6 +239,22 @@ public class App extends Application {
         this.mDownloadPool.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
         this.mDownloadPool.setName("DownloadPool");
         this.mDownloadPool.start();
+    }
+
+    public static void initImageLoader(Context context) {
+        // This configuration tuning is custom. You can tune every option, you may tune some of them,
+        // or you can create default configuration by
+        //  ImageLoaderConfiguration.createDefault(this);
+        // method.
+        ImageLoaderConfiguration config=new ImageLoaderConfiguration.Builder(context)
+            .threadPriority(Thread.NORM_PRIORITY-2)
+            .denyCacheImageMultipleSizesInMemory()
+            .discCacheFileNameGenerator(new Md5FileNameGenerator())
+            .tasksProcessingOrder(QueueProcessingType.LIFO)
+            .writeDebugLogs() // Remove for release app
+            .build();
+        // Initialize ImageLoader with configuration.
+        ImageLoader.getInstance().init(config);
     }
 
     public static boolean showMemory() {

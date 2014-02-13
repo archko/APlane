@@ -81,8 +81,8 @@ public class HomeFragment extends StatusListFragment {
     @Override
     public void clear() {
         super.clear();
-        App app=(App) App.getAppContext();
-        app.mDownloadPool.cleanAllQuery();
+        /*App app=(App) App.getAppContext();
+        app.mDownloadPool.cleanAllQuery();*/
     }
 
     /**

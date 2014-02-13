@@ -20,6 +20,9 @@ import com.me.microblog.thread.DownloadPiece;
 import com.me.microblog.thread.DownloadPool;
 import cn.archko.microblog.ui.ImageViewerActivity;
 import com.me.microblog.util.Constants;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 /**
  * @description:
@@ -40,6 +43,7 @@ public class ImageAdapter extends BaseAdapter {
     boolean isShowLargeBitmap=false;
     boolean cache=true;
     int mResId;
+    DisplayImageOptions options;
 
     public ImageAdapter(Context c, String cacheDir, String[] thumbs) {
         mContext=c;
@@ -56,6 +60,16 @@ public class ImageAdapter extends BaseAdapter {
         } else if ("0".equals(themeId)) {
             mResId=R.drawable.image_loading_dark;
         }
+        options = new DisplayImageOptions.Builder()
+            /*.showImageOnLoading(R.drawable.ic_stub)
+            .showImageForEmptyUri(R.drawable.ic_empty)
+            .showImageOnFail(R.drawable.ic_error)*/
+            .cacheInMemory(true)
+            .cacheOnDisc(true)
+            .considerExifParams(true)
+            .bitmapConfig(Bitmap.Config.RGB_565)
+            .displayer(new FadeInBitmapDisplayer(300))
+            .build();
     }
 
     public void setImageUrls(String[] imageUrls) {
@@ -213,13 +227,14 @@ public class ImageAdapter extends BaseAdapter {
                 cache=true; //大图要缓存sdcard中，不然每次都下载，太慢了。
             }
             picture.setImageResource(mResId);
-            /*DownloadPool.downloading.put(mPictureUrl, new WeakReference<View>(picture));
-            ((App) App.getAppContext()).mDownloadPool.Push(
-                mHandler, mPictureUrl, Constants.TYPE_PICTURE, null, cache, mCacheDir+dir);*/
-            DownloadPiece piece=new DownloadPiece(mHandler, mPictureUrl, Constants.TYPE_PICTURE, cache, mCacheDir+dir, isShowLargeBitmap, picture);
-            ((App) App.getAppContext()).mDownloadPool.Push(piece);
+
+            /*DownloadPiece piece=new DownloadPiece(mHandler, mPictureUrl, Constants.TYPE_PICTURE, cache, mCacheDir+dir, isShowLargeBitmap, picture);
+            ((App) App.getAppContext()).mDownloadPool.Push(piece);*/
             /*ImageFetcher fetcher=ImageFetcher.getInstance(App.getAppContext());
             fetcher.loadHomeImage(mPictureUrl, picture, piece);*/
+
+            ImageLoader imageLoader = ImageLoader.getInstance();
+            imageLoader.displayImage(mPictureUrl, picture, options);
         }
     }
 

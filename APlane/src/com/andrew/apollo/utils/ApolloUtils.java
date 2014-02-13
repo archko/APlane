@@ -17,6 +17,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Toast;
+import com.andrew.apollo.cache.ImageCache;
+import com.andrew.apollo.cache.ImageFetcher;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -109,7 +111,7 @@ public final class ApolloUtils {
     /**
      * Used to determine if the device is a tablet or not
      * 
-     * @param context The {@link android.content.Context} to use.
+     * @param context The {@link Context} to use.
      * @return True if the device is a tablet, false otherwise.
      */
     public static final boolean isTablet(final Context context) {
@@ -119,7 +121,7 @@ public final class ApolloUtils {
     /**
      * Used to determine if the device is currently in landscape mode
      * 
-     * @param context The {@link android.content.Context} to use.
+     * @param context The {@link Context} to use.
      * @return True if the device is in landscape mode, false otherwise.
      */
     public static final boolean isLandscape(final Context context) {
@@ -127,12 +129,12 @@ public final class ApolloUtils {
     }
 
     /**
-     * Execute an {@link android.os.AsyncTask} on a thread pool
+     * Execute an {@link AsyncTask} on a thread pool
      * 
      * @param forceSerial True to force the task to run in serial order
      * @param task Task to execute
      * @param args Optional arguments to pass to
-     *            {@link android.os.AsyncTask#execute(Object[])}
+     *            {@link AsyncTask#execute(Object[])}
      * @param <T> Task argument type
      */
     @SuppressLint("NewApi")
@@ -155,7 +157,7 @@ public final class ApolloUtils {
      * Used to determine if there is an active data connection and what type of
      * connection it is if there is one
      * 
-     * @param context The {@link android.content.Context} to use
+     * @param context The {@link Context} to use
      * @return True if there is an active data connection, false otherwise.
      *         Also, if the user has checked to only download via Wi-Fi in the
      *         settings, the mobile data and other network connections aren't
@@ -205,10 +207,10 @@ public final class ApolloUtils {
     }
 
     /**
-     * Display a {@link android.widget.Toast} letting the user know what an item does when long
+     * Display a {@link Toast} letting the user know what an item does when long
      * pressed.
      * 
-     * @param view The {@link android.view.View} to copy the content description from.
+     * @param view The {@link View} to copy the content description from.
      */
     public static void showCheatSheet(final View view) {
 
@@ -243,24 +245,6 @@ public final class ApolloUtils {
     }
 
     /**
-     * @param context The {@link android.content.Context} to use.
-     * @return An {@link android.app.AlertDialog} used to show the open source licenses used
-     *         in Apollo.
-     */
-    /*public static final AlertDialog createOpenSourceDialog(final Context context) {
-        final WebView webView = new WebView(context);
-        webView.loadUrl("file:///android_asset/licenses.html");
-        return new AlertDialog.Builder(context).setTitle(R.string.settings_open_source_licenses)
-                .setView(webView)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int whichButton) {
-                        dialog.dismiss();
-                    }
-                }).create();
-    }*/
-
-    /**
      * Calculate whether a color is light or dark, based on a commonly known
      * brightness formula.
      * 
@@ -273,7 +257,7 @@ public final class ApolloUtils {
     /**
      * Runs a piece of code after the next layout run
      * 
-     * @param view The {@link android.view.View} used.
+     * @param view The {@link View} used.
      * @param runnable The {@link Runnable} used after the next layout run
      */
     @SuppressLint("NewApi")
@@ -297,19 +281,25 @@ public final class ApolloUtils {
     /**
      * Creates a new instance of the {@link ImageCache} and {@link ImageFetcher}
      * 
-     * @param activity The {@link android.app.Activity} to use.
+     * @param activity The {@link FragmentActivity} to use.
      * @return A new {@link ImageFetcher} used to fetch images asynchronously.
      */
-    /*public static final ImageFetcher getImageFetcher(final Activity activity) {
+    public static final ImageFetcher getImageFetcher(final Activity activity) {
         final ImageFetcher imageFetcher = ImageFetcher.getInstance(activity);
         imageFetcher.setImageCache(ImageCache.findOrCreateCache(activity));
         return imageFetcher;
-    }*/
+    }
+
+    public static final ImageFetcher getImageFetcher(final Context activity) {
+        final ImageFetcher imageFetcher = ImageFetcher.getInstance(activity);
+        imageFetcher.setImageCache(ImageCache.findOrCreateCache(activity));
+        return imageFetcher;
+    }
 
     /**
      * Used to know if Apollo was sent into the background
      * 
-     * @param context The {@link android.content.Context} to use
+     * @param context The {@link Context} to use
      */
     public static final boolean isApplicationSentToBackground(final Context context) {
         final ActivityManager activityManager = (ActivityManager)context

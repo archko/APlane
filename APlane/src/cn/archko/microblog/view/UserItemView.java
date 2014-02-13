@@ -20,8 +20,10 @@ import com.me.microblog.bean.User;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.sina.SinaUserApi;
 import com.me.microblog.oauth.Oauth2;
-import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 /**
  * 修改后继承ThreadBeanItemView,多了一个Touch,左边的头像点击后的处理.
@@ -38,13 +40,14 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
     private TextView mName;
 
     private ListView parent;
-    private String portraitUrl=null;
+    private String mPortraitUrl=null;
     private String mCacheDir;    //图片缓存目录
     private User user;    //微博
     View right;
 
     public static final int TYPE_PORTRAIT=1;
     private int followingType=-1;   //0表示未关注,1表示已关注,-1表示未知
+    protected DisplayImageOptions options;
 
     public UserItemView(Context context, ListView view, String cacheDir, User user, boolean updateFlag) {
         super(context);
@@ -65,6 +68,16 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
         mCacheDir=cacheDir;
 
         //update(status, updateFlag);
+        options = new DisplayImageOptions.Builder()
+            /*.showImageOnLoading(R.drawable.ic_stub)
+            .showImageForEmptyUri(R.drawable.ic_empty)
+            .showImageOnFail(R.drawable.ic_error)*/
+            .cacheInMemory(true)
+            .cacheOnDisc(true)
+            .considerExifParams(true)
+            .bitmapConfig(Bitmap.Config.RGB_565)
+            .displayer(new FadeInBitmapDisplayer(300))
+            .build();
     }
 
     @Override
@@ -203,17 +216,19 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
             followBtn.setText(R.string.follow);
         }
 
-        portraitUrl=user.profileImageUrl;
+        mPortraitUrl=user.profileImageUrl;
         //获取头像.
-        Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(portraitUrl);
+        Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(mPortraitUrl);
         if (null!=bitmap&&!bitmap.isRecycled()) {
             mPortrait.setImageBitmap(bitmap);
         } else {
             mPortrait.setImageResource(R.drawable.user_default_photo);
             if (updateFlag) {
-                //DownloadPool.downloading.put(portraitUrl, new WeakReference<View>(parent));
-                ((App) App.getAppContext()).mDownloadPool.Push(
-                    mHandler, portraitUrl, TYPE_PORTRAIT, cache, mCacheDir+Constants.ICON_DIR, mPortrait);
+                //DownloadPool.downloading.put(mPortraitUrl, new WeakReference<View>(parent));
+                /*((App) App.getAppContext()).mDownloadPool.Push(
+                    mHandler, mPortraitUrl, TYPE_PORTRAIT, cache, mCacheDir+Constants.ICON_DIR, mPortrait);*/
+                ImageLoader imageLoader=ImageLoader.getInstance();
+                imageLoader.displayImage(mPortraitUrl, mPortrait, options);
             }
         }
     }
@@ -256,7 +271,7 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
                     view=listView.getChildAt(i);
                     if (view instanceof UserItemView) {
                         itemView=(UserItemView) view;
-                        if (itemView.portraitUrl!=null&&itemView.portraitUrl.equals(imgUrl)) {
+                        if (itemView.mPortraitUrl!=null&&itemView.mPortraitUrl.equals(imgUrl)) {
                             itemView.mPortrait.setImageBitmap(bitmap);
                             break;
                         }

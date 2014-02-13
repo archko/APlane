@@ -146,8 +146,10 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
                     mStatusPicture.setVisibility(View.GONE);
                     mStatusPictureLay.setVisibility(GONE);
                 }
-                mContentSencond.setVisibility(GONE);
-                if (null!=mContentSecondLayout){
+                if (mContentSencond.getVisibility()==VISIBLE) {
+                    mContentSencond.setVisibility(GONE);
+                }
+                if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==VISIBLE){
                     mContentSecondLayout.setVisibility(GONE);
                 }
                 return;
@@ -169,8 +171,10 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
 
             //处理转发的微博
             if (mRetweetedStatus!=null) {
-                mContentSencond.setVisibility(View.VISIBLE);
-                if (null!=mContentSecondLayout){
+                if (mContentSencond.getVisibility()==GONE) {
+                    mContentSencond.setVisibility(View.VISIBLE);
+                }
+                if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==GONE){
                     mContentSecondLayout.setVisibility(VISIBLE);
                 }
 
@@ -183,8 +187,10 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
                     e.printStackTrace();
                 }
             } else {
-                mContentSencond.setVisibility(View.GONE);
-                if (null!=mContentSecondLayout){
+                if (mContentSencond.getVisibility()==VISIBLE) {
+                    mContentSencond.setVisibility(View.GONE);
+                }
+                if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==VISIBLE){
                     mContentSecondLayout.setVisibility(GONE);
                 }
             }
@@ -192,7 +198,9 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
             //location
             sAnnotation=mStatus.annotations;
             if (null==sAnnotation||sAnnotation.place==null) {
-                mLoctationlayout.setVisibility(GONE);
+                if (mLoctationlayout.getVisibility()==VISIBLE) {
+                    mLoctationlayout.setVisibility(GONE);
+                }
             } else {
                 if (mLoctationlayout.getVisibility()==GONE) {
                     mLoctationlayout.setVisibility(VISIBLE);

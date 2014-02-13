@@ -49,6 +49,9 @@ import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
 import com.me.microblog.view.ImageViewerDialog;
 import cn.archko.microblog.view.TagsViewGroup;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -142,8 +145,13 @@ public class StatusDetailFragment extends AbstractBaseFragment {
      * 是否显示大图片
      */
     protected boolean showBitmap=true;
+    /**
+     * 是否在列表中显示大的位图，只有在下面的显示列表图片时，才有效。
+     */
+    protected boolean showLargeBitmap=false;
     //RelativeLayout mTitleBar;
     LinearLayout mViewComment;
+    protected DisplayImageOptions options;
 
     //TODO 需要更新主页的存储数据。
     private void refreshStatus() {
@@ -379,8 +387,20 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         }
         mStatus=(Status) status;
         showBitmap=mPrefs.getBoolean(PrefsActivity.PREF_COMMENT_STATUS_BM, true);
+        showLargeBitmap="1".equals(mPrefs.getString(PrefsActivity.PREF_RESOLUTION, getString(R.string.default_resolution)));
 
         mCacheDir=((App) App.getAppContext()).mCacheDir;
+
+        options = new DisplayImageOptions.Builder()
+            /*.showImageOnLoading(R.drawable.ic_stub)
+            .showImageForEmptyUri(R.drawable.ic_empty)
+            .showImageOnFail(R.drawable.ic_error)*/
+            .cacheInMemory(true)
+            .cacheOnDisc(true)
+            .considerExifParams(true)
+            .bitmapConfig(Bitmap.Config.RGB_565)
+            .displayer(new FadeInBitmapDisplayer(300))
+            .build();
     }
 
     View.OnClickListener clickListener=new View.OnClickListener() {
@@ -580,7 +600,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         WeiboLog.v(TAG, "imgUrl:"+imgUrl);
         if (!TextUtils.isEmpty(imgUrl)) {
             portraitUrl=imgUrl;
-            new Thread(portraitRunnable).start();
+            //new Thread(portraitRunnable).start();
+            ImageLoader imageLoader=ImageLoader.getInstance();
+            imageLoader.displayImage(portraitUrl, mPortrait, options);
         }
 
         Status retweetStatus=mStatus.retweetedStatus;
@@ -1091,7 +1113,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         }
         mAdapter.setUpdateFlag(updateFlag);
         mAdapter.setCache(cache);
-        mAdapter.setShowLargeBitmap(false);
+        mAdapter.setShowLargeBitmap(showLargeBitmap);
         mAdapter.setImageUrls(thumbs);
         mAdapter.notifyDataSetChanged();
 

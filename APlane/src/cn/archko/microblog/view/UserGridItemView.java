@@ -21,6 +21,10 @@ import com.me.microblog.core.sina.SinaUserApi;
 import com.me.microblog.oauth.Oauth2;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 /**
  * 修改后继承ThreadBeanItemView,多了一个Touch,左边的头像点击后的处理.
@@ -43,6 +47,7 @@ public class UserGridItemView extends LinearLayout {
 
     public static final int TYPE_PORTRAIT=1;
     private int followingType=-1;   //0表示未关注,1表示已关注,-1表示未知
+    protected DisplayImageOptions options;
 
     public UserGridItemView(Context context, AbsListView view, String cacheDir, User user, boolean updateFlag) {
         super(context);
@@ -58,6 +63,16 @@ public class UserGridItemView extends LinearLayout {
         mCacheDir=cacheDir;
 
         //update(status, updateFlag);
+        options = new DisplayImageOptions.Builder()
+            /*.showImageOnLoading(R.drawable.ic_stub)
+            .showImageForEmptyUri(R.drawable.ic_empty)
+            .showImageOnFail(R.drawable.ic_error)*/
+            .cacheInMemory(true)
+            .cacheOnDisc(true)
+            .considerExifParams(true)
+            .bitmapConfig(Bitmap.Config.RGB_565)
+            .displayer(new FadeInBitmapDisplayer(300))
+            .build();
     }
 
     private void doFollow() {
@@ -189,8 +204,10 @@ public class UserGridItemView extends LinearLayout {
             mPortrait.setImageResource(R.drawable.user_default_photo);
             if (updateFlag) {
                 //DownloadPool.downloading.put(portraitUrl, new WeakReference<View>(parent));
-                ((App) App.getAppContext()).mDownloadPool.Push(
-                    mHandler, portraitUrl, TYPE_PORTRAIT, cache, mCacheDir+Constants.ICON_DIR, mPortrait);
+                /*((App) App.getAppContext()).mDownloadPool.Push(
+                    mHandler, portraitUrl, TYPE_PORTRAIT, cache, mCacheDir+Constants.ICON_DIR, mPortrait);*/
+                ImageLoader imageLoader = ImageLoader.getInstance();
+                imageLoader.displayImage(portraitUrl, mPortrait, options);
 
             }
         }
