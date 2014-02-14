@@ -36,7 +36,7 @@
             android:layout_marginTop="8dp"
             style="?android:attr/progressBarStyleHorizontal"
             akapp:progress_txt_color="@color/btn_selected_state" akapp:progress_txt_size="20sp"
-            android:layout_width="fill_parent" android:layout_height="wrap_content"/>-->
+            android:layout_width="match_parent" android:layout_height="wrap_content"/>-->
 
         <!--<ProgressBar android:id="@+id/progress_bar"
             android:layout_width="160dip" android:layout_height="wrap_content"

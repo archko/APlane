@@ -2,15 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ContentDescription" android:id="@+id/root"
-    android:orientation="vertical" android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <!-- content -->
     <!--<RelativeLayout android:id="@+id/content"
         android:layout_weight="1"
-        android:layout_width="fill_parent" android:layout_height="0dp"
+        android:layout_width="match_parent" android:layout_height="0dp"
         android:layout_marginTop="0dip" android:layout_marginBottom="0dip">-->
     <cn.archko.microblog.view.AutoCompleteView android:id="@+id/status_content"
-        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
         android:gravity="top|left" android:singleLine="false"
         android:maxEms="10" android:minEms="10"
         android:lines="7"
@@ -22,16 +22,16 @@
 
     <!-- buttom button bar -->
     <LinearLayout android:layout_marginTop="-5dp"
-        android:orientation="vertical" android:layout_width="fill_parent"
+        android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout android:id="@+id/status_bar"
-            android:layout_width="fill_parent" android:layout_height="@dimen/bottom_action_bar_height2"
+            android:layout_width="match_parent" android:layout_height="@dimen/bottom_action_bar_height2"
             android:layout_marginTop="0dip">
 
             <TextView android:id="@+id/char_num"
                 android:layout_width="64dip"
-                android:layout_height="fill_parent" android:text="@string/text_count"
+                android:layout_height="match_parent" android:text="@string/text_count"
                 android:layout_alignParentRight="true" android:padding="2dip"
                 android:gravity="center" android:textColor="@color/red"/>
 
@@ -44,8 +44,8 @@
 
             <Button android:id="@+id/location" android:textSize="14sp"
                 android:visibility="gone" android:layout_toLeftOf="@id/char_num"
-                android:layout_width="fill_parent" android:background="@drawable/holo_selector"
-                android:layout_height="fill_parent" android:text=""/>
+                android:layout_width="match_parent" android:background="@drawable/holo_selector"
+                android:layout_height="match_parent" android:text=""/>
 
             <ImageView android:id="@+id/search_close_btn"
                 android:src="@drawable/ic_et_close" android:visibility="gone"
@@ -55,19 +55,19 @@
                 android:paddingTop="2dp" android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
                 android:layout_width="wrap_content" android:src="@drawable/location"
-                android:layout_height="fill_parent" android:background="@drawable/holo_selector"
+                android:layout_height="match_parent" android:background="@drawable/holo_selector"
                 android:layout_alignParentLeft="true"
                 style="?attr/bottomActionBarItem"/>
 
             <TextView android:id="@+id/tv_location"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="" android:gravity="center_vertical|left"
                 android:layout_toRightOf="@id/iv_location" android:layout_toLeftOf="@id/char_num"
                 style="?attr/bottomActionBarItem" android:textColor="@color/red"/>-->
         </RelativeLayout>
         <LinearLayout android:id="@+id/button_bar"
-            android:layout_width="fill_parent" android:layout_height="@dimen/bottom_action_bar_height2"
+            android:layout_width="match_parent" android:layout_height="@dimen/bottom_action_bar_height2"
             android:layout_gravity="bottom" android:layout_marginBottom="0dip">
 
             <Button android:id="@+id/btn_location" android:visibility="visible"
@@ -96,7 +96,7 @@
         </LinearLayout>
     </LinearLayout>
     <RelativeLayout
-        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
         android:layout_marginTop="0dip" android:layout_marginBottom="0dip">
         <ImageView android:id="@+id/iv_status_img"
             android:layout_width="56dip" android:layout_height="50dip"
@@ -111,7 +111,7 @@
 
         <LinearLayout android:id="@+id/image_opera_bar" android:layout_toRightOf="@id/status_img_close"
             android:layout_centerVertical="true" android:visibility="gone"
-            android:layout_width="fill_parent" android:layout_height="@dimen/bottom_action_bar_height2"
+            android:layout_width="match_parent" android:layout_height="@dimen/bottom_action_bar_height2"
             android:layout_gravity="bottom" android:layout_marginBottom="0dip">
 
             <Button android:id="@+id/edit_btn" android:visibility="visible"
@@ -135,7 +135,7 @@
     <!--<GridView android:id="@+id/faces" android:visibility="gone"
         android:background="@color/gridview_bg" android:drawSelectorOnTop="true"
         android:fadingEdgeLength="0.0dip" android:columnWidth="40dp"
-        android:layout_width="fill_parent" android:layout_height="fill_parent"
+        android:layout_width="match_parent" android:layout_height="match_parent"
         android:listSelector="@color/transparent" android:paddingLeft="6dp" android:paddingRight="6dp"
         android:verticalSpacing="6dp" android:horizontalSpacing="4dp"
         android:cacheColorHint="@null" android:stretchMode="columnWidth" android:numColumns="auto_fit"/>-->

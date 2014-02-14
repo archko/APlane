@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:layout_height="wrap_content">
+    android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
@@ -16,7 +16,7 @@
         <ImageButton
             android:id="@+id/menu_back"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/holo_selector"
             android:padding="10dp"
@@ -26,7 +26,7 @@
         <ImageButton
             android:id="@+id/menu_forward"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/holo_selector"
             android:padding="10dp"
@@ -36,7 +36,7 @@
         <ImageButton
             android:id="@+id/menu_refresh"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/holo_selector"
             android:padding="10dp"
@@ -46,7 +46,7 @@
         <ImageButton
             android:id="@+id/menu_stop"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/holo_selector"
             android:padding="10dp"
@@ -56,7 +56,7 @@
         <ImageButton android:id="@+id/menu_edit"
             android:visibility="visible"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/holo_selector"
             android:padding="10dp"

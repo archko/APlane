@@ -6,11 +6,11 @@
     android:orientation="vertical"
     android:layout_marginLeft="8dip" android:layout_marginRight="8dp"
     android:layout_marginBottom="6dp" android:layout_marginTop="2dp"
-    android:layout_width="fill_parent" android:layout_height="wrap_content">
+    android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <RelativeLayout android:id="@+id/content"
         android:layout_marginTop="4dp" android:layout_marginBottom="4dp"
-        android:layout_width="fill_parent" android:layout_height="wrap_content">
+        android:layout_width="match_parent" android:layout_height="wrap_content">
 
         <com.makeramen.RoundedImageView android:id="@+id/iv_portrait"
             android:layout_alignParentRight="true"
@@ -38,7 +38,7 @@
             android:textSize="16sp" android:textColor="@color/holo_light_item_status"/>
 
         <LinearLayout android:id="@+id/tv_content_sencond_layout"
-            android:layout_width="fill_parent" android:layout_marginTop="4dp"
+            android:layout_width="match_parent" android:layout_marginTop="4dp"
             android:layout_height="wrap_content" android:visibility="gone"
             android:layout_below="@id/tv_content_first"
             android:layout_alignParentLeft="true">
@@ -48,7 +48,7 @@
                 android:layout_width="4dp" android:layout_height="match_parent"/>
             <TextView android:id="@+id/tv_content_sencond"
                 android:visibility="visible"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:text="@string/test"
                 android:textSize="16sp" android:clickable="false"
                 android:textColor="@color/holo_light_item_ret_status" android:bufferType="spannable"
@@ -62,7 +62,7 @@
     <RelativeLayout
         android:layout_below="@id/content"
         android:layout_marginTop="4dp" android:layout_marginBottom="4dp"
-        android:layout_height="wrap_content" android:layout_width="fill_parent">
+        android:layout_height="wrap_content" android:layout_width="match_parent">
 
         <TextView android:id="@+id/source_from"
             android:layout_width="wrap_content" android:layout_height="wrap_content"

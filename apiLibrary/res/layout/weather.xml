@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="fill_parent" android:layout_height="wrap_content">
+    android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <RelativeLayout android:layout_weight="1" android:layout_marginLeft="6dip"
-        android:layout_width="fill_parent" android:layout_height="0dip">
+        android:layout_width="match_parent" android:layout_height="0dip">
         <LinearLayout android:id="@+id/edit"
-            android:layout_width="fill_parent" android:layout_height="wrap_content">
+            android:layout_width="match_parent" android:layout_height="wrap_content">
             <EditText android:id="@+id/location_edit" android:textSize="18sp"
                 android:layout_width="170dip" android:layout_height="wrap_content"
                 android:layout_marginLeft="6dip" android:textColor="@color/yellow"
@@ -32,7 +32,7 @@
         <RelativeLayout android:layout_toRightOf="@id/current_icon"
             android:layout_below="@id/location"
             android:orientation="vertical" android:layout_marginLeft="6dip"
-            android:layout_width="fill_parent" android:layout_height="wrap_content">
+            android:layout_width="match_parent" android:layout_height="wrap_content">
             <TextView android:id="@+id/current_temp_label" android:textSize="18sp"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_marginLeft="6dip" android:textColor="@color/yellow"
@@ -66,13 +66,13 @@
         </RelativeLayout>
     </RelativeLayout>
     <LinearLayout android:orientation="vertical"
-        android:layout_width="fill_parent" android:layout_height="fill_parent">
+        android:layout_width="match_parent" android:layout_height="match_parent">
         <LinearLayout android:baselineAligned="false"
              android:layout_weight="1" android:layout_marginTop="18sp"
-            android:layout_width="fill_parent" android:layout_height="fill_parent">
+            android:layout_width="match_parent" android:layout_height="match_parent">
             <LinearLayout android:layout_weight="1" android:layout_gravity="center"
                 android:layout_marginLeft="6dip" android:orientation="vertical"
-                android:layout_width="fill_parent" android:layout_height="wrap_content">
+                android:layout_width="match_parent" android:layout_height="wrap_content">
 
                 <TextView android:id="@+id/first" android:textSize="18sp"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
 
             <LinearLayout android:layout_weight="1" android:layout_gravity="center"
                 android:layout_marginLeft="6dip" android:orientation="vertical"
-                android:layout_width="fill_parent" android:layout_height="wrap_content">
+                android:layout_width="match_parent" android:layout_height="wrap_content">
 
                 <TextView android:id="@+id/second" android:textSize="18sp"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -114,10 +114,10 @@
         </LinearLayout>
         <LinearLayout android:baselineAligned="false"
              android:layout_weight="1" android:layout_marginTop="18sp"
-            android:layout_width="fill_parent" android:layout_height="fill_parent">
+            android:layout_width="match_parent" android:layout_height="match_parent">
             <LinearLayout android:layout_weight="1" android:layout_gravity="center"
                 android:layout_marginLeft="6dip" android:orientation="vertical"
-                android:layout_width="fill_parent" android:layout_height="wrap_content">
+                android:layout_width="match_parent" android:layout_height="wrap_content">
 
                 <TextView android:id="@+id/third" android:textSize="18sp"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
 
             <LinearLayout android:layout_weight="1" android:layout_gravity="center"
                 android:layout_marginLeft="6dip" android:orientation="vertical"
-                android:layout_width="fill_parent" android:layout_height="wrap_content">
+                android:layout_width="match_parent" android:layout_height="wrap_content">
 
                 <TextView android:id="@+id/fouth" android:textSize="18sp"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"

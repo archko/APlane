@@ -7,7 +7,7 @@
     
     <!-- Title -->
     <RelativeLayout 
-        android:layout_width="fill_parent" 
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         >
 
@@ -34,9 +34,9 @@
           android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
         />
     <!-- Content -->
-    <ScrollView android:layout_width="fill_parent" android:layout_height="0dp" android:layout_weight="1">
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
 	   <LinearLayout 
-	        android:layout_width="fill_parent" android:layout_height="wrap_content"
+	        android:layout_width="match_parent" android:layout_height="wrap_content"
 	        android:orientation="vertical" android:layout_margin="10dp">
 	
 	        <TextView android:id="@+id/umeng_update_content"
@@ -50,7 +50,7 @@
     </ScrollView>
 
     <!-- OK&Cancel Button -->
-    <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent">
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent">
         <Button android:id="@+id/umeng_update_id_ok"
             	android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" 
             	android:text="@string/UMUpdateNow" 

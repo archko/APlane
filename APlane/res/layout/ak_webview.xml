@@ -2,12 +2,12 @@
 <com.bulletnoid.android.widget.SwipeAwayLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/view_root"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:layout_height="wrap_content">
+    android:layout_width="match_parent" android:layout_height="wrap_content">
     <RelativeLayout android:visibility="gone" android:id="@+id/url_layout"
-        android:layout_width="fill_parent" android:layout_height="wrap_content">
+        android:layout_width="match_parent" android:layout_height="wrap_content">
         <ImageButton
             android:id="@+id/webview_forward"
             android:layout_width="wrap_content"
@@ -20,16 +20,16 @@
         <EditText android:id="@+id/url_et"
             android:singleLine="true"
             android:layout_toLeftOf="@id/webview_forward"
-            android:layout_width="fill_parent" android:layout_height="wrap_content"/>
+            android:layout_width="match_parent" android:layout_height="wrap_content"/>
     </RelativeLayout>
 
     <WebView android:id="@+id/webview" android:layout_below="@id/url_layout"
-        android:layout_width="fill_parent" android:layout_height="fill_parent"/>
+        android:layout_width="match_parent" android:layout_height="match_parent"/>
 
     <TextView android:id="@+id/empty_txt" android:layout_below="@id/url_layout"
         android:visibility="visible" android:text="@string/list_pre_empty_txt"
         android:gravity="center" android:textSize="14sp"
-        android:layout_width="fill_parent" android:layout_height="wrap_content"/>
+        android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
     <ProgressBar
         android:id="@+id/progress_bar"

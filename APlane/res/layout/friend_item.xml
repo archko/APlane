@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ContentDescription"
     android:id="@+id/content_rl"
-    android:layout_width="fill_parent" android:layout_height="wrap_content">
+    android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <RelativeLayout android:id="@+id/right"
         android:layout_alignParentRight="true"
@@ -47,7 +47,7 @@
 
     <LinearLayout android:layout_marginTop="4dp"
         android:layout_below="@id/status_content"
-        android:layout_height="wrap_content" android:layout_width="fill_parent">
+        android:layout_height="wrap_content" android:layout_width="match_parent">
 
         <TextView android:id="@+id/source_from"
             android:layout_width="wrap_content" android:layout_height="wrap_content"

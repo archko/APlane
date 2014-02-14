@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:orientation="vertical"
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:layout_width="match_parent" android:layout_height="match_parent"
 	android:id="@+id/umeng_fb_rootId" android:background="#EFEFEF">
 
-	<RelativeLayout android:layout_width="fill_parent"
+	<RelativeLayout android:layout_width="match_parent"
 		android:layout_height="50dip" android:background="@drawable/umeng_fb_bar_bg">
 
 	    <TextView
@@ -17,7 +17,7 @@
 		    android:textColor="#FFFFFF" />		
 		    
 		<TextView android:id="@+id/umeng_fb_conversation_title"
-			android:layout_width="fill_parent" android:textColor="#565656"
+			android:layout_width="match_parent" android:textColor="#565656"
 			android:layout_height="50dip" android:layout_gravity="center"
 			android:gravity="center" android:text="@string/UMFeedbackConversationTitle" android:textSize="22dip" />
 	    
@@ -29,7 +29,7 @@
 
 	</RelativeLayout>
 	<EditText android:id="@+id/umeng_fb_content"
-		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:layout_width="match_parent" android:layout_height="match_parent"
 		android:layout_marginLeft="9dip" android:layout_marginRight="9dip"
 		android:layout_marginTop="7dip" android:layout_marginBottom="2dip"
 		android:paddingLeft="9dip" android:paddingTop="10dip"
@@ -39,7 +39,7 @@
 <!-- 用户反馈定制化 “友盟反馈”还支持反馈信息的定制化，以便在反馈页面中收集额外信息。开发者可以在此添加需要收集的用户信息。
 
  	  <RelativeLayout android:orientation="vertical"
-        android:layout_width="fill_parent" android:layout_height="55dip"
+        android:layout_width="match_parent" android:layout_height="55dip"
         android:layout_marginTop="2dip">
         <EditText android:id="@+id/feedback_name"
             android:layout_width="100dip" android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
  -->    
 	
 	<RelativeLayout android:orientation="horizontal"
-		android:layout_width="fill_parent" android:layout_height="55dip"
+		android:layout_width="match_parent" android:layout_height="55dip"
 		android:layout_marginTop="2dip">
 		<Spinner android:id="@+id/umeng_fb_age_spinner"
 			android:layout_alignParentLeft="true" android:layout_width="wrap_content"

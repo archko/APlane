@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ContentDescription" android:id="@+id/root"
-    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="fill_parent" android:layout_height="wrap_content">
+        android:layout_width="match_parent" android:layout_height="wrap_content">
 
         <ImageView android:id="@+id/search_btn"
             android:src="@drawable/action_search_light"
@@ -15,12 +15,12 @@
             android:layout_width="wrap_content" android:layout_height="wrap_content"/>
 
         <EditText android:id="@+id/search_et" android:layout_toLeftOf="@id/search_btn"
-            android:layout_height="wrap_content" android:layout_width="fill_parent"/>
+            android:layout_height="wrap_content" android:layout_width="match_parent"/>
     </RelativeLayout>
 
     <RadioGroup android:layout_gravity="bottom"
         android:orientation="horizontal" android:id="@+id/search_group"
-        android:layout_width="fill_parent" android:layout_height="wrap_content">
+        android:layout_width="match_parent" android:layout_height="wrap_content">
 
         <RadioButton android:id="@+id/user_rb"
             android:text="@string/search_user" android:textColor="@color/holo_light_item_title"
@@ -28,7 +28,7 @@
             android:paddingBottom="2dip"
             android:gravity="center" android:checked="true"
             android:layout_weight="1"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <RadioButton android:id="@+id/status_rb"
@@ -37,15 +37,15 @@
             android:paddingBottom="2dip"
             android:gravity="center"
             android:layout_weight="1"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </RadioGroup>
 
     <FrameLayout android:id="@+id/fragment"
-        android:layout_width="fill_parent" android:layout_height="fill_parent">
+        android:layout_width="match_parent" android:layout_height="match_parent">
 
         <ListView android:id="@+id/statusList"
-            android:layout_width="fill_parent" android:layout_height="fill_parent"
+            android:layout_width="match_parent" android:layout_height="match_parent"
             android:cacheColorHint="@color/transparent" android:dividerHeight="0dp"
             android:listSelector="@drawable/list_selector_holo_light"/>
     </FrameLayout>

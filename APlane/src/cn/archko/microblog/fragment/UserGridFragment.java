@@ -30,6 +30,8 @@ import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 /**
  * @version 1.00.00  用户的网格，这个是超类，需要修改原来的ListView的行为。这里包含了所有的用户列表，
@@ -92,8 +94,9 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         mPullRefreshGridView=(PullToRefreshGridView) root.findViewById(R.id.pull_refresh_grid);
         mGridView=mPullRefreshGridView.getRefreshableView();
         mGridView.setDrawSelectorOnTop(false);
-        mGridView.setOnScrollListener(this);
-        mGridView.setSelector(R.color.transparent);
+        //mGridView.setOnScrollListener(this);
+        mGridView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
+        //mGridView.setSelector(R.color.transparent);
 
         /*SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(getActivity());
         String themeId=options.getString(PrefsActivity.PREF_THEME, "0");

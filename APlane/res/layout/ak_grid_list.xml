@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:layout_height="fill_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent">
     <com.handmark.pulltorefresh.library.PullToRefreshStaggeredGridView
         android:id="@+id/pull_refresh_grid"
         android:layout_width="match_parent"
@@ -10,7 +10,7 @@
     <!--<com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/statusList"
         android:listSelector="@drawable/abs__list_selector_holo_dark"
-        android:layout_width="fill_parent" android:layout_height="fill_parent"
+        android:layout_width="match_parent" android:layout_height="match_parent"
         android:cacheColorHint="@color/transparent" android:dividerHeight="0dp"
         android:drawSelectorOnTop="false" android:fastScrollEnabled="true"
         android:fadingEdge="none" android:smoothScrollbar="true"
@@ -21,7 +21,7 @@
         android:layout_marginRight="4dip"
         android:layout_alignRight="@id/pull_refresh_grid"
         android:layout_alignParentRight="true"
-        android:layout_width="wrap_content" android:layout_height="fill_parent">
+        android:layout_width="wrap_content" android:layout_height="match_parent">
 
         <ImageView android:id="@+id/up"
             android:src="@drawable/nav_up" android:layout_marginTop="32dip"
@@ -40,5 +40,5 @@
     <TextView android:id="@+id/empty_txt"
         android:visibility="gone" android:text="@string/list_pre_empty_txt"
         android:gravity="center" android:textSize="20sp"
-        android:layout_width="fill_parent" android:layout_height="fill_parent"/>
+        android:layout_width="match_parent" android:layout_height="match_parent"/>
 </RelativeLayout>

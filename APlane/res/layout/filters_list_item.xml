@@ -21,7 +21,7 @@
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/entiere_line"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:gravity="bottom" >
 
@@ -55,7 +55,7 @@
 
     <TextView
         android:id="@+id/line1"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="9dip"

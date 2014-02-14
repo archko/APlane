@@ -2,16 +2,16 @@
 <com.bulletnoid.android.widget.SwipeAwayLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/view_root"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:padding="0dip" android:id="@+id/root"
-    android:layout_width="fill_parent" android:layout_height="fill_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
     <include android:id="@+id/shadow" layout="@layout/top_shadow"/>
 
     <android.support.v4.view.LazyViewPager android:id="@+id/pager"
-        android:layout_width="fill_parent" android:layout_height="0dp"
+        android:layout_width="match_parent" android:layout_height="0dp"
         android:layout_weight="1"/>
 
     </LinearLayout>

@@ -6,7 +6,7 @@
     android:id="@+id/content_rl"  tools:ignore="ContentDescription"
     android:layout_marginLeft="8dip" android:layout_marginRight="8dp"
     android:layout_marginBottom="6dp" android:layout_marginTop="2dp"
-    android:layout_width="fill_parent" android:layout_height="wrap_content">
+    android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <include layout="@layout/home_time_line_item_title"/>
     <!--<RelativeLayout android:id="@+id/right"
@@ -50,7 +50,7 @@
     <!--<RelativeLayout
         android:layout_below="@id/right"
         android:layout_alignParentLeft="true" android:paddingLeft="4dp" android:paddingBottom="4dp"
-        android:layout_width="fill_parent" android:layout_height="wrap_content">
+        android:layout_width="match_parent" android:layout_height="wrap_content">
 
         <TextView android:id="@+id/tv_content_first"
             android:layout_alignParentLeft="true" android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
             style="@style/tags" android:layout_marginRight="16dp"/>
 
         <LinearLayout android:id="@+id/tv_content_sencond_layout"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tags"
             android:layout_alignParentLeft="true">
@@ -73,7 +73,7 @@
                 android:layout_marginLeft="6dp"
                 android:layout_width="4dp" android:layout_height="match_parent"/>
             <TextView android:id="@+id/tv_content_sencond"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:text="@string/test"
                 android:textSize="16sp" android:clickable="false"
                 android:textColor="@color/holo_light_item_ret_status" android:bufferType="spannable"
@@ -85,14 +85,14 @@
         <LinearLayout android:id="@+id/ret_layout" android:orientation="vertical"
             android:layout_marginTop="4dp" android:layout_marginBottom="2dp"
             android:layout_below="@id/tv_content_sencond_layout"
-            android:layout_height="wrap_content" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_width="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="6dip" android:layout_marginRight="6dip">
 
             <LinearLayout android:id="@+id/loctation_ll"
                 android:orientation="horizontal" android:visibility="gone"
                 android:paddingBottom="4dp" android:layout_gravity="center_vertical"
-                android:layout_height="wrap_content" android:layout_width="fill_parent">
+                android:layout_height="wrap_content" android:layout_width="match_parent">
 
                 <ImageView android:src="@drawable/location" android:layout_marginRight="4dp"
                     android:layout_width="20dp" android:layout_height="20dp"/>
@@ -106,7 +106,7 @@
             </LinearLayout>
 
             <RelativeLayout android:layout_marginTop="4dp"
-                android:layout_height="wrap_content" android:layout_width="fill_parent">
+                android:layout_height="wrap_content" android:layout_width="match_parent">
 
                 <TextView android:id="@+id/source_from"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:fillViewport="true"
-    android:layout_width="fill_parent" android:layout_height="fill_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
 <LinearLayout
-    android:orientation="vertical" android:layout_width="fill_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content" android:gravity="center_horizontal"
     >
 
     <TextView android:id="@+id/title"
-        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
         android:text="@string/app_name" android:padding="4dip"
         android:gravity="center" android:textSize="20sp"
         android:textColor="@color/yellow"/>
@@ -17,14 +17,14 @@
     <EditText android:id="@+id/email" android:hint="@string/login_user_hint"
         android:imeOptions="actionNext"
         android:inputType="textEmailAddress|text"
-        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
         android:text="@string/test_email" android:padding="4dip"
         android:layout_marginTop="8dip" android:textColor="@color/black"
         android:layout_marginLeft="20dip" android:layout_marginRight="20dip"
         android:windowSoftInputMode="stateHidden"/>
 
     <EditText android:id="@+id/pwd"
-        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
         android:inputType="textPassword" android:text=""
         android:padding="4dip" android:textColor="@color/black"
         android:layout_marginBottom="0dip" android:layout_marginTop="8dip"
@@ -33,7 +33,7 @@
 
     <RelativeLayout android:visibility="gone"
         android:id="@+id/track_list_context_frame"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip"
         android:layout_height="@dimen/login_quick_context_line_height"
@@ -41,7 +41,7 @@
         android:clickable="true" android:gravity="center_vertical">
 
         <TextView android:id="@+id/quick_context_line"
-            android:layout_width="fill_parent" android:text="test"
+            android:layout_width="match_parent" android:text="test"
             android:layout_height="@dimen/quick_context_line_height"
             android:layout_gravity="center_vertical"
             android:gravity="center_horizontal|center_vertical"
@@ -59,16 +59,16 @@
 
     </RelativeLayout>
 
-    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:layout_marginTop="8dip">
 
         <Button android:id="@+id/login2"
-            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="@string/login2" android:layout_weight="1"
             android:gravity="center" android:layout_marginLeft="20dip"/>
 
         <Button android:id="@+id/exit" android:layout_weight="1"
-            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="@string/exit" android:gravity="center"
             android:layout_marginRight="20dip"/>
     </LinearLayout>
@@ -78,28 +78,28 @@
         android:padding="4dip" android:textSize="12sp" android:textColor="@color/red"
         android:layout_marginLeft="20dp" android:layout_marginRight="20dp"
         android:layout_marginTop="8dp"
-        android:layout_width="fill_parent" android:layout_height="wrap_content"/>
+        android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
-    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:layout_marginTop="8dip">
 
         <Button android:id="@+id/btn" android:visibility="gone"
-            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="@string/login" android:layout_weight="1"
             android:gravity="center" android:layout_marginLeft="20dip"/>
 
         <Button android:id="@+id/login_show_webview_btn" android:visibility="visible"
-            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="@string/login_show_webview" android:layout_weight="1"
             android:gravity="center" android:layout_marginLeft="20dip"/>
 
         <Button android:id="@+id/regist_btn" android:layout_weight="1"
-            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="@string/regist" android:gravity="center"
             android:layout_marginRight="20dip"/>
     </LinearLayout>
 
-    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:layout_marginTop="8dip">
 
         <Button android:id="@+id/other_login_btn" android:layout_weight="1"
@@ -109,16 +109,16 @@
             android:layout_marginRight="20dip"/>
     </LinearLayout>
 
-    <!--<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+    <!--<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:layout_marginTop="8dip">
 
         <Button android:id="@+id/btn"
-            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="@string/login" android:layout_weight="1"
             style="?attr/holoButtonStyle" android:layout_marginLeft="20dip"/>
 
         <Button android:id="@+id/exit" android:layout_weight="1"
-            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="@string/exit" style="?attr/holoButtonStyle"
             android:layout_marginLeft="10dip" android:layout_marginRight="20dip"/>
     </LinearLayout>
@@ -127,18 +127,18 @@
         android:padding="4dip" android:textSize="14sp" android:textColor="@color/red"
         android:layout_marginLeft="20dp" android:layout_marginRight="20dp"
         android:layout_marginTop="8dp"
-        android:layout_width="fill_parent" android:layout_height="wrap_content"/>
+        android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
-    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:layout_marginTop="8dip">
 
         <Button android:id="@+id/login2"
-            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="@string/login2" android:layout_weight="1"
             style="?attr/holoButtonStyle" android:layout_marginLeft="20dip"/>
 
         <Button android:id="@+id/regist_btn" android:layout_weight="1"
-            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="@string/regist" style="?attr/holoButtonStyle"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="20dip"/>
@@ -152,7 +152,7 @@
     android:indeterminateDrawable="@drawable/progressbar"/>-->
     <TextView android:id="@+id/desc"
         android:layout_margin="8dp"
-        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
         android:text="@string/login_desc" android:padding="8dip"
         android:textSize="14sp" android:autoLink="all"/>
 
