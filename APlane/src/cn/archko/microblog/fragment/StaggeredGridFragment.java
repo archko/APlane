@@ -51,7 +51,7 @@ public abstract class StaggeredGridFragment extends AbsBaseListFragment<Status> 
         mPullRefreshListView=(PullToRefreshStaggeredGridView) root.findViewById(R.id.pull_refresh_grid);
         mPullRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
         mGridView=mPullRefreshListView.getRefreshableView();
-        mGridView.setSelector(R.drawable.abs__list_selector_holo_light);
+        mGridView.setSelector(R.drawable.list_selector_holo_light);
         mGridView.setColumnCount(1);
 
         up=(ImageView) root.findViewById(R.id.up);
