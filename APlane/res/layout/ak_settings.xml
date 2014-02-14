@@ -11,7 +11,7 @@
         <RelativeLayout android:id="@+id/menu_account_user_manager"
             android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/setting_margin_left" android:layout_marginRight="20dip"
-            android:background="@drawable/abs__list_selector_holo_light"
+            android:background="@drawable/list_selector_holo_light"
             android:minHeight="@dimen/setting_item_eight"
             android:clickable="true">
 
@@ -34,7 +34,7 @@
         <RelativeLayout android:id="@+id/menu_search"
             android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/setting_margin_left" android:layout_marginRight="20dip"
-            android:background="@drawable/abs__list_selector_holo_light"
+            android:background="@drawable/list_selector_holo_light"
             android:minHeight="@dimen/setting_item_eight"
             android:clickable="true">
 
@@ -57,7 +57,7 @@
         <RelativeLayout android:id="@+id/menu_home_user"
             android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/setting_margin_left" android:layout_marginRight="20dip"
-            android:background="@drawable/abs__list_selector_holo_light"
+            android:background="@drawable/list_selector_holo_light"
             android:minHeight="@dimen/setting_item_eight"
             android:clickable="true" android:visibility="gone">
 
@@ -80,7 +80,7 @@
         <RelativeLayout android:id="@+id/menu_at_author"
             android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/setting_margin_left" android:layout_marginRight="20dip"
-            android:background="@drawable/abs__list_selector_holo_light"
+            android:background="@drawable/list_selector_holo_light"
             android:minHeight="@dimen/setting_item_eight"
             android:clickable="true">
 
@@ -103,7 +103,7 @@
         <RelativeLayout android:id="@+id/menu_pref"
             android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/setting_margin_left" android:layout_marginRight="20dip"
-            android:background="@drawable/abs__list_selector_holo_light"
+            android:background="@drawable/list_selector_holo_light"
             android:minHeight="@dimen/setting_item_eight"
             android:clickable="true">
 
@@ -126,7 +126,7 @@
         <RelativeLayout android:id="@+id/menu_logout"
             android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/setting_margin_left" android:layout_marginRight="20dip"
-            android:background="@drawable/abs__list_selector_holo_light"
+            android:background="@drawable/list_selector_holo_light"
             android:minHeight="@dimen/setting_item_eight"
             android:clickable="true">
 
@@ -149,7 +149,7 @@
         <RelativeLayout android:id="@+id/menu_update"
             android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/setting_margin_left" android:layout_marginRight="20dip"
-            android:background="@drawable/abs__list_selector_holo_light"
+            android:background="@drawable/list_selector_holo_light"
             android:minHeight="@dimen/setting_item_eight"
             android:clickable="true" android:visibility="gone">
 
@@ -172,7 +172,7 @@
         <RelativeLayout android:id="@+id/menu_exit"
             android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/setting_margin_left" android:layout_marginRight="20dip"
-            android:background="@drawable/abs__list_selector_holo_light"
+            android:background="@drawable/list_selector_holo_light"
             android:minHeight="@dimen/setting_item_eight"
             android:clickable="true">
 

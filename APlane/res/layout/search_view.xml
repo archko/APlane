@@ -47,6 +47,6 @@
         <ListView android:id="@+id/statusList"
             android:layout_width="fill_parent" android:layout_height="fill_parent"
             android:cacheColorHint="@color/transparent" android:dividerHeight="0dp"
-            android:listSelector="@drawable/abs__list_selector_holo_light"/>
+            android:listSelector="@drawable/list_selector_holo_light"/>
     </FrameLayout>
 </LinearLayout>

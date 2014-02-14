@@ -5,7 +5,7 @@
         android:id="@+id/pull_refresh_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:listSelector="@drawable/abs__list_selector_holo_light"
+        android:listSelector="@drawable/list_selector_holo_light"
         android:fadingEdge="none"/>
     <!--<com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/statusList"

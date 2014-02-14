@@ -77,7 +77,7 @@ public class ImageViewerActivity extends Activity {
 
         if (mSelectedIdx!=0) {
             mViewPager.setCurrentItem(mSelectedIdx);
-        } else {
+        }/* else {*/
             mViewPager.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
@@ -91,7 +91,7 @@ public class ImageViewerActivity extends Activity {
                     return true;
                 }
             });
-        }
+        //}
     }
 
     @Override
