@@ -26,16 +26,10 @@
     <string name="pref_theme_and_font_title">主題與字體</string>
     <string name="pref_theme_and_font_title_sum">主题與字體的配置</string>
     <string name="pref_theme">主题</string>
-    <string-array name="themes">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <!--<item>3</item>-->
-    </string-array>
     <string-array name="themes_labels">
+        <item>白色</item>
         <item>黑色</item>
         <item>灰色(ActionBar)</item>
-        <item>白色</item>
         <!--<item>浅绿色</item>-->
     </string-array>
 

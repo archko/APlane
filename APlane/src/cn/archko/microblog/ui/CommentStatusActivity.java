@@ -279,9 +279,13 @@ public class CommentStatusActivity extends BaseOauthFragmentActivity {
 
         view_root.setOnSwipeAwayListener(new SwipeAwayLayout.OnSwipeAwayListener() {
             @Override
-            public void onSwipedAway() {
+            public void onSwipedAway(int mCloseOrientation) {
                 finish();
-                overridePendingTransition(0, R.anim.exit_left);
+                int animId=R.anim.exit_left;
+                if (mCloseOrientation==SwipeAwayLayout.RIGHT_ONLY) {
+                    animId=R.anim.exit_to_left;
+                }
+                overridePendingTransition(0, animId);
             }
         });
     }

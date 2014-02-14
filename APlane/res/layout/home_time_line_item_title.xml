@@ -40,7 +40,7 @@
         android:paddingTop="2dip" android:textColor="@color/holo_light_item_num"/>
 
     <TextView
-        android:id="@+id/send_time" android:visibility="gone"
+        android:id="@+id/txt_send_time" android:visibility="gone"
         android:layout_toLeftOf="@id/repost_num"
         android:layout_marginTop="24dp"
         android:textSize="12sp" android:layout_marginRight="12dp"

@@ -86,7 +86,7 @@ public class WeiboParser {
         Comment comment = new Comment();
         try {
             try {
-                Date date = parseDate(jsonobject.optString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
+                Date date = parseDate(jsonobject.optString("created_at"));
                 comment.createdAt = date;
             } catch (WeiboException e) {
                 e.printStackTrace();
@@ -260,14 +260,29 @@ public class WeiboParser {
     }
 
     public static Date parseDate(String s) throws WeiboException {
-        String format = "EEE MMM dd HH:mm:ss z yyyy";
-        return parseDate(s, format);
+        String format = "EEE MMM dd HH:mm:ss Z yyyy";
+        //return parseDate(s, format);
+        SimpleDateFormat simpledateformat;
+        simpledateformat = formatMap.get(format);
+        if (simpledateformat == null) {
+            simpledateformat = new SimpleDateFormat(format, new Locale("CHINA"));
+            /*TimeZone timeZone = TimeZone.getTimeZone("GMT");
+            simpledateformat.setTimeZone(timeZone);*/
+            formatMap.put(format, simpledateformat);
+        }
+        Date date = null;
+        try {
+            date = simpledateformat.parse(s);
+        } catch (java.text.ParseException ex) {
+            //throw new WeiboException("Unexcepted format (" + s + ")");
+        }
+        return date;
     }
 
     public static DirectMessage parseDirectMessage(JSONObject jsonobject) throws WeiboException {
         DirectMessage directmessage = new DirectMessage();
         try {
-            Date date = parseDate(jsonobject.optString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
+            Date date = parseDate(jsonobject.optString("created_at"));
             directmessage.createdAt = date;
             directmessage.id = jsonobject.optLong("id");
             directmessage.idstr = jsonobject.optString("idstr");
@@ -374,7 +389,7 @@ public class WeiboParser {
         ratelimitstatus.hourlyLimit=jsonobject.optInt("hourly_limit");
         ratelimitstatus.resetTimeInSeconds=jsonobject.optInt("reset_time_in_seconds");
         ratelimitstatus.remainingHits=jsonobject.optInt("remaining_hits");
-        Date date=parseDate(jsonobject.optString("reset_time"), "EEE MMM dd HH:mm:ss z yyyy");
+        Date date=parseDate(jsonobject.optString("reset_time"));
         ratelimitstatus.resetTime=date;
         return ratelimitstatus;
     }
@@ -423,7 +438,7 @@ public class WeiboParser {
             if(jsonobject.has("status")){   //对于精选微博数据是放在status里面的
                 jsonobject = jsonobject.optJSONObject("status");
             }
-            Date date = parseDate(jsonobject.optString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
+            Date date = parseDate(jsonobject.optString("created_at"));
             status.createdAt = date;
             status.id = jsonobject.optLong("id");
             status.text = jsonobject.optString("text");
@@ -1054,7 +1069,7 @@ public class WeiboParser {
             user.friendsCount = jsonobject.optInt("friends_count");
             user.statusesCount = jsonobject.optInt("statuses_count");
             user.favouritesCount = jsonobject.optInt("favourites_count");
-            user.createdAt = parseDate(jsonobject.optString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
+            user.createdAt = parseDate(jsonobject.optString("created_at"));
             user.following = parseBoolean("following", jsonobject);
             user.allowAllActMsg = parseBoolean("allow_all_act_msg", jsonobject);
             user.geoEnabled = parseBoolean("geo_enabled", jsonobject);
@@ -1080,7 +1095,7 @@ public class WeiboParser {
                 JSONObject jsonobject1 = jsonobject.optJSONObject("status");
                 Status status = new Status();
                 user.status = status;
-                status.createdAt = parseDate(jsonobject1.optString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
+                status.createdAt = parseDate(jsonobject1.optString("created_at"));
                 status.id = jsonobject1.optLong("id");
                 status.mid=jsonobject1.optString("mid");
                 status.text = jsonobject1.optString("text");

@@ -32,6 +32,10 @@ import com.me.microblog.util.WeiboLog;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * 闪屏，因为Fragment的问题也不去解决为什么ActionBar没有办法获取了， 所以只有能原来的FragmentTabActivity中
@@ -314,5 +318,37 @@ public class SplashActivity extends NavModeActivity {
                 }
             }
         });
+    }
+
+    public static final String SOURCE="Fri Feb 14 20:23:51 +0800 2014";
+
+    public static void test() {
+       /*  Fri Feb 14 20:23:51 GMT+08:00 2014
+         Fri Feb 14 20:23:51 +0800 2014
+         2014-02-14 20:23:51
+         2014年02月14日 20时23分51秒
+         自 1970 年 1 月 1 日 00:00:00 GMT 以来此 Date 对象经过的毫秒数为：1392380631000毫秒*/
+
+        SimpleDateFormat sdf=new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", new Locale("CHINA"));
+
+        Date myDate=null;
+        try {
+            myDate=sdf.parse(SOURCE);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        System.out.println(myDate);
+
+        sdf.applyPattern("EEE MMM dd HH:mm:ss Z yyyy");
+        System.out.println(sdf.format(myDate));
+
+        SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", new Locale("CHINESE", "CHINA"));
+        System.out.println(sdf2.format(myDate));
+
+        sdf2.applyPattern("yyyy年MM月dd日 HH时mm分ss秒");
+        System.out.println(sdf2.format(myDate));
+
+        long miliSeconds=myDate.getTime();
+        System.out.println("自 1970 年 1 月 1 日 00:00:00 GMT 以来此 Date 对象经过的毫秒数为："+miliSeconds+"毫秒");
     }
 }

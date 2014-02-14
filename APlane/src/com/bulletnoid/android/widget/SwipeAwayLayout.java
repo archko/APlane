@@ -33,6 +33,7 @@ public class SwipeAwayLayout extends RelativeLayout {
 
     private boolean mAllowImtercept = true;
     private boolean mIsClose = false;
+    private int mCloseOrientation=LEFT_ONLY;
 
     protected static final int MAX_MENU_OVERLAY_ALPHA = 235;
     private static final int MAX_SETTLE_DURATION = 600; // ms
@@ -132,7 +133,7 @@ public class SwipeAwayLayout extends RelativeLayout {
     };
 
     public interface OnSwipeAwayListener {
-        public void onSwipedAway();
+        public void onSwipedAway(int mCloseOrientation);
     }
 
     public void setOnSwipeAwayListener(OnSwipeAwayListener listener) {
@@ -400,10 +401,12 @@ public class SwipeAwayLayout extends RelativeLayout {
                         if (totalDelta >= widthWithMargin / 2) {
                             destX = -widthWithMargin;
                             mIsClose = true;
+                            mCloseOrientation=RIGHT_ONLY;
                         } else if (totalDelta >= widthWithMargin / 4) {
                             if (initialVelocity >= 1000) {
                                 destX = -widthWithMargin;
                                 mIsClose = true;
+                                mCloseOrientation=RIGHT_ONLY;
                             }
                         } else {
                             destX = 0;
@@ -413,10 +416,12 @@ public class SwipeAwayLayout extends RelativeLayout {
                         if (totalDelta <= -widthWithMargin / 2) {
                             destX = widthWithMargin;
                             mIsClose = true;
+                            mCloseOrientation=LEFT_ONLY;
                         } else if (totalDelta <= -widthWithMargin / 4) {
                             if (initialVelocity >= 1000) {
                                 destX = widthWithMargin;
                                 mIsClose = true;
+                                mCloseOrientation=LEFT_ONLY;
                             }
                         } else {
                             destX = 0;
@@ -427,10 +432,20 @@ public class SwipeAwayLayout extends RelativeLayout {
                         if (totalAbs >= widthWithMargin / 2) {
                             destX = -widthWithMargin * totalAbs / totalDelta;
                             mIsClose = true;
+                            if (totalDelta>0) {
+                                mCloseOrientation=LEFT_ONLY;
+                            } else {
+                                mCloseOrientation=RIGHT_ONLY;
+                            }
                         } else if (totalAbs >= widthWithMargin / 4) {
                             if (initialVelocity >= 1000) {
                                 destX = -widthWithMargin * totalAbs / totalDelta;
                                 mIsClose = true;
+                                if (totalDelta>0) {
+                                    mCloseOrientation=LEFT_ONLY;
+                                } else {
+                                    mCloseOrientation=RIGHT_ONLY;
+                                }
                             }
                         } else {
                             destX = 0;
@@ -601,7 +616,7 @@ public class SwipeAwayLayout extends RelativeLayout {
         }
 
         if (mIsClose&&mSwipeAwayListener!=null) {
-            mSwipeAwayListener.onSwipedAway();
+            mSwipeAwayListener.onSwipedAway(mCloseOrientation);
         }
 
         // Done with scroll, clean up state.

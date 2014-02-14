@@ -38,6 +38,7 @@ public class DateUtils {
             SimpleDateFormat sdf=new SimpleDateFormat(SHORT_DATE_STRING);
             return sdf.format(date);
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return "";
     }

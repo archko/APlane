@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.AK" parent="android:Theme.Holo">
+    <style name="Theme.AK" parent="@android:style/Theme.Holo">
         <!--<item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>-->
     </style>
 
-    <style name="Theme.AK.Light" parent="android:Theme.Holo.Light">
-        <item name="android:windowNoTitle">false</item>
-        <item name="android:windowActionBar">true</item>
+    <style name="Theme.AK.Light" parent="@android:style/Theme.Holo.Light">
+        <!--<item name="android:windowNoTitle">false</item>
+        <item name="android:windowActionBar">true</item>-->
 
         <!--<item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>-->
     </style>
@@ -25,5 +25,9 @@
     <style name="Theme.AK.Light.NoActionBar" parent="android:Theme.Holo.Light.NoActionBar">
         <!--<item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>-->
+    </style>
+
+    <style name="Theme.AK.Light.OverlayActionBar" parent="Theme.AK.Light">
+        <!--<item name="android:windowActionBarOverlay">true</item>--><!--只有在Holo主题 有效-->
     </style>
 </resources>

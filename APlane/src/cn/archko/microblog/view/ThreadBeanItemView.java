@@ -149,7 +149,7 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
                 if (mContentSencond.getVisibility()==VISIBLE) {
                     mContentSencond.setVisibility(GONE);
                 }
-                if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==VISIBLE){
+                if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==VISIBLE) {
                     mContentSecondLayout.setVisibility(GONE);
                 }
                 return;
@@ -164,7 +164,11 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
                 mSourceFrom.setText(mContext.getString(R.string.text_come_from, cfString));
             }
 
-            mCreateAt.setText(DateUtils.getDateString(mStatus.createdAt));
+            if (null!=mStatus.createdAt) {
+                mCreateAt.setText(DateUtils.getDateString(mStatus.createdAt));
+            } else {
+                mCreateAt.setText(null);
+            }
 
             mRepostNum.setText(getResources().getString(R.string.text_repost_num, mStatus.r_num));
             mCommentNum.setText(getResources().getString(R.string.text_comment_num, mStatus.c_num));
@@ -174,7 +178,7 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
                 if (mContentSencond.getVisibility()==GONE) {
                     mContentSencond.setVisibility(View.VISIBLE);
                 }
-                if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==GONE){
+                if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==GONE) {
                     mContentSecondLayout.setVisibility(VISIBLE);
                 }
 
@@ -190,7 +194,7 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
                 if (mContentSencond.getVisibility()==VISIBLE) {
                     mContentSencond.setVisibility(View.GONE);
                 }
-                if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==VISIBLE){
+                if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==VISIBLE) {
                     mContentSecondLayout.setVisibility(GONE);
                 }
             }

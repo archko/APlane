@@ -477,7 +477,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         mName=(TextView) view.findViewById(R.id.tv_name);
         mRepostNum=(TextView) view.findViewById(R.id.repost_num);
         mCommentNum=(TextView) view.findViewById(R.id.comment_num);
-        mCreateAt=(TextView) view.findViewById(R.id.send_time);
+        mCreateAt=(TextView) view.findViewById(R.id.txt_send_time);
         mCreateAt.setVisibility(View.VISIBLE);
         mSourceFrom=(TextView) view.findViewById(R.id.source_from);
         mPortrait=(ImageView) view.findViewById(R.id.iv_portrait);
