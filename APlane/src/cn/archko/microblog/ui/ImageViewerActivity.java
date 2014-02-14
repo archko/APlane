@@ -75,9 +75,9 @@ public class ImageViewerActivity extends Activity {
         //mViewPager.setCurrentItem(mSelectedIdx);
         mViewPager.setOnPageChangeListener(mPagerAdapter);
 
-        if (mSelectedIdx!=0) {
+        /*if (mSelectedIdx!=0) {
             mViewPager.setCurrentItem(mSelectedIdx);
-        }/* else {*/
+        } else {*/
             mViewPager.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
