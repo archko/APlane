@@ -1,54 +1,73 @@
 package cn.archko.microblog.ui;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
-import cn.archko.microblog.R;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import cn.archko.microblog.fragment.HomeGridFragment;
 import cn.archko.microblog.fragment.TestHomeFragment;
+import cn.archko.microblog.fragment.place.PlaceNearbyPhotosGridFragment;
+
+import java.util.ArrayList;
 
 /**
  * @author: archko Date: 13-1-28 Time: 下午8:07
  * @description:
  */
-public class TestApiActivity extends EmptyFragmentActivity {
+public class TestApiActivity extends ListActivity {
+
+    ListView mListView;
+    ArrayAdapter<ApiBean> mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mListView=getListView();
 
-        try {
-            TextView txt=new TextView(TestApiActivity.this);
-            setContentView(txt);
-            txt.setTextSize(30f);
-            txt.setTextColor(getResources().getColor(R.color.DeepSkyBlue));
-            String action=getIntent().getStringExtra("action");
-            Log.d("", "action:"+action);
-            txt.setText(action);
-        } catch (Exception e) {
-        }
+        ArrayList<ApiBean> beans=new ArrayList<ApiBean>();
+        addApi(HomeGridFragment.class, beans);
+        addApi(TestHomeFragment.class, beans);
+        addApi(PlaceNearbyPhotosGridFragment.class, beans);
+
+        mAdapter=new ArrayAdapter<ApiBean>(this, android.R.layout.simple_list_item_1, android.R.id.text1, beans);
+        mListView.setAdapter(mAdapter);
+
     }
 
-    public void initFragment() {
-        /*String title=intent.getStringExtra("title");
-        mActionBar.setTitle(title);
-        String className=intent.getStringExtra("fragment_class");
+    private void addApi(Class clazz, ArrayList<ApiBean> beans) {
+        ApiBean bean=new ApiBean(clazz);
+        beans.add(bean);
+    }
 
-        try {
-            WeiboLog.d("start a fragment:"+title+" fragment Class:"+className);
-            Fragment newFragment=Fragment.instantiate(this, className);
-            FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
-            ft.add(android.R.id.content, newFragment).commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-        try {
-            Fragment newFragment=Fragment.instantiate(this, TestHomeFragment.class.getName());
-            FragmentTransaction ft=getFragmentManager().beginTransaction();
-            ft.add(android.R.id.content, newFragment).commit();
-        } catch (Exception e) {
-            e.printStackTrace();
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        ApiBean bean=mAdapter.getItem(position);
+        initFragment(bean);
+    }
+
+    public void initFragment(ApiBean bean) {
+        Intent loginIntent=new Intent(this, EmptyFragmentActivity.class);
+        loginIntent.putExtra("title", bean.className);
+        loginIntent.putExtra("fragment_class", bean.aClass.getName());
+        loginIntent.putExtra("mode", "1");
+        startActivity(loginIntent);
+    }
+
+    static class ApiBean {
+
+        public String className;
+        public Class aClass;
+
+        ApiBean(Class aClass) {
+            this.aClass=aClass;
+            this.className=aClass.getSimpleName();
+        }
+
+        @Override
+        public String toString() {
+            return className;
         }
     }
 }
