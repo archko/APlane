@@ -14,13 +14,11 @@
         android:layout_width="@dimen/gridview_image_width"
         android:layout_height="@dimen/gridview_image_height"
         android:scaleType="fitXY" android:padding="@dimen/gridview_item_ccontainer_padding_left"/>-->
-    <com.makeramen.RoundedImageView android:id="@+id/iv_portrait"
-        makeramen:corner_radius="0dip"
-        makeramen:border_width="2dip"
+    <ImageView android:id="@+id/iv_portrait"
         android:layout_width="@dimen/gridview_image_width"
         android:layout_height="@dimen/gridview_image_height"
         android:src="@drawable/user_default_photo"
-        makeramen:border_color="@color/bg_profile_color"
+        android:background="@drawable/bg_profile"
         android:scaleType="center"
         android:focusable="false"/>
 

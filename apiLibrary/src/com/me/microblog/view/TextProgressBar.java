@@ -6,8 +6,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.widget.ProgressBar;
+import com.me.microblog.App;
 import com.me.microblog.R;
 
 /**
@@ -18,8 +21,11 @@ public class TextProgressBar extends ProgressBar {
 
     private String text;
     private Paint mPaint;
+    private Paint mProgressPaint;
+    float percent=0.01f;
 
     Rect rect=new Rect();
+    RectF oval;
 
     public TextProgressBar(Context context) {
         super(context);
@@ -50,6 +56,13 @@ public class TextProgressBar extends ProgressBar {
         int x=(getWidth()/2)-rect.centerX();
         int y=(getHeight()/2)-rect.centerY();
         canvas.drawText(this.text, x, y, this.mPaint);
+
+        int centre=getWidth()/2; //获取圆心的x坐标
+        int radius=(int) (centre-convertDpToPx(8)/2); //圆环的半径
+        if (null==oval) {
+            oval=new RectF(centre-radius, centre-radius, centre+radius, centre+radius);
+        }
+        canvas.drawArc(oval, 0, 360*percent, false, mProgressPaint); //根据进度画圆弧
     }
 
     // 初始化，画笔
@@ -57,22 +70,31 @@ public class TextProgressBar extends ProgressBar {
         this.mPaint=new Paint();
         this.mPaint.setAntiAlias(true);
         int color=Color.WHITE;
+        int indeterminateColor=Color.RED;
         int textSize=15;
         if (null!=attrs) {
             TypedArray a=context.obtainStyledAttributes(attrs, R.styleable.TextProgressBar);
             if (null!=a) {
                 color=a.getColor(R.styleable.TextProgressBar_progress_txt_color, Color.WHITE);
+                indeterminateColor=a.getColor(R.styleable.TextProgressBar_progress_txt_indeterminate_color, Color.RED);
                 textSize=a.getDimensionPixelSize(R.styleable.TextProgressBar_progress_txt_size, 15);
                 a.recycle();
             }
         }
         this.mPaint.setColor(color);
         this.mPaint.setTextSize(textSize);
+
+        mProgressPaint=new Paint();
+        mProgressPaint.setAntiAlias(true);
+        mProgressPaint.setStyle(Paint.Style.STROKE);
+        mProgressPaint.setStrokeWidth(convertDpToPx(8));
+        mProgressPaint.setColor(indeterminateColor);
     }
 
     // 设置文字内容
     private void setText(int progress) {
-        int i=(int) ((progress*1.0f/this.getMax())*100);
+        percent=(progress*1.0f/this.getMax());
+        int i=(int) (percent*100);
         this.text=String.valueOf(i)+"%";
     }
 
@@ -80,4 +102,10 @@ public class TextProgressBar extends ProgressBar {
         this.text=progress;
     }
 
+    public int convertDpToPx(int dp) {
+        return Math.round(
+            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                getResources().getDisplayMetrics())
+        );
+    }
 }

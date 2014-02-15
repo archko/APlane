@@ -96,7 +96,7 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         mGridView.setDrawSelectorOnTop(false);
         //mGridView.setOnScrollListener(this);
         mGridView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
-        //mGridView.setSelector(R.color.transparent);
+        mGridView.setSelector(R.color.transparent);
 
         /*SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(getActivity());
         String themeId=options.getString(PrefsActivity.PREF_THEME, "0");

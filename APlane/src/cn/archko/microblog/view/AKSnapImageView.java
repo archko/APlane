@@ -253,14 +253,26 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
      */
     private void loadImageView() {
         mImageDownloaded=false;
-        Bitmap bitmap=ImageLoader.getInstance().getMemoryCache().get(imageBean);//ImageCache2.getInstance().getBitmapFromMemCache(imageBean);
 
-        if (null!=bitmap) {
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        //Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(imageBean);
+        Bitmap bitmap=ImageLoader.getInstance().getMemoryCache().get(ImageLoader.getInstance().getKey(imageBean, imageView));
+
+        if (null==bitmap) {
+            bitmap=ImageLoader.getInstance().getMemoryCache().get(ImageLoader.getInstance().getKey(bmiddlePic, imageView));
+        }
+
+        if (null!=bitmap&&!bitmap.isRecycled()) {
+            int screenHeight=getHeight();
+            WeiboLog.v(TAG, "loadImageView:"+screenHeight+" bheight:"+bitmap.getHeight());
+            if (screenHeight<bitmap.getHeight()) {
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            } else {
+                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            }
             imageView.setImageBitmap(bitmap);
         }
 
-        WeiboLog.d(TAG, "loadImageView:"+loadPictureRunning+" bmid:"+bmiddlePic);
+        WeiboLog.d(TAG, "loadImageView:"+loadPictureRunning+" bmid:"+bmiddlePic+" bitmap:"+bitmap);
         if (!TextUtils.isEmpty(bmiddlePic)) {
             downloadImage();
         }
@@ -377,9 +389,14 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                     }
 
                     if (null!=bitmap) {
-                        WeiboLog.d(TAG, "width："+bitmap.getWidth()+" height:"+bitmap.getHeight());
+                        int screenHeight=getHeight();
+                        WeiboLog.v(TAG, "width："+bitmap.getWidth()+" height:"+bitmap.getHeight()+" screenHeight:"+screenHeight);
                         try {
-                            imageView.setScaleType(ImageView.ScaleType.CENTER);
+                            if (screenHeight<bitmap.getHeight()) {
+                                imageView.setScaleType(ImageView.ScaleType.CENTER);
+                            } else {
+                                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                            }
                             imageView.setImageBitmap(bitmap);
                         } catch (Exception e) {
                             e.printStackTrace();

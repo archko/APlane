@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import cn.archko.microblog.fragment.HomeGridFragment;
+import cn.archko.microblog.fragment.TestFragment;
 import cn.archko.microblog.fragment.TestHomeFragment;
 import cn.archko.microblog.fragment.place.PlaceNearbyPhotosGridFragment;
 
@@ -30,6 +31,7 @@ public class TestApiActivity extends ListActivity {
         addApi(HomeGridFragment.class, beans);
         addApi(TestHomeFragment.class, beans);
         addApi(PlaceNearbyPhotosGridFragment.class, beans);
+        addApi(TestFragment.class, beans);
 
         mAdapter=new ArrayAdapter<ApiBean>(this, android.R.layout.simple_list_item_1, android.R.id.text1, beans);
         mListView.setAdapter(mAdapter);

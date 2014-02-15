@@ -3,5 +3,6 @@
     <declare-styleable name="TextProgressBar">
         <attr name="progress_txt_color" format="reference|color"/>
         <attr name="progress_txt_size" format="reference|dimension"/>
+        <attr name="progress_txt_indeterminate_color" format="reference|dimension"/>
     </declare-styleable>
 </resources>

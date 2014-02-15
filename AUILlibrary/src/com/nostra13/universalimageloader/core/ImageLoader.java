@@ -110,6 +110,12 @@ public class ImageLoader {
 		return configuration != null;
 	}
 
+    public String getKey(String uri, ImageView imageView) {
+        ImageSize targetSize=ImageSizeUtils.defineTargetSizeForView(new ImageViewAware(imageView), configuration.getMaxImageSize());
+        String memoryCacheKey=MemoryCacheUtils.generateKey(uri, targetSize);
+        return memoryCacheKey;
+    }
+
 	/**
 	 * Adds display image task to execution pool. Image will be set to ImageAware when it's turn. <br/>
 	 * Default {@linkplain DisplayImageOptions display image options} from {@linkplain ImageLoaderConfiguration
