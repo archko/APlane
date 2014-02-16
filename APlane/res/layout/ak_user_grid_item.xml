@@ -20,7 +20,7 @@
         android:layout_height="@dimen/gridview_image_height"
         android:src="@drawable/user_default_photo"
         android:background="@drawable/bg_profile"
-        android:scaleType="center"
+        android:scaleType="fitCenter"
         android:focusable="false"/>
 
     <RelativeLayout

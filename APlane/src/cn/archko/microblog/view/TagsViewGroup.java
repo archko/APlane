@@ -305,7 +305,7 @@ public class TagsViewGroup extends ViewGroup {
 				children_width += tv.getMeasuredWidth();
                 if((i+1) < ccount) {
 					children_width += mHorizontalSpacing;
-			}
+			    }
                 measuredHeight=Math.max(measuredHeight, height);
             }
 			// Log.d(TAG, "-----------------------------------------");
@@ -341,6 +341,7 @@ public class TagsViewGroup extends ViewGroup {
                         allMeasureHeight+=lineMaxHeight+mVerticalSpacing;
                         mRowsHeight.put(row, lineMaxHeight);
                         ++row;
+                        lineMaxHeight=0;
                     }
                 }
                 lineCount++;
