@@ -38,7 +38,7 @@ public class TestFragment extends AbstractBaseFragment {
         Bundle savedInstanceState) {
         WeiboLog.d(TAG, "onCreateView:"+this);
 
-        View view=inflater.inflate(R.layout.ak_test_view, container, false);
+        View view=inflater.inflate(R.layout.imageviewer_progress_bar, container, false);
 
         return view;
     }

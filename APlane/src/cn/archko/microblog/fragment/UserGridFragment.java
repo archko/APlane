@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -89,7 +88,7 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
     }
 
     public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root= inflater.inflate(R.layout.user_grid, null);
+        View root= inflater.inflate(R.layout.ak_user_grid, null);
         mEmptyTxt=(TextView) root.findViewById(R.id.empty_txt);
         mPullRefreshGridView=(PullToRefreshGridView) root.findViewById(R.id.pull_refresh_grid);
         mGridView=mPullRefreshGridView.getRefreshableView();

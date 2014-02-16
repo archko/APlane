@@ -59,7 +59,7 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
      * @param bundle
      */
     protected void _onCreate(Bundle bundle) {
-        setContentView(R.layout.custom_tabs_pager);
+        setContentView(R.layout.ak_tabs_pager);
 
         final ActionBar bar=getActionBar();
         mActionBar=bar;

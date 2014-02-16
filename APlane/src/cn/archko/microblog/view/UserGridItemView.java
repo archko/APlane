@@ -19,12 +19,10 @@ import com.me.microblog.bean.User;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.sina.SinaUserApi;
 import com.me.microblog.oauth.Oauth2;
-import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 /**
  * 修改后继承ThreadBeanItemView,多了一个Touch,左边的头像点击后的处理.
@@ -51,7 +49,7 @@ public class UserGridItemView extends LinearLayout {
 
     public UserGridItemView(Context context, AbsListView view, String cacheDir, User user, boolean updateFlag) {
         super(context);
-        ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.gridview_items, this);
+        ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.ak_user_grid_item, this);
 
         mPortrait=(ImageView) findViewById(R.id.iv_portrait);
         mName=(TextView) findViewById(R.id.tv_name);

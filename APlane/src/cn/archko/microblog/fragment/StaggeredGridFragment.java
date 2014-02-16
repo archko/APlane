@@ -46,7 +46,7 @@ public abstract class StaggeredGridFragment extends AbsBaseListFragment<Status> 
     protected StaggeredGridView mGridView;
 
     public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root=(ViewGroup) inflater.inflate(R.layout.ak_grid_list, null);
+        ViewGroup root=(ViewGroup) inflater.inflate(R.layout.ak_staggered_grid_list, null);
         mEmptyTxt=(TextView) root.findViewById(R.id.empty_txt);
         mPullRefreshListView=(PullToRefreshStaggeredGridView) root.findViewById(R.id.pull_refresh_grid);
         mPullRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);

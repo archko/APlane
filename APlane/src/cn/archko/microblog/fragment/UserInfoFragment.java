@@ -26,7 +26,6 @@ import cn.archko.microblog.fragment.abs.AbsStatusAbstraction;
 import cn.archko.microblog.fragment.impl.SinaUserImpl;
 import cn.archko.microblog.ui.ImageViewerActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
-import cn.archko.microblog.ui.WebviewActivity;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.andrew.apollo.utils.ThemeUtils;
 import cn.archko.microblog.utils.WeiboOperation;
@@ -142,7 +141,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
     }
 
     View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ScrollView root=(ScrollView) inflater.inflate(R.layout.user_introduction, null);
+        ScrollView root=(ScrollView) inflater.inflate(R.layout.ak_user_profile, null);
 
         currentUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
 
@@ -214,7 +213,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
         TextView txt;
 
         String mark=mUser.remark;
-        container=mLayoutInflater.inflate(R.layout.user_profile_item, null);
+        container=mLayoutInflater.inflate(R.layout.ak_user_profile_item, null);
         mTrack.addView(container);
         txt=(TextView) container.findViewById(R.id.txt);
         info=(TextView) container.findViewById(R.id.info);
@@ -222,7 +221,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
         info.setText(mark);
 
         String gender=mUser.gender;
-        container=mLayoutInflater.inflate(R.layout.user_profile_item, null);
+        container=mLayoutInflater.inflate(R.layout.ak_user_profile_item, null);
         mTrack.addView(container);
         txt=(TextView) container.findViewById(R.id.txt);
         info=(TextView) container.findViewById(R.id.info);
@@ -239,7 +238,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
         info.setText(genderStr);
 
         String location=mUser.location;
-        container=mLayoutInflater.inflate(R.layout.user_profile_item, null);
+        container=mLayoutInflater.inflate(R.layout.ak_user_profile_item, null);
         mTrack.addView(container);
         txt=(TextView) container.findViewById(R.id.txt);
         info=(TextView) container.findViewById(R.id.info);
@@ -248,7 +247,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
         String url=mUser.url;
         if (!TextUtils.isEmpty(url)) {
-            container=mLayoutInflater.inflate(R.layout.user_profile_item, null);
+            container=mLayoutInflater.inflate(R.layout.ak_user_profile_item, null);
             mTrack.addView(container);
             txt=(TextView) container.findViewById(R.id.txt);
             info=(TextView) container.findViewById(R.id.info);
@@ -257,7 +256,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
         }
 
         String user_create_at=DateUtils.getFullDateString(mUser.createdAt);
-        container=mLayoutInflater.inflate(R.layout.user_profile_item, null);
+        container=mLayoutInflater.inflate(R.layout.ak_user_profile_item, null);
         mTrack.addView(container);
         txt=(TextView) container.findViewById(R.id.txt);
         info=(TextView) container.findViewById(R.id.info);

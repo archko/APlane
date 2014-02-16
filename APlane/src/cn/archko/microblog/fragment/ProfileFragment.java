@@ -36,7 +36,6 @@ import com.me.microblog.bean.User;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.factory.AbsApiFactory;
 import com.me.microblog.core.factory.ApiConfigFactory;
-import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
@@ -110,7 +109,7 @@ public class ProfileFragment extends AbsStatusAbstraction<User> {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
         WeiboLog.v(TAG, "onCreateView:"+this);
 
-        View view=inflater.inflate(R.layout.self_profile, container, false);
+        View view=inflater.inflate(R.layout.ak_self_profile, container, false);
         mPortrait=(ImageView) view.findViewById(R.id.iv_portrait);
         mName=(TextView) view.findViewById(R.id.tv_name);
         mEditBtn=(Button) view.findViewById(R.id.editBtn);

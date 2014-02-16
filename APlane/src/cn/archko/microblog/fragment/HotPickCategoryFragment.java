@@ -133,7 +133,7 @@ public class HotPickCategoryFragment extends BaseFragment {
             ViewHolder holder;
             if (convertView==null) {
                 convertView=((LayoutInflater) getActivity().getSystemService("layout_inflater")).
-                    inflate(R.layout.simple_list_item_1, null);
+                    inflate(android.R.layout.simple_list_item_1, null);
 
                 holder=new ViewHolder();
                 holder.text1=(TextView) convertView.findViewById(android.R.id.text1);
