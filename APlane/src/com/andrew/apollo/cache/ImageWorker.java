@@ -20,16 +20,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ImageView;
 
 import cn.archko.microblog.R;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
-import com.me.microblog.cache.ImageCache2;
-import com.me.microblog.thread.DownloadPiece;
-import com.me.microblog.thread.DownloadPool;
 
 import java.lang.ref.WeakReference;
 
@@ -49,7 +45,7 @@ public abstract class ImageWorker {
     /**
      * Default artwork
      */
-    private BitmapDrawable mDefaultArtwork;
+    private final BitmapDrawable mDefaultArtwork;
 
     /**
      * The resources to use
@@ -94,7 +90,7 @@ public abstract class ImageWorker {
         //mDefault = ((BitmapDrawable)theme.getDrawable("default_artwork")).getBitmap();
 
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        int mResId=R.drawable.image_loading_dark;
+        int mResId=R.drawable.image_loading_light;
         if ("2".equals(themeId)){
             mResId=R.drawable.image_loading_light;
         }
@@ -112,6 +108,17 @@ public abstract class ImageWorker {
         // XXX The second layer is set in the worker task.
     }
 
+    public Drawable getDrawable(final String resourceName) {
+        String mThemePackage="cn.archko.microblog";
+        final int resourceId=mResources.getIdentifier(resourceName, "drawable", mThemePackage);
+        try {
+            return mResources.getDrawable(resourceId);
+        } catch (final Resources.NotFoundException e) {
+            //$FALL-THROUGH$
+        }
+        return null;
+    }
+
     /**
      * Set the {@link ImageCache} object to use with this ImageWorker.
      * 
@@ -125,11 +132,10 @@ public abstract class ImageWorker {
      * @return True if the user is scrolling, false otherwise
      */
     public boolean isScrolling() {
-        /*if (mImageCache != null) {
+        if (mImageCache != null) {
             return mImageCache.isScrolling();
         }
-        return true;*/
-        return false;
+        return true;
     }
 
     /**
@@ -191,12 +197,17 @@ public abstract class ImageWorker {
          * The URL of an image to download
          */
         private String mUrl;
-        DownloadPiece mPiece;
 
-        public BitmapWorkerTask(final ImageView imageView, DownloadPiece piece) {
+        /**
+         * Constructor of <code>BitmapWorkerTask</code>
+         *
+         * @param imageView The {@link ImageView} to use.
+         * @param imageType The type of image URL to fetch for.
+         */
+        @SuppressWarnings("deprecation")
+        public BitmapWorkerTask(final ImageView imageView) {
             imageView.setBackgroundDrawable(mDefaultArtwork);
             mImageReference = new WeakReference<ImageView>(imageView);
-            mPiece=piece;
         }
 
         /**
@@ -206,6 +217,7 @@ public abstract class ImageWorker {
         protected TransitionDrawable doInBackground(final String... params) {
             // Define the key
             mKey = params[0];
+            mUrl=mKey;
 
             // The result
             Bitmap bitmap = null;
@@ -218,27 +230,27 @@ public abstract class ImageWorker {
             }
 
             // First, check the disk cache for the image
-            if (mKey != null && !isCancelled() //&& mImageCache != null
+            if (mKey != null && mImageCache != null && !isCancelled()
                     && getAttachedImageView() != null) {
-                bitmap=ImageCache2.getInstance().getBitmapFromMemCache(mKey);//mImageCache.getCachedBitmap(mKey);
+                bitmap = mImageCache.getCachedBitmap(mKey);
             }
+
+            // Define the album id now
+            // Second, if we're fetching artwork, check the device for the image
 
             // Third, by now we need to download the image
             if (bitmap == null && ApolloUtils.isOnline(mContext) && !isCancelled()
                     && getAttachedImageView() != null) {
                 // Now define what the artist name, album name, and url are.
-                /*mArtistName = params[1];
-                mUrl = processImageUrl(mArtistName, mAlbumName, mImageType);*/
-                mUrl=mKey;
+                //mUrl = processImageUrl();
                 if (mUrl != null) {
-                    bitmap = processBitmap(mUrl, mPiece);
+                    bitmap = processBitmap(mUrl);
                 }
             }
 
             // Fourth, add the new image to the cache
-            if (bitmap != null && mKey != null){// && mImageCache != null) {
-                //addBitmapToCache(mKey, bitmap);
-                ImageCache2.getInstance().addBitmapToMemCache(mKey, bitmap);
+            if (bitmap != null && mKey != null && mImageCache != null) {
+                addBitmapToCache(mKey, bitmap);
             }
 
             // Add the second layer to the transiation drawable
@@ -375,8 +387,7 @@ public abstract class ImageWorker {
      *            {@link Bitmap}.
      * @param imageType The type of image URL to fetch for.
      */
-    protected void loadImage(final String key, final String artistName, final String albumName,
-            final String albumId, final ImageView imageView) {
+    protected void loadImage(final String key, final ImageView imageView) {
         if (key == null || mImageCache == null || imageView == null) {
             return;
         }
@@ -387,71 +398,15 @@ public abstract class ImageWorker {
             imageView.setImageBitmap(lruBitmap);
         } else if (executePotentialWork(key, imageView) && imageView != null && !isScrolling()) {
             // Otherwise run the worker task
-            final BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(imageView, null);
-            final AsyncDrawable asyncDrawable=new AsyncDrawable(mResources, mDefault, bitmapWorkerTask);
+            final BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(imageView);
+            final AsyncDrawable asyncDrawable = new AsyncDrawable(mResources, mDefault,
+                    bitmapWorkerTask);
             imageView.setImageDrawable(asyncDrawable);
             // Don't execute the BitmapWorkerTask while scrolling
             if (isScrolling()) {
                 cancelWork(imageView);
-            } else {
-                ApolloUtils.execute(false, bitmapWorkerTask, key, artistName, albumName, albumId);
-            }
-        }
-    }
-
-    //======================== =========================
-    protected void loadImage(final String key, final ImageView imageView, DownloadPiece piece) {
-        if (key == null || imageView == null){// || mImageCache == null) {
-            Log.d("worker", "mImageCache == null");
-            return;
-        }
-        // First, check the memory for the image
-        final Bitmap lruBitmap = ImageCache2.getInstance().getBitmapFromMemCache(key);//mImageCache.getBitmapFromMemCache(key);
-        if (lruBitmap != null && imageView != null) {
-            // Bitmap found in memory cache
-            imageView.setImageBitmap(lruBitmap);
-        } else if (executePotentialWork(key, imageView) && imageView != null && !isScrolling()) {
-            // Otherwise run the worker task
-            final BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(imageView, piece);
-            final AsyncDrawable asyncDrawable=new AsyncDrawable(mResources, mDefault, bitmapWorkerTask);
-            /*AsyncDrawable asyncDrawable;
-            Drawable drawable=imageView.getDrawable();
-            if (null==drawable) {
-                asyncDrawable=new AsyncDrawable(mResources, mDefault, bitmapWorkerTask);
-            } else {
-                asyncDrawable=new AsyncDrawable(mResources, ((BitmapDrawable) drawable).getBitmap(), bitmapWorkerTask);
-            }*/
-            imageView.setImageDrawable(asyncDrawable);
-            // Don't execute the BitmapWorkerTask while scrolling
-            if (isScrolling()) {
-                cancelWork(imageView);
-                Log.d("worker", "cancelWork");
             } else {
                 ApolloUtils.execute(false, bitmapWorkerTask, key);
-            }
-        }
-    }
-
-    protected void loadImage(final String key, final ImageView imageView, DownloadPiece piece,
-        int maxWidth, int maxHeight) {
-        if (key==null||mImageCache==null||imageView==null) {
-            return;
-        }
-        // First, check the memory for the image
-        final Bitmap lruBitmap=mImageCache.getBitmapFromMemCache(key);
-        if (lruBitmap!=null&&imageView!=null) {
-            // Bitmap found in memory cache
-            imageView.setImageBitmap(lruBitmap);
-        } else if (executePotentialWork(key, imageView)&&imageView!=null&&!isScrolling()) {
-            // Otherwise run the worker task
-            final BitmapWorkerTask bitmapWorkerTask=new BitmapWorkerTask(imageView, piece);
-            final AsyncDrawable asyncDrawable=new AsyncDrawable(mResources, mDefault, bitmapWorkerTask);
-            imageView.setImageDrawable(asyncDrawable);
-            // Don't execute the BitmapWorkerTask while scrolling
-            if (isScrolling()) {
-                cancelWork(imageView);
-            } else {
-                ApolloUtils.execute(false, bitmapWorkerTask, key, String.valueOf(maxWidth), String.valueOf(maxHeight));
             }
         }
     }
@@ -465,6 +420,16 @@ public abstract class ImageWorker {
      *            {@link ImageWorker#loadImage(mKey, ImageView)}
      * @return The processed {@link Bitmap}.
      */
-    //protected abstract Bitmap processBitmap(String key);
-    protected abstract Bitmap processBitmap(String key, DownloadPiece piece);
+    protected abstract Bitmap processBitmap(String key);
+
+    /**
+     * Subclasses should override this to define any processing or work that
+     * must happen to produce the URL needed to fetch the final {@link Bitmap}.
+     *
+     * @param artistName The artist name param used in the Last.fm API.
+     * @param albumName The album name param used in the Last.fm API.
+     * @param imageType The type of image URL to fetch for.
+     * @return The image URL for an artist image or album image.
+     */
+    protected abstract String processImageUrl(String url);
 }

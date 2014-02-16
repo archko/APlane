@@ -14,32 +14,9 @@ package com.andrew.apollo.cache;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.andrew.apollo.utils.ApolloUtils;
-import com.me.microblog.WeiboUtil;
-import com.me.microblog.cache.ImageCache2;
-import com.me.microblog.cache.Md5Digest;
-import com.me.microblog.core.BaseApi;
-import com.me.microblog.core.ImageManager;
-import com.me.microblog.thread.DownloadPiece;
-import com.me.microblog.thread.DownloadPool;
-import com.me.microblog.util.WeiboLog;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.params.ClientPNames;
-import org.apache.http.client.params.CookiePolicy;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.util.EntityUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -49,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Iterator;
 
 /**
  * A subclass of {@link ImageWorker} that fetches images from a URL.
@@ -58,9 +34,9 @@ public class ImageFetcher extends ImageWorker {
 
     public static final int IO_BUFFER_SIZE_BYTES = 1024;
 
-    private static final int DEFAULT_MAX_IMAGE_HEIGHT = 1024;
+    private static final int DEFAULT_MAX_IMAGE_HEIGHT = 1920;
 
-    private static final int DEFAULT_MAX_IMAGE_WIDTH = 1024;
+    private static final int DEFAULT_MAX_IMAGE_WIDTH = 1080;
 
     private static final String DEFAULT_HTTP_CACHE_DIR = "http"; //$NON-NLS-1$
 
@@ -88,97 +64,52 @@ public class ImageFetcher extends ImageWorker {
         return sInstance;
     }
 
-    private HttpParams params;
-    ClientConnectionManager connectionManager;
-    public static final int READ_TIMEOUT=20000;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Bitmap processBitmap(final String url) {
+        if (url == null) {
+            return null;
+        }
+        if (url.startsWith("http:")) {
+            final File file = downloadBitmapToFile(mContext, url, DEFAULT_HTTP_CACHE_DIR);
+            if (file != null) {
+                // Return a sampled down version
+                final Bitmap bitmap = decodeSampledBitmapFromFile(file.toString());
+                file.delete();
+                if (bitmap != null) {
+                    return bitmap;
+                }
+            }
+        } else if (url.startsWith("file")||url.startsWith("/")){
+            final File file = new File(url);
+            if (file != null) {
+                // Return a sampled down version
+                final Bitmap bitmap = decodeSampledBitmapFromFile(file.toString());
+                if (bitmap != null) {
+                    return bitmap;
+                }
+            }
+        } else if (url.startsWith("drawable")) {
 
-    {
-        params=new BasicHttpParams();
-        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-        HttpProtocolParams.setContentCharset(params, "UTF-8");
-        HttpProtocolParams.setUseExpectContinue(params, true);
-
-        params.setParameter(ClientPNames.COOKIE_POLICY, CookiePolicy.BROWSER_COMPATIBILITY);
-        params.setBooleanParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
-        params.setIntParameter(ClientPNames.MAX_REDIRECTS, 100);
-
-        //  params.setLongParameter(ClientPNames.conCONNECTION_MANAGER_TIMEOUT, TIMEOUT);
-        //  HttpConnectionManagerParams.setMaxTotalConnections(params, 3000);
-
-        //  HttpConnectionParams.setSoTimeout(params, 60*1000);
-        //  HttpConnectionParams.setConnectionTimeout(params, 60*1000);
-        //  ConnManagerParams.setTimeout(params, 60*1000);
-
-        HttpConnectionParams.setConnectionTimeout(params, BaseApi.CONNECT_TIMEOUT);// Set the default socket timeout (SO_TIMEOUT) // in milliseconds which is the timeout for waiting for data.
-        HttpConnectionParams.setSoTimeout(params, READ_TIMEOUT);
+        }
+        return null;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Bitmap processBitmap(final String url, final DownloadPiece piece) {
-        if (piece == null) {
-            WeiboLog.w("piece == null");
-            return null;
-        }
-        /*final File file = downloadBitmapToFile(mContext, url, DEFAULT_HTTP_CACHE_DIR);
-        if (file != null) {
-            // Return a sampled down version
-            final Bitmap bitmap = decodeSampledBitmapFromFile(file.toString());
-            file.delete();
-            if (bitmap != null) {
-                return bitmap;
-            }
-        }
-        return null;*/
-        return downloadBitmap(url, piece);
-    }
-
-    private Bitmap downloadBitmap(final String url, final DownloadPiece piece) {
-        HttpGet httpGet=new HttpGet(piece.uri);
-        httpGet.setHeader("User-Agent", BaseApi.USERAGENT);
-        DefaultHttpClient httpClient=new DefaultHttpClient(connectionManager, params);
-        HttpResponse response;
-        Bitmap bitmap=null;
-        try {
-            String ext=WeiboUtil.getExt(piece.uri);
-            String name=Md5Digest.getInstance().getMd5(piece.uri)+ext;
-            String imagepath=piece.dir+name;
-
-            bitmap=ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(imagepath, -1);
-            WeiboLog.d("download:"+imagepath+" bitmap:"+bitmap);
-            if (null==bitmap) {
-                response=httpClient.execute(httpGet);
-                int code=response.getStatusLine().getStatusCode();
-                if (code==200) {
-                    byte[] bytes=EntityUtils.toByteArray(response.getEntity());
-                    if (piece.cache) {
-                        ImageManager.saveBytesAsFile(bytes, imagepath);
-                        //WeiboLog.d(TAG, "需要缓存："+str2);
-                        bitmap=ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(imagepath, -1);
-                    } else {
-                        bitmap=ImageManager.decodeBitmap(bytes, -1);
-                    }
-                } else {
-                    WeiboLog.w("下载图片失败:"+url);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bitmap;
+    protected String processImageUrl(final String url) {
+        return url;
     }
 
     /**
-     * 加载主页的图片，
-     *
-     * @param key
-     * @param imageView
+     * Used to fetch album images.
      */
-    public void loadHomeImage(final String key, final ImageView imageView, DownloadPiece piece) {
-        Log.v("", "loadHomeImage:"+key+" imv:"+imageView);
-        loadImage(key, imageView, piece);
+    public void startLoadImage(final String key, final ImageView imageView) {
+        loadImage(key, imageView);
     }
 
     /**
@@ -294,6 +225,7 @@ public class ImageFetcher extends ImageWorker {
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
+        options.inPreferredConfig=Bitmap.Config.RGB_565;
         return BitmapFactory.decodeFile(filename, options);
     }
 
