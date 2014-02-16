@@ -89,6 +89,7 @@
     </orderEntry>
     <orderEntry type="module" module-name="bulletnoidStaggeredGridViewLibrary" />
     <orderEntry type="module" module-name="AUILlibrary" />
+    <orderEntry type="module" module-name="roundedimageview" />
   </component>
 </module>
 
