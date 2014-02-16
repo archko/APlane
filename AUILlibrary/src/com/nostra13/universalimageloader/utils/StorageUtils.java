@@ -73,7 +73,7 @@ public final class StorageUtils {
 			appCacheDir = context.getCacheDir();
 		}
 		if (appCacheDir == null) {
-			String cacheDirPath = "/data/data/" + context.getPackageName() + "/cache/";
+			String cacheDirPath = context.getCacheDir().getPath()+"/auil/";
 			L.w("Can't define system cache directory! '%s' will be used.", cacheDirPath);
 			appCacheDir = new File(cacheDirPath);
 		}
@@ -120,7 +120,7 @@ public final class StorageUtils {
 
 	private static File getExternalCacheDir(Context context) {
 		File dataDir = new File(new File(Environment.getExternalStorageDirectory(), "Android"), "data");
-		File appCacheDir = new File(new File(dataDir, context.getPackageName()), "cache");
+		File appCacheDir = new File(new File(dataDir, context.getPackageName()), "cache"+"/auil");
 		if (!appCacheDir.exists()) {
 			if (!appCacheDir.mkdirs()) {
 				L.w("Unable to create external cache directory");
