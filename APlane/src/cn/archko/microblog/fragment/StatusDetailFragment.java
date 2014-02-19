@@ -31,6 +31,7 @@ import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.ui.PrefsActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.ui.WebviewActivity;
+import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
@@ -601,8 +602,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         if (!TextUtils.isEmpty(imgUrl)) {
             portraitUrl=imgUrl;
             //new Thread(portraitRunnable).start();
-            ImageLoader imageLoader=ImageLoader.getInstance();
-            imageLoader.displayImage(portraitUrl, mPortrait, options);
+            /*ImageLoader imageLoader=ImageLoader.getInstance();
+            imageLoader.displayImage(portraitUrl, mPortrait, options);*/
+            ApolloUtils.getImageFetcher(getActivity()).startLoadImage(portraitUrl, mPortrait);
         }
 
         Status retweetStatus=mStatus.retweetedStatus;

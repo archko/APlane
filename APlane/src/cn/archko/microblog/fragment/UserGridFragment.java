@@ -93,8 +93,8 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         mPullRefreshGridView=(PullToRefreshGridView) root.findViewById(R.id.pull_refresh_grid);
         mGridView=mPullRefreshGridView.getRefreshableView();
         mGridView.setDrawSelectorOnTop(false);
-        //mGridView.setOnScrollListener(this);
-        mGridView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
+        mGridView.setOnScrollListener(this);
+        //mGridView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
         mGridView.setSelector(R.color.transparent);
 
         /*SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(getActivity());

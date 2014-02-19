@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import cn.archko.microblog.R;
+import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtil;
@@ -234,8 +235,9 @@ public class ImageAdapter extends BaseAdapter {
             /*ImageFetcher fetcher=ImageFetcher.getInstance(App.getAppContext());
             fetcher.loadHomeImage(mPictureUrl, picture, piece);*/
 
-            ImageLoader imageLoader = ImageLoader.getInstance();
-            imageLoader.displayImage(mPictureUrl, picture, options);
+            /*ImageLoader imageLoader = ImageLoader.getInstance();
+            imageLoader.displayImage(mPictureUrl, picture, options);*/
+            ApolloUtils.getImageFetcher(mContext).startLoadImage(mPictureUrl, picture);
         }
     }
 

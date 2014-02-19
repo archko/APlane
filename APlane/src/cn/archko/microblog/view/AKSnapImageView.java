@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import cn.archko.microblog.ui.PrefsActivity;
+import com.andrew.apollo.cache.ImageCache;
 import com.me.microblog.App;
 import cn.archko.microblog.R;
 import com.me.microblog.WeiboUtil;
@@ -142,7 +143,10 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         addImageView();
         textProgressBar.setVisibility(View.GONE);
 
-        Bitmap bitmap=ImageLoader.getInstance().getMemoryCache().get(imageBean);//ImageCache2.getInstance().getBitmapFromMemCache(imageBean);
+        Bitmap bitmap;
+        //ImageCache2.getInstance().getBitmapFromMemCache(imageBean);
+        //bitmap=ImageLoader.getInstance().getMemoryCache().get(imageBean);
+        bitmap=ImageCache.getInstance(mContext).getCachedBitmap(imageBean);
         if (null!=bitmap) {
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setImageBitmap(bitmap);
@@ -255,10 +259,13 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         mImageDownloaded=false;
 
         //Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(imageBean);
-        Bitmap bitmap=ImageLoader.getInstance().getMemoryCache().get(ImageLoader.getInstance().getKey(imageBean, imageView));
+        Bitmap bitmap;
+        //bitmap=ImageLoader.getInstance().getMemoryCache().get(ImageLoader.getInstance().getKey(imageBean, imageView));
+        bitmap=ImageCache.getInstance(mContext).getCachedBitmap(imageBean);
 
         if (null==bitmap) {
-            bitmap=ImageLoader.getInstance().getMemoryCache().get(ImageLoader.getInstance().getKey(bmiddlePic, imageView));
+            //bitmap=ImageLoader.getInstance().getMemoryCache().get(ImageLoader.getInstance().getKey(bmiddlePic, imageView));
+            bitmap=ImageCache.getInstance(mContext).getCachedBitmap(bmiddlePic);
         }
 
         if (null!=bitmap&&!bitmap.isRecycled()) {

@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.archko.microblog.R;
+import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtil;
@@ -229,88 +230,6 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
      * @param cache      是否缓存头像.
      */
     void loadPicture(boolean updateFlag, boolean cache) {
-        //获取原创微博内容图片
-        String reBmid=null;
-        String reThum=null;
-        //result url
-        String midImageUrl=mStatus.bmiddlePic;
-        String thumImageUrl=mStatus.thumbnailPic;
-
-        //处理转发的微博
-        if (mRetweetedStatus!=null) {
-            //获取转发微博内容图片.
-            reBmid=mRetweetedStatus.bmiddlePic;
-            reThum=mRetweetedStatus.thumbnailPic;
-        }
-
-        if (TextUtils.isEmpty(thumImageUrl)) {  //认为如果原创内容没有图片，就用转发的。
-            thumImageUrl=reThum;
-            midImageUrl=reBmid;
-        }
-
-        if (TextUtils.isEmpty(thumImageUrl)) {
-            WeiboLog.v(TAG, "没有图片需要显示。");
-            if (null!=mStatusPicture&&mStatusPictureLay!=null) {
-                mStatusPicture.setVisibility(View.GONE);
-                mStatusPictureLay.setVisibility(GONE);
-            }
-            return;
-        }
-
-        /*if(thumImageUrl.equals(mPictureUrl)){
-            WeiboLog.v(TAG, "tmp 相同的图片:"+mPictureUrl);
-            return;
-        }*/
-
-        if (isShowBitmap) {
-            mStatusPicture.setVisibility(View.VISIBLE);
-
-            mPictureUrl=thumImageUrl;
-            if (isShowLargeBitmap&&!mPictureUrl.endsWith("gif")) {   //gif不显示大图
-                mPictureUrl=midImageUrl;
-            }
-
-            setPictureLay(mPictureUrl);
-
-            Bitmap tmp=null;
-            //TODO fix it later
-            //if (!isShowLargeBitmap) {
-                //mPictureUrl=mPictureUrl.replace("thumbnail", "bmiddle");
-                tmp=ImageCache2.getInstance().getBitmapFromMemCache(mPictureUrl);
-            /*} else {
-                LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
-                tmp=lruCache.get(mPictureUrl);
-            }*/
-
-            //WeiboLog.v(TAG, "cached.tmp:"+tmp+" mPictureUrl:"+mPictureUrl);
-            if (null!=tmp&&!tmp.isRecycled()) {
-                mStatusPicture.setImageBitmap(tmp);
-            } else {
-                if (!updateFlag) {
-                    mStatusPicture.setImageResource(mResId);
-                    return;
-                }
-
-                String dir=Constants.PICTURE_DIR;
-                String ext=WeiboUtil.getExt(mPictureUrl);
-                if (ext.equals(".gif")) {
-                    dir=Constants.GIF;
-                }
-
-                if (isShowLargeBitmap) {
-                    cache=true; //大图要缓存sdcard中，不然每次都下载，太慢了。
-                }
-                mStatusPicture.setImageResource(mResId);
-                //DownloadPool.downloading.put(mPictureUrl, new WeakReference<View>(parent));
-                /*((App) App.getAppContext()).mDownloadPool.Push(
-                    mHandler, mPictureUrl, Constants.TYPE_PICTURE, cache, mCacheDir+dir, mStatusPicture);*/
-                ImageLoader imageLoader = ImageLoader.getInstance();
-                imageLoader.displayImage(mPictureUrl, mStatusPicture, options);
-            }
-        } else {
-            mStatusPicture.setVisibility(View.GONE);
-            mStatusPictureLay.setVisibility(GONE);
-        }
     }
 
     void setPictureLay(String url) {
@@ -351,8 +270,9 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
                         null, mPortraitUrl, Constants.TYPE_PICTURE, cache, mCacheDir+Constants.ICON_DIR, false);
                     ImageFetcher fetcher=ImageFetcher.getInstance(App.getAppContext());
                     fetcher.loadHomeImage(mPortraitUrl, mPortrait, piece);*/
-                    ImageLoader imageLoader = ImageLoader.getInstance();
-                    imageLoader.displayImage(mPortraitUrl, mPortrait, options);
+                    /*ImageLoader imageLoader = ImageLoader.getInstance();
+                    imageLoader.displayImage(mPortraitUrl, mPortrait, options);*/
+                    ApolloUtils.getImageFetcher(mContext).startLoadImage(mPortraitUrl, mPortrait);
                 }
             }
         }

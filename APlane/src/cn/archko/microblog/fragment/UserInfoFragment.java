@@ -26,6 +26,7 @@ import cn.archko.microblog.fragment.abs.AbsStatusAbstraction;
 import cn.archko.microblog.fragment.impl.SinaUserImpl;
 import cn.archko.microblog.ui.ImageViewerActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
+import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.andrew.apollo.utils.ThemeUtils;
 import cn.archko.microblog.utils.WeiboOperation;
@@ -359,10 +360,10 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
                         statuses.setText(String.valueOf(user.statusesCount));
 
                         profileImageUrl=TextUtils.isEmpty(user.avatar_large) ? user.profileImageUrl : user.avatar_large;
-                        /*LoadImageTask loadImageTask=new LoadImageTask();
-                        loadImageTask.execute();*/
-                        ImageLoader imageLoader=ImageLoader.getInstance();
-                        imageLoader.displayImage(profileImageUrl, profileImage, options);
+
+                        /*ImageLoader imageLoader=ImageLoader.getInstance();
+                        imageLoader.displayImage(profileImageUrl, profileImage, options);*/
+                        ApolloUtils.getImageFetcher(getActivity()).startLoadImage(profileImageUrl, profileImage);
 
                         Status status=user.status;
                         if (null!=status) {
@@ -555,46 +556,6 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
             ((UserFragmentActivity) getActivity()).switchTab(UserFragmentActivity.TYPE_USER_TIMELINE);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    class LoadImageTask extends AsyncTask<Void, Void, Object[]> {
-
-        @Override
-        protected Object[] doInBackground(Void... params) {
-            Bitmap bitmap=null;
-            try {
-                bitmap=ImageCache2.getInstance().getBitmapFromMemCache(profileImageUrl);
-                Object[] resultObj=new Object[3];
-                if (null!=bitmap) {
-                    resultObj[0]=bitmap;
-                    return resultObj;
-                } else {
-                    bitmap=ImageCache2.getInstance().getImageManager().getBitmapFromDiskOrNet(profileImageUrl,
-                        mCacheDir+Constants.ICON_DIR, true);
-
-                    WeiboLog.i(TAG, "profileImageurl:"+profileImageUrl);
-                    resultObj[0]=bitmap;
-                    return resultObj;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Object[] resultObj) {
-            if (resultObj==null||resultObj[0]==null) {
-                WeiboLog.w(TAG, "can't not find the image.");
-                return;
-            }
-
-            WeiboLog.i(TAG, "bitmap:"+resultObj[0]);
-            Bitmap bitmap=(Bitmap) resultObj[0];
-            profileImage.setImageBitmap(bitmap);
-            profileImage.setVisibility(View.VISIBLE);
         }
     }
 

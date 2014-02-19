@@ -90,6 +90,7 @@
     <orderEntry type="module" module-name="bulletnoidStaggeredGridViewLibrary" />
     <orderEntry type="module" module-name="AUILlibrary" />
     <orderEntry type="module" module-name="roundedimageview" />
+    <orderEntry type="module" module-name="ImageFetcherLibrary" />
   </component>
 </module>
 

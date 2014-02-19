@@ -57,7 +57,7 @@ public class App extends Application {
         SharedPreferences pref=PreferenceManager.getDefaultSharedPreferences(this);
         int threadCount=pref.getInt(Constants.PREF_THREAD_COUNT, Constants.THREAD_COUNT);
 
-        initDownloadPool(threadCount);
+        //initDownloadPool(threadCount);
 
         initImageLoader(this);
 
@@ -246,7 +246,7 @@ public class App extends Application {
         // or you can create default configuration by
         //  ImageLoaderConfiguration.createDefault(this);
         // method.
-        ImageLoaderConfiguration config=new ImageLoaderConfiguration.Builder(context)
+        /*ImageLoaderConfiguration config=new ImageLoaderConfiguration.Builder(context)
             .threadPriority(Thread.NORM_PRIORITY-2)
             .denyCacheImageMultipleSizesInMemory()
             .discCacheFileNameGenerator(new Md5FileNameGenerator())
@@ -254,7 +254,7 @@ public class App extends Application {
             .writeDebugLogs() // Remove for release app
             .build();
         // Initialize ImageLoader with configuration.
-        ImageLoader.getInstance().init(config);
+        ImageLoader.getInstance().init(config);*/
     }
 
     public static boolean showMemory() {

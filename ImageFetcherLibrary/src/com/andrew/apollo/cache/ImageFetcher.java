@@ -14,6 +14,7 @@ package com.andrew.apollo.cache;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.andrew.apollo.utils.ApolloUtils;
@@ -34,13 +35,15 @@ public class ImageFetcher extends ImageWorker {
 
     public static final int IO_BUFFER_SIZE_BYTES = 1024;
 
-    private static final int DEFAULT_MAX_IMAGE_HEIGHT = 1920;
+    public static final int DEFAULT_MAX_IMAGE_HEIGHT = 1920;
 
-    private static final int DEFAULT_MAX_IMAGE_WIDTH = 1080;
+    public static final int DEFAULT_MAX_IMAGE_WIDTH = 720;
 
-    private static final String DEFAULT_HTTP_CACHE_DIR = "http"; //$NON-NLS-1$
+    public static final String DEFAULT_HTTP_CACHE_DIR = "http"; //$NON-NLS-1$
 
     private static ImageFetcher sInstance = null;
+
+    ImageOption mImageOption;
 
     /**
      * Creates a new instance of {@link ImageFetcher}.
@@ -49,6 +52,22 @@ public class ImageFetcher extends ImageWorker {
      */
     public ImageFetcher(final Context context) {
         super(context);
+        if (null==mImageOption) {
+            mImageOption=new ImageOption();
+        }
+    }
+
+    public void setImageOption(ImageOption mImageOption) {
+        this.mImageOption=mImageOption;
+    }
+
+    public void initImageOption(int maxWidth, int maxHeight, Bitmap.Config config){
+        if (null==mImageOption) {
+            mImageOption=new ImageOption();
+        }
+        mImageOption.setMaxWidth(maxWidth);
+        mImageOption.setMaxHeight(maxHeight);
+        mImageOption.setConfig(config);
     }
 
     /**
@@ -68,30 +87,42 @@ public class ImageFetcher extends ImageWorker {
      * {@inheritDoc}
      */
     @Override
-    protected Bitmap processBitmap(final String url) {
+    protected Bitmap processBitmap(final String url, ImageOption imageOption) {
         if (url == null) {
+            Log.w("", "url is null");
             return null;
         }
-        if (url.startsWith("http:")) {
+
+        ImageOption option=mImageOption;
+        if (imageOption!=null) {
+            option=imageOption;
+        }
+        Scheme scheme=Scheme.ofUri(url);
+        //Log.d("", "scheme:"+scheme+" url:"+url);
+        if (scheme==Scheme.HTTP||scheme==Scheme.HTTPS) {
             final File file = downloadBitmapToFile(mContext, url, DEFAULT_HTTP_CACHE_DIR);
             if (file != null) {
                 // Return a sampled down version
-                final Bitmap bitmap = decodeSampledBitmapFromFile(file.toString());
+                final Bitmap bitmap = decodeSampledBitmapFromFile(file.toString(), option.getMaxWidth(),
+                    option.getMaxHeight(), option.getConfig());
                 file.delete();
                 if (bitmap != null) {
                     return bitmap;
                 }
             }
-        } else if (url.startsWith("file")||url.startsWith("/")){
+        } else if (scheme==Scheme.FILE||url.startsWith("/")){
             final File file = new File(url);
             if (file != null) {
                 // Return a sampled down version
-                final Bitmap bitmap = decodeSampledBitmapFromFile(file.toString());
+                final Bitmap bitmap = decodeSampledBitmapFromFile(file.toString(), option.getMaxWidth(),
+                    option.getMaxHeight(), option.getConfig());
                 if (bitmap != null) {
                     return bitmap;
                 }
             }
-        } else if (url.startsWith("drawable")) {
+        } else if (scheme==Scheme.DRAWABLE) {
+
+        } else if (scheme==Scheme.ASSETS) {
 
         }
         return null;
@@ -109,7 +140,12 @@ public class ImageFetcher extends ImageWorker {
      * Used to fetch album images.
      */
     public void startLoadImage(final String key, final ImageView imageView) {
-        loadImage(key, imageView);
+        //loadImage(key, imageView);
+        startLoadImage(key, imageView, null);
+    }
+
+    public void startLoadImage(final String key, final ImageView imageView, final ImageOption imageOption) {
+        loadImage(key, imageView, imageOption);
     }
 
     /**
@@ -146,7 +182,7 @@ public class ImageFetcher extends ImageWorker {
         if (mImageCache != null) {
             return mImageCache.getCachedBitmap(key);
         }
-        return getDefaultArtwork();
+        return null;
     }
 
     /**
@@ -213,9 +249,10 @@ public class ImageFetcher extends ImageWorker {
      *         requested width and height
      */
     public static Bitmap decodeSampledBitmapFromFile(final String filename) {
-
+        return decodeSampledBitmapFromFile(filename, DEFAULT_MAX_IMAGE_WIDTH, DEFAULT_MAX_IMAGE_HEIGHT,
+            Bitmap.Config.RGB_565);
         // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
+        /*final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(filename, options);
 
@@ -226,6 +263,22 @@ public class ImageFetcher extends ImageWorker {
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
         options.inPreferredConfig=Bitmap.Config.RGB_565;
+        return BitmapFactory.decodeFile(filename, options);*/
+    }
+
+    public static Bitmap decodeSampledBitmapFromFile(final String filename, int maxWidth, int maxheight, Bitmap.Config config) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filename, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, maxWidth, maxheight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        options.inPreferredConfig=config;
         return BitmapFactory.decodeFile(filename, options);
     }
 

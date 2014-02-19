@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
+import com.andrew.apollo.utils.ApolloUtils;
 import com.me.microblog.App;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
@@ -204,9 +205,9 @@ public class UserGridItemView extends LinearLayout {
                 //DownloadPool.downloading.put(portraitUrl, new WeakReference<View>(parent));
                 /*((App) App.getAppContext()).mDownloadPool.Push(
                     mHandler, portraitUrl, TYPE_PORTRAIT, cache, mCacheDir+Constants.ICON_DIR, mPortrait);*/
-                ImageLoader imageLoader = ImageLoader.getInstance();
-                imageLoader.displayImage(portraitUrl, mPortrait, options);
-
+                /*ImageLoader imageLoader = ImageLoader.getInstance();
+                imageLoader.displayImage(portraitUrl, mPortrait, options);*/
+                ApolloUtils.getImageFetcher(mContext).startLoadImage(portraitUrl, mPortrait);
             }
         }
     }

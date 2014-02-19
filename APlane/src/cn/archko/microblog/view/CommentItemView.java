@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.ui.UserFragmentActivity;
+import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
@@ -209,8 +210,9 @@ public class CommentItemView extends LinearLayout implements View.OnClickListene
                     //DownloadPool.downloading.put(mPortraitUrl, new WeakReference<View>(parent));
                     /*((App) App.getAppContext()).mDownloadPool
                         .Push(mHandler, mPortraitUrl, Constants.TYPE_PORTRAIT, cache, mCacheDir+Constants.ICON_DIR, mPortrait);*/
-                    ImageLoader imageLoader=ImageLoader.getInstance();
-                    imageLoader.displayImage(mPortraitUrl, mPortrait, options);
+                    /*ImageLoader imageLoader=ImageLoader.getInstance();
+                    imageLoader.displayImage(mPortraitUrl, mPortrait, options);*/
+                    ApolloUtils.getImageFetcher(mContext).startLoadImage(mPortraitUrl, mPortrait);
                 }
             }
         }

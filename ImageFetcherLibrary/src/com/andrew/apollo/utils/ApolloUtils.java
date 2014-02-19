@@ -1,22 +1,43 @@
+/*
+ * Copyright (C) 2012 Andrew Neal Licensed under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law
+ * or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
 package com.andrew.apollo.utils;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.webkit.WebView;
 import android.widget.Toast;
+
 import com.andrew.apollo.cache.ImageCache;
 import com.andrew.apollo.cache.ImageFetcher;
 
@@ -24,9 +45,9 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
- * @description: 一些常用的操作方法。判断系统版本，等
+ * Mostly general and UI helpers.
  * 
- * @author archko
+ * @author Andrew Neal (andrewdneal@gmail.com)
  */
 public final class ApolloUtils {
 
@@ -42,7 +63,7 @@ public final class ApolloUtils {
     /**
      * Used to determine if the current device is a Google TV
      * 
-     * @param context The {@link android.content.Context} to use
+     * @param context The {@link Context} to use
      * @return True if the device has Google TV, false otherwise
      */
     public static final boolean isGoogleTV(final Context context) {
@@ -173,7 +194,7 @@ public final class ApolloUtils {
         }
 
         boolean state = false;
-        final boolean onlyOnWifi =false;// PreferenceUtils.getInstace(context).onlyOnWifi();
+        final boolean onlyOnWifi = true;//PreferenceUtils.getInstace(context).onlyOnWifi();
 
         /* Monitor network connections */
         final ConnectivityManager connectivityManager = (ConnectivityManager)context
@@ -284,7 +305,7 @@ public final class ApolloUtils {
      * @param activity The {@link FragmentActivity} to use.
      * @return A new {@link ImageFetcher} used to fetch images asynchronously.
      */
-    public static final ImageFetcher getImageFetcher(final Activity activity) {
+    public static final ImageFetcher getImageFetcher(final FragmentActivity activity) {
         final ImageFetcher imageFetcher = ImageFetcher.getInstance(activity);
         imageFetcher.setImageCache(ImageCache.findOrCreateCache(activity));
         return imageFetcher;

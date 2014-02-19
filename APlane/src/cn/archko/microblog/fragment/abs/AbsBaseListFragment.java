@@ -25,6 +25,7 @@ import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.recycler.RecycleHolder;
 import cn.archko.microblog.ui.PrefsActivity;
+import com.andrew.apollo.cache.ImageCache;
 import com.andrew.apollo.utils.ThemeUtils;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -266,8 +267,8 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
         zoomAnim=AnimationUtils.loadAnimation(getActivity(), R.anim.zoom);
 
         mListView.setRecyclerListener(new RecycleHolder());
-        //mListView.setOnScrollListener(this);
-        mListView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
+        mListView.setOnScrollListener(this);
+        //mListView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
 
         return root;
     }
@@ -397,10 +398,10 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
         WeiboLog.d(TAG, "onScrollStateChanged.scrollState:"+scrollState);
         if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING
             || scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-            ImageCache2.getInstance().setPauseDiskCache(true);
+            ImageCache.getInstance(getActivity()).setPauseDiskCache(true);
             //WeiboLog.v(TAG, "onScrollStateChanged.scroll");
         } else {
-            ImageCache2.getInstance().setPauseDiskCache(false);
+            ImageCache.getInstance(getActivity()).setPauseDiskCache(false);
             mAdapter.notifyDataSetChanged();
         }
     }

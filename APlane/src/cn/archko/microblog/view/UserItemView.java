@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
+import com.andrew.apollo.utils.ApolloUtils;
 import com.me.microblog.App;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
@@ -227,8 +228,9 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
                 //DownloadPool.downloading.put(mPortraitUrl, new WeakReference<View>(parent));
                 /*((App) App.getAppContext()).mDownloadPool.Push(
                     mHandler, mPortraitUrl, TYPE_PORTRAIT, cache, mCacheDir+Constants.ICON_DIR, mPortrait);*/
-                ImageLoader imageLoader=ImageLoader.getInstance();
-                imageLoader.displayImage(mPortraitUrl, mPortrait, options);
+                /*ImageLoader imageLoader=ImageLoader.getInstance();
+                imageLoader.displayImage(mPortraitUrl, mPortrait, options);*/
+                ApolloUtils.getImageFetcher(mContext).startLoadImage(mPortraitUrl, mPortrait);
             }
         }
     }

@@ -22,10 +22,7 @@ import android.graphics.drawable.TransitionDrawable;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
-import cn.archko.microblog.R;
 import com.andrew.apollo.utils.ApolloUtils;
-import com.andrew.apollo.utils.PreferenceUtils;
-import com.me.microblog.App;
 
 import java.lang.ref.WeakReference;
 
@@ -77,6 +74,14 @@ public abstract class ImageWorker {
      */
     protected ImageCache mImageCache;
 
+    private int mFadeInTime=FADE_IN_TIME;
+
+    public void setFadeInTime(int fadeInTime) {
+        if (fadeInTime>100) {
+            this.mFadeInTime=fadeInTime;
+        }
+    }
+
     /**
      * Constructor of <code>ImageWorker</code>
      * 
@@ -86,37 +91,17 @@ public abstract class ImageWorker {
         mContext = context.getApplicationContext();
         mResources = mContext.getResources();
         // Create the default artwork
-        /*final ThemeUtils theme = new ThemeUtils(context);*/
-        //mDefault = ((BitmapDrawable)theme.getDrawable("default_artwork")).getBitmap();
-
-        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        int mResId=R.drawable.image_loading_light;
-        if ("2".equals(themeId)){
-            mResId=R.drawable.image_loading_light;
-        }
-
-        mDefault=((BitmapDrawable)context.getResources().getDrawable(mResId)).getBitmap();
+        mDefault = ((BitmapDrawable)mResources.getDrawable(R.drawable.image_loading_light)).getBitmap();
         mDefaultArtwork = new BitmapDrawable(mResources, mDefault);
         // No filter and no dither makes things much quicker
         mDefaultArtwork.setFilterBitmap(false);
         mDefaultArtwork.setDither(false);
         // Create the transparent layer for the transition drawable
-        mCurrentDrawable = new ColorDrawable(mResources.getColor(R.color.transparent));
+        mCurrentDrawable = new ColorDrawable(mResources.getColor(android.R.color.transparent));
         // A transparent image (layer 0) and the new result (layer 1)
         mArrayDrawable = new Drawable[2];
         mArrayDrawable[0] = mCurrentDrawable;
         // XXX The second layer is set in the worker task.
-    }
-
-    public Drawable getDrawable(final String resourceName) {
-        String mThemePackage="cn.archko.microblog";
-        final int resourceId=mResources.getIdentifier(resourceName, "drawable", mThemePackage);
-        try {
-            return mResources.getDrawable(resourceId);
-        } catch (final Resources.NotFoundException e) {
-            //$FALL-THROUGH$
-        }
-        return null;
     }
 
     /**
@@ -165,18 +150,18 @@ public abstract class ImageWorker {
      * @param data The key used to store the image
      * @param bitmap The {@link Bitmap} to cache
      */
-    public void addBitmapToCache(final String key, final Bitmap bitmap) {
-        if (mImageCache != null) {
-            mImageCache.addBitmapToCache(key, bitmap);
+    public void addBitmapToCache(final String key, final String url, final Bitmap bitmap) {
+        if (mImageCache!=null) {
+            mImageCache.addBitmapToCache(key, url, bitmap);
         }
     }
 
     /**
      * @return The deafult artwork
      */
-    public Bitmap getDefaultArtwork() {
+    /*public Bitmap getDefaultArtwork() {
         return mDefault;
-    }
+    }*/
 
     /**
      * The actual {@link AsyncTask} that will process the image.
@@ -198,16 +183,18 @@ public abstract class ImageWorker {
          */
         private String mUrl;
 
+        private ImageOption mImageOption;
+
         /**
          * Constructor of <code>BitmapWorkerTask</code>
          *
-         * @param imageView The {@link ImageView} to use.
-         * @param imageType The type of image URL to fetch for.
+         * @param imageView The {@link android.widget.ImageView} to use.
+         * @param imageOption
          */
         @SuppressWarnings("deprecation")
-        public BitmapWorkerTask(final ImageView imageView) {
-            imageView.setBackgroundDrawable(mDefaultArtwork);
+        public BitmapWorkerTask(final ImageView imageView, ImageOption imageOption) {
             mImageReference = new WeakReference<ImageView>(imageView);
+            mImageOption=imageOption;
         }
 
         /**
@@ -244,13 +231,13 @@ public abstract class ImageWorker {
                 // Now define what the artist name, album name, and url are.
                 //mUrl = processImageUrl();
                 if (mUrl != null) {
-                    bitmap = processBitmap(mUrl);
+                    bitmap = processBitmap(mUrl, mImageOption);
                 }
             }
 
             // Fourth, add the new image to the cache
             if (bitmap != null && mKey != null && mImageCache != null) {
-                addBitmapToCache(mKey, bitmap);
+                addBitmapToCache(mKey, mUrl, bitmap);
             }
 
             // Add the second layer to the transiation drawable
@@ -263,7 +250,7 @@ public abstract class ImageWorker {
                 // Finally, return the image
                 final TransitionDrawable result = new TransitionDrawable(mArrayDrawable);
                 result.setCrossFadeEnabled(true);
-                result.startTransition(FADE_IN_TIME);
+                result.startTransition(mFadeInTime);
                 return result;
             }
             return null;
@@ -278,8 +265,15 @@ public abstract class ImageWorker {
                 result = null;
             }
             final ImageView imageView = getAttachedImageView();
-            if (result != null && imageView != null) {
-                imageView.setImageDrawable(result);
+            if (result != null && imageView != null) {  //TODO if load image failed...
+                if (null==imageView.getDrawable()||imageView.getDrawable() instanceof BitmapDrawable){
+                    imageView.setImageDrawable(result);
+                } else {
+                    Bitmap bitmap=mImageCache.getCachedBitmap(mKey);
+                    if (null!=bitmap) {
+                        imageView.setImageBitmap(bitmap);
+                    }
+                }
             }
         }
 
@@ -339,6 +333,10 @@ public abstract class ImageWorker {
      */
     private static final BitmapWorkerTask getBitmapWorkerTask(final ImageView imageView) {
         if (imageView != null) {
+            final AsyncDrawable tag=(AsyncDrawable) imageView.getTag();
+            if (null!=tag) {
+                return tag.getBitmapWorkerTask();
+            }
             final Drawable drawable = imageView.getDrawable();
             if (drawable instanceof AsyncDrawable) {
                 final AsyncDrawable asyncDrawable = (AsyncDrawable)drawable;
@@ -362,8 +360,7 @@ public abstract class ImageWorker {
         /**
          * Constructor of <code>AsyncDrawable</code>
          */
-        public AsyncDrawable(final Resources res, final Bitmap bitmap,
-                final BitmapWorkerTask mBitmapWorkerTask) {
+        public AsyncDrawable(final BitmapWorkerTask mBitmapWorkerTask) {
             super(Color.TRANSPARENT);
             mBitmapWorkerTaskReference = new WeakReference<BitmapWorkerTask>(mBitmapWorkerTask);
         }
@@ -378,16 +375,13 @@ public abstract class ImageWorker {
 
     /**
      * Called to fetch the artist or ablum art.
-     * 
+     *
      * @param key The unique identifier for the image.
-     * @param artistName The artist name for the Last.fm API.
-     * @param albumName The album name for the Last.fm API.
-     * @param albumId The album art index, to check for missing artwork.
-     * @param imageView The {@link ImageView} used to set the cached
-     *            {@link Bitmap}.
-     * @param imageType The type of image URL to fetch for.
+     * @param imageView The {@link android.widget.ImageView} used to set the cached
+     *            {@link android.graphics.Bitmap}.
+     * @param imageOption
      */
-    protected void loadImage(final String key, final ImageView imageView) {
+    protected void loadImage(final String key, final ImageView imageView, ImageOption imageOption) {
         if (key == null || mImageCache == null || imageView == null) {
             return;
         }
@@ -398,10 +392,10 @@ public abstract class ImageWorker {
             imageView.setImageBitmap(lruBitmap);
         } else if (executePotentialWork(key, imageView) && imageView != null && !isScrolling()) {
             // Otherwise run the worker task
-            final BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(imageView);
-            final AsyncDrawable asyncDrawable = new AsyncDrawable(mResources, mDefault,
-                    bitmapWorkerTask);
-            imageView.setImageDrawable(asyncDrawable);
+            final BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(imageView, imageOption);
+            final AsyncDrawable asyncDrawable=new AsyncDrawable(bitmapWorkerTask);
+            //imageView.setImageDrawable(asyncDrawable);
+            imageView.setTag(asyncDrawable);
             // Don't execute the BitmapWorkerTask while scrolling
             if (isScrolling()) {
                 cancelWork(imageView);
@@ -416,16 +410,18 @@ public abstract class ImageWorker {
      * must happen to produce the final {@link Bitmap}. This will be executed in
      * a background thread and be long running.
      * 
+     *
      * @param key The key to identify which image to process, as provided by
-     *            {@link ImageWorker#loadImage(mKey, ImageView)}
+     *            {@link com.andrew.apollo.cache.ImageWorker#loadImage(mKey, android.widget.ImageView)}
+     * @param mImageOption
      * @return The processed {@link Bitmap}.
      */
-    protected abstract Bitmap processBitmap(String key);
+    protected abstract Bitmap processBitmap(String key, ImageOption imageOption);
 
     /**
      * Subclasses should override this to define any processing or work that
      * must happen to produce the URL needed to fetch the final {@link Bitmap}.
-     *
+     * 
      * @param artistName The artist name param used in the Last.fm API.
      * @param albumName The album name param used in the Last.fm API.
      * @param imageType The type of image URL to fetch for.
