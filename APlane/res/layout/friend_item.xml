@@ -19,7 +19,7 @@
             makeramen:border_width="2dip" android:layout_marginRight="24dp"
             android:layout_width="@dimen/profile_width_height" android:layout_height="@dimen/profile_width_height"
             android:src="@drawable/user_default_photo"
-            android:scaleType="center" android:layout_marginTop="0dp"
+            android:scaleType="centerCrop" android:layout_marginTop="0dp"
             android:focusable="false"/>
 
         <TextView android:id="@+id/tv_name"
