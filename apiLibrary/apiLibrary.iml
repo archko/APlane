@@ -44,8 +44,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="AUILlibrary" scope="PROVIDED" />
-    <orderEntry type="module" module-name="roundedimageview" scope="PROVIDED" />
   </component>
 </module>
 
