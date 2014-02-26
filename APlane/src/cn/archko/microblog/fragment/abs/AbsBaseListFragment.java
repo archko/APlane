@@ -37,8 +37,8 @@ import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
+/*import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;*/
 
 import java.util.ArrayList;
 

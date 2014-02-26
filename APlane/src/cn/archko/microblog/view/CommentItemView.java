@@ -29,9 +29,9 @@ import com.me.microblog.thread.DownloadPool;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
+/*import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
 
 import java.lang.ref.WeakReference;
 import java.util.regex.Matcher;
@@ -58,7 +58,7 @@ public class CommentItemView extends LinearLayout implements View.OnClickListene
     Comment mComment;
 
     protected boolean isShowBitmap=true;
-    protected DisplayImageOptions options;
+    //protected DisplayImageOptions options;
 
     /**
      * 评论用到的.
@@ -117,16 +117,13 @@ public class CommentItemView extends LinearLayout implements View.OnClickListene
         mContentFirst.setTextColor(pref_content_color);
         mContentSencond.setTextColor(pref_ret_content_color);
 
-        options = new DisplayImageOptions.Builder()
-            /*.showImageOnLoading(R.drawable.ic_stub)
-            .showImageForEmptyUri(R.drawable.ic_empty)
-            .showImageOnFail(R.drawable.ic_error)*/
+        /*options = new DisplayImageOptions.Builder()
             .cacheInMemory(true)
             .cacheOnDisc(true)
             .considerExifParams(true)
             .bitmapConfig(Bitmap.Config.RGB_565)
             .displayer(new FadeInBitmapDisplayer(300))
-            .build();
+            .build();*/
     }
 
     @Override

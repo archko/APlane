@@ -28,10 +28,10 @@ import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
 import com.me.microblog.view.IBaseItemView;
 import com.me.microblog.view.ImageViewerDialog;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
+/*import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;*/
 
 import java.util.regex.Matcher;
 
@@ -77,7 +77,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
     public final int[] sliderColors;
     public int mIndex=0;
     int mResId;
-    protected DisplayImageOptions options;
+    //protected DisplayImageOptions options;
 
     public BaseItemView(Context context, ListView view, String cacheDir, Status status, boolean updateFlag) {
         super(context);
@@ -102,16 +102,14 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
         } else if ("0".equals(themeId)) {
             mResId=R.drawable.image_loading_dark;
         }
-        options = new DisplayImageOptions.Builder()
-            /*.showImageOnLoading(R.drawable.ic_stub)
-            .showImageForEmptyUri(R.drawable.ic_empty)
-            .showImageOnFail(R.drawable.ic_error)*/
+        /*options = new DisplayImageOptions.Builder()
+
             .cacheInMemory(true)
             .cacheOnDisc(true)
             .considerExifParams(true)
             .bitmapConfig(Bitmap.Config.RGB_565)
             .displayer(new FadeInBitmapDisplayer(300))
-            .build();
+            .build();*/
     }
 
     /**

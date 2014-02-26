@@ -50,9 +50,9 @@ import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
 import com.me.microblog.view.ImageViewerDialog;
 import cn.archko.microblog.view.TagsViewGroup;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
+/*import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -152,7 +152,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     protected boolean showLargeBitmap=false;
     //RelativeLayout mTitleBar;
     LinearLayout mViewComment;
-    protected DisplayImageOptions options;
+    //protected DisplayImageOptions options;
 
     //TODO 需要更新主页的存储数据。
     private void refreshStatus() {
@@ -392,16 +392,14 @@ public class StatusDetailFragment extends AbstractBaseFragment {
 
         mCacheDir=((App) App.getAppContext()).mCacheDir;
 
-        options = new DisplayImageOptions.Builder()
-            /*.showImageOnLoading(R.drawable.ic_stub)
-            .showImageForEmptyUri(R.drawable.ic_empty)
-            .showImageOnFail(R.drawable.ic_error)*/
+        /*options = new DisplayImageOptions.Builder()
+
             .cacheInMemory(true)
             .cacheOnDisc(true)
             .considerExifParams(true)
             .bitmapConfig(Bitmap.Config.RGB_565)
             .displayer(new FadeInBitmapDisplayer(300))
-            .build();
+            .build();*/
     }
 
     View.OnClickListener clickListener=new View.OnClickListener() {

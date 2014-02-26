@@ -22,9 +22,9 @@ import com.me.microblog.thread.DownloadPool;
 import cn.archko.microblog.ui.ImageViewerActivity;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
+/*import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
 
 /**
  * @description:
@@ -45,7 +45,7 @@ public class ImageAdapter extends BaseAdapter {
     boolean isShowLargeBitmap=false;
     boolean cache=true;
     int mResId;
-    DisplayImageOptions options;
+    //DisplayImageOptions options;
 
     public ImageAdapter(Context c, String cacheDir, String[] thumbs) {
         mContext=c;
@@ -62,16 +62,13 @@ public class ImageAdapter extends BaseAdapter {
         } else if ("0".equals(themeId)) {
             mResId=R.drawable.image_loading_dark;
         }
-        options = new DisplayImageOptions.Builder()
-            /*.showImageOnLoading(R.drawable.ic_stub)
-            .showImageForEmptyUri(R.drawable.ic_empty)
-            .showImageOnFail(R.drawable.ic_error)*/
+        /*options = new DisplayImageOptions.Builder()
             .cacheInMemory(true)
             .cacheOnDisc(true)
             .considerExifParams(true)
             .bitmapConfig(Bitmap.Config.RGB_565)
             .displayer(new FadeInBitmapDisplayer(300))
-            .build();
+            .build();*/
     }
 
     public void setImageUrls(String[] imageUrls) {

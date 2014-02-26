@@ -18,10 +18,10 @@ import com.me.microblog.thread.DownloadPoolThread;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.SqliteWrapper;
 import com.me.microblog.util.WeiboLog;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+/*import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;*/
 
 /**
  * @author archko

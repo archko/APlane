@@ -264,10 +264,10 @@ public class SidebarAdapter extends BaseAdapter {
         Fragment f=null;
         try {
             f=(Fragment) entry.clazz.newInstance();
-            f.setRetainInstance(true);
+            //f.setRetainInstance(true);
             mFragmentManager.beginTransaction()
                 .add(R.id.fragment_placeholder, f, entry.id)
-                .commitAllowingStateLoss();
+                .commit();
             mFragmentArray.put(position, new WeakReference<Fragment>(f));
         } catch (InstantiationException e) {
             e.printStackTrace();

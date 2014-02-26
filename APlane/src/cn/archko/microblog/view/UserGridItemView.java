@@ -21,9 +21,9 @@ import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.sina.SinaUserApi;
 import com.me.microblog.oauth.Oauth2;
 import com.me.microblog.util.WeiboLog;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
+/*import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
 
 /**
  * 修改后继承ThreadBeanItemView,多了一个Touch,左边的头像点击后的处理.
@@ -46,7 +46,7 @@ public class UserGridItemView extends LinearLayout {
 
     public static final int TYPE_PORTRAIT=1;
     private int followingType=-1;   //0表示未关注,1表示已关注,-1表示未知
-    protected DisplayImageOptions options;
+    //protected DisplayImageOptions options;
 
     public UserGridItemView(Context context, AbsListView view, String cacheDir, User user, boolean updateFlag) {
         super(context);
@@ -62,16 +62,13 @@ public class UserGridItemView extends LinearLayout {
         mCacheDir=cacheDir;
 
         //update(status, updateFlag);
-        options = new DisplayImageOptions.Builder()
-            /*.showImageOnLoading(R.drawable.ic_stub)
-            .showImageForEmptyUri(R.drawable.ic_empty)
-            .showImageOnFail(R.drawable.ic_error)*/
+        /*options = new DisplayImageOptions.Builder()
             .cacheInMemory(true)
             .cacheOnDisc(true)
             .considerExifParams(true)
             .bitmapConfig(Bitmap.Config.RGB_565)
             .displayer(new FadeInBitmapDisplayer(300))
-            .build();
+            .build();*/
     }
 
     private void doFollow() {

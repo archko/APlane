@@ -27,7 +27,7 @@ import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
 import com.me.microblog.view.MyWebView;
 import com.me.microblog.view.TextProgressBar;
-import com.nostra13.universalimageloader.core.ImageLoader;
+//import com.nostra13.universalimageloader.core.ImageLoader;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 

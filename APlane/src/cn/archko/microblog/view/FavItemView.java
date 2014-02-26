@@ -11,7 +11,7 @@ import com.me.microblog.WeiboUtil;
 import com.me.microblog.bean.Favorite;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
+//import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.util.regex.Matcher;
 
@@ -28,7 +28,7 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
 
     protected Favorite mFavorite;    //微博收藏
 
-    protected DisplayImageOptions options;
+    //protected DisplayImageOptions options;
 
     public FavItemView(Context context, ListView view, String cacheDir, Favorite status, boolean updateFlag,
         boolean cache, boolean showLargeBitmap, boolean showBitmap) {

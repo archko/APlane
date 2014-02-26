@@ -46,9 +46,9 @@ import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
+/*import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
 
 import java.io.Serializable;
 import java.util.regex.Matcher;
@@ -96,7 +96,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
      * 中间按钮的而已，默认有四个按钮，其它的需要在加载用户的信息后才有的。
      */
     LinearLayout mController;
-    protected DisplayImageOptions options;
+    //protected DisplayImageOptions options;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,16 +107,13 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
         //mStatusImpl=new SinaUserImpl();
 
-        options = new DisplayImageOptions.Builder()
-            /*.showImageOnLoading(R.drawable.ic_stub)
-            .showImageForEmptyUri(R.drawable.ic_empty)
-            .showImageOnFail(R.drawable.ic_error)*/
+        /*options = new DisplayImageOptions.Builder()
             .cacheInMemory(true)
             .cacheOnDisc(true)
             .considerExifParams(true)
             .bitmapConfig(Bitmap.Config.RGB_565)
             .displayer(new FadeInBitmapDisplayer(300))
-            .build();
+            .build();*/
     }
 
     @Override
