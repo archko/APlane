@@ -23,13 +23,14 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+//import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
 import android.util.Log;
 
+import cn.archko.thread.AsyncTask;
 import com.andrew.apollo.utils.ApolloUtils;
 
 import java.io.File;
@@ -147,7 +148,7 @@ public final class ImageCache {
      * @param cacheParams The cache parameters to initialize the cache
      */
     private void init(final Context context) {
-        ApolloUtils.execute(false, new AsyncTask<Void, Void, Void>() {
+        ApolloUtils.executeCustomTask(false, new AsyncTask<Void, Void, Void>() {
 
             @Override
             protected Void doInBackground(final Void... unused) {
@@ -472,7 +473,7 @@ public final class ImageCache {
      * cache first
      */
     public void flush() {
-        ApolloUtils.execute(false, new AsyncTask<Void, Void, Void>() {
+        ApolloUtils.executeCustomTask(false, new AsyncTask<Void, Void, Void>() {
 
             @Override
             protected Void doInBackground(final Void... unused) {
@@ -494,7 +495,7 @@ public final class ImageCache {
      * Clears the disk and memory caches
      */
     public void clearCaches() {
-        ApolloUtils.execute(false, new AsyncTask<Void, Void, Void>() {
+        ApolloUtils.executeCustomTask(false, new AsyncTask<Void, Void, Void>() {
 
             @Override
             protected Void doInBackground(final Void... unused) {
@@ -520,7 +521,7 @@ public final class ImageCache {
      * thread.
      */
     public void close() {
-        ApolloUtils.execute(false, new AsyncTask<Void, Void, Void>() {
+        ApolloUtils.executeCustomTask(false, new AsyncTask<Void, Void, Void>() {
 
             @Override
             protected Void doInBackground(final Void... unused) {

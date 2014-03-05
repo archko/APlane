@@ -175,6 +175,23 @@ public final class ApolloUtils {
     }
 
     /**
+     * Execute an {@link AsyncTask} on a thread pool
+     *
+     * @param forceSerial True to force the task to run in serial order
+     * @param task Task to execute
+     * @param args Optional arguments to pass to
+     *            {@link AsyncTask#execute(Object[])}
+     * @param <T> Task argument type
+     */
+    @SuppressLint("NewApi")
+    public static <T> void executeCustomTask(final boolean forceSerial, final cn.archko.thread.AsyncTask<T, ?, ?> task,
+        final T... args) {
+        final WeakReference<cn.archko.thread.AsyncTask<T, ?, ?>> taskReference = new WeakReference<cn.archko.thread.AsyncTask<T, ?, ?>>(
+            task);
+        taskReference.get().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, args);
+    }
+
+    /**
      * Used to determine if there is an active data connection and what type of
      * connection it is if there is one
      * 

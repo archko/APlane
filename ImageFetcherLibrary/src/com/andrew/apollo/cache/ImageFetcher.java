@@ -41,6 +41,9 @@ public class ImageFetcher extends ImageWorker {
 
     public static final String DEFAULT_HTTP_CACHE_DIR = "http"; //$NON-NLS-1$
 
+    public static final int CONNECT_TIMEOUT=10000;
+    public static final int READ_TIMEOUT=120000;
+
     private static ImageFetcher sInstance = null;
 
     ImageOption mImageOption;
@@ -210,6 +213,8 @@ public class ImageFetcher extends ImageWorker {
 
             final URL url = new URL(urlString);
             urlConnection = (HttpURLConnection)url.openConnection();
+            urlConnection.setConnectTimeout(CONNECT_TIMEOUT);
+            urlConnection.setReadTimeout(READ_TIMEOUT);
             if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 return null;
             }
