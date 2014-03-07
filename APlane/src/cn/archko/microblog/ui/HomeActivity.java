@@ -132,8 +132,8 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         mActionBar.setDisplayShowHomeEnabled(true);   //整个标题栏
         mActionBar.setTitle(R.string.tab_label_home);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawer = (ListView)findViewById(R.id.start_drawer);
+        mDrawerLayout=(DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawer=(ListView) findViewById(R.id.start_drawer);
         mDrawer.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         //mRightDrawer=(ListView) findViewById(R.id.right_drawer);
 
@@ -148,6 +148,12 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
                 navigationFragment(position);
             }
         });
+
+        Fragment oldFragment=getFragmentManager().findFragmentById(R.id.fragment_placeholder);
+        WeiboLog.v(TAG, "old:"+oldFragment+" instance:"+savedInstanceState);
+        if (oldFragment==null) {
+            mSidebarAdapter.getFragment(0);
+        }
 
         setCustomActionBar();
         reloadPreferences();
@@ -267,26 +273,23 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         layout.setOnClickListener(mActionItemListener);
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        WeiboLog.v(TAG, "onRestoreInstanceState:"+savedInstanceState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        WeiboLog.v(TAG, "onSaveInstanceState:"+outState);
+    }
+
     private void doInit() {
         isInitialized=true;
         setImageD();
 
-        boolean chk_new_status=PreferenceManager.getDefaultSharedPreferences(this)
-            .getBoolean(PrefsActivity.PREF_AUTO_CHK_NEW_STATUS, true);
-
-        Intent intent=new Intent(this, WeiboService.class);
-        intent.setAction(WeiboService.REFRESH);
-        if (chk_new_status) {
-            startService(intent);
-        } else {
-            stopService(intent);
-        }
-
-        intent=new Intent(HomeActivity.this, SendTaskService.class);
-        startService(intent);
-
-        intent=new Intent(HomeActivity.this, AKWidgetService.class);
-        startService(intent);
+        delayStartService();
 
         if (!WeiboUtil.isHoneycombOrLater()) {
             if (null==mExitReceiver) {
@@ -295,6 +298,30 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
             registerReceiver(mExitReceiver, new IntentFilter(Constants.EXIT_APP));
         }
         //MobclickAgent.onError(this);
+    }
+
+    private void delayStartService() {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                boolean chk_new_status=PreferenceManager.getDefaultSharedPreferences(HomeActivity.this)
+                    .getBoolean(PrefsActivity.PREF_AUTO_CHK_NEW_STATUS, true);
+
+                Intent intent=new Intent(HomeActivity.this, WeiboService.class);
+                intent.setAction(WeiboService.REFRESH);
+                if (chk_new_status) {
+                    startService(intent);
+                } else {
+                    stopService(intent);
+                }
+
+                intent=new Intent(HomeActivity.this, SendTaskService.class);
+                startService(intent);
+
+                /*intent=new Intent(HomeActivity.this, AKWidgetService.class);
+                startService(intent);*/
+            }
+        }, 4000l);
     }
 
     /**
@@ -627,7 +654,8 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
                     public void onClick(DialogInterface arg0, int arg1) {
                         arg0.cancel();
                     }
-                }).setPositiveButton(getResources().getString(R.string.confirm),
+                }
+            ).setPositiveButton(getResources().getString(R.string.confirm),
             new DialogInterface.OnClickListener() {
 
                 @Override
@@ -639,7 +667,8 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
                         AKUtils.logout(HomeActivity.this);
                     }
                 }
-            }).create().show();
+            }
+        ).create().show();
     }
 
     @Override

@@ -174,16 +174,17 @@ public class WeiboService extends Service {
         super.onStartCommand(intent, flags, startId);
         WeiboLog.d(TAG, "onStartCommand,flags:"+flags+" startId:"+startId);
 
-        if (intent!=null) {
+        /*if (intent!=null) {
             final String action=intent.getAction();
             if (REFRESH.equals(action)) {
                 fetchNewStatuses(intent, startId);
             } else if (OAUTH.equals(action)) {
                 oauth2(intent);
             }
-        }
+        }*/
+        fetchNewStatuses(intent, startId);
 
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     /**

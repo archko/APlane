@@ -16,9 +16,9 @@
         <item name="android:gravity">top|center</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center|bottom</item>
-        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
         <item name="android:layout_marginRight">@dimen/bottom_action_bar_item_padding_left_right</item>
+        <item name="android:layout_marginLeft">4dp</item>
         <item name="android:scaleType">centerInside</item>
     </style>
 

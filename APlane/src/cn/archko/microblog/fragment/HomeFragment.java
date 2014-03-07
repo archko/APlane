@@ -50,6 +50,7 @@ public class HomeFragment extends StatusListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WeiboLog.v(TAG, "onCreate:"+savedInstanceState);
     }
 
     @Override
@@ -310,4 +311,10 @@ public class HomeFragment extends StatusListFragment {
     protected void saveData(SStatusData<Status> statusData) {
 
     }*/
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        WeiboLog.v(TAG, "onSaveInstanceState:"+outState);
+    }
 }

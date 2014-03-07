@@ -107,9 +107,9 @@ public class SidebarAdapter extends BaseAdapter {
 
     public void addEntry(SidebarEntry entry, boolean init) {
         entries.add(entry);
-        if (entry.isHome&&init) {
+        /*if (entry.isHome&&init) {
             getFragment(entry, entries.size()-1);
-        }
+        }*/
     }
 
     void onInitFinished() {
@@ -151,7 +151,7 @@ public class SidebarAdapter extends BaseAdapter {
         private TextView mTitle;
         private TextView mMsg;    //
         private ImageView mIcon;    //
-        private ImageView mLeftSlider;
+        private TextView mLeftSlider;
 
         private SidebarItemView(Context context) {
             super(context);
@@ -161,7 +161,7 @@ public class SidebarAdapter extends BaseAdapter {
             mIcon=(ImageView) findViewById(R.id.image);
             int pref_sidebar_color=PreferenceUtils.getInstace(App.getAppContext()).getDefaultSidebarThemeColor(App.getAppContext());
             mTitle.setTextColor(pref_sidebar_color);
-            mLeftSlider=(ImageView) findViewById(R.id.left_slider);
+            mLeftSlider=(TextView) findViewById(R.id.left_slider);
         }
 
         public void update(final SidebarEntry entry) {
@@ -248,6 +248,14 @@ public class SidebarAdapter extends BaseAdapter {
         return f;
     }*/
 
+    public Fragment getFragment(int position) {
+        if (entries==null||entries.size()<1){
+            return null;
+        }
+        SidebarEntry entry=entries.get(position);
+        return getFragment(entry, position);
+    }
+
     /**
      * 根据SidebarEntry获取Fragment
      *
@@ -263,7 +271,7 @@ public class SidebarAdapter extends BaseAdapter {
 
         Fragment f=null;
         try {
-            f=(Fragment) entry.clazz.newInstance();
+            f= (Fragment) entry.clazz.newInstance();
             //f.setRetainInstance(true);
             mFragmentManager.beginTransaction()
                 .add(R.id.fragment_placeholder, f, entry.id)
