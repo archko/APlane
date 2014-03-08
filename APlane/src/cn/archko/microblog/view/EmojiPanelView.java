@@ -175,10 +175,12 @@ public class EmojiPanelView extends LinearLayout {
             }
 
             if (mode==MODE_PICTURE) {
+                holder.appImage.setVisibility(VISIBLE);
                 holder.appImage.setImageDrawable(context.getResources().getDrawable(AKSmiley.mSmileyMap.get(list[index])));
                 holder.textView.setText(null);
                 holder.textView.setVisibility(GONE);
             } else {
+                holder.appImage.setVisibility(GONE);
                 holder.appImage.setImageDrawable(null);
                 holder.textView.setVisibility(VISIBLE);
                 holder.textView.setText(list[index]);

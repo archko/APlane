@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--专门用于主页的,与随便看看,这类,因为它是有多图的-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:makeramen="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_rl"  tools:ignore="ContentDescription"
     android:layout_marginLeft="8dip" android:layout_marginRight="8dp"
-    android:layout_marginBottom="6dp" android:layout_marginTop="2dp"
+    android:layout_marginBottom="4dp" android:layout_marginTop="4dp"
+    android:background="@drawable/bg_list_content"
     android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <include layout="@layout/home_time_line_item_title"/>

@@ -10,7 +10,6 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.ProgressBar;
-import com.me.microblog.App;
 import com.me.microblog.R;
 
 /**

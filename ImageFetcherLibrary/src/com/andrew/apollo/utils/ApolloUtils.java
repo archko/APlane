@@ -188,7 +188,7 @@ public final class ApolloUtils {
         final T... args) {
         final WeakReference<cn.archko.thread.AsyncTask<T, ?, ?>> taskReference = new WeakReference<cn.archko.thread.AsyncTask<T, ?, ?>>(
             task);
-        taskReference.get().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, args);
+        taskReference.get().executeOnExecutor(cn.archko.thread.AsyncTask.THREAD_POOL_EXECUTOR, args);
     }
 
     /**

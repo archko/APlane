@@ -5,7 +5,7 @@
 
     <translate
         android:duration="150"
-        android:fromXDelta="0%p"
+        android:fromXDelta="50%p"
         android:toXDelta="100%p"/>
 
     <!--<objectAnimator

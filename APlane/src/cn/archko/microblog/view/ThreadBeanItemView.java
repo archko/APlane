@@ -8,7 +8,9 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.util.LruCache;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -93,11 +95,11 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
         mContentSencond.setTextColor(pref_ret_content_color);
 
         //update(status, updateFlag, cache, showLargeBitmap, showBitmap);
-        /*mLeftSlider.setBackgroundColor(sliderColors[mIndex]);
+        mLeftSlider.setBackgroundResource(sliderColors[mIndex]);
         mIndex++;
-        if (mIndex>=8){
+        if (mIndex>=8) {
             mIndex=0;
-        }*/
+        }
     }
 
     /**
@@ -131,7 +133,12 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
             } catch (Exception e) {
             }
 
-            mContentFirst.setText(mStatus.text);
+            SpannableStringBuilder spannableString=new SpannableStringBuilder(mStatus.text);
+            highlightAtClickable(spannableString, WeiboUtil.ATPATTERN);
+            highlightUrlClickable(spannableString, WeiboUtil.getWebPattern());
+            mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
+            mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
+            mContentFirst.setText(spannableString);
 
             if (null==mStatus.user) {
                 WeiboLog.i(TAG, "微博可能被删除，无法显示！");
@@ -184,8 +191,12 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
 
                 try {
                     String title="@"+mRetweetedStatus.user.screenName+":"+mRetweetedStatus.text+" ";
-                    SpannableString spannableString=new SpannableString(title);
-                    WeiboUtil.highlightContent(mContext, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
+                    spannableString=new SpannableStringBuilder(title);
+                    //WeiboUtil.highlightContent(mContext, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
+                    highlightAtClickable(spannableString, WeiboUtil.ATPATTERN);
+                    highlightUrlClickable(spannableString, WeiboUtil.getWebPattern());
+                    mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
+                    mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
                     mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -285,8 +296,8 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
 
     @Override
     public void onClick(View view) {
+        WeiboLog.d(TAG, "onClick:"+view);
         if (mPortrait==view) {
-            WeiboLog.d(TAG, "onClick:");
             /*Intent intent=new Intent(mContext, UserFragmentActivity.class);
             intent.putExtra("nickName", mStatus.user.screenName);
             intent.putExtra("user_id", mStatus.user.id);

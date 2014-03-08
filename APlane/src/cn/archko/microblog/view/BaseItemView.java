@@ -1,20 +1,28 @@
 package cn.archko.microblog.view;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
+import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.archko.microblog.R;
+import cn.archko.microblog.ui.UserFragmentActivity;
+import cn.archko.microblog.utils.WeiboOperation;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
@@ -34,6 +42,7 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;*/
 
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 作为基础类，可以直接使用，但没有头像点击功能。
@@ -75,7 +84,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
     protected TextView mLocation;   //位置信息
     protected SAnnotation sAnnotation;
     public final int[] sliderColors;
-    public int mIndex=0;
+    public static int mIndex=0;
     int mResId;
     //protected DisplayImageOptions options;
 
@@ -97,7 +106,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         if ("1".equals(themeId)) {
             mResId=R.drawable.image_loading_dark;
-        } else if ("2".equals(themeId)){
+        } else if ("2".equals(themeId)) {
             mResId=R.drawable.image_loading_light;
         } else if ("0".equals(themeId)) {
             mResId=R.drawable.image_loading_dark;
@@ -110,6 +119,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
             .bitmapConfig(Bitmap.Config.RGB_565)
             .displayer(new FadeInBitmapDisplayer(300))
             .build();*/
+        this.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
     }
 
     /**
@@ -278,7 +288,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
 
     @Override
     public void onClick(View view) {
-        String imgUrl;
+        /*String imgUrl;
 
         imgUrl=mStatus.bmiddlePic;
         if (TextUtils.isEmpty(imgUrl)) {
@@ -312,7 +322,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
             public void onCancel(DialogInterface dialogInterface) {
                 WeiboLog.d(TAG, "dialog,onCancel.");
             }
-        });
+        });*/
     }
 
     Handler mHandler=new Handler() {
@@ -340,7 +350,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
 
         if (bitmap!=null&&!bitmap.isRecycled()) {
             //if (!isShowLargeBitmap) {   //大图暂时不缓存内存，但是缓存小图
-                ImageCache2.getInstance().addBitmapToMemCache(imgUrl, bitmap);
+            ImageCache2.getInstance().addBitmapToMemCache(imgUrl, bitmap);
             /*} else {
                 LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
                 lruCache.put(imgUrl, bitmap);
@@ -403,5 +413,112 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
             WeiboLog.d(TAG, "bitmap is null:"+imgUrl);
         }
         //DownloadPool.downloading.remove(imgUrl);
+    }
+
+    //--------------------- 内容点击器 ---------------------
+
+    public class AtClicker extends WeiboUtil.MyClicker {
+
+        @Override
+        public void updateDrawState(TextPaint textPaint) {
+            try {
+                if (null!=getResources()) {
+                    textPaint.setColor(getResources().getColor(R.color.holo_light_item_highliht_link));
+                    textPaint.setUnderlineText(true);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onClick(View view) {
+            WeiboLog.d("AtClicker:"+name);
+            if (TextUtils.isEmpty(name)) {
+                WeiboLog.e(TAG, "nick name is null.");
+                return;
+            }
+            WeiboOperation.toViewStatusUser((Activity) mContext, name,
+                -1, UserFragmentActivity.TYPE_USER_INFO);
+        }
+
+    }
+
+    public void highlightAtClickable(Spannable spannable, Pattern pattern) {
+        Matcher atMatcher=pattern.matcher(spannable);
+
+        while (atMatcher.find()) {
+            int start=atMatcher.start();
+            int end=atMatcher.end();
+            //WeiboLog.d("weibo", "start:"+start+" end:"+end);
+            if (end-start==2) {
+            } else {
+                if (end-start<=2) {
+                    break;
+                }
+            }
+
+            String name=spannable.subSequence(start, end).toString();
+            AtClicker clicker=new AtClicker();
+            clicker.name=name;
+            spannable.setSpan(clicker, start, end, 34);
+        }
+    }
+
+    public void highlightUrlClickable(Spannable spannable, Pattern pattern) {
+        Matcher atMatcher=pattern.matcher(spannable);
+
+        while (atMatcher.find()) {
+            int start=atMatcher.start();
+            int end=atMatcher.end();
+            //WeiboLog.d("weibo", "start:"+start+" end:"+end);
+            if (end-start==2) {
+            } else {
+                if (end-start<=2) {
+                    break;
+                }
+            }
+
+            String name=spannable.subSequence(start, end).toString();
+            UrlClicker clicker=new UrlClicker();
+            clicker.name=name;
+            spannable.setSpan(clicker, start, end, 34);
+        }
+    }
+
+    public class UrlClicker extends WeiboUtil.MyClicker {
+
+        @Override
+        public void updateDrawState(TextPaint textPaint) {
+            try {
+                if (null!=getResources()) {
+                    textPaint.setColor(getResources().getColor(R.color.holo_light_item_highliht_link));
+                    textPaint.setUnderlineText(true);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onClick(View view) {
+            WeiboLog.d("UrlClicker:"+name);
+            if (TextUtils.isEmpty(name)) {
+                WeiboLog.e(TAG, "url is null.");
+                return;
+            }
+            //String str1=URLEncoder.encode(this.name);
+            SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+            boolean prefWebview=mPrefs.getBoolean(PreferenceUtils.PREF_WEBVIEW, true);
+            if (!prefWebview) {
+                WeiboUtil.openUrlByDefaultBrowser(mContext, name);
+            } else {
+                /*Intent intent=new Intent(getActivity(), WebviewActivity.class);
+                intent.putExtra("url", name);
+                getActivity().startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.enter_right, R.anim.enter_left);*/
+                WeiboOperation.startWebview((Activity) mContext, name);
+            }
+        }
     }
 }
