@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
     <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <permission android:name="cn.archko.microblog.provider.READ_DATABASE"/>
     <permission android:name="cn.archko.microblog.provider.WRITE_DATABASE"/>
@@ -179,7 +180,7 @@
 
             android:taskAffinity="cn.archko.microblog.webview"></activity>
 
-        <activity android:name=".ui.ImageViewerActivity" android:excludeFromRecents="true" android:screenOrientation="portrait"
+        <activity android:name=".ui.ImageViewerActivity" android:excludeFromRecents="true" android:screenOrientation="sensor"
             android:theme="@style/Theme.AK" android:hardwareAccelerated="false"
             android:taskAffinity="cn.archko.microblog.webview"></activity>
 

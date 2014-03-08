@@ -84,7 +84,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
     protected TextView mLocation;   //位置信息
     protected SAnnotation sAnnotation;
     public final int[] sliderColors;
-    public static int mIndex=0;
+    public static int mIndex=1;
     int mResId;
     //protected DisplayImageOptions options;
 

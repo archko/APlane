@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
 import com.me.microblog.WeiboUtil;
@@ -38,6 +39,8 @@ public class ImageViewerActivity extends Activity {
     String[] mUrls;
     int mSelectedIdx;
     ImageView mSave;
+    TextView mTxtPager;
+    int mTotal=1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,11 +61,13 @@ public class ImageViewerActivity extends Activity {
             AKUtils.showToast("null==url");
             return;
         }
+        mTotal=mUrls.length;
 
         setContentView(R.layout.imageviewer);
         mViewPager=(ViewPager) findViewById(R.id.viewpager);
         mViewPager.setOffscreenPageLimit(0);
         mSave=(ImageView) findViewById(R.id.save);
+        mTxtPager=(TextView) findViewById(R.id.txt_pager);
         mSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +97,10 @@ public class ImageViewerActivity extends Activity {
                 }
             });
         //}
+    }
+
+    private void updatePager(){
+        mTxtPager.setText((mSelectedIdx+1)+"/"+mTotal);
     }
 
     @Override
@@ -190,7 +199,8 @@ public class ImageViewerActivity extends Activity {
         @Override
         public void onPageSelected(int i) {
             WeiboLog.d("onPageSelected."+i);
-            //addListener();
+            mSelectedIdx=i;
+            updatePager();
 
             int size=mFragmentArray.size();
             for (int k=0; k<size; k++) {

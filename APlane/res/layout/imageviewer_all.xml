@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- gif图片查看的布局 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/black"
+    android:layout_height="match_parent" android:layout_width="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:akapp="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent" android:layout_width="match_parent">
+
+    <ScrollView android:id="@+id/lay_webview_parent"
+        android:fillViewport="true" android:scrollbars="none"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <com.me.microblog.view.MyWebView android:id="@+id/webview"
+            android:gravity="center" android:adjustViewBounds="false"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:padding="0dip" android:layout_margin="0dip"
+            android:scrollbars="none"/>
+    </ScrollView>
+
+    <uk.co.senab.photoview.PhotoView android:id="@+id/imageview"
+        android:layout_centerInParent="true" android:adjustViewBounds="false"
+        android:layout_width="match_parent" android:layout_height="match_parent"/>
+
+    <include layout="@layout/imageviewer_progress_bar"/>
+
+</RelativeLayout>
+</LinearLayout>

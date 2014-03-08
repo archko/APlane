@@ -27,7 +27,6 @@ import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
 import com.me.microblog.view.MyWebView;
 import com.me.microblog.view.TextProgressBar;
-//import com.nostra13.universalimageloader.core.ImageLoader;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -55,6 +54,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
     protected String mCacheDir;    //图片缓存目录
 
     String imageBean;
+    View mWebViewParent;
     MyWebView myWebView;
     PhotoView imageView;
     TextProgressBar textProgressBar;
@@ -69,7 +69,24 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
 
     public AKSnapImageView(Context context, String bean) {
         super(context);
-        //((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.scroll_gif_view, this);
+        ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.imageviewer_all, this);
+        mWebViewParent=findViewById(R.id.lay_webview_parent);
+        myWebView=(MyWebView) findViewById(R.id.webview);
+        imageView=(PhotoView) findViewById(R.id.imageview);
+        textProgressBar=(TextProgressBar) findViewById(R.id.progress_bar);
+
+        imageView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
+            @Override
+            public void onViewTap(View view, float x, float y) {
+                close();
+            }
+        });
+        imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+            @Override
+            public void onPhotoTap(View view, float x, float y) {
+                close();
+            }
+        });
 
         mContext=context;
         //update(bean);
@@ -138,17 +155,18 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
 
         stopDownload();
 
-        removeAllViews();
+        if (imageView.getVisibility()==GONE) {
+            imageView.setVisibility(VISIBLE);
+        }
 
-        addImageView();
-        textProgressBar.setVisibility(View.GONE);
+        if (mWebViewParent.getVisibility()==VISIBLE) {
+            mWebViewParent.setVisibility(GONE);
+        }
 
         Bitmap bitmap;
-        //ImageCache2.getInstance().getBitmapFromMemCache(imageBean);
-        //bitmap=ImageLoader.getInstance().getMemoryCache().get(imageBean);
         bitmap=ImageCache.getInstance(mContext).getCachedBitmap(imageBean);
         if (null!=bitmap) {
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             imageView.setImageBitmap(bitmap);
         } else {
             imageView.setImageBitmap(null);
@@ -167,16 +185,10 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         mShouldDownloadImage=true;
         WeiboLog.v(TAG, "loadLargeBitmap:"+bmiddlePic);
 
-        removeAllViews();
-
+        textProgressBar.setVisibility(View.VISIBLE);
         if (imageBean.endsWith("gif")) {
-            addWebView();
-            textProgressBar.setVisibility(View.VISIBLE);
             loadWebview();
         } else {
-            addImageView();
-            textProgressBar.setVisibility(View.VISIBLE);
-
             loadImageView();
         }
     }
@@ -187,47 +199,11 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
      * @param bean
      */
     private void loadView(String bean) {
-        if (getChildCount()>0) {
-            removeAllViews();
-        }
-
         if (bean.endsWith("gif")) {
-            addWebView();
             loadWebview();
         } else {
-            addImageView();
             loadImageView();
         }
-    }
-
-    /**
-     * 添加webview布局,用于查看gif
-     */
-    private void addWebView() {
-        ((LayoutInflater) mContext.getSystemService("layout_inflater")).inflate(R.layout.imageviewer_gif, this);
-        myWebView=(MyWebView) findViewById(R.id.webview);
-        textProgressBar=(TextProgressBar) findViewById(R.id.progress_bar);
-    }
-
-    /**
-     * 添加普通的ImageView,可多点触摸.查看大图与缩略图共用.
-     */
-    private void addImageView() {
-        ((LayoutInflater) mContext.getSystemService("layout_inflater")).inflate(R.layout.imageviewer_png, this);
-        imageView=(PhotoView) findViewById(R.id.imageview);
-        textProgressBar=(TextProgressBar) findViewById(R.id.progress_bar);
-        imageView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
-            @Override
-            public void onViewTap(View view, float x, float y) {
-                close();
-            }
-        });
-        imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
-            @Override
-            public void onPhotoTap(View view, float x, float y) {
-                close();
-            }
-        });
     }
 
     @Override
@@ -271,11 +247,11 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         if (null!=bitmap&&!bitmap.isRecycled()) {
             int screenHeight=getHeight();
             WeiboLog.v(TAG, "loadImageView:"+screenHeight+" bheight:"+bitmap.getHeight());
-            if (screenHeight<bitmap.getHeight()) {
+            /*if (screenHeight<bitmap.getHeight()) {
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             } else {
-                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            }
+            }*/
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             imageView.setImageBitmap(bitmap);
         }
 
@@ -290,7 +266,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
      */
     private void loadWebview() {
         mImageDownloaded=false;
-        File file=new File(mThumbPath);
+        /*File file=new File(mThumbPath);
         if (file.exists()) {
             WeiboLog.d(TAG, "loadWebview:"+mThumbPath);
             BitmapFactory.Options opts=new BitmapFactory.Options();
@@ -298,7 +274,8 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
             BitmapFactory.decodeFile(file.getAbsolutePath(), opts);
             setMeasureSpec(myWebView, AKUtils.convertDpToPx(opts.outWidth), AKUtils.convertDpToPx(opts.outHeight));
             myWebView.loadUrl("file://"+file.getAbsolutePath());
-        }
+        }*/
+        imageView.setScaleType(ImageView.ScaleType.CENTER);
 
         WeiboLog.d(TAG, "loadWebview:"+loadPictureRunning+" bmid:"+bmiddlePic);
         if (!TextUtils.isEmpty(bmiddlePic)) {
@@ -374,6 +351,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                 WeiboLog.d(TAG, "loadWebview:"+mBmidPath);
                 if (null!=myWebView) {
                     try {
+                        mWebViewParent.setVisibility(VISIBLE);
                         BitmapFactory.Options opts=new BitmapFactory.Options();
                         opts.inJustDecodeBounds=true;
                         BitmapFactory.decodeFile(file.getAbsolutePath(), opts);
@@ -383,8 +361,10 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                         e.printStackTrace();
                     }
                 }
+                imageView.setVisibility(GONE);
             } else {
                 WeiboLog.d(TAG, "loadImageview:"+mBmidPath);
+                mWebViewParent.setVisibility(GONE);
                 if (null!=imageView) {
                     Bitmap bitmap=null;
                     try {
