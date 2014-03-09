@@ -576,9 +576,13 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         String title=mStatus.text;
         WeiboLog.v(TAG, "title:"+title);
 
-        SpannableStringBuilder spannableString=new SpannableStringBuilder(buildSmile(title));
-        AKUtils.highlightAtClickable(getActivity(), spannableString, WeiboUtil.ATPATTERN);
-        AKUtils.highlightUrlClickable(getActivity(), spannableString, WeiboUtil.getWebPattern());
+        SpannableStringBuilder spannableString=(SpannableStringBuilder) mStatus.mStatusSpannable;
+        if (null==spannableString) {
+            spannableString=new SpannableStringBuilder(buildSmile(title));
+            AKUtils.highlightAtClickable(getActivity(), spannableString, WeiboUtil.ATPATTERN);
+            AKUtils.highlightUrlClickable(getActivity(), spannableString, WeiboUtil.getWebPattern());
+            mStatus.mStatusSpannable=spannableString;
+        }
         mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
         mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -610,9 +614,13 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                 title="@"+retweetStatus.user.screenName+":"+retweetStatus.text;
             }
             //WeiboLog.i(TAG, "retweetTitle:"+title);
-            spannableString=new SpannableStringBuilder(buildSmile(title));
-            AKUtils.highlightAtClickable(getActivity(), spannableString, WeiboUtil.ATPATTERN);
-            AKUtils.highlightUrlClickable(getActivity(), spannableString, WeiboUtil.getWebPattern());
+            spannableString=(SpannableStringBuilder) mStatus.mRetweetedSpannable;
+            if (null==spannableString) {
+                spannableString=new SpannableStringBuilder(title);
+                AKUtils.highlightAtClickable(getActivity(), spannableString, WeiboUtil.ATPATTERN);
+                AKUtils.highlightUrlClickable(getActivity(), spannableString, WeiboUtil.getWebPattern());
+                mStatus.mRetweetedSpannable=spannableString;
+            }
             mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
             mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
             mLayRetNum.setVisibility(View.VISIBLE);

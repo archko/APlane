@@ -161,10 +161,15 @@ public class CommentItemView extends LinearLayout implements View.OnClickListene
             if (null!=user) {
                 mName.setText(user.screenName);
             }
-            String txt=comment.text;
-            SpannableStringBuilder spannableString=new SpannableStringBuilder(txt);
-            AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
-            AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
+            SpannableStringBuilder spannableString=(SpannableStringBuilder) comment.mSpannable;
+            String txt=null;
+            if (null==spannableString) {
+                txt=comment.text;
+                spannableString=new SpannableStringBuilder(txt);
+                AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
+                AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
+                comment.mSpannable=spannableString;
+            }
             mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
             mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -179,10 +184,14 @@ public class CommentItemView extends LinearLayout implements View.OnClickListene
 
             mCreateAt.setText(DateUtils.getDateString(comment.createdAt));
 
-            txt=mComment.status.text;
-            spannableString=new SpannableStringBuilder(txt);
-            AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
-            AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
+            spannableString=(SpannableStringBuilder) mComment.status.mStatusSpannable;
+            if (null==spannableString) {
+                txt=mComment.status.text;
+                spannableString=new SpannableStringBuilder(txt);
+                AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
+                AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
+                mComment.status.mStatusSpannable=spannableString;
+            }
             mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
             mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
         } catch (Resources.NotFoundException e) {
