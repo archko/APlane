@@ -1,18 +1,10 @@
 package cn.archko.microblog.view;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,28 +13,16 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.archko.microblog.R;
-import cn.archko.microblog.ui.UserFragmentActivity;
-import cn.archko.microblog.utils.WeiboOperation;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
-import com.me.microblog.WeiboUtil;
 import com.me.microblog.bean.SAnnotation;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.util.Constants;
-import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
 import com.me.microblog.view.IBaseItemView;
-import com.me.microblog.view.ImageViewerDialog;
-/*import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;*/
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 作为基础类，可以直接使用，但没有头像点击功能。
@@ -413,112 +393,5 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
             WeiboLog.d(TAG, "bitmap is null:"+imgUrl);
         }
         //DownloadPool.downloading.remove(imgUrl);
-    }
-
-    //--------------------- 内容点击器 ---------------------
-
-    public class AtClicker extends WeiboUtil.MyClicker {
-
-        @Override
-        public void updateDrawState(TextPaint textPaint) {
-            try {
-                if (null!=getResources()) {
-                    textPaint.setColor(getResources().getColor(R.color.holo_light_item_highliht_link));
-                    textPaint.setUnderlineText(true);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onClick(View view) {
-            WeiboLog.d("AtClicker:"+name);
-            if (TextUtils.isEmpty(name)) {
-                WeiboLog.e(TAG, "nick name is null.");
-                return;
-            }
-            WeiboOperation.toViewStatusUser((Activity) mContext, name,
-                -1, UserFragmentActivity.TYPE_USER_INFO);
-        }
-
-    }
-
-    public void highlightAtClickable(Spannable spannable, Pattern pattern) {
-        Matcher atMatcher=pattern.matcher(spannable);
-
-        while (atMatcher.find()) {
-            int start=atMatcher.start();
-            int end=atMatcher.end();
-            //WeiboLog.d("weibo", "start:"+start+" end:"+end);
-            if (end-start==2) {
-            } else {
-                if (end-start<=2) {
-                    break;
-                }
-            }
-
-            String name=spannable.subSequence(start, end).toString();
-            AtClicker clicker=new AtClicker();
-            clicker.name=name;
-            spannable.setSpan(clicker, start, end, 34);
-        }
-    }
-
-    public void highlightUrlClickable(Spannable spannable, Pattern pattern) {
-        Matcher atMatcher=pattern.matcher(spannable);
-
-        while (atMatcher.find()) {
-            int start=atMatcher.start();
-            int end=atMatcher.end();
-            //WeiboLog.d("weibo", "start:"+start+" end:"+end);
-            if (end-start==2) {
-            } else {
-                if (end-start<=2) {
-                    break;
-                }
-            }
-
-            String name=spannable.subSequence(start, end).toString();
-            UrlClicker clicker=new UrlClicker();
-            clicker.name=name;
-            spannable.setSpan(clicker, start, end, 34);
-        }
-    }
-
-    public class UrlClicker extends WeiboUtil.MyClicker {
-
-        @Override
-        public void updateDrawState(TextPaint textPaint) {
-            try {
-                if (null!=getResources()) {
-                    textPaint.setColor(getResources().getColor(R.color.holo_light_item_highliht_link));
-                    textPaint.setUnderlineText(true);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onClick(View view) {
-            WeiboLog.d("UrlClicker:"+name);
-            if (TextUtils.isEmpty(name)) {
-                WeiboLog.e(TAG, "url is null.");
-                return;
-            }
-            //String str1=URLEncoder.encode(this.name);
-            SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
-            boolean prefWebview=mPrefs.getBoolean(PreferenceUtils.PREF_WEBVIEW, true);
-            if (!prefWebview) {
-                WeiboUtil.openUrlByDefaultBrowser(mContext, name);
-            } else {
-                /*Intent intent=new Intent(getActivity(), WebviewActivity.class);
-                intent.putExtra("url", name);
-                getActivity().startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.enter_right, R.anim.enter_left);*/
-                WeiboOperation.startWebview((Activity) mContext, name);
-            }
-        }
     }
 }

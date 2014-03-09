@@ -9,9 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -30,7 +28,6 @@ import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.ui.PrefsActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
-import cn.archko.microblog.ui.WebviewActivity;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import cn.archko.microblog.utils.WeiboOperation;
@@ -62,7 +59,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 显示一条微博完整的信息.不包含它的评论列表.
@@ -581,8 +577,8 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         WeiboLog.v(TAG, "title:"+title);
 
         SpannableStringBuilder spannableString=new SpannableStringBuilder(buildSmile(title));
-        highlightAtClickable(spannableString, WeiboUtil.ATPATTERN);
-        highlightUrlClickable(spannableString, WeiboUtil.getWebPattern());
+        AKUtils.highlightAtClickable(getActivity(), spannableString, WeiboUtil.ATPATTERN);
+        AKUtils.highlightUrlClickable(getActivity(), spannableString, WeiboUtil.getWebPattern());
         mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
         mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -615,8 +611,8 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             }
             //WeiboLog.i(TAG, "retweetTitle:"+title);
             spannableString=new SpannableStringBuilder(buildSmile(title));
-            highlightAtClickable(spannableString, WeiboUtil.ATPATTERN);
-            highlightUrlClickable(spannableString, WeiboUtil.getWebPattern());
+            AKUtils.highlightAtClickable(getActivity(), spannableString, WeiboUtil.ATPATTERN);
+            AKUtils.highlightUrlClickable(getActivity(), spannableString, WeiboUtil.getWebPattern());
             mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
             mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
             mLayRetNum.setVisibility(View.VISIBLE);
@@ -980,112 +976,6 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    //--------------------- 内容点击器 ---------------------
-
-    private class AtClicker extends WeiboUtil.MyClicker {
-
-        @Override
-        public void updateDrawState(TextPaint textPaint) {
-            try {
-                if (isResumed()) {
-                    textPaint.setColor(getResources().getColor(R.color.holo_light_item_highliht_link));
-                    textPaint.setUnderlineText(true);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onClick(View view) {
-            WeiboLog.d("AtClicker:"+name);
-            if (TextUtils.isEmpty(name)) {
-                WeiboLog.e(TAG, "nick name is null.");
-                return;
-            }
-            WeiboOperation.toViewStatusUser(StatusDetailFragment.this.getActivity(), name,
-                -1, UserFragmentActivity.TYPE_USER_INFO);
-        }
-
-    }
-
-    public void highlightAtClickable(Spannable spannable, Pattern pattern) {
-        Matcher atMatcher=pattern.matcher(spannable);
-
-        while (atMatcher.find()) {
-            int start=atMatcher.start();
-            int end=atMatcher.end();
-            //WeiboLog.d("weibo", "start:"+start+" end:"+end);
-            if (end-start==2) {
-            } else {
-                if (end-start<=2) {
-                    break;
-                }
-            }
-
-            String name=spannable.subSequence(start, end).toString();
-            AtClicker clicker=new AtClicker();
-            clicker.name=name;
-            spannable.setSpan(clicker, start, end, 34);
-        }
-    }
-
-    public void highlightUrlClickable(Spannable spannable, Pattern pattern) {
-        Matcher atMatcher=pattern.matcher(spannable);
-
-        while (atMatcher.find()) {
-            int start=atMatcher.start();
-            int end=atMatcher.end();
-            //WeiboLog.d("weibo", "start:"+start+" end:"+end);
-            if (end-start==2) {
-            } else {
-                if (end-start<=2) {
-                    break;
-                }
-            }
-
-            String name=spannable.subSequence(start, end).toString();
-            UrlClicker clicker=new UrlClicker();
-            clicker.name=name;
-            spannable.setSpan(clicker, start, end, 34);
-        }
-    }
-
-    private class UrlClicker extends WeiboUtil.MyClicker {
-
-        @Override
-        public void updateDrawState(TextPaint textPaint) {
-            try {
-                if (isResumed()) {
-                    textPaint.setColor(getResources().getColor(R.color.holo_light_item_highliht_link));
-                    textPaint.setUnderlineText(true);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onClick(View view) {
-            WeiboLog.d("UrlClicker:"+name);
-            if (TextUtils.isEmpty(name)) {
-                WeiboLog.e(TAG, "url is null.");
-                return;
-            }
-            //String str1=URLEncoder.encode(this.name);
-            boolean prefWebview=mPrefs.getBoolean(PreferenceUtils.PREF_WEBVIEW, true);
-            if (!prefWebview) {
-                WeiboUtil.openUrlByDefaultBrowser(getActivity(), name);
-            } else {
-                /*Intent intent=new Intent(getActivity(), WebviewActivity.class);
-                intent.putExtra("url", name);
-                getActivity().startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.enter_right, R.anim.enter_left);*/
-                WeiboOperation.startWebview(getActivity(), name);
-            }
         }
     }
 

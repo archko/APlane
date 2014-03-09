@@ -20,6 +20,7 @@ import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.ImageAdapter;
 import cn.archko.microblog.ui.UserFragmentActivity;
+import cn.archko.microblog.utils.AKUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
@@ -134,11 +135,10 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
             }
 
             SpannableStringBuilder spannableString=new SpannableStringBuilder(mStatus.text);
-            highlightAtClickable(spannableString, WeiboUtil.ATPATTERN);
-            highlightUrlClickable(spannableString, WeiboUtil.getWebPattern());
+            AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
+            AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
             mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
             mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
-            mContentFirst.setText(spannableString);
 
             if (null==mStatus.user) {
                 WeiboLog.i(TAG, "微博可能被删除，无法显示！");
@@ -193,11 +193,10 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
                     String title="@"+mRetweetedStatus.user.screenName+":"+mRetweetedStatus.text+" ";
                     spannableString=new SpannableStringBuilder(title);
                     //WeiboUtil.highlightContent(mContext, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
-                    highlightAtClickable(spannableString, WeiboUtil.ATPATTERN);
-                    highlightUrlClickable(spannableString, WeiboUtil.getWebPattern());
+                    AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
+                    AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
                     mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
                     mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
-                    mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -5,10 +5,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.preference.PreferenceManager;
+import android.text.Spannable;
+import android.text.TextPaint;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 import cn.archko.microblog.R;
@@ -16,6 +22,7 @@ import cn.archko.microblog.service.AKWidgetService;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.service.WeiboService;
 import cn.archko.microblog.ui.LoginActivity;
+import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.view.ColorSchemeDialog;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
@@ -25,6 +32,8 @@ import com.me.microblog.util.WeiboLog;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * User: archko Date: 12-12-28 Time: 下午3:18
@@ -187,14 +196,134 @@ public class AKUtils {
         colorPickerView.setButton(AlertDialog.BUTTON_POSITIVE,
             context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
 
-            @Override
-            public void onClick(final DialogInterface dialog, final int which) {
-                PreferenceUtils.getInstace(context).setDefaultFontThemeColor(key,
-                    colorPickerView.getColor());
+                @Override
+                public void onClick(final DialogInterface dialog, final int which) {
+                    PreferenceUtils.getInstace(context).setDefaultFontThemeColor(key,
+                        colorPickerView.getColor());
+                }
             }
-        });
+        );
         colorPickerView.setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(R.string.cancel),
             (DialogInterface.OnClickListener) null);
         colorPickerView.show();
+    }
+
+    //--------------------- 内容点击器 ---------------------
+
+    public static class AtClicker extends WeiboUtil.MyClicker {
+
+        Context mContext;
+
+        public AtClicker(Context context) {
+            this.mContext=context;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint textPaint) {
+            try {
+                if (null!=mContext&&null!=mContext.getResources()) {
+                    textPaint.setColor(mContext.getResources().getColor(R.color.holo_light_item_highliht_link));
+                    textPaint.setUnderlineText(true);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onClick(View view) {
+            WeiboLog.d("AtClicker:"+name);
+            if (TextUtils.isEmpty(name)) {
+                WeiboLog.e("nick name is null.");
+                return;
+            }
+            WeiboOperation.toViewStatusUser((Activity) mContext, name,
+                -1, UserFragmentActivity.TYPE_USER_INFO);
+        }
+
+    }
+
+    public static class UrlClicker extends WeiboUtil.MyClicker {
+
+        Context mContext;
+
+        public UrlClicker(Context mContext) {
+            this.mContext=mContext;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint textPaint) {
+            try {
+                if (null!=mContext&&null!=mContext.getResources()) {
+                    textPaint.setColor(mContext.getResources().getColor(R.color.holo_light_item_highliht_link));
+                    textPaint.setUnderlineText(true);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onClick(View view) {
+            WeiboLog.d("UrlClicker:"+name);
+            if (TextUtils.isEmpty(name)) {
+                WeiboLog.e("url is null.");
+                return;
+            }
+            //String str1=URLEncoder.encode(this.name);
+            SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+            boolean prefWebview=mPrefs.getBoolean(PreferenceUtils.PREF_WEBVIEW, true);
+            if (!prefWebview) {
+                WeiboUtil.openUrlByDefaultBrowser(mContext, name);
+            } else {
+                /*Intent intent=new Intent(getActivity(), WebviewActivity.class);
+                intent.putExtra("url", name);
+                getActivity().startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.enter_right, R.anim.enter_left);*/
+                WeiboOperation.startWebview((Activity) mContext, name);
+            }
+        }
+    }
+
+    public static void highlightAtClickable(Context context, Spannable spannable, Pattern pattern) {
+        Matcher atMatcher=pattern.matcher(spannable);
+
+        while (atMatcher.find()) {
+            int start=atMatcher.start();
+            int end=atMatcher.end();
+            //WeiboLog.d("weibo", "start:"+start+" end:"+end);
+            if (end-start==2) {
+            } else {
+                if (end-start<=2) {
+                    break;
+                }
+            }
+
+            String name=spannable.subSequence(start, end).toString();
+            AtClicker clicker=new AtClicker(context);
+            clicker.name=name;
+            spannable.setSpan(clicker, start, end, 34);
+        }
+    }
+
+    public static void highlightUrlClickable(Context context, Spannable spannable, Pattern pattern) {
+        Matcher atMatcher=pattern.matcher(spannable);
+
+        while (atMatcher.find()) {
+            int start=atMatcher.start();
+            int end=atMatcher.end();
+            //WeiboLog.d("weibo", "start:"+start+" end:"+end);
+            if (end-start==2) {
+            } else {
+                if (end-start<=2) {
+                    break;
+                }
+            }
+
+            String name=spannable.subSequence(start, end).toString();
+            UrlClicker clicker=new UrlClicker(context);
+            clicker.name=name;
+            spannable.setSpan(clicker, start, end, 34);
+        }
     }
 }

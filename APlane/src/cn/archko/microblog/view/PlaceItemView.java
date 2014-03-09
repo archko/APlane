@@ -8,7 +8,9 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.util.LruCache;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.ImageAdapter;
 import cn.archko.microblog.ui.UserFragmentActivity;
+import cn.archko.microblog.utils.AKUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
@@ -93,6 +96,12 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
         }
         mContentFirst.setTextColor(pref_content_color);
         mContentSencond.setTextColor(pref_ret_content_color);
+
+        mLeftSlider.setBackgroundResource(sliderColors[mIndex]);
+        mIndex++;
+        if (mIndex>=8) {
+            mIndex=0;
+        }
     }
 
     @Override
@@ -117,7 +126,12 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
             } catch (Exception e) {
             }
 
-            mContentFirst.setText(mStatus.text);
+            String title=(mStatus.text);
+            SpannableStringBuilder spannableString=new SpannableStringBuilder(title);
+            AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
+            AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
+            mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
+            mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
             if (null==mStatus.user) {
                 WeiboLog.i(TAG, "微博可能被删除，无法显示！");
@@ -157,10 +171,12 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
                 mContentSencond.setVisibility(View.VISIBLE);
 
                 try {
-                    String title="@"+mRetweetedStatus.user.screenName+":"+mRetweetedStatus.text+" ";
-                    SpannableString spannableString=new SpannableString(title);
-                    WeiboUtil.highlightContent(mContext, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
+                    title="@"+mRetweetedStatus.user.screenName+":"+mRetweetedStatus.text+" ";
+                    spannableString=new SpannableStringBuilder(title);
+                    AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
+                    AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
                     mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
+                    mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

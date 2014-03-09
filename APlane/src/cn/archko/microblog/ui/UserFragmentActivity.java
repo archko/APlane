@@ -35,14 +35,14 @@ public class UserFragmentActivity extends AbstractFragmentTabsPager {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         Intent intent=getIntent();
         if (intent==null) {
             Toast.makeText(UserFragmentActivity.this, "系统错误", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
+
+        super.onCreate(savedInstanceState);
 
         mActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         mActionBar.setDisplayShowTitleEnabled(true);
@@ -66,7 +66,7 @@ public class UserFragmentActivity extends AbstractFragmentTabsPager {
     protected void _onCreate(Bundle bundle) {
         super._onCreate(bundle);
         //mActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
-        mViewPager.setOffscreenPageLimit(3);
+        //mViewPager.setOffscreenPageLimit(3);
     }
 
     @Override

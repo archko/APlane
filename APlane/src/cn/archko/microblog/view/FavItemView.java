@@ -2,11 +2,14 @@ package cn.archko.microblog.view;
 
 import android.content.Context;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Checkable;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.archko.microblog.R;
+import cn.archko.microblog.utils.AKUtils;
 import com.me.microblog.WeiboUtil;
 import com.me.microblog.bean.Favorite;
 import com.me.microblog.util.DateUtils;
@@ -86,7 +89,12 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
             } catch (Exception e) {
             }
 
-            mContentFirst.setText(mStatus.text);
+            String title=mStatus.text;
+            SpannableStringBuilder spannableString=new SpannableStringBuilder(title);
+            AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
+            AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
+            mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
+            mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
             if (null==mStatus.user) {
                 WeiboLog.i(TAG, "微博可能被删除，无法显示！");
@@ -138,10 +146,12 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
                 }
 
                 try {
-                    String title="@"+mRetweetedStatus.user.screenName+":"+mRetweetedStatus.text+" ";
-                    SpannableString spannableString=new SpannableString(title);
-                    WeiboUtil.highlightContent(mContext, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
+                    title="@"+mRetweetedStatus.user.screenName+":"+mRetweetedStatus.text+" ";
+                    spannableString=new SpannableStringBuilder(title);
+                    AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
+                    AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
                     mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
+                    mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.ui.UserFragmentActivity;
+import cn.archko.microblog.utils.AKUtils;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import cn.archko.microblog.utils.WeiboOperation;
@@ -159,7 +162,11 @@ public class CommentItemView extends LinearLayout implements View.OnClickListene
                 mName.setText(user.screenName);
             }
             String txt=comment.text;
-            mContentFirst.setText(txt);
+            SpannableStringBuilder spannableString=new SpannableStringBuilder(txt);
+            AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
+            AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
+            mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
+            mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
             String source=comment.source;
             Matcher atMatcher=WeiboUtil.comeFrom.matcher(source);
@@ -173,7 +180,11 @@ public class CommentItemView extends LinearLayout implements View.OnClickListene
             mCreateAt.setText(DateUtils.getDateString(comment.createdAt));
 
             txt=mComment.status.text;
-            mContentSencond.setText(txt);
+            spannableString=new SpannableStringBuilder(txt);
+            AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
+            AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
+            mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
+            mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
         }
