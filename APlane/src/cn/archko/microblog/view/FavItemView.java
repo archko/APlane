@@ -90,9 +90,13 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
             }
 
             String title=mStatus.text;
-            SpannableStringBuilder spannableString=new SpannableStringBuilder(title);
-            AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
-            AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
+            SpannableStringBuilder spannableString=(SpannableStringBuilder) mStatus.mStatusSpannable;
+            if (null==spannableString) {
+                spannableString=new SpannableStringBuilder(mStatus.text);
+                AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
+                AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
+                mStatus.mStatusSpannable=spannableString;
+            }
             mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
             mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -147,9 +151,13 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
 
                 try {
                     title="@"+mRetweetedStatus.user.screenName+":"+mRetweetedStatus.text+" ";
-                    spannableString=new SpannableStringBuilder(title);
-                    AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
-                    AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
+                    spannableString=(SpannableStringBuilder) mStatus.mRetweetedSpannable;
+                    if (null==spannableString) {
+                        spannableString=new SpannableStringBuilder(title);
+                        AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
+                        AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
+                        mStatus.mRetweetedSpannable=spannableString;
+                    }
                     mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
                     mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
                 } catch (Exception e) {

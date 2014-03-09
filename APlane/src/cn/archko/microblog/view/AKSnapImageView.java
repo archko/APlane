@@ -275,7 +275,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
             setMeasureSpec(myWebView, AKUtils.convertDpToPx(opts.outWidth), AKUtils.convertDpToPx(opts.outHeight));
             myWebView.loadUrl("file://"+file.getAbsolutePath());
         }*/
-        imageView.setScaleType(ImageView.ScaleType.CENTER);
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
         WeiboLog.d(TAG, "loadWebview:"+loadPictureRunning+" bmid:"+bmiddlePic);
         if (!TextUtils.isEmpty(bmiddlePic)) {

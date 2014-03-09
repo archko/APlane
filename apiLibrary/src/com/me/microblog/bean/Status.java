@@ -1,5 +1,7 @@
 package com.me.microblog.bean;
 
+import android.text.Spannable;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
@@ -90,6 +92,9 @@ public class Status implements Serializable {
      * 表态数
      */
     public int attitudes_count;
+
+    public Spannable mStatusSpannable;
+    public Spannable mRetweetedSpannable;
 
     public Status() {
     }
