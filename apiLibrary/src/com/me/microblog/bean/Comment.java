@@ -43,6 +43,7 @@ public class Comment implements Serializable {
      * 是否被截断
      */
     public boolean truncated;
+    public AKSpannableStringBuilder mSpannable;
 
     public Comment() {
     }

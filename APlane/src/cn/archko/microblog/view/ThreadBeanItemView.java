@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.util.LruCache;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -25,6 +23,7 @@ import com.andrew.apollo.utils.PreferenceUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtil;
+import com.me.microblog.bean.AKSpannableStringBuilder;
 import com.me.microblog.bean.Status;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.thread.DownloadPool;
@@ -134,9 +133,9 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
             } catch (Exception e) {
             }
 
-            SpannableStringBuilder spannableString=(SpannableStringBuilder) mStatus.mStatusSpannable;
+            AKSpannableStringBuilder spannableString=(AKSpannableStringBuilder) mStatus.mStatusSpannable;
             if (null==spannableString) {
-                spannableString=new SpannableStringBuilder(mStatus.text);
+                spannableString=new AKSpannableStringBuilder(mStatus.text);
                 AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
                 AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
                 mStatus.mStatusSpannable=spannableString;
@@ -195,9 +194,9 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
 
                 try {
                     String title="@"+mRetweetedStatus.user.screenName+":"+mRetweetedStatus.text+" ";
-                    spannableString=(SpannableStringBuilder) mStatus.mRetweetedSpannable;
+                    spannableString=(AKSpannableStringBuilder) mStatus.mRetweetedSpannable;
                     if (null==spannableString) {
-                        spannableString=new SpannableStringBuilder(title);
+                        spannableString=new AKSpannableStringBuilder(title);
                         //WeiboUtil.highlightContent(mContext, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
                         AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
                         AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());

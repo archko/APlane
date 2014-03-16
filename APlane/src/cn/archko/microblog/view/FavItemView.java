@@ -1,8 +1,6 @@
 package cn.archko.microblog.view;
 
 import android.content.Context;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Checkable;
@@ -11,6 +9,7 @@ import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.utils.AKUtils;
 import com.me.microblog.WeiboUtil;
+import com.me.microblog.bean.AKSpannableStringBuilder;
 import com.me.microblog.bean.Favorite;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
@@ -90,9 +89,9 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
             }
 
             String title=mStatus.text;
-            SpannableStringBuilder spannableString=(SpannableStringBuilder) mStatus.mStatusSpannable;
+            AKSpannableStringBuilder spannableString=(AKSpannableStringBuilder) mStatus.mStatusSpannable;
             if (null==spannableString) {
-                spannableString=new SpannableStringBuilder(mStatus.text);
+                spannableString=new AKSpannableStringBuilder(mStatus.text);
                 AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
                 AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
                 mStatus.mStatusSpannable=spannableString;
@@ -151,9 +150,9 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
 
                 try {
                     title="@"+mRetweetedStatus.user.screenName+":"+mRetweetedStatus.text+" ";
-                    spannableString=(SpannableStringBuilder) mStatus.mRetweetedSpannable;
+                    spannableString=(AKSpannableStringBuilder) mStatus.mRetweetedSpannable;
                     if (null==spannableString) {
-                        spannableString=new SpannableStringBuilder(title);
+                        spannableString=new AKSpannableStringBuilder(title);
                         AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
                         AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
                         mStatus.mRetweetedSpannable=spannableString;

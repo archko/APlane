@@ -57,6 +57,8 @@ public class WeiboOperation {
             Intent intent=new Intent();
             intent.setClass(context, RepostStatusActivity.class);
             if (null!=status) {
+                status.mStatusSpannable=null;
+                status.mRetweetedSpannable=null;
                 intent.putExtra("status", status);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
@@ -93,6 +95,8 @@ public class WeiboOperation {
             Intent intent=new Intent();
             intent.setClass(context, ViewStatusDetailActivity.class);
             if (null!=status) {
+                status.mStatusSpannable=null;
+                status.mRetweetedSpannable=null;
                 intent.putExtra("status", status);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
@@ -109,6 +113,8 @@ public class WeiboOperation {
             Intent intent=new Intent();
             intent.setClass(context, ViewStatusDetailActivity.class);
             if (null!=status) {
+                status.mStatusSpannable=null;
+                status.mRetweetedSpannable=null;
                 intent.putExtra("status", status);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("refresh", refresh);
@@ -131,6 +137,8 @@ public class WeiboOperation {
             Intent intent=new Intent();
             intent.setClass(context, CommentStatusActivity.class);
             if (null!=status) {
+                status.mStatusSpannable=null;
+                status.mRetweetedSpannable=null;
                 intent.putExtra("status", status);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);

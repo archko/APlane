@@ -5,7 +5,7 @@ package com.me.microblog.bean;
  */
 public class AtUser {
 
-    public static final long serialVersionUID=3894560643019408231L;
+    public static final long serialVersionUID=3894560643019408232L;
 
     /**
      * 数据库主键id

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -33,6 +32,7 @@ import com.andrew.apollo.utils.PreferenceUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtil;
+import com.me.microblog.bean.AKSpannableStringBuilder;
 import com.me.microblog.bean.SendTask;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
@@ -576,9 +576,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         String title=mStatus.text;
         WeiboLog.v(TAG, "title:"+title);
 
-        SpannableStringBuilder spannableString=(SpannableStringBuilder) mStatus.mStatusSpannable;
+        AKSpannableStringBuilder spannableString=(AKSpannableStringBuilder) mStatus.mStatusSpannable;
         if (null==spannableString) {
-            spannableString=new SpannableStringBuilder(buildSmile(title));
+            spannableString=new AKSpannableStringBuilder(buildSmile(title));
             AKUtils.highlightAtClickable(getActivity(), spannableString, WeiboUtil.ATPATTERN);
             AKUtils.highlightUrlClickable(getActivity(), spannableString, WeiboUtil.getWebPattern());
             mStatus.mStatusSpannable=spannableString;
@@ -614,9 +614,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                 title="@"+retweetStatus.user.screenName+":"+retweetStatus.text;
             }
             //WeiboLog.i(TAG, "retweetTitle:"+title);
-            spannableString=(SpannableStringBuilder) mStatus.mRetweetedSpannable;
+            spannableString=(AKSpannableStringBuilder) mStatus.mRetweetedSpannable;
             if (null==spannableString) {
-                spannableString=new SpannableStringBuilder(title);
+                spannableString=new AKSpannableStringBuilder(title);
                 AKUtils.highlightAtClickable(getActivity(), spannableString, WeiboUtil.ATPATTERN);
                 AKUtils.highlightUrlClickable(getActivity(), spannableString, WeiboUtil.getWebPattern());
                 mStatus.mRetweetedSpannable=spannableString;

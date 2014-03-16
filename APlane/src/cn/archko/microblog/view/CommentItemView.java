@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -25,6 +24,7 @@ import com.andrew.apollo.utils.PreferenceUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtil;
+import com.me.microblog.bean.AKSpannableStringBuilder;
 import com.me.microblog.bean.Comment;
 import com.me.microblog.bean.User;
 import com.me.microblog.cache.ImageCache2;
@@ -161,11 +161,11 @@ public class CommentItemView extends LinearLayout implements View.OnClickListene
             if (null!=user) {
                 mName.setText(user.screenName);
             }
-            SpannableStringBuilder spannableString=(SpannableStringBuilder) comment.mSpannable;
+            AKSpannableStringBuilder spannableString=(AKSpannableStringBuilder) comment.mSpannable;
             String txt=null;
             if (null==spannableString) {
                 txt=comment.text;
-                spannableString=new SpannableStringBuilder(txt);
+                spannableString=new AKSpannableStringBuilder(txt);
                 AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
                 AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
                 comment.mSpannable=spannableString;
@@ -184,10 +184,10 @@ public class CommentItemView extends LinearLayout implements View.OnClickListene
 
             mCreateAt.setText(DateUtils.getDateString(comment.createdAt));
 
-            spannableString=(SpannableStringBuilder) mComment.status.mStatusSpannable;
+            spannableString=(AKSpannableStringBuilder) mComment.status.mStatusSpannable;
             if (null==spannableString) {
                 txt=mComment.status.text;
-                spannableString=new SpannableStringBuilder(txt);
+                spannableString=new AKSpannableStringBuilder(txt);
                 AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
                 AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
                 mComment.status.mStatusSpannable=spannableString;
