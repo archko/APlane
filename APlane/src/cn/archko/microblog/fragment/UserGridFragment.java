@@ -182,6 +182,10 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         mGridView.setAdapter(mAdapter);
 
         //loadData();
+        if (!hasAttach) {   //不在onAttach中处理,因为refresh可能先调用,以保证数据初始化.
+            hasAttach=true;
+            refresh();
+        }
     }
 
     @Override
@@ -280,37 +284,39 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         if (mDataList!=null&&mDataList.size()>0) {
             mAdapter.notifyDataSetChanged();
         } else {
-            long userId=intent.getLongExtra("user_id", -1);
-            //userScreenName=intent.getStringExtra("screen_name");
+            if (hasAttach) {
+                long userId=intent.getLongExtra("user_id", -1);
+                //userScreenName=intent.getStringExtra("screen_name");
 
-            if (userId==mUserId) {
-                WeiboLog.i(TAG, "相同的用户不加载");
-                if (mDataList!=null&&mDataList.size()>0) {
-                    mAdapter.notifyDataSetChanged();
+                if (userId==mUserId) {
+                    WeiboLog.i(TAG, "相同的用户不加载");
+                    if (mDataList!=null&&mDataList.size()>0) {
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    return;
                 }
-                return;
-            }
 
-            if (userId==-1) {
-                WeiboLog.w(TAG, "用户的id错误，无法获取数据,现在获取登录用户信息。");
-                //showToast("用户的id错误，无法获取数据。", Toast.LENGTH_SHORT);
-                //return;
-                userId=currentUserId;
-            }
+                if (userId==-1) {
+                    WeiboLog.w(TAG, "用户的id错误，无法获取数据,现在获取登录用户信息。");
+                    //showToast("用户的id错误，无法获取数据。", Toast.LENGTH_SHORT);
+                    //return;
+                    userId=currentUserId;
+                }
 
-            if (userId==100) {
-                AKUtils.showToast(R.string.user_id_error);
-                WeiboLog.w(TAG, "人员的id没有，有可能是只传来昵称！");
-                return;
-            }
+                if (userId==100) {
+                    AKUtils.showToast(R.string.user_id_error);
+                    WeiboLog.w(TAG, "人员的id没有，有可能是只传来昵称！");
+                    return;
+                }
 
-            mDataList.clear();
-            mUserId=userId;
-            if (!isLoading) {
-                fetchData(-1, -1, true, false);
-            } else {
-                mEmptyTxt.setText(R.string.list_pre_empty_txt);
-                mEmptyTxt.setVisibility(View.VISIBLE);
+                mDataList.clear();
+                mUserId=userId;
+                if (!isLoading) {
+                    fetchData(-1, -1, true, false);
+                } else {
+                    mEmptyTxt.setText(R.string.list_pre_empty_txt);
+                    mEmptyTxt.setVisibility(View.VISIBLE);
+                }
             }
         }
     }

@@ -130,6 +130,16 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      * 是否显示上下导航按钮
      */
     protected boolean showNavPageBtn=true;
+    /**
+     * 是否已经添加到Activity中,新的fragment会有这样的问题.
+     */
+    protected boolean hasAttach=false;
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        hasAttach=false;
+    }
 
     /**
      * When creating, retrieve this instance's number from its arguments.
