@@ -97,7 +97,7 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
                 mStatus.mStatusSpannable=spannableString;
             }
             mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
-            mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
+            //mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
             if (null==mStatus.user) {
                 WeiboLog.i(TAG, "微博可能被删除，无法显示！");
@@ -158,7 +158,7 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
                         mStatus.mRetweetedSpannable=spannableString;
                     }
                     mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
-                    mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
+                    //mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -93,6 +93,8 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
         }
         mContentFirst.setTextColor(pref_content_color);
         mContentSencond.setTextColor(pref_ret_content_color);
+        mContentFirst.setOnTouchListener(this);
+        mContentSencond.setOnTouchListener(this);
 
         //update(status, updateFlag, cache, showLargeBitmap, showBitmap);
         mLeftSlider.setBackgroundResource(sliderColors[mIndex]);
@@ -141,7 +143,7 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
                 mStatus.mStatusSpannable=spannableString;
             }
             mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
-            mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
+            //mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
             if (null==mStatus.user) {
                 WeiboLog.i(TAG, "微博可能被删除，无法显示！");
@@ -203,7 +205,7 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
                         mStatus.mRetweetedSpannable=spannableString;
                     }
                     mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
-                    mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
+                    //mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

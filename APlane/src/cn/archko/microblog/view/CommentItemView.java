@@ -44,7 +44,7 @@ import java.util.regex.Matcher;
  *
  * @author: archko 12-9-2
  */
-public class CommentItemView extends LinearLayout implements View.OnClickListener {
+public class CommentItemView extends BaseItemView implements View.OnClickListener {
 
     public static final String TAG="CommentItemView";
     protected Context mContext;
@@ -77,7 +77,7 @@ public class CommentItemView extends LinearLayout implements View.OnClickListene
      */
     public CommentItemView(Context context, ListView view, String cacheDir, Comment comment, boolean updateFlag,
         boolean cache, boolean showBitmap, boolean showSencondContent) {
-        super(context);
+        super(context, view, cacheDir, null, updateFlag);
         ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.comment_item, this);
 
         parent=view;
@@ -119,6 +119,8 @@ public class CommentItemView extends LinearLayout implements View.OnClickListene
         }
         mContentFirst.setTextColor(pref_content_color);
         mContentSencond.setTextColor(pref_ret_content_color);
+        mContentFirst.setOnTouchListener(this);
+        mContentSencond.setOnTouchListener(this);
 
         /*options = new DisplayImageOptions.Builder()
             .cacheInMemory(true)
@@ -171,7 +173,7 @@ public class CommentItemView extends LinearLayout implements View.OnClickListene
                 comment.mSpannable=spannableString;
             }
             mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
-            mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
+            //mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
             String source=comment.source;
             Matcher atMatcher=WeiboUtil.comeFrom.matcher(source);
@@ -193,7 +195,7 @@ public class CommentItemView extends LinearLayout implements View.OnClickListene
                 mComment.status.mStatusSpannable=spannableString;
             }
             mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
-            mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
+            //mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
         }

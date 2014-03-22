@@ -5,7 +5,13 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Layout;
+import android.text.Selection;
+import android.text.Spannable;
 import android.text.TextUtils;
+import android.text.style.ClickableSpan;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -29,7 +35,7 @@ import com.me.microblog.view.IBaseItemView;
  *
  * @author: archko 12-6-24
  */
-public abstract class BaseItemView extends LinearLayout implements IBaseItemView, View.OnClickListener {
+public abstract class BaseItemView extends LinearLayout implements IBaseItemView, View.OnClickListener, View.OnTouchListener {
 
     private static final String TAG="BaseItemView";
     //move to DownloadPool
@@ -99,7 +105,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
             .bitmapConfig(Bitmap.Config.RGB_565)
             .displayer(new FadeInBitmapDisplayer(300))
             .build();*/
-        this.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        //this.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
     }
 
     /**
@@ -393,5 +399,49 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
             WeiboLog.d(TAG, "bitmap is null:"+imgUrl);
         }
         //DownloadPool.downloading.remove(imgUrl);
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        boolean ret=false;
+        CharSequence text=((TextView) v).getText();
+        Spannable stext=Spannable.Factory.getInstance().newSpannable(text);
+        TextView widget=(TextView) v;
+        int action=event.getAction();
+
+        if (action==MotionEvent.ACTION_UP||
+            action==MotionEvent.ACTION_DOWN) {
+            int x=(int) event.getX();
+            int y=(int) event.getY();
+
+            x-=widget.getTotalPaddingLeft();
+            y-=widget.getTotalPaddingTop();
+
+            x+=widget.getScrollX();
+            y+=widget.getScrollY();
+
+            Layout layout=widget.getLayout();
+            int line=layout.getLineForVertical(y);
+            int off=layout.getOffsetForHorizontal(line, x);
+
+            ClickableSpan[] link=stext.getSpans(off, off, ClickableSpan.class);
+            //Log.d(TAG, "onTouch:"+link.length+" text:");
+            if (link.length!=0) {
+                int start=stext.getSpanStart(link[0]);
+                int end=stext.getSpanEnd(link[0]);
+                //Log.d(TAG, "onTouch start:"+start+" end:"+end);
+                if (action==MotionEvent.ACTION_UP) {
+                    link[0].onClick(widget);
+                    Selection.removeSelection(stext);
+                } else if (action==MotionEvent.ACTION_DOWN) {
+                    Selection.setSelection(stext, start, end);
+                }
+                ret=true;
+            } else {
+                Selection.removeSelection(stext);
+            }
+            //Log.d(TAG, "onTouch:ret:"+ret);
+        }
+        return ret;
     }
 }
