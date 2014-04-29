@@ -16,11 +16,13 @@
 package uk.co.senab.photoview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.widget.ImageView;
 
 import uk.co.senab.photoview.PhotoViewAttacher.OnMatrixChangedListener;
@@ -52,9 +54,22 @@ public class PhotoView extends ImageView implements IPhotoView {
         }
     }
 
+    /**
+     * @deprecated use {@link #setRotationTo(float)}
+     */
     @Override
     public void setPhotoViewRotation(float rotationDegree) {
-        mAttacher.setPhotoViewRotation(rotationDegree);
+        mAttacher.setRotationTo(rotationDegree);
+    }
+    
+    @Override
+    public void setRotationTo(float rotationDegree) {
+        mAttacher.setRotationTo(rotationDegree);
+    }
+
+    @Override
+    public void setRotationBy(float rotationDegree) {
+        mAttacher.setRotationBy(rotationDegree);
     }
 
     @Override
@@ -199,8 +214,18 @@ public class PhotoView extends ImageView implements IPhotoView {
     }
 
     @Override
+    public OnPhotoTapListener getOnPhotoTapListener() {
+        return mAttacher.getOnPhotoTapListener();
+    }
+
+    @Override
     public void setOnViewTapListener(OnViewTapListener listener) {
         mAttacher.setOnViewTapListener(listener);
+    }
+
+    @Override
+    public OnViewTapListener getOnViewTapListener() {
+        return mAttacher.getOnViewTapListener();
     }
 
     @Override
@@ -230,6 +255,26 @@ public class PhotoView extends ImageView implements IPhotoView {
     @Override
     public void setZoomable(boolean zoomable) {
         mAttacher.setZoomable(zoomable);
+    }
+
+    @Override
+    public Bitmap getVisibleRectangleBitmap() {
+        return mAttacher.getVisibleRectangleBitmap();
+    }
+
+    @Override
+    public void setZoomTransitionDuration(int milliseconds) {
+        mAttacher.setZoomTransitionDuration(milliseconds);
+    }
+
+    @Override
+    public IPhotoView getIPhotoViewImplementation() {
+        return mAttacher;
+    }
+
+    @Override
+    public void setOnDoubleTapListener(GestureDetector.OnDoubleTapListener newOnDoubleTapListener) {
+        mAttacher.setOnDoubleTapListener(newOnDoubleTapListener);
     }
 
     @Override
