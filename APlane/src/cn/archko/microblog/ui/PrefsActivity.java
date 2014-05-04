@@ -387,7 +387,7 @@ public class PrefsActivity extends PreferenceActivity implements
         final SeekBarPref seekBarPref=(SeekBarPref) findPreference("pref_weibo_count");
         SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(this);
         int pref_weibo_count=options.getInt(PREF_WEIBO_COUNT, Constants.WEIBO_COUNT);
-        seekBarPref.setInitialValue(pref_weibo_count, false, 4, Constants.WEIBO_COUNT*4);
+        seekBarPref.setInitialValue(pref_weibo_count, false, 4, Constants.WEIBO_COUNT*8);
     }
 
     private void updateTitleFont() {

@@ -83,8 +83,8 @@ public class AtmeFragment extends StatusListFragment {
         int status=mPrefs.getInt(Constants.PREF_SERVICE_AT, 0);
         WeiboLog.d(TAG, "新提及我的微博数:"+status);
         if (status>0) {
-            if (status>100) {
-                status=100;
+            if (status>((App)App.getAppContext()).getPageCount()) {
+                status=((App)App.getAppContext()).getPageCount();
             }
 
             count=status;

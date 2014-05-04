@@ -26,6 +26,7 @@ import cn.archko.microblog.fragment.CommentsFragment;
 import cn.archko.microblog.fragment.DirectMessageFragment;
 import cn.archko.microblog.fragment.HomeFragment;
 import cn.archko.microblog.fragment.HomeGridFragment;
+import cn.archko.microblog.fragment.HotRepostFragment;
 import cn.archko.microblog.fragment.MyFavFragment;
 import cn.archko.microblog.fragment.MyPostFragment;
 import cn.archko.microblog.fragment.PrefsFragment;
@@ -321,11 +322,11 @@ public class SidebarAdapter extends BaseAdapter {
             R.drawable.tab_other, HotFragmentActivity.class, false, SidebarAdapter.SidebarEntry.NAV_TYPE_INTENT);
         mSidebarAdapter.addEntry(entry);*/
 
-        /*entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_HOT_REPOST, getString(R.string.tab_label_hot_repost),
-            R.drawable.tab_other, HotRepostFragment.class, false);
-        mSidebarAdapter.addEntry(entry);
+        /*entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_HOT_REPOST, mContext.getString(R.string.tab_label_hot_repost),
+            R.drawable.tab_expression_light, HotRepostFragment.class, false);
+        addEntry(entry, init);*/
 
-        entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_HOT_COMMENT, getString(R.string.tab_label_hot_comment),
+        /*entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_HOT_COMMENT, getString(R.string.tab_label_hot_comment),
             R.drawable.tab_other, HotCommentFragment.class, false);
         mSidebarAdapter.addEntry(entry);*/
 
