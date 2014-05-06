@@ -81,6 +81,7 @@ public class SinaHomeStatusImpl extends AbsStatusImpl<Status> {
             }
             /*sStatusData=sWeiboApi2.getFriendsTimeline(sinceId, maxId, c, p, -1);*/
             if (null!=sStatusData&&sStatusData.mStatusData!=null&&sStatusData.mStatusData.size()>0) {
+                WeiboLog.d(TAG, "微博数:"+sStatusData.mStatusData.size());
                 final ArrayList<Status> statuses=sStatusData.mStatusData;
                 final ArrayList<Status> removeStatuses=new ArrayList<Status>();
                 OauthBean oauthBean=((App) App.getAppContext()).getOauthBean();

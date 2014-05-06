@@ -133,8 +133,8 @@ public class HomeGridFragment extends StaggeredGridFragment {
                 int status=mPrefs.getInt(Constants.PREF_SERVICE_STATUS, 0);
                 WeiboLog.d(TAG, "新消息数:"+status);
                 if (status>0) {
-                    if (status>((App)App.getAppContext()).getPageCount()) {
-                        status=((App)App.getAppContext()).getPageCount();
+                    if (status>Constants.WEIBO_COUNT*8) {
+                        status=Constants.WEIBO_COUNT*8;
                     }
 
                     count=status;

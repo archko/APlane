@@ -75,8 +75,8 @@ public class CommentsFragment extends AtMeCommentsFragment {
         int status=mPrefs.getInt(Constants.PREF_SERVICE_COMMENT, 0);
         WeiboLog.d(TAG, "新提及我的评论数:"+status);
         if (status>0) {
-            if (status>((App)App.getAppContext()).getPageCount()) {
-                status=((App)App.getAppContext()).getPageCount();
+            if (status>Constants.WEIBO_COUNT*8) {
+                status=Constants.WEIBO_COUNT*8;
             }
 
             count=status;
