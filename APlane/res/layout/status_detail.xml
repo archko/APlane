@@ -6,8 +6,6 @@
     android:paddingTop="4dp"
     android:paddingLeft="8dip" android:paddingRight="8dp"
     android:layout_width="match_parent" android:layout_height="match_parent">
-
-    <include layout="@layout/home_time_line_item_title"/>
     <!--<RelativeLayout
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -94,8 +92,11 @@
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout android:orientation="vertical"
-            tools:ignore="ContentDescription"
+            tools:ignore="ContentDescription"  android:paddingTop="?android:attr/actionBarSize"
             android:layout_width="match_parent" android:layout_height="wrap_content">
+
+            <include layout="@layout/home_time_line_item_title"/>
+
             <include layout="@layout/home_time_line_item_content"/>
 
             <LinearLayout android:id="@+id/lay_ret_num"

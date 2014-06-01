@@ -9,6 +9,29 @@
         <item name="android:windowActionBar">true</item>-->
 
         <!--<item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>-->
+        <item name="android:actionBarTabStyle">@style/Widget.Styled.ActionBar.TabView</item>
+        <item name="android:actionBarStyle">@android:style/Widget.Holo.ActionBar</item>
+
+        <!--<item name="android:colorBackground">@android:color/background_dark</item>-->
+    </style>
+
+    <style name="Widget.Styled.ActionBar.TabView" parent="@android:style/Widget.Holo.ActionBar.TabView">
+        <item name="android:gravity">center_horizontal</item>
+        <!--<item name="android:background">@drawable/tab_indicator_ab_holo</item>-->
+        <item name="android:background">@drawable/ak_tab_holo_light</item>
+        <!--<item name="android:paddingStart">16dip</item>
+        <item name="android:paddingEnd">16dip</item>-->
+    </style>
+
+    <style name="ActionBar" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@drawable/shape_msg_bg</item>
+        <!--<item name="android:background">@android:drawable/ab_transparent_dark_holo</item>
+        <item name="android:backgroundStacked">@android:drawable/ab_stacked_transparent_dark_holo</item>
+        <item name="android:backgroundSplit">@android:drawable/ab_bottom_transparent_dark_holo</item>-->
+        <!--<item name="android:progressBarStyle">@android:style/Widget.Holo.ProgressBar.Horizontal</item>
+        <item name="android:indeterminateProgressStyle">@android:style/Widget.Holo.ProgressBar</item>
+        <item name="android:progressBarPadding">32dip</item>
+        <item name="android:itemPadding">8dip</item>-->
     </style>
 
     <style name="Widget.Styled.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
@@ -29,5 +52,7 @@
 
     <style name="Theme.AK.Light.OverlayActionBar" parent="Theme.AK.Light">
         <!--<item name="android:windowActionBarOverlay">true</item>--><!--只有在Holo主题 有效-->
+        <item name="android:actionBarTabStyle">@style/Widget.Styled.ActionBar.TabView</item>
+        <item name="android:actionBarStyle">@android:style/Widget.Holo.ActionBar</item>
     </style>
 </resources>

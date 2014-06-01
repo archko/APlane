@@ -19,6 +19,9 @@ public abstract class AbsStatusAbstraction<T> extends AbstractBaseFragment {
      */
     public abstract void initApi();
 
+    public void onSelected() {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="16007" android:installLocation="auto"
-    android:versionName="1.7.3"
+    android:versionCode="16010" android:installLocation="auto"
+    android:versionName="1.8.0"
     package="cn.archko.microblog">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -45,8 +45,8 @@
         </service>
 
         <!--  友盟统计begin -->
-        <meta-data android:value="51d7441656240b629d01c250" android:name="UMENG_APPKEY"></meta-data>
-        <meta-data android:value="aplane" android:name="UMENG_CHANNEL"/>
+        <!--<meta-data android:value="51d7441656240b629d01c250" android:name="UMENG_APPKEY"></meta-data>
+        <meta-data android:value="aplane" android:name="UMENG_CHANNEL"/>-->
 
         <service
             android:name="com.umeng.common.net.DownloadingService"

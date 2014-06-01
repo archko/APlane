@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.LazyViewPager;
@@ -20,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -107,6 +109,13 @@ public class ViewStatusDetailActivity extends BaseOauthFragmentActivity implemen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //设置ActionBar 浮动到view 上层来
+        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        //设置ActionBar 背景色 透明
+        getActionBar().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
+        //设置半透明的底色
+        //getActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_bg));
+        getActionBar().setSplitBackgroundDrawable(new ColorDrawable(R.color.transparent));
         super.onCreate(savedInstanceState);
 
         mActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
