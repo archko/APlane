@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.impl.SinaUserStatusImpl;
+import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.view.ThreadBeanItemView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.me.microblog.App;
@@ -165,7 +166,10 @@ public class UserTimelineFragment extends StatusListFragment {
         //loadData();
         if (!hasAttach) {   //不在onAttach中处理,因为refresh可能先调用,以保证数据初始化.
             hasAttach=true;
-            refresh();
+            int type=getActivity().getIntent().getIntExtra("type", UserFragmentActivity.TYPE_USER_INFO);
+            if (type==UserFragmentActivity.TYPE_USER_TIMELINE) {
+                refresh();
+            }
         }
     }
 

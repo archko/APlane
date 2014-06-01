@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +23,7 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -114,6 +116,10 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        //设置ActionBar 浮动到view 上层来
+        /*requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        //设置ActionBar 背景色 透明
+        getActionBar().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));*/
         super.onCreate(savedInstanceState);
         setProgressBarIndeterminateVisibility(false);
         setProgressBarVisibility(false);
@@ -151,9 +157,13 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
 
         Fragment oldFragment=getFragmentManager().findFragmentById(R.id.fragment_placeholder);
         WeiboLog.v(TAG, "old:"+oldFragment+" instance:"+savedInstanceState);
+        FragmentTransaction ft=getFragmentManager().beginTransaction();
         if (oldFragment==null) {
-            mSidebarAdapter.getFragment(0);
+            mSidebarAdapter.getFragment(0, ft);
+        } else {
+            ft.attach(oldFragment);
         }
+        ft.commit();
 
         setCustomActionBar();
         reloadPreferences();
@@ -343,9 +353,14 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
             return;
         }
 
-        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        //getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         WeiboLog.v(TAG, "currenttag:"+current.getTag()+" navmode;"+mActionBar.getNavigationMode());
-        Fragment next=mSidebarAdapter.getFragment(entry, position);
+        FragmentTransaction ft=getFragmentManager().beginTransaction();
+        if (null!=current) {
+            ft.detach(current);
+        }
+        Fragment next=mSidebarAdapter.getFragment(entry, position, ft);
+        ft.commit();
         if (Constants.TAB_ID_HOME.equals(next.getTag())) {
             if (mGrouplayout.getVisibility()==View.GONE) {
                 mGrouplayout.setVisibility(View.VISIBLE);
@@ -363,15 +378,13 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
             }*/
         }
 
-        if (getFragmentManager().getBackStackEntryCount()>0) {
+        /*if (getFragmentManager().getBackStackEntryCount()>0) {
             for (int i=0; i<getFragmentManager().getBackStackEntryCount(); i++) {
                 getFragmentManager().popBackStack();
             }
-        }
-        FragmentTransaction ft=getFragmentManager().beginTransaction();
-        ft.detach(current);
-        ft.attach(next);
-        ft.commit();
+        }*/
+        /*ft.attach(next);
+        ft.commit();*/
         //mCurrentFragment=entry.id;
         mActionBar.setTitle(entry.name);
         selectItem(position);

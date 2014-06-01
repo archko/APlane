@@ -4,6 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -156,7 +157,7 @@ public class SidebarAdapter extends BaseAdapter {
 
         private SidebarItemView(Context context) {
             super(context);
-            ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.sidebar_item, this);
+            ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.sidebar_item, this);
             mTitle=(TextView) findViewById(R.id.title);
             mMsg=(TextView) findViewById(R.id.msg);
             mIcon=(ImageView) findViewById(R.id.image);
@@ -249,12 +250,12 @@ public class SidebarAdapter extends BaseAdapter {
         return f;
     }*/
 
-    public Fragment getFragment(int position) {
+    public Fragment getFragment(int position, FragmentTransaction ft) {
         if (entries==null||entries.size()<1){
             return null;
         }
         SidebarEntry entry=entries.get(position);
-        return getFragment(entry, position);
+        return getFragment(entry, position, ft);
     }
 
     /**
@@ -263,10 +264,11 @@ public class SidebarAdapter extends BaseAdapter {
      * @param entry
      * @return
      */
-    public Fragment getFragment(SidebarEntry entry, int position) {
+    public Fragment getFragment(SidebarEntry entry, int position, FragmentTransaction ft) {
         final WeakReference<Fragment> mWeakFragment=mFragmentArray.get(position);
         WeiboLog.d(TAG, "getFragment:"+position+" weakFragment:"+mWeakFragment);
         if (mWeakFragment!=null&&mWeakFragment.get()!=null) {
+            ft.attach(mWeakFragment.get());
             return mWeakFragment.get();
         }
 
@@ -274,9 +276,8 @@ public class SidebarAdapter extends BaseAdapter {
         try {
             f= (Fragment) entry.clazz.newInstance();
             //f.setRetainInstance(true);
-            mFragmentManager.beginTransaction()
-                .add(R.id.fragment_placeholder, f, entry.id)
-                .commit();
+            ft.add(R.id.fragment_placeholder, f, entry.id);
+                //.commit();
             mFragmentArray.put(position, new WeakReference<Fragment>(f));
         } catch (InstantiationException e) {
             e.printStackTrace();

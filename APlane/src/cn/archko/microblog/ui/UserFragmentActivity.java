@@ -2,9 +2,11 @@ package cn.archko.microblog.ui;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.UserFollowersGridFragment;
@@ -35,6 +37,13 @@ public class UserFragmentActivity extends AbstractFragmentTabsPager {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //设置ActionBar 浮动到view 上层来
+        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        //设置ActionBar 背景色 透明
+        getActionBar().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
+        //设置半透明的底色
+        //getActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_bg));
+        getActionBar().setSplitBackgroundDrawable(new ColorDrawable(R.color.transparent));
         Intent intent=getIntent();
         if (intent==null) {
             Toast.makeText(UserFragmentActivity.this, "系统错误", Toast.LENGTH_LONG).show();

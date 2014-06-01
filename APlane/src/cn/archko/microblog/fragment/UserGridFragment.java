@@ -184,7 +184,7 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         //loadData();
         if (!hasAttach) {   //不在onAttach中处理,因为refresh可能先调用,以保证数据初始化.
             hasAttach=true;
-            refresh();
+            //refresh();
         }
     }
 
