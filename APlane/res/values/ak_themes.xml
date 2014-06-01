@@ -11,6 +11,7 @@
         <!--<item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>-->
         <item name="android:actionBarTabStyle">@style/Widget.Styled.ActionBar.TabView</item>
         <item name="android:actionBarStyle">@android:style/Widget.Holo.ActionBar</item>
+        <item name="android:actionBarTabBarStyle">@android:style/Widget.Holo.ActionBar.TabBar</item>
 
         <!--<item name="android:colorBackground">@android:color/background_dark</item>-->
     </style>
@@ -52,6 +53,7 @@
 
     <style name="Theme.AK.Light.OverlayActionBar" parent="Theme.AK.Light">
         <!--<item name="android:windowActionBarOverlay">true</item>--><!--只有在Holo主题 有效-->
+        <item name="android:actionBarTabBarStyle">@android:style/Widget.Holo.ActionBar.TabBar</item>
         <item name="android:actionBarTabStyle">@style/Widget.Styled.ActionBar.TabView</item>
         <item name="android:actionBarStyle">@android:style/Widget.Holo.ActionBar</item>
     </style>
