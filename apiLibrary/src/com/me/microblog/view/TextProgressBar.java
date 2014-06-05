@@ -57,7 +57,7 @@ public class TextProgressBar extends ProgressBar {
         canvas.drawText(this.text, x, y, this.mPaint);
 
         int centre=getWidth()/2; //获取圆心的x坐标
-        int radius=(int) (centre-convertDpToPx(8)/2); //圆环的半径
+        int radius=(int) (centre-convertDpToPx(2)/2); //圆环的半径
         if (null==oval) {
             oval=new RectF(centre-radius, centre-radius, centre+radius, centre+radius);
         }
@@ -86,7 +86,7 @@ public class TextProgressBar extends ProgressBar {
         mProgressPaint=new Paint();
         mProgressPaint.setAntiAlias(true);
         mProgressPaint.setStyle(Paint.Style.STROKE);
-        mProgressPaint.setStrokeWidth(convertDpToPx(8));
+        mProgressPaint.setStrokeWidth(convertDpToPx(2));
         mProgressPaint.setColor(indeterminateColor);
     }
 
@@ -94,7 +94,7 @@ public class TextProgressBar extends ProgressBar {
     private void setText(int progress) {
         percent=(progress*1.0f/this.getMax());
         int i=(int) (percent*100);
-        this.text=String.valueOf(i)+"%";
+        this.text=String.valueOf(i);
     }
 
     public void setText(String progress) {

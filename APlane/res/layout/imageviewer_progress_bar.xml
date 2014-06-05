@@ -9,5 +9,5 @@
     android:background="@drawable/ak_shape_lession_progress_bg"
     android:progressDrawable="@color/transparent"
     android:indeterminateDrawable="@color/transparent"
-    akapp:progress_txt_color="@color/DeepSkyBlue" akapp:progress_txt_size="18sp"
+    akapp:progress_txt_color="@color/DeepSkyBlue" akapp:progress_txt_size="16sp"
     android:layout_width="wrap_content" android:layout_height="wrap_content"/>
