@@ -57,7 +57,6 @@ import com.me.microblog.bean.Unread;
 import com.me.microblog.core.ImageManager;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
@@ -117,9 +116,9 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         //设置ActionBar 浮动到view 上层来
-        /*requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         //设置ActionBar 背景色 透明
-        getActionBar().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));*/
+        //getActionBar().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
         super.onCreate(savedInstanceState);
         setProgressBarIndeterminateVisibility(false);
         setProgressBarVisibility(false);
@@ -307,7 +306,6 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
             }
             registerReceiver(mExitReceiver, new IntentFilter(Constants.EXIT_APP));
         }
-        //MobclickAgent.onError(this);
     }
 
     private void delayStartService() {
@@ -398,7 +396,6 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
             receiver=new MsgBroadcastReceiver();
         }
         registerReceiver(receiver, new IntentFilter(Constants.SERVICE_NOTIFY_UNREAD));
-        //MobclickAgent.onResume(this);
 
         //apply theme
         applyTheme();
@@ -459,7 +456,6 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
             unregisterReceiver(receiver);
             receiver=null;
         }
-        //MobclickAgent.onPause(this);
     }
 
     @Override

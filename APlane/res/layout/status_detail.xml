@@ -92,9 +92,11 @@
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout android:orientation="vertical"
-            tools:ignore="ContentDescription"  android:paddingTop="?android:attr/actionBarSize"
+            tools:ignore="ContentDescription"
             android:layout_width="match_parent" android:layout_height="wrap_content">
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"/>
             <include layout="@layout/home_time_line_item_title"/>
 
             <include layout="@layout/home_time_line_item_content"/>

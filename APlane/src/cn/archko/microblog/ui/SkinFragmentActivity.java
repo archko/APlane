@@ -13,6 +13,7 @@ import cn.archko.microblog.R;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.andrew.apollo.utils.ThemeUtils;
 import com.me.microblog.App;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 作为主题的Activity
@@ -42,6 +43,19 @@ public class SkinFragmentActivity extends Activity implements PopupMenu.OnMenuIt
         super.onCreate(savedInstanceState);
 
         ThemeUtils.getsInstance().themeActionBar(getActionBar(), this);
+        MobclickAgent.onError(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     /**

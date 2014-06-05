@@ -112,10 +112,9 @@ public class ViewStatusDetailActivity extends BaseOauthFragmentActivity implemen
         //设置ActionBar 浮动到view 上层来
         requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         //设置ActionBar 背景色 透明
-        getActionBar().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
+        //getActionBar().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
         //设置半透明的底色
-        //getActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_bg));
-        getActionBar().setSplitBackgroundDrawable(new ColorDrawable(R.color.transparent));
+        //getActionBar().setSplitBackgroundDrawable(new ColorDrawable(R.color.transparent));
         super.onCreate(savedInstanceState);
 
         mActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);

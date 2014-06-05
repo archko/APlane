@@ -222,34 +222,6 @@ public class SidebarAdapter extends BaseAdapter {
         return index;
     }
 
-    /**
-     * 根据SidebarEntry获取Fragment
-     *
-     * @param entry
-     * @return
-     */
-    /*public Fragment getFragment(SidebarEntry entry) {
-        if (mFragments.containsKey(entry.id)&&mFragments.get(entry.id)!=null) {
-            return mFragments.get(entry.id);
-        }
-
-        Fragment f=null;
-        try {
-            f=(Fragment) entry.clazz.newInstance();
-            f.setRetainInstance(true);
-            mFragmentManager.beginTransaction()
-                .add(R.id.fragment_placeholder, f, entry.id)
-                .commitAllowingStateLoss();
-            mFragments.put(entry.id, f);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        return f;
-    }*/
-
     public Fragment getFragment(int position, FragmentTransaction ft) {
         if (entries==null||entries.size()<1){
             return null;

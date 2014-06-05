@@ -84,6 +84,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      * 空数据时显示的内容。
      */
     protected TextView mEmptyTxt;
+    protected View mHeader;
 
     /**
      * 微博数据，这个比较特殊，因为Fragment不同，需要保存不同的数据，为了节省内存消耗，
@@ -280,6 +281,9 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
         mListView.setOnScrollListener(this);
         //mListView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
 
+        mHeader = inflater.inflate(R.layout.ak_overlay_header, null);
+        mPullRefreshListView.getRefreshableView().addHeaderView(mHeader);
+
         return root;
     }
 
@@ -322,7 +326,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 int position=pos;
                 if (mListView.getHeaderViewsCount()>0) {
-                    position--;
+                    position-=mListView.getHeaderViewsCount();
                 }
                 if (position==-1) {
                     WeiboLog.v("选中的是头部，不可点击");
@@ -347,7 +351,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
                 WeiboLog.v(TAG, "itemLongClick:"+pos);
                 int position=pos;
                 if (mListView.getHeaderViewsCount()>0) {
-                    position--;
+                    position-=mListView.getHeaderViewsCount();
                 }
                 selectedPos=position;
 

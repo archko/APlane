@@ -7,6 +7,10 @@
         android:layout_width="match_parent" android:layout_height="wrap_content"
         android:gravity="center_horizontal" android:orientation="vertical">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"/>
+
         <!-- menu_account_user_manager -->
         <RelativeLayout android:id="@+id/menu_account_user_manager"
             android:layout_width="match_parent" android:layout_height="wrap_content"

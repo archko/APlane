@@ -11,6 +11,7 @@ import android.support.v4.view.LazyViewPager;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 import cn.archko.microblog.R;
+import cn.archko.microblog.fragment.abs.AbsStatusAbstraction;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
 import com.andrew.apollo.utils.ThemeUtils;
 import com.bulletnoid.android.widget.SwipeAwayLayout;
@@ -267,6 +268,14 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
             mTabHost.selectTab(mTabHost.getTabAt(position));
             updateTitle(position);
             selectPage(position);
+            /*final WeakReference<Fragment> mWeakFragment=mFragmentArray.get(position);
+            if (mWeakFragment!=null&&mWeakFragment.get()!=null) {
+                Fragment fragment=mWeakFragment.get();
+                if (fragment instanceof AbsStatusAbstraction) {
+                    AbsStatusAbstraction homeBaseFragment=(AbsStatusAbstraction) fragment;
+                    homeBaseFragment.onSelected();
+                }
+            }*/
         }
 
         @Override
