@@ -2,13 +2,9 @@ package cn.archko.microblog.view;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v4.util.LruCache;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,14 +21,10 @@ import com.me.microblog.App;
 import com.me.microblog.WeiboUtil;
 import com.me.microblog.bean.AKSpannableStringBuilder;
 import com.me.microblog.bean.Status;
-import com.me.microblog.cache.ImageCache2;
-import com.me.microblog.thread.DownloadPool;
-import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
 import com.me.microblog.view.IBaseItemView;
 
-import java.lang.ref.WeakReference;
 import java.util.regex.Matcher;
 
 /**
@@ -50,7 +42,7 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
         boolean cache, boolean showLargeBitmap, boolean showBitmap) {
         super(context, view, cacheDir, status, updateFlag);
 
-        ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.home_time_line_item, this);
+        ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.home_time_line_item, this);
 
         mPortrait=(ImageView) findViewById(R.id.iv_portrait);
         mPortrait.setOnClickListener(this);

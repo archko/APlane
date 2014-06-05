@@ -78,7 +78,7 @@ public class CommentItemView extends BaseItemView implements View.OnClickListene
     public CommentItemView(Context context, ListView view, String cacheDir, Comment comment, boolean updateFlag,
         boolean cache, boolean showBitmap, boolean showSencondContent) {
         super(context, view, cacheDir, null, updateFlag);
-        ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.comment_item, this);
+        ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.comment_item, this);
 
         parent=view;
         mCacheDir=cacheDir;
@@ -226,9 +226,6 @@ public class CommentItemView extends BaseItemView implements View.OnClickListene
             } else {
                 mPortrait.setImageResource(R.drawable.user_default_photo);
                 if (updateFlag) {
-                    //DownloadPool.downloading.put(mPortraitUrl, new WeakReference<View>(parent));
-                    /*((App) App.getAppContext()).mDownloadPool
-                        .Push(mHandler, mPortraitUrl, Constants.TYPE_PORTRAIT, cache, mCacheDir+Constants.ICON_DIR, mPortrait);*/
                     /*ImageLoader imageLoader=ImageLoader.getInstance();
                     imageLoader.displayImage(mPortraitUrl, mPortrait, options);*/
                     ApolloUtils.getImageFetcher(mContext).startLoadImage(mPortraitUrl, mPortrait);

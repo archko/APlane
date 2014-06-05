@@ -39,6 +39,7 @@ import org.apache.http.params.HttpProtocolParams;
  *
  * @author archko
  */
+@Deprecated
 public class DownloadPool extends Thread {
 
     public static final String TAG="DownloadPool";

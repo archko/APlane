@@ -8,6 +8,7 @@ import java.lang.ref.WeakReference;
 /**
  * @author: archko 14-1-21 :下午4:19
  */
+@Deprecated
 public class DownloadPiece {
 
     public Handler handler;

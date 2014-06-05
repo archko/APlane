@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.AccountUsersFragment;
@@ -24,6 +25,7 @@ public class AccountUserActivity extends AbstractFragmentTabsPager {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         super.onCreate(savedInstanceState);
 
         /*Intent intent=getIntent();

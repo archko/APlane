@@ -10,10 +10,8 @@ import android.text.Selection;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -38,8 +36,6 @@ import com.me.microblog.view.IBaseItemView;
 public abstract class BaseItemView extends LinearLayout implements IBaseItemView, View.OnClickListener, View.OnTouchListener {
 
     private static final String TAG="BaseItemView";
-    //move to DownloadPool
-    //public static Map<String, WeakReference<View>> downloading=new Hashtable<String, WeakReference<View>>();
     protected Context mContext;
     protected ListView parent;
     protected String mCacheDir;    //图片缓存目录
@@ -257,13 +253,6 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
             } else {
                 mPortrait.setImageResource(R.drawable.user_default_photo);
                 if (updateFlag) {
-                    //DownloadPool.downloading.put(mPortraitUrl, new WeakReference<View>(mPortrait));
-                    /*((App) App.getAppContext()).mDownloadPool
-                        .Push(mHandler, mPortraitUrl, Constants.TYPE_PORTRAIT, cache, mCacheDir+Constants.ICON_DIR, mPortrait);*/
-                    /*DownloadPool.DownloadPiece piece=((App) App.getAppContext()).mDownloadPool.new DownloadPiece(
-                        null, mPortraitUrl, Constants.TYPE_PICTURE, cache, mCacheDir+Constants.ICON_DIR, false);
-                    ImageFetcher fetcher=ImageFetcher.getInstance(App.getAppContext());
-                    fetcher.loadHomeImage(mPortraitUrl, mPortrait, piece);*/
                     /*ImageLoader imageLoader = ImageLoader.getInstance();
                     imageLoader.displayImage(mPortraitUrl, mPortrait, options);*/
                     ApolloUtils.getImageFetcher(mContext).startLoadImage(mPortraitUrl, mPortrait);
@@ -336,7 +325,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
 
         if (bitmap!=null&&!bitmap.isRecycled()) {
             //if (!isShowLargeBitmap) {   //大图暂时不缓存内存，但是缓存小图
-            ImageCache2.getInstance().addBitmapToMemCache(imgUrl, bitmap);
+            //ImageCache2.getInstance().addBitmapToMemCache(imgUrl, bitmap);
             /*} else {
                 LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
                 lruCache.put(imgUrl, bitmap);

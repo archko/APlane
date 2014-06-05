@@ -86,7 +86,7 @@ public class UserTimelineFragment extends StatusListFragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 int position=pos;
                 if (mListView.getHeaderViewsCount()>0) {
-                    position--;
+                    position-=mListView.getHeaderViewsCount();
                 }
                 if (position==-1) {
                     WeiboLog.v("选中的是头部，不可点击");
@@ -111,7 +111,7 @@ public class UserTimelineFragment extends StatusListFragment {
                 WeiboLog.v(TAG, "itemLongClick:"+pos);
                 int position=pos;
                 if (mListView.getHeaderViewsCount()>0) {
-                    position--;
+                    position-=mListView.getHeaderViewsCount();
                 }
                 selectedPos=position;
 

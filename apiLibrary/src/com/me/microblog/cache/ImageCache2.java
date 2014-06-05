@@ -14,6 +14,7 @@ import com.me.microblog.core.ImageManager;
 /**
  * @param : archko Date: 12-12-25 Time: 下午2:26
  */
+@Deprecated
 public class ImageCache2 {
 
     /**

@@ -16,9 +16,6 @@ import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtil;
-import com.me.microblog.cache.ImageCache2;
-import com.me.microblog.thread.DownloadPiece;
-import com.me.microblog.thread.DownloadPool;
 import cn.archko.microblog.ui.ImageViewerActivity;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
@@ -202,7 +199,6 @@ public class ImageAdapter extends BaseAdapter {
             if (!mPictureUrl.endsWith("gif")) {
                 mPictureUrl=mPictureUrl.replace("thumbnail", "bmiddle");
             }
-            //tmp=ImageCache2.getInstance().getBitmapFromMemCache(mPictureUrl);
             /*LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
             tmp=lruCache.get(mPictureUrl);*/
         }
@@ -216,22 +212,10 @@ public class ImageAdapter extends BaseAdapter {
                 return;
             }
 
-            String dir=Constants.PICTURE_DIR;
-            String ext=WeiboUtil.getExt(mPictureUrl);
-            if (ext.equals(".gif")) {
-                dir=Constants.GIF;
-            }
-
             if (isShowLargeBitmap) {
                 cache=true; //大图要缓存sdcard中，不然每次都下载，太慢了。
             }
             picture.setImageResource(mResId);
-
-            /*DownloadPiece piece=new DownloadPiece(mHandler, mPictureUrl, Constants.TYPE_PICTURE, cache, mCacheDir+dir, isShowLargeBitmap, picture);
-            ((App) App.getAppContext()).mDownloadPool.Push(piece);*/
-            /*ImageFetcher fetcher=ImageFetcher.getInstance(App.getAppContext());
-            fetcher.loadHomeImage(mPictureUrl, picture, piece);*/
-
             /*ImageLoader imageLoader = ImageLoader.getInstance();
             imageLoader.displayImage(mPictureUrl, picture, options);*/
             ApolloUtils.getImageFetcher(mContext).startLoadImage(mPictureUrl, picture);

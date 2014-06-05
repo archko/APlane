@@ -33,6 +33,7 @@ import com.me.microblog.App;
  *
  * @author archko
  */
+@Deprecated
 public class FetchImage extends Thread {
 
     public static final String TAG="FetchImage";

@@ -33,6 +33,7 @@ import java.lang.ref.WeakReference;
  *
  * @author archko
  */
+@Deprecated
 public class ImageTask extends Thread {
 
     public static final String TAG="FetchImage";

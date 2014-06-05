@@ -42,6 +42,7 @@ import java.util.List;
  *
  * @author archko
  */
+@Deprecated
 public class DownloadPoolThread extends Thread {
 
     public static final String TAG="DownloadPoolThread";
