@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="apk" build-on-make="true" name="APlane">
+  <artifact type="apk" name="APlane">
     <output-path>$PROJECT_DIR$</output-path>
     <properties id="android-properties">
       <options>
@@ -7,7 +7,6 @@
         <option name="keyPassword" value="d3Jmd3NoMTQxNzQ=" />
         <option name="keyStorePassword" value="d3Jmd3NoMTQxNzQ=" />
         <option name="keyStoreUrl" value="file://$PROJECT_DIR$/doc/sinaweibo_key.keystore" />
-        <option name="proGuardCfgFileUrl" value="file://$PROJECT_DIR$/proguard.cfg" />
         <option name="signingMode" value="RELEASE_SIGNED" />
       </options>
     </properties>

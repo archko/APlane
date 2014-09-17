@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 import cn.archko.microblog.R;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.andrew.apollo.utils.ThemeUtils;
@@ -43,7 +42,7 @@ public class SkinFragmentActivity extends Activity implements PopupMenu.OnMenuIt
         super.onCreate(savedInstanceState);
 
         ThemeUtils.getsInstance().themeActionBar(getActionBar(), this);
-        MobclickAgent.onError(this);
+        //MobclickAgent.onError(this);
     }
 
     @Override

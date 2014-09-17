@@ -52,7 +52,7 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
 
     public UserItemView(Context context, ListView view, String cacheDir, User user, boolean updateFlag) {
         super(context);
-        ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.friend_item, this);
+        ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.friend_item, this);
 
         right= findViewById(R.id.right);
         status_content=(TextView) findViewById(R.id.status_content);

@@ -50,7 +50,7 @@ public class UserGridItemView extends LinearLayout {
 
     public UserGridItemView(Context context, AbsListView view, String cacheDir, User user, boolean updateFlag) {
         super(context);
-        ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.ak_user_grid_item, this);
+        ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.ak_user_grid_item, this);
 
         mPortrait=(ImageView) findViewById(R.id.iv_portrait);
         mName=(TextView) findViewById(R.id.tv_name);

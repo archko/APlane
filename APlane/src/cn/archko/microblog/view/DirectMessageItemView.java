@@ -82,7 +82,7 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
     public DirectMessageItemView(Context context, ListView view, String cacheDir, DirectMessage directMessage,
         boolean updateFlag, boolean cache, boolean showBitmap) {
         super(context);
-        ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.comment_item, this);
+        ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.comment_item, this);
 
         parent=view;
         mCacheDir=cacheDir;

@@ -152,7 +152,7 @@ public class LoginActivity extends NavModeActivity {
         mLoginShowWebviewBtn.setOnClickListener(clickListener);
         mContextFrame.setOnClickListener(clickListener);
 
-        MobclickAgent.onError(this);
+        //MobclickAgent.onError(this);
         initAccounts();
     }
 

@@ -23,7 +23,6 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -182,7 +181,7 @@ public abstract class AsyncTask<Params, Progress, Result> {
     private static final String LOG_TAG = "AsyncTask";
 
     private static final int CORE_POOL_SIZE = 2;
-    private static final int MAXIMUM_POOL_SIZE = 128;
+    private static final int MAXIMUM_POOL_SIZE = 256;
     private static final int KEEP_ALIVE = 0;
 
     private static final ThreadFactory sThreadFactory = new ThreadFactory() {

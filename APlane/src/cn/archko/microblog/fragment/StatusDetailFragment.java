@@ -738,9 +738,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             refreshStatus();
         } else if (itemId==R.id.menu_quick_comment) {
         } else if (itemId==R.id.menu_quick_repost) {
-            quickRepostStatus();
+            //quickRepostStatus();  //activity中已经有了.
         } else if (itemId==R.id.menu_comment) {
-            commentStatus();
+            //commentStatus();
         } else if (itemId==R.id.menu_repost) {
             repostStatus();
         } else if (itemId==R.id.menu_favorite) {

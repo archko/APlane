@@ -313,7 +313,7 @@ public class PrefsActivity extends PreferenceActivity implements
                 } else if (Constants.PREF_THREAD_COUNT.equals(key)) {
                     int threadCount=prefs.getInt(Constants.PREF_THREAD_COUNT, Constants.THREAD_COUNT);
                     WeiboLog.d(PREF_TAG ,"tc:"+threadCount);
-                    ((App) App.getAppContext()).mDownloadPool.setThreadCount(threadCount);
+                    //((App) App.getAppContext()).mDownloadPool.setThreadCount(threadCount);
                 }
             }
         });

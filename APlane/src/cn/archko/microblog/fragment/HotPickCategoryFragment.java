@@ -1,6 +1,7 @@
 package cn.archko.microblog.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -132,7 +133,7 @@ public class HotPickCategoryFragment extends BaseFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
             if (convertView==null) {
-                convertView=((LayoutInflater) getActivity().getSystemService("layout_inflater")).
+                convertView=((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
                     inflate(android.R.layout.simple_list_item_1, null);
 
                 holder=new ViewHolder();

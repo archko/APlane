@@ -24,136 +24,257 @@
   <component name="AndroidLayouts">
     <shared>
       <config>
+        <devices>
+          <device id="Nexus 5" />
+          <device id="Nexus 10" />
+          <device id="Nexus S" />
+        </devices>
         <target>android-17</target>
       </config>
     </shared>
     <layouts>
+      <layout url="file://$PROJECT_DIR$/res/layout/about.xml">
+        <config>
+          <theme>@style/Theme.AK</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/res/layout/ak_about_app.xml">
+        <config>
+          <theme>@style/Theme.AK</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/res/layout/ak_main_drawer_layout.xml">
+        <config>
+          <theme>@style/Theme.AK.Light</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/res/layout/at_user_item.xml">
         <config>
-          <device>Nexus 4</device>
           <theme>@style/Theme.AK</theme>
         </config>
       </layout>
       <layout url="file://$PROJECT_DIR$/res/layout/comment_dialog.xml">
         <config>
-          <device>Nexus 4</device>
           <theme>@style/Theme.AK.Light</theme>
         </config>
       </layout>
       <layout url="file://$PROJECT_DIR$/res/layout/comment_item.xml">
         <config>
-          <device>Nexus 4</device>
-          <theme>@style/Theme.AK</theme>
-        </config>
-      </layout>
-      <layout url="file://$PROJECT_DIR$/res/layout/comment_status.xml">
-        <config>
-          <device>Nexus 4</device>
           <theme>@style/Theme.AK.Light</theme>
         </config>
       </layout>
       <layout url="file://$PROJECT_DIR$/res/layout/emoji_panel.xml">
         <config>
-          <device>Nexus 4</device>
-          <theme>@style/Theme.AK</theme>
-        </config>
-      </layout>
-      <layout url="file://$PROJECT_DIR$/res/layout/gridview_items.xml">
-        <config>
-          <device>Nexus 4</device>
           <theme>@style/Theme.AK.Light</theme>
         </config>
       </layout>
       <layout url="file://$PROJECT_DIR$/res/layout/home_dialog_view.xml">
         <config>
-          <device>Nexus 4</device>
           <theme>@style/Theme.AK.Light</theme>
         </config>
       </layout>
       <layout url="file://$PROJECT_DIR$/res/layout/home_time_line_item.xml">
         <config>
-          <device>4.7in WXGA</device>
+          <theme>@style/Theme.AK.Light</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/res/layout/home_time_line_item_content.xml">
+        <config>
+          <theme>@style/Theme.AK.Light</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/res/layout/home_time_line_item_img.xml">
+        <config>
+          <theme>@style/Theme.AK.Light</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/res/layout/imageviewer.xml">
+        <config>
           <theme>@style/Theme.AK</theme>
         </config>
       </layout>
-      <layout url="file://$PROJECT_DIR$/res/layout/repost_status.xml">
+      <layout url="file://$PROJECT_DIR$/res/layout/imageviewer_progress_bar.xml">
         <config>
-          <device>Nexus 4</device>
           <theme>@style/Theme.AK.Light</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/res/layout/login.xml">
+        <config>
+          <theme>@style/Theme.AK</theme>
         </config>
       </layout>
       <layout url="file://$PROJECT_DIR$/res/layout/search_dialog.xml">
         <config>
-          <device>Nexus 4</device>
-          <theme>@style/Theme.AK.Light</theme>
-        </config>
-      </layout>
-      <layout url="file://$PROJECT_DIR$/res/layout/self_profile.xml">
-        <config>
-          <device>Nexus 4</device>
           <theme>@style/Theme.AK.Light</theme>
         </config>
       </layout>
       <layout url="file://$PROJECT_DIR$/res/layout/sidebar_item.xml">
         <config>
-          <device>Nexus 4</device>
           <theme>@style/Theme.AK</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/res/layout/status_comment.xml">
+        <config>
+          <theme>@style/Theme.AK.Light</theme>
         </config>
       </layout>
       <layout url="file://$PROJECT_DIR$/res/layout/status_detail.xml">
         <config>
-          <device>Nexus 4</device>
           <theme>@style/Theme.AK.Light</theme>
-        </config>
-      </layout>
-      <layout url="file://$PROJECT_DIR$/res/layout/status_detail_header_item.xml">
-        <config>
-          <device>Nexus 4</device>
-          <theme>@style/Theme.AK</theme>
         </config>
       </layout>
       <layout url="file://$PROJECT_DIR$/res/layout/status_new.xml">
         <config>
-          <device>Nexus S</device>
           <theme>@style/Theme.AK</theme>
         </config>
       </layout>
-      <layout url="file://$PROJECT_DIR$/res/layout/time_line_item.xml">
+      <layout url="file://$PROJECT_DIR$/res/layout/status_repost.xml">
         <config>
-          <device>Nexus 4</device>
           <theme>@style/Theme.AK.Light</theme>
         </config>
       </layout>
-      <layout url="file://$PROJECT_DIR$/res/layout/user_introduction.xml">
+      <layout url="file://$PROJECT_DIR$/../apiLibrary/res/layout/ak_toast_view.xml">
         <config>
-          <device>Nexus 4</device>
-          <theme>@style/Theme.AK.Light</theme>
-        </config>
-      </layout>
-      <layout url="file://$PROJECT_DIR$/../apicore/res/layout/imageviewerdialog.xml">
-        <config>
-          <device>Nexus 4</device>
-          <theme>@android:style/Theme.Holo.Light.NoActionBar.Fullscreen</theme>
+          <theme>@android:style/Theme.Holo.Light</theme>
         </config>
       </layout>
     </layouts>
   </component>
-  <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="DEBUG" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="1024095b-2e82-4701-8b71-c29a3cbee985" name="Default" comment="发微博添加表情,去除之前的定位代码">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../pulltorefreshlibrary/res/drawable-hdpi/default_ptr_rotate.png" afterPath="$PROJECT_DIR$/../pulltorefreshlibrary/res/drawable-hdpi/default_ptr_rotate.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../pulltorefreshlibrary/src/com/handmark/pulltorefresh/library/PullToRefreshAdapterViewBase.java" afterPath="$PROJECT_DIR$/../pulltorefreshlibrary/src/com/handmark/pulltorefresh/library/PullToRefreshAdapterViewBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../pulltorefreshlibrary/src/com/handmark/pulltorefresh/library/internal/LoadingLayout.java" afterPath="$PROJECT_DIR$/../pulltorefreshlibrary/src/com/handmark/pulltorefresh/library/internal/LoadingLayout.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../pulltorefreshlibrary/pulltorefreshlibrary.iml" afterPath="$PROJECT_DIR$/../pulltorefreshlibrary/pulltorefreshlibrary.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../pulltorefreshlibrary/src/com/handmark/pulltorefresh/library/internal/RotateLoadingLayout.java" afterPath="$PROJECT_DIR$/../pulltorefreshlibrary/src/com/handmark/pulltorefresh/library/internal/RotateLoadingLayout.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../pulltorefreshlibrary/res/drawable-xhdpi/default_ptr_rotate.png" afterPath="$PROJECT_DIR$/../pulltorefreshlibrary/res/drawable-xhdpi/default_ptr_rotate.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../pulltorefreshlibrary/res/drawable-mdpi/default_ptr_rotate.png" afterPath="$PROJECT_DIR$/../pulltorefreshlibrary/res/drawable-mdpi/default_ptr_rotate.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../pulltorefreshlibrary/src/com/handmark/pulltorefresh/library/PullToRefreshBase.java" afterPath="$PROJECT_DIR$/../pulltorefreshlibrary/src/com/handmark/pulltorefresh/library/PullToRefreshBase.java" />
+    <list default="true" id="1024095b-2e82-4701-8b71-c29a3cbee985" name="Default" comment="修复设置线程崩溃的bug.&#10;toast自定义view.&#10;修复重复转发的bug.&#10;">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../apiLibrary/res/drawable-xhdpi/ak_bg_toast.9.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libs/umeng-analytics-v5.2.4.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libs/umeng-update-v2.4.2.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../apiLibrary/src/com/me/microblog/util/DisplayUtil.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../apiLibrary/src/com/me/microblog/util/NotifyUtil.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../apiLibrary/res/layout/ak_toast_view.xml" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_bar_bg.9.png" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_blank_selector.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_bottom_banner.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_dev_bubble.9.png" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_gradient_green.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_gradient_orange.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_gray_frame.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_list_item.9.png" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_list_item_pressed.9.png" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_list_item_selector.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_point_new.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_point_normal.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_see_list_normal.png" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_see_list_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_see_list_selector.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_statusbar_icon.png" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_submit_selector.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_top_banner.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_user_bubble.9.png" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_write_normal.png" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_write_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_fb_write_selector.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_update_button_cancel_normal.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_update_button_cancel_selector.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_update_button_cancel_tap.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_update_button_ok_normal.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_update_button_ok_selector.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\drawable\umeng_update_button_ok_tap.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\layout\umeng_fb_atom.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\layout\umeng_fb_conversation.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\layout\umeng_fb_conversation_item.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\layout\umeng_fb_conversations.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\layout\umeng_fb_conversations_item.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\layout\umeng_fb_list_item.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\layout\umeng_fb_new_reply_alert_dialog.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\layout\umeng_fb_send_feedback.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\OpenApi\weibo\APlane\APlane\res\values\umeng_fb_strings.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/armeabi/libbspatch.so" afterPath="$PROJECT_DIR$/libs/armeabi/libbspatch.so" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/view/AKSnapImageView.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/view/AKSnapImageView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/utils/AKUtils.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/utils/AKUtils.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/APlane.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/APlane.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/AccountUsersFragment.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/AccountUsersFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ImageFetcherLibrary/src/cn/archko/thread/AsyncTask.java" afterPath="$PROJECT_DIR$/../ImageFetcherLibrary/src/cn/archko/thread/AsyncTask.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/view/DirectMessageItemView.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/view/DirectMessageItemView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/DraftListFragment.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/DraftListFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/view/EmojiPanelView.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/view/EmojiPanelView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/HomeGridFragment.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/HomeGridFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/HotPickCategoryFragment.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/HotPickCategoryFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ImageFetcherLibrary/src/com/andrew/apollo/cache/ImageCache.java" afterPath="$PROJECT_DIR$/../ImageFetcherLibrary/src/com/andrew/apollo/cache/ImageCache.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/ui/LoginActivity.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/ui/LoginActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/PickImageFragment.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/PickImageFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/ui/PrefsActivity.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/ui/PrefsActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/ui/SearchActivity.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/ui/SearchActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/SearchDialogFragment.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/SearchDialogFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/ui/SkinFragmentActivity.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/ui/SkinFragmentActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/StatusDetailFragment.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/StatusDetailFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/TaskListFragment.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/TaskListFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/UserFriendListFragment.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/UserFriendListFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/view/UserGridItemView.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/view/UserGridItemView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/view/UserItemView.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/view/UserItemView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/UserTimelineFragment.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/fragment/UserTimelineFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/ui/ViewStatusDetailActivity.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/ui/ViewStatusDetailActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cn/archko/microblog/ui/WebviewActivity.java" afterPath="$PROJECT_DIR$/src/cn/archko/microblog/ui/WebviewActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/umeng_common_download_notification.xml" afterPath="$PROJECT_DIR$/res/layout/umeng_common_download_notification.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/umeng_common_strings.xml" afterPath="$PROJECT_DIR$/res/values/umeng_common_strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/umeng_update_dialog.xml" afterPath="$PROJECT_DIR$/res/layout/umeng_update_dialog.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/umeng_update_string.xml" afterPath="$PROJECT_DIR$/res/values/umeng_update_string.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="AKWeibo.iws" />
     <ignored path=".idea/workspace.xml" />
+    <ignored path="APlane_1.3.1.apk" />
+    <ignored path="APlane_1.3.0.apk" />
+    <ignored path="gen/cn/archko/microblog/R.java" />
+    <ignored path="../apiLibrary/gen/com/me/microblog/Manifest.java" />
+    <ignored path="gen/cn/archko/microblog/BuildConfig.java" />
+    <ignored path="gen/cn/archko/microblog/Manifest.java" />
+    <ignored path="../apiLibrary/gen/com/me/microblog/R.java" />
+    <ignored path="../SlidingMenuLibrary/gen/com/jeremyfeinstein/slidingmenu/lib/Manifest.java" />
+    <ignored path="../SlidingMenuLibrary/gen/com/jeremyfeinstein/slidingmenu/lib/R.java" />
+    <ignored path="../pulltorefreshlibrary/gen/com/handmark/pulltorefresh/library/Manifest.java" />
+    <ignored path="../SlidingMenuLibrary/gen/com/jeremyfeinstein/slidingmenu/lib/BuildConfig.java" />
+    <ignored path="../pulltorefreshlibrary/gen/com/handmark/pulltorefresh/library/BuildConfig.java" />
+    <ignored path="../pulltorefreshlibrary/gen/com/handmark/pulltorefresh/library/R.java" />
+    <ignored path="src/cn/archko/microblog/fragment/TabFragment.java" />
+    <ignored path="../apiLibrary/src/com/me/microblog/cache/DiskLruCache.java" />
+    <ignored path="../apiLibrary/gen/com/me/microblog/BuildConfig.java" />
+    <ignored path="APlane-1.4.1.apk" />
+    <ignored path="APlane-1.4.0.apk" />
+    <ignored path="src/cn/archko/microblog/fragment/PublicGridFragment.java" />
+    <ignored path="../bulletnoidStaggeredGridViewLibrary/gen/com/bulletnoid/android/widget/R.java" />
+    <ignored path="../bulletnoidStaggeredGridViewLibrary/gen/com/bulletnoid/android/widget/Manifest.java" />
+    <ignored path="../bulletnoidStaggeredGridViewLibrary/gen/com/bulletnoid/android/widget/BuildConfig.java" />
+    <ignored path="res/drawable/bg_striped_abs.xml" />
+    <ignored path="res/drawable-mdpi/bg_action_bar_striped.png" />
+    <ignored path="res/drawable/ak_txt_progress_bg.xml" />
+    <ignored path="res/layout/ak_test_view.xml" />
+    <ignored path="../AUILlibrary/gen/com/nostra13/universalimageloader/R.java" />
+    <ignored path="../AUILlibrary/gen/com/nostra13/universalimageloader/Manifest.java" />
+    <ignored path="../AUILlibrary/gen/com/nostra13/universalimageloader/BuildConfig.java" />
+    <ignored path="../roundedimageview/gen/com/makeramen/R.java" />
+    <ignored path="../roundedimageview/gen/com/makeramen/BuildConfig.java" />
+    <ignored path="../roundedimageview/gen/com/makeramen/Manifest.java" />
+    <ignored path="../ImageFetcherLibrary/gen/com/andrew/apollo/cache/Manifest.java" />
+    <ignored path="../ImageFetcherLibrary/gen/com/andrew/apollo/cache/R.java" />
+    <ignored path="../ImageFetcherLibrary/gen/com/andrew/apollo/cache/BuildConfig.java" />
+    <ignored mask="*.apk" />
+    <ignored path="$PROJECT_DIR$/classes/" />
+    <ignored path="$PROJECT_DIR$/.idea/" />
+    <ignored path="$PROJECT_DIR$/doc/" />
+    <ignored path="$PROJECT_DIR$/picture/" />
+    <ignored path="$PROJECT_DIR$/proguard_logs/" />
+    <ignored path="$PROJECT_DIR$/bin/" />
+    <ignored path="$PROJECT_DIR$/../PhotoViewLibrary/bin/" />
+    <ignored path="$PROJECT_DIR$/../apiLibrary/bin/" />
+    <ignored path="$PROJECT_DIR$/../bulletnoidStaggeredGridViewLibrary/bin/" />
+    <ignored path="src/cn/archko/microblog/view/AKImageItemView.java" />
+    <ignored path="src/cn/archko/microblog/listeners/TabListener.java" />
+    <ignored path="src/cn/archko/microblog/fragment/AKTabFragment.java" />
+    <ignored path="res/drawable-mdpi/bg_stripes_dark.png" />
+    <ignored path="src/cn/archko/microblog/fragment/LHomeTabs.java" />
+    <ignored path="../apiLibrary/src/com/me/microblog/util/MapUtil.java" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,7 +284,6 @@
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CompilerWorkspaceConfiguration">
     <option name="CLEAR_OUTPUT_DIRECTORY" value="false" />
-    <option name="USE_COMPILE_SERVER" value="false" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -172,7 +292,8 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
+    <ui_properties converted="true" />
+    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true" converted="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
         <option name="NOTIFY_UNCAUGHT" value="true" />
@@ -208,9 +329,7 @@
         <option name="LOG_MESSAGE" value="&#13;&#13;JAVA" />
       </breakpoint>
     </breakpoint_any>
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <breakpoint_rules />
-    <ui_properties />
+    <breakpoint_rules converted="true" />
   </component>
   <component name="ErrorTreeViewConfiguration">
     <option name="hideWarnings" value="true" />
@@ -223,178 +342,233 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="SinaPlaceStatusImpl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/impl/SinaPlaceStatusImpl.java">
+      <file leaf-file-name="UserTimelineFragment.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/UserTimelineFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="96" selection-start="1451" selection-end="1585" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="1207">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlaceStatusListFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/place/PlaceStatusListFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="413" column="15" selection-start="8688" selection-end="12532" vertical-scroll-proportion="0.0" vertical-offset="2838" max-vertical-offset="3485">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2013" max-vertical-offset="3791">
+              <caret line="195" column="24" selection-start-line="195" selection-start-column="24" selection-end-line="195" selection-end-column="24" />
               <folding>
-                <element signature="method#createFavorite#0;class#PlaceStatusListFragment#0" expanded="false" />
-                <element signature="method#commentStatus#0;class#PlaceStatusListFragment#0" expanded="false" />
-                <element signature="method#repostStatus#0;class#PlaceStatusListFragment#0" expanded="false" />
-                <element signature="method#deleteStatus#0;class#PlaceStatusListFragment#0" expanded="false" />
-                <element signature="method#viewStatusUser#0;class#PlaceStatusListFragment#0" expanded="false" />
-                <element signature="method#quickRepostStatus#0;class#PlaceStatusListFragment#0" expanded="false" />
-                <element signature="method#onReceiveLocation#0;class#MyLocationListenner#0;class#PlaceStatusListFragment#0" expanded="false" />
-                <element signature="method#onReceivePoi#0;class#MyLocationListenner#0;class#PlaceStatusListFragment#0" expanded="false" />
+                <element signature="e#2357#2417#0" expanded="false" />
+                <element signature="class#5008:5387" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SidebarAdapter.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/sliding/app/SidebarAdapter.java">
+      <file leaf-file-name="string_analytics.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/res/values/string_analytics.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="432" column="47" selection-start="15178" selection-end="15178" vertical-scroll-proportion="0.0" vertical-offset="5627" max-vertical-offset="6834">
-              <folding>
-                <marker date="1373031693433" expanded="false" signature="6609:7403" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlaceItemView.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/view/PlaceItemView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="43" column="21" selection-start="1437" selection-end="1437" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3179">
-              <folding>
-                <element signature="method#PlaceItemView#0;class#PlaceItemView#0" expanded="false" />
-                <element signature="e#6164#6217#0" expanded="true" />
-                <element signature="e#6342#6407#0" expanded="true" />
-                <element signature="e#6442#6508#0" expanded="true" />
-                <element signature="method#onClick#0;class#PlaceItemView#0" expanded="false" />
-                <element signature="method#updateBitmap#0;class#PlaceItemView#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TagsViewGroup.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/view/TagsViewGroup.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="343" column="112" selection-start="11813" selection-end="12009" vertical-scroll-proportion="0.0" vertical-offset="2343" max-vertical-offset="3808">
-              <folding>
-                <element signature="method#initFromAttributes#0;class#TagsViewGroup#0" expanded="false" />
-                <element signature="method#setAdapter#0;class#TagsViewGroup#0" expanded="false" />
-                <element signature="method#onMeasure#0;class#TagsViewGroup#0" expanded="false" />
-                <element signature="e#8378#8437#0" expanded="false" />
-                <element signature="e#8726#8842#0" expanded="false" />
-                <element signature="method#onLayout#0;class#TagsViewGroup#0" expanded="false" />
-                <element signature="class#AdapterDataSetObserver#0;class#TagsViewGroup#0" expanded="false" />
-                <element signature="method#handleDataChanged#0;class#TagsViewGroup#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ThreadBeanItemView.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/view/ThreadBeanItemView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="267" column="24" selection-start="10764" selection-end="11351" vertical-scroll-proportion="0.0" vertical-offset="4522" max-vertical-offset="5627">
+            <state vertical-scroll-proportion="1.7832168" vertical-offset="0" max-vertical-offset="357">
+              <caret line="15" column="53" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PlaceNearbyUsersFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/place/PlaceNearbyUsersFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="60" selection-start="291" selection-end="291" vertical-scroll-proportion="0.0" vertical-offset="69" max-vertical-offset="714">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="App.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../apiLibrary/src/com/me/microblog/App.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="576" column="10" selection-start="17972" selection-end="17972" vertical-scroll-proportion="0.0" vertical-offset="9694" max-vertical-offset="9996">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ImageAdapter.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/ImageAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="101" column="23" selection-start="2962" selection-end="2962" vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="3213">
-              <folding>
-                <element signature="method#ImageAdapter#0;class#ImageAdapter#0" expanded="false" />
-                <element signature="method#onClickItem#0;class#ImageAdapter#0" expanded="false" />
-                <element signature="class#ViewHolder#0;class#ImageAdapter#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="home_time_line_item_img.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/home_time_line_item_img.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="37" selection-start="570" selection-end="574" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DownloadPool.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../apiLibrary/src/com/me/microblog/thread/DownloadPool.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="203" column="19" selection-start="6928" selection-end="6928" vertical-scroll-proportion="0.0" vertical-offset="2652" max-vertical-offset="4488">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FetchImage.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../apiLibrary/src/com/me/microblog/thread/FetchImage.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="7" selection-start="41" selection-end="41" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2737">
-              <folding>
-                <element signature="docComment;method#FetchImage#1;class#FetchImage#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="58" selection-start="2049" selection-end="2049" vertical-scroll-proportion="0.34263566" vertical-offset="459" max-vertical-offset="3502">
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3519">
+              <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+              <folding>
+                <element signature="e#9634#10128#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="home_time_line_item.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/home_time_line_item.xml">
+      <file leaf-file-name="PrefsActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/ui/PrefsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="101" column="34" selection-start="5696" selection-end="5696" vertical-scroll-proportion="0.0" vertical-offset="1502" max-vertical-offset="2839">
+            <state vertical-scroll-proportion="0.0" vertical-offset="3563" max-vertical-offset="6239">
+              <caret line="315" column="22" selection-start-line="315" selection-start-column="22" selection-end-line="315" selection-end-column="22" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HomeActivity.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="AboutAppFragment.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/AboutAppFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="731" max-vertical-offset="2890">
+              <caret line="77" column="55" selection-start-line="77" selection-start-column="55" selection-end-line="77" selection-end-column="55" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StatusDetailFragment.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/StatusDetailFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2318" max-vertical-offset="3587">
+              <caret line="721" column="40" selection-start-line="721" selection-start-column="19" selection-end-line="721" selection-end-column="40" />
+              <folding>
+                <element signature="method#refreshStatus#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#showBitmapBySys#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#showBitmapLocal#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#viewLargeBitmap#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#downOriImage#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="e#8922#8965#0" expanded="false" />
+                <element signature="method#doDownloadOrig#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#createFavorite#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#onCreate#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="class#12361:14016" expanded="false" />
+                <element signature="method#clickMethod#0;class#12361:14016" expanded="false" />
+                <element signature="e#13574#13599#0" expanded="false" />
+                <element signature="method#onCreateView#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#onActivityCreated#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#initViews#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="e#16835#16885#0" expanded="false" />
+                <element signature="method#onStop#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#onDestroy#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#setStatusContent#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#buildSmile#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#onCreateCustomMenu#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#onMenuItemClick#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#onCreateOptionsMenu#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="e#24947#24950#0" expanded="false" />
+                <element signature="method#onOptionsItemSelected#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="class#26661:27368" expanded="false" />
+                <element signature="method#loadPortrait#0;class#26661:27368" expanded="false" />
+                <element signature="class#27404:28583" expanded="false" />
+                <element signature="method#loadPicture#0;class#27404:28583" expanded="false" />
+                <element signature="method#udpatePortrait#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#udpatePicture#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#downloadFile#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#showImage#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="e#32132#32164#0" expanded="false" />
+                <element signature="method#deleteFileIfNeeded#0;class#StatusDetailFragment#0" expanded="false" />
+                <element signature="method#loadPicture#0;class#StatusDetailFragment#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/ui/LoginActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5916">
+              <caret line="58" column="43" selection-start-line="58" selection-start-column="43" selection-end-line="58" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SkinFragmentActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/ui/SkinFragmentActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="1717">
+              <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+              <folding>
+                <element signature="method#applyThemeId#0;class#SkinFragmentActivity#0" expanded="false" />
+                <element signature="method#prepareMenu#0;class#SkinFragmentActivity#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ak_toast_view.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../apiLibrary/res/layout/ak_toast_view.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-4.25" vertical-offset="0" max-vertical-offset="425">
+              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ImageViewerActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/ui/ImageViewerActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="1377">
+              <caret line="63" column="18" selection-start-line="63" selection-start-column="18" selection-end-line="63" selection-end-column="18" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="docComment;class#ImageViewerActivity#0" expanded="false" />
+                <element signature="e#2145#2290#0" expanded="false" />
+                <element signature="e#2289#2290#0" expanded="false" />
+                <element signature="e#2690#3244#0" expanded="false" />
+                <element signature="e#3243#3244#0" expanded="false" />
+                <element signature="e#3296#3297#0" expanded="false" />
+                <element signature="e#3358#3359#0" expanded="false" />
+                <element signature="e#3439#3440#0" expanded="false" />
+                <element signature="e#3494#3495#0" expanded="false" />
+                <element signature="method#saveImage#0;class#ImageViewerActivity#0" expanded="false" />
+                <element signature="class#SamplePagerAdapter#0;class#ImageViewerActivity#0" expanded="false" />
+                <element signature="e#4632#4664#0" expanded="false" />
+                <element signature="e#4723#4724#0" expanded="false" />
+                <element signature="e#4754#4755#0" expanded="false" />
+                <element signature="e#4805#4806#0" expanded="false" />
+                <element signature="e#4848#4849#0" expanded="false" />
+                <element signature="method#instantiateItem#0;class#SamplePagerAdapter#0;class#ImageViewerActivity#0" expanded="false" />
+                <element signature="method#destroyItem#0;class#SamplePagerAdapter#0;class#ImageViewerActivity#0" expanded="false" />
+                <element signature="e#6255#6256#0" expanded="false" />
+                <element signature="e#6298#6299#0" expanded="false" />
+                <element signature="method#getAKSnapImageView#0;class#SamplePagerAdapter#0;class#ImageViewerActivity#0" expanded="false" />
+                <element signature="method#onPageScrolled#0;class#SamplePagerAdapter#0;class#ImageViewerActivity#0" expanded="false" />
+                <element signature="method#onPageSelected#0;class#SamplePagerAdapter#0;class#ImageViewerActivity#0" expanded="false" />
+                <element signature="method#onPageScrollStateChanged#0;class#SamplePagerAdapter#0;class#ImageViewerActivity#0" expanded="false" />
+                <element signature="class#SaveImageTask#0;class#ImageViewerActivity#0" expanded="false" />
+                <element signature="method#doInBackground#0;class#SaveImageTask#0;class#ImageViewerActivity#0" expanded="false" />
+                <element signature="method#onPostExecute#0;class#SaveImageTask#0;class#ImageViewerActivity#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HomeGridFragment.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/HomeGridFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1887">
+              <caret line="35" column="25" selection-start-line="35" selection-start-column="25" selection-end-line="35" selection-end-column="25" />
+              <folding>
+                <element signature="method#_onCreateView#0;class#HomeGridFragment#0" expanded="false" />
+                <element signature="method#initApi#0;class#HomeGridFragment#0" expanded="false" />
+                <element signature="method#onResume#0;class#HomeGridFragment#0" expanded="false" />
+                <element signature="method#clear#0;class#HomeGridFragment#0" expanded="false" />
+                <element signature="method#pullToRefreshData#0;class#HomeGridFragment#0" expanded="false" />
+                <element signature="method#fetchData#0;class#HomeGridFragment#0" expanded="false" />
+                <element signature="e#4680#4716#0" expanded="false" />
+                <element signature="method#loadData#0;class#HomeGridFragment#0" expanded="false" />
+                <element signature="e#5586#5607#0" expanded="false" />
+                <element signature="method#notifyChanged#0;class#HomeGridFragment#0" expanded="false" />
+                <element signature="method#refreshNewData#0;class#HomeGridFragment#0" expanded="false" />
+                <element signature="method#refreshAdapter#0;class#HomeGridFragment#0" expanded="false" />
+                <element signature="method#clearHomeNotify#0;class#HomeGridFragment#0" expanded="false" />
+                <element signature="method#loadLocalData#0;class#HomeGridFragment#0" expanded="false" />
+                <element signature="method#notifyService#0;class#HomeGridFragment#0" expanded="false" />
+                <element signature="method#fetchMore#0;class#HomeGridFragment#0" expanded="false" />
+                <element signature="method#updateGroupTimeline#0;class#HomeGridFragment#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HomeActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/ui/HomeActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="342" column="35" selection-start="13614" selection-end="13614" vertical-scroll-proportion="0.0" vertical-offset="1989" max-vertical-offset="4301">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3009">
+              <caret line="84" column="32" selection-start-line="84" selection-start-column="32" selection-end-line="84" selection-end-column="32" />
               <folding>
                 <element signature="method#setImageD#0;class#HomeActivity#0" expanded="false" />
                 <element signature="method#HomeActivity#0;class#HomeActivity#0" expanded="false" />
-                <element signature="e#5395#5421#0" expanded="false" />
+                <element signature="method#onCreate#0;class#HomeActivity#0" expanded="false" />
+                <element signature="e#3984#4004#0" expanded="false" />
+                <element signature="e#4980#5038#0" expanded="false" />
                 <element signature="method#onActionItemClick#0;class#HomeActivity#0" expanded="false" />
+                <element signature="method#selectItem#0;class#HomeActivity#0" expanded="false" />
                 <element signature="method#setCustomActionBar#0;class#HomeActivity#0" expanded="false" />
-                <element signature="e#9222#9257#0" expanded="false" />
+                <element signature="e#9395#9430#0" expanded="false" />
+                <element signature="method#onRestoreInstanceState#0;class#HomeActivity#0" expanded="false" />
+                <element signature="method#onSaveInstanceState#0;class#HomeActivity#0" expanded="false" />
                 <element signature="method#doInit#0;class#HomeActivity#0" expanded="false" />
+                <element signature="method#delayStartService#0;class#HomeActivity#0" expanded="false" />
+                <element signature="method#navigationFragment#0;class#HomeActivity#0" expanded="false" />
                 <element signature="method#onResume#0;class#HomeActivity#0" expanded="false" />
+                <element signature="method#applyTheme#0;class#HomeActivity#0" expanded="false" />
                 <element signature="method#refreshSidebar#0;class#HomeActivity#0" expanded="false" />
                 <element signature="method#onPause#0;class#HomeActivity#0" expanded="false" />
                 <element signature="method#onDestroy#0;class#HomeActivity#0" expanded="false" />
@@ -421,9 +595,9 @@
                 <element signature="method#receiveUnread#0;class#HomeActivity#0" expanded="false" />
                 <element signature="method#checkUpdate#0;class#HomeActivity#0" expanded="false" />
                 <element signature="method#addGroupNav#0;class#HomeActivity#0" expanded="false" />
-                <element signature="class#32840:33165" expanded="false" />
-                <element signature="method#onItemSelected#0;class#32840:33165" expanded="false" />
-                <element signature="method#onNothingSelected#0;class#32840:33165" expanded="false" />
+                <element signature="class#35529:35854" expanded="false" />
+                <element signature="method#onItemSelected#0;class#35529:35854" expanded="false" />
+                <element signature="method#onNothingSelected#0;class#35529:35854" expanded="false" />
                 <element signature="method#navigation#0;class#HomeActivity#0" expanded="false" />
                 <element signature="method#loadGroup#0;class#HomeActivity#0" expanded="false" />
                 <element signature="method#updateGroup#0;class#HomeActivity#0" expanded="false" />
@@ -432,63 +606,42 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PlaceNearbyPhotosFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/place/PlaceNearbyPhotosFragment.java">
+      <file leaf-file-name="WeiboLog.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../apiLibrary/src/com/me/microblog/util/WeiboLog.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="60" selection-start="368" selection-end="368" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="1462">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlaceUserListFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/place/PlaceUserListFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="53" selection-start="1026" selection-end="1026" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4641">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1071">
+              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
               <folding>
-                <element signature="docComment;method#initLocation#0;class#PlaceUserListFragment#0" expanded="true" />
-                <element signature="docComment;class#MyLocationListenner#0;class#PlaceUserListFragment#0" expanded="true" />
-                <element signature="class#MyLocationListenner#0;class#PlaceUserListFragment#0" expanded="false" />
-                <element signature="method#onReceiveLocation#0;class#MyLocationListenner#0;class#PlaceUserListFragment#0" expanded="false" />
-                <element signature="method#onReceivePoi#0;class#MyLocationListenner#0;class#PlaceUserListFragment#0" expanded="false" />
+                <element signature="method#d#0;class#WeiboLog#0" expanded="false" />
+                <element signature="method#d#1;class#WeiboLog#0" expanded="false" />
+                <element signature="method#i#0;class#WeiboLog#0" expanded="false" />
+                <element signature="method#i#1;class#WeiboLog#0" expanded="false" />
+                <element signature="method#i#2;class#WeiboLog#0" expanded="false" />
+                <element signature="method#v#0;class#WeiboLog#0" expanded="false" />
+                <element signature="method#v#1;class#WeiboLog#0" expanded="false" />
+                <element signature="method#e#0;class#WeiboLog#0" expanded="false" />
+                <element signature="method#e#1;class#WeiboLog#0" expanded="false" />
+                <element signature="method#e#2;class#WeiboLog#0" expanded="false" />
+                <element signature="method#w#0;class#WeiboLog#0" expanded="false" />
+                <element signature="method#w#1;class#WeiboLog#0" expanded="false" />
+                <element signature="method#getStackTrace#0;class#WeiboLog#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserListFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/UserListFragment.java">
+      <file leaf-file-name="ThreadBeanItemView.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/view/ThreadBeanItemView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="79" column="7" selection-start="2442" selection-end="2570" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="1394">
+            <state vertical-scroll-proportion="0.0" vertical-offset="358" max-vertical-offset="2346">
+              <caret line="264" column="9" selection-start-line="256" selection-start-column="8" selection-end-line="264" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="false" />
-                <element signature="docComment;class#UserListFragment#0" expanded="false" />
-                <element signature="method#onCreate#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#fetchMore#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#getView#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#onCreateCustomMenu#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#onPrepareCustomMenu#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#onMenuItemClick#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#itemClick#0;class#UserListFragment#0" expanded="false" />
-                <element signature="docComment;method#viewUserStatuses#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#viewUserStatuses#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#viewUserFollows#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#viewUserFriends#0;class#UserListFragment#0" expanded="false" />
-                <element signature="docComment;method#followUser#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#followUser#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#atUser#0;class#UserListFragment#0" expanded="false" />
-                <element signature="docComment;method#createFavorite#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#createFavorite#0;class#UserListFragment#0" expanded="false" />
-                <element signature="docComment;method#commentStatus#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#commentStatus#0;class#UserListFragment#0" expanded="false" />
-                <element signature="docComment;method#repostStatus#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#repostStatus#0;class#UserListFragment#0" expanded="false" />
-                <element signature="docComment;method#deleteStatus#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#deleteStatus#0;class#UserListFragment#0" expanded="false" />
-                <element signature="docComment;method#viewStatusUser#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#viewStatusUser#0;class#UserListFragment#0" expanded="false" />
-                <element signature="docComment;method#quickRepostStatus#0;class#UserListFragment#0" expanded="false" />
-                <element signature="method#quickRepostStatus#0;class#UserListFragment#0" expanded="false" />
+                <element signature="docComment;class#ThreadBeanItemView#0" expanded="false" />
+                <element signature="method#ThreadBeanItemView#0;class#ThreadBeanItemView#0" expanded="false" />
+                <element signature="docComment;method#update#0;class#ThreadBeanItemView#0" expanded="false" />
+                <element signature="method#update#0;class#ThreadBeanItemView#0" expanded="false" />
+                <element signature="docComment;method#loadPicture#0;class#ThreadBeanItemView#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -502,39 +655,50 @@
     </FindUsagesManager>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="," />
+      </list>
+    </option>
     <option name="SYNC_SETTING" value="DONT" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitLogSettings">
+    <option name="myDateState">
+      <MyDateState />
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/../apiLibrary/src/com/me/microblog/App.java" />
-        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/abs/AbsBaseListFragment.java" />
-        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/place/PlaceNearbyPhotosFragment.java" />
-        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/place/PlaceFriendsFragment.java" />
-        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/impl/SinaPlaceStatusImpl.java" />
-        <option value="$PROJECT_DIR$/src/cn/archko/microblog/view/ThreadBeanItemView.java" />
-        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/HomeFragment.java" />
-        <option value="$PROJECT_DIR$/src/cn/archko/microblog/sliding/app/SidebarAdapter.java" />
-        <option value="$PROJECT_DIR$/src/cn/archko/microblog/ui/HomeActivity.java" />
-        <option value="$PROJECT_DIR$/../apiLibrary/src/com/me/microblog/view/ImageViewerDialog.java" />
-        <option value="$PROJECT_DIR$/../apiLibrary/src/com/me/microblog/thread/FetchImage.java" />
-        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/place/PlaceStatusListFragment.java" />
-        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/place/PlaceNearbyUsersFragment.java" />
-        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/place/PlaceUserListFragment.java" />
-        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/impl/SinaPlaceUserImpl.java" />
-        <option value="$PROJECT_DIR$/../apiLibrary/src/com/me/microblog/core/WeiboParser.java" />
-        <option value="$PROJECT_DIR$/src/cn/archko/microblog/view/PlaceItemView.java" />
-        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/UserListFragment.java" />
-        <option value="$PROJECT_DIR$/res/layout/home_time_line_item_img.xml" />
-        <option value="$PROJECT_DIR$/src/cn/archko/microblog/view/TagsViewGroup.java" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/ui/SkinFragmentActivity.java" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/StatusDetailFragment.java" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/ui/ViewStatusDetailActivity.java" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/AccountUsersFragment.java" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/DraftListFragment.java" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/HotPickCategoryFragment.java" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/PickImageFragment.java" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/SearchDialogFragment.java" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/TaskListFragment.java" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/UserFriendListFragment.java" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/ui/SearchActivity.java" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/view/AKSnapImageView.java" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/view/DirectMessageItemView.java" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/view/EmojiPanelView.java" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/view/UserGridItemView.java" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/view/UserItemView.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/ui/PrefsActivity.java" />
+        <option value="$PROJECT_DIR$/res/layout/ak_about_app.xml" />
+        <option value="$PROJECT_DIR$/src/cn/archko/microblog/fragment/UserTimelineFragment.java" />
+        <option value="$PROJECT_DIR$/res/values/colors.xml" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="54" />
+    <option name="x" value="56" />
     <option name="y" value="-8" />
-    <option name="width" value="1320" />
+    <option name="width" value="1318" />
     <option name="height" value="784" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -550,20 +714,25 @@
   <component name="ProjectReloadState">
     <option name="STATE" value="0" />
   </component>
+  <component name="ProjectStructureProblems">
+    <ignored-problems>
+      <problem id="invalid-module-dependency(module:apiLibrary,AUILlibrary)" />
+      <problem id="invalid-module-dependency(module:APlane,AUILlibrary)" />
+    </ignored-problems>
+  </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
       <showLibraryContents />
-      <hideEmptyPackages />
+      <hideEmptyPackages ProjectPane="true" />
       <abbreviatePackageNames />
       <autoscrollToSource />
       <autoscrollFromSource />
       <sortByType ProjectPane="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -579,7 +748,7 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="APlane" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -589,11 +758,11 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="APlane" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -603,15 +772,11 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="APlane" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="microblog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -621,19 +786,15 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="APlane" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="microblog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fragment" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="values-zh-rTW" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -643,23 +804,15 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="APlane" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="microblog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fragment" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="values-sw600dp" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -668,8 +821,16 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="apiLibrary" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="APlane" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="values" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -678,16 +839,16 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="apiLibrary" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="APlane" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="microblog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="drawable-hdpi" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -696,29 +857,26 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="apiLibrary" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="APlane" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="microblog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="drawable" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="options.splitter.main.proportions" value="0.20392156" />
@@ -726,7 +884,7 @@
     <property name="recentsLimit" value="5" />
     <property name="ExportedApkPath" value="K:\Open\weibo\trunk\AKWeibo\AKWeibo.apk" />
     <property name="ExportedModule" value="AKWeibo" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/android-support-v13.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/umeng-update-v2.4.2.jar!/" />
     <property name="GoToClass.includeJavaFiles" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
@@ -737,7 +895,7 @@
     <property name="AndroidIncludeSystemProguardFile" value="false" />
     <property name="AndroidProguardConfigPath" value="K:\Open\weibo\trunk\AKWeibo\proguard.cfg" />
     <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
-    <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
+    <property name="options.lastSelected" value="http.proxy" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="AndroidRunProguardForReleaseBuild" value="true" />
@@ -745,50 +903,37 @@
     <property name="KeyAlias" value="weibo_key" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="options.searchVisible" value="true" />
+    <property name="extract.method.default.visibility" value="private" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.me.microblog.view" />
-      <recent name="com.me.microblog.fragment" />
-      <recent name="com.me.microblog.ui" />
-      <recent name="com.me.microblog.action" />
-      <recent name="com.me.microblog.fragment.impl" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\OpenAPI\weibo\trunk\APlane\src" />
-      <recent name="D:\OpenAPI\weibo\trunk\APlane\res\drawable-mdpi" />
-      <recent name="D:\OpenAPI\weibo\trunk\APlane\res\drawable-hdpi" />
-      <recent name="D:\OpenAPI\weibo\trunk\APlane\res\drawable-xhdpi" />
-      <recent name="D:\OpenAPI\weibo\trunk\APlane\res\drawable" />
-    </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="cn.archko.microblog.ui" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\OpenApi\weibo\APlane\apiLibrary\res\drawable-xhdpi" />
+      <recent name="D:\OpenApi\weibo\APlane\apiLibrary\src\com\me\microblog\util" />
+      <recent name="D:\OpenApi\weibo\APlane\apiLibrary\res\drawable-hdpi" />
+      <recent name="D:\OpenApi\weibo\APlane\apiLibrary\res\layout" />
+      <recent name="D:\OpenApi\weibo\APlane\APlane\res\layout" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\OpenAPI\weibo\APlane\APlane\res\drawable-nodpi" />
       <recent name="D:\OpenAPI\weibo\trunk\AKWeibo\res\layout" />
       <recent name="D:\OpenAPI\weibo\trunk\AKWeibo\res\drawable" />
       <recent name="D:\OpenAPI\weibo\trunk\library\res\drawable" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.makeramen" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.me.microblog.util" />
+      <recent name="cn.archko.microblog.view" />
+      <recent name="cn.archko.microblog.listeners" />
+      <recent name="cn.archko.microblog.fragment" />
+      <recent name="cn.archko.microblog.fragment.place" />
+    </key>
   </component>
   <component name="RunManager" selected="Android Application.AKPlane">
-    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
-      <module name="" />
-      <option name="TESTING_TYPE" value="0" />
-      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
-      <option name="PREFERRED_AVD" value="" />
-      <option name="USE_COMMAND_LINE" value="true" />
-      <option name="COMMAND_LINE" value="" />
-      <option name="WIPE_USER_DATA" value="false" />
-      <option name="DISABLE_BOOT_ANIMATION" value="false" />
-      <option name="NETWORK_SPEED" value="full" />
-      <option name="NETWORK_LATENCY" value="none" />
-      <option name="CLEAR_LOGCAT" value="false" />
-      <method />
-    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -797,34 +942,8 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
-      <envs />
-      <method />
-    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -849,7 +968,9 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="MODE" value="default_activity" />
       <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
       <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
       <option name="PREFERRED_AVD" value="" />
       <option name="USE_COMMAND_LINE" value="true" />
       <option name="COMMAND_LINE" value="" />
@@ -858,6 +979,73 @@
       <option name="NETWORK_SPEED" value="full" />
       <option name="NETWORK_LATENCY" value="none" />
       <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
       <method />
     </configuration>
     <configuration default="false" name="AKPlane" type="AndroidRunConfigurationType" factoryName="Android Application">
@@ -865,7 +1053,9 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="MODE" value="do_nothing" />
       <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
       <option name="TARGET_SELECTION_MODE" value="USB_DEVICE" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
       <option name="PREFERRED_AVD" value="" />
       <option name="USE_COMMAND_LINE" value="true" />
       <option name="COMMAND_LINE" value="" />
@@ -874,6 +1064,8 @@
       <option name="NETWORK_SPEED" value="full" />
       <option name="NETWORK_LATENCY" value="none" />
       <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
       <method />
     </configuration>
     <list size="1">
@@ -893,382 +1085,578 @@
   <component name="StructureViewFactory">
     <option name="AUTOSCROLL_MODE" value="false" />
   </component>
-  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="true" SSL_PROTOCOLS="all">
-    <option name="USER" value="" />
-    <option name="PASSWORD" value="" />
-    <option name="mySSHConnectionTimeout" value="30000" />
-    <option name="mySSHReadTimeout" value="30000" />
-    <option name="LAST_MERGED_REVISION" />
-    <option name="MERGE_DRY_RUN" value="false" />
-    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
-    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
-    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
-    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
-    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
-    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
-    <option name="FORCE_UPDATE" value="false" />
-    <option name="IGNORE_EXTERNALS" value="false" />
+  <component name="SvnConfiguration" cleanupOnStartRun="true">
     <configuration useDefault="false">C:\Users\archko\AppData\Roaming\Subversion</configuration>
-    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
     <supportedVersion>125</supportedVersion>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="1024095b-2e82-4701-8b71-c29a3cbee985" name="Default" comment="" />
       <created>1340779013110</created>
+      <option name="number" value="Default" />
       <updated>1340779013110</updated>
       <workItem from="1362394621442" duration="4176000" />
       <workItem from="1362399016497" duration="5382000" />
     </task>
     <task id="LOCAL-00001">
       <created>1340779897108</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
       <updated>1340779897108</updated>
     </task>
     <task id="LOCAL-00002" summary="修改了主页,随便看看,用户列表,粉丝与用户微博等Fragment的列表事件,改为使用QuickAction来处理.&#10;重构了BaseFragment,BaseListFragment">
       <created>1341835959102</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
       <updated>1341835959102</updated>
     </task>
     <task id="LOCAL-00003" summary="修改api登录接口,但没有成功&#10;修改数据库版本,提高到9,增加了列">
       <created>1343046682160</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
       <updated>1343046682160</updated>
     </task>
     <task id="LOCAL-00004" summary="修正一些问题,微博被删除后解析不正常的bug&#10;,发布微博时添加位置按钮,但还未实现&#10;重构了api类.&#10;个人资料中的用户id还未解决,需要重新考虑.&#10;修正登录页面的文字错误.&#10;总之多处修正,Oauth2即将发布.">
       <created>1344256526102</created>
+      <option name="number" value="00004" />
+      <option name="project" value="LOCAL" />
       <updated>1344256526102</updated>
     </task>
     <task id="LOCAL-00005" summary="进一步优化列表的加载,相同的列表内容不处理更新.&#10;调整了黑色主题的转发内容的背景色,现在正常了,但是详细页面的背景图没有了.&#10;提高了大图加载的分辨率,现在已经可以查看很大的图了.且添加了大图的缓存为3张.">
       <created>1347717733103</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
       <updated>1347717733103</updated>
     </task>
     <task id="LOCAL-00006" summary="列表项的加载分离出,之前判断重复的内容会造成有些无法更新.&#10;添加设置增量更新&#10;替换lib,也许可以解决之前的ListView触摸时发生的空指针异常.&#10;在大图浏览时,较容易出现下载的图片url为空.&#10;重构主页,修改为现在的共同其类,派生出位置服务的基类.&#10;添加微博与用户的其它属性解析.">
       <created>1347773942107</created>
+      <option name="number" value="00006" />
+      <option name="project" value="LOCAL" />
       <updated>1347773942107</updated>
     </task>
     <task id="LOCAL-00007" summary="添加了位置的照片与周围的人,去除了热门转发与热门评论.添加了位置服务的超类.&#10;重构了原来的列表项,滚动时不下载图片.&#10;处理了不同类别的图片缓存策略,将主页的缓存恢复了.">
       <created>1348298652104</created>
+      <option name="number" value="00007" />
+      <option name="project" value="LOCAL" />
       <updated>1348298652104</updated>
     </task>
     <task id="LOCAL-00008" summary="微博的其它对象需要实现序列化或parcel接口,否则不能传对象.">
       <created>1348298801101</created>
+      <option name="number" value="00008" />
+      <option name="project" value="LOCAL" />
       <updated>1348298801101</updated>
     </task>
     <task id="LOCAL-00009" summary="微博的其它对象需要实现序列化或parcel接口,否则不能传对象.">
       <created>1348298944100</created>
+      <option name="number" value="00009" />
+      <option name="project" value="LOCAL" />
       <updated>1348298944100</updated>
     </task>
     <task id="LOCAL-00010" summary="日志不同级别的处理.修改侧边栏的图标的大小&#10;对增量更新进行了处理.现在不会刷新整个,而是根据新的微博数量来处理的.&#10;大图片的缓存目前在大图浏览时才有,配置信息修改为大图浏览时作出提醒.">
       <created>1348303644100</created>
+      <option name="number" value="00010" />
+      <option name="project" value="LOCAL" />
       <updated>1348303644100</updated>
     </task>
     <task id="LOCAL-00011" summary="添加了用户关注的处理,&#10;登录提示信息修改.随便看看在销毁后只保留一页数据.修改文本资源,统一命名.&#10;侧边栏使用高亮背景.">
       <created>1348390680127</created>
+      <option name="number" value="00011" />
+      <option name="project" value="LOCAL" />
       <updated>1348390680127</updated>
     </task>
     <task id="LOCAL-00012">
       <created>1354617552127</created>
+      <option name="number" value="00012" />
+      <option name="project" value="LOCAL" />
       <updated>1354617552127</updated>
     </task>
     <task id="LOCAL-00013" summary="调整了style,去除了无用的style,把颜色全部换了名字.去除了无用的布局文件.去除library的item背景.&#10;彻底删除了abs的示例.&#10;对itemview里面的变量重新命名.对其它Activity也尽量重命名了.&#10;添加了评论的头像加载.去除了详细页面的评论的更多限制.&#10;保存了我的评论本地数据.&#10;">
       <created>1354757984118</created>
+      <option name="number" value="00013" />
+      <option name="project" value="LOCAL" />
       <updated>1354757984118</updated>
     </task>
     <task id="LOCAL-00014" summary="target=17">
       <created>1354759299101</created>
+      <option name="number" value="00014" />
+      <option name="project" value="LOCAL" />
       <updated>1354759299101</updated>
     </task>
     <task id="LOCAL-00015" summary="修正了弹出的PopupWindows中原文按钮失效的问题.&#10;详细页面先显示缩略图,如果存在.修正了刷新的问题.">
       <created>1354760746100</created>
+      <option name="number" value="00015" />
+      <option name="project" value="LOCAL" />
       <updated>1354760746100</updated>
     </task>
     <task id="LOCAL-00016" summary="修改了详细页面的布局,使用了ActionBar.在底部使用了操作按钮,去除了原来的BottomAction.&#10;添加收藏的图标.添加详细界面的菜单资源文件.&#10;删除多余的anim资源.&#10;BaseOauthFragmentActivity添加ActionBar域.">
       <created>1354776631112</created>
+      <option name="number" value="00016" />
+      <option name="project" value="LOCAL" />
       <updated>1354776631112</updated>
     </task>
     <task id="LOCAL-00017" summary="调整了Cache,直接使用App,而不经过ImageManager">
       <created>1354777632112</created>
+      <option name="number" value="00017" />
+      <option name="project" value="LOCAL" />
       <updated>1354777632112</updated>
     </task>
     <task id="LOCAL-00018" summary="1.修改了发新微博,评论,转发的@与话题搜索,添加了Fragment作为搜索弹出框.去除了原来的搜索.添加了搜索框的关闭按钮.&#10;添加了AtUser实体,数据库版本增加到13,添加了@用户的类型等列.清除了原来的用户数据.&#10;重构了mPrefs名字">
       <created>1354848956101</created>
+      <option name="number" value="00018" />
+      <option name="project" value="LOCAL" />
       <updated>1354848956101</updated>
     </task>
     <task id="LOCAL-00019" summary="添加了查看用户信息时的数据">
       <created>1354849975101</created>
+      <option name="number" value="00019" />
+      <option name="project" value="LOCAL" />
       <updated>1354849975101</updated>
     </task>
     <task id="LOCAL-00020">
       <created>1354850053100</created>
+      <option name="number" value="00020" />
+      <option name="project" value="LOCAL" />
       <updated>1354850053100</updated>
     </task>
     <task id="LOCAL-00021" summary="添加了序列化与反序列化操作到weibooperation中,重构了HomeActivity的相关部分.&#10;评论与@我,先查询本地文件,如果不存在数据再从网络获取,序列化到文件中.&#10;用户粉丝查看,排除非登录用户时清除粉丝个数.">
       <created>1354859811144</created>
+      <option name="number" value="00021" />
+      <option name="project" value="LOCAL" />
       <updated>1354859811145</updated>
     </task>
     <task id="LOCAL-00022" summary="修改搜索的背景为黑色,因为当前的白色主题下看不清.">
       <created>1354862873100</created>
+      <option name="number" value="00022" />
+      <option name="project" value="LOCAL" />
       <updated>1354862873100</updated>
     </task>
     <task id="LOCAL-00023" summary="修正了详细微博列表把头像覆盖的问题.抓取了序列化的异常.">
       <created>1354863699182</created>
+      <option name="number" value="00023" />
+      <option name="project" value="LOCAL" />
       <updated>1354863699182</updated>
     </task>
     <task id="LOCAL-00024" summary="doc">
       <created>1354864369100</created>
+      <option name="number" value="00024" />
+      <option name="project" value="LOCAL" />
       <updated>1354864369100</updated>
     </task>
     <task id="LOCAL-00025" summary="修正了侧边栏与列表的背景.&#10;修正了#,@ 在编辑框中选中的位置问题.">
       <created>1354930029183</created>
+      <option name="number" value="00025" />
+      <option name="project" value="LOCAL" />
       <updated>1354930029183</updated>
     </task>
     <task id="LOCAL-00026" summary="修正了粉丝与关注列表没有数据显示的文字.&#10;修改了Toast为ui线程运行.">
       <created>1354930781100</created>
+      <option name="number" value="00026" />
+      <option name="project" value="LOCAL" />
       <updated>1354930781100</updated>
     </task>
     <task id="LOCAL-00027" summary="1.个人资料页面修改了布局.&#10;2.添加了私信的数据库表与相关的数据库操作.">
       <created>1354943543154</created>
+      <option name="number" value="00027" />
+      <option name="project" value="LOCAL" />
       <updated>1354943543154</updated>
     </task>
     <task id="LOCAL-00028">
       <created>1354943581100</created>
+      <option name="number" value="00028" />
+      <option name="project" value="LOCAL" />
       <updated>1354943581100</updated>
     </task>
     <task id="LOCAL-00029">
       <created>1354943882100</created>
+      <option name="number" value="00029" />
+      <option name="project" value="LOCAL" />
       <updated>1354943882100</updated>
     </task>
     <task id="LOCAL-00030" summary="对话框布局修改.&#10;添加关于页面.&#10;修改详细页面的菜单项.">
       <created>1355095417136</created>
+      <option name="number" value="00030" />
+      <option name="project" value="LOCAL" />
       <updated>1355095417136</updated>
     </task>
     <task id="LOCAL-00031" summary="修改了发微博的页面布局.地理位置修改为手动获取,图片添加其它操作,暂时隐藏.草稿放在菜单中.删除原来的图片删除按钮">
       <created>1355229082792</created>
+      <option name="number" value="00031" />
+      <option name="project" value="LOCAL" />
       <updated>1355229082792</updated>
     </task>
     <task id="LOCAL-00032">
       <created>1355230112100</created>
+      <option name="number" value="00032" />
+      <option name="project" value="LOCAL" />
       <updated>1355230112100</updated>
     </task>
     <task id="LOCAL-00033" summary="修正了列表图片的加载问题.">
       <created>1355394165138</created>
+      <option name="number" value="00033" />
+      <option name="project" value="LOCAL" />
       <updated>1355394165138</updated>
     </task>
     <task id="LOCAL-00034" summary="修改Toast的显示,避免了Activity不存在的状况.但有可能会造成非ui线程的问题,暂时不知道是哪一个.&#10;添加了发布微博的删除功能,还需要完善,测试.添加了可选中的列表项.&#10;搜索中的按钮文本padding左右去除.添加了最近@按钮,暂时隐藏.需要测试完善.">
       <created>1355402855100</created>
+      <option name="number" value="00034" />
+      <option name="project" value="LOCAL" />
       <updated>1355402855100</updated>
     </task>
     <task id="LOCAL-00035" summary="修改日志级别">
       <created>1356152755219</created>
+      <option name="number" value="00035" />
+      <option name="project" value="LOCAL" />
       <updated>1356152755219</updated>
     </task>
     <task id="LOCAL-00036" summary="修正了认证的一些bug,js可以弹出,现在也可以提示正常了.但还是无法保证认证永久的合法性.">
       <created>1356156144100</created>
+      <option name="number" value="00036" />
+      <option name="project" value="LOCAL" />
       <updated>1356156144100</updated>
     </task>
     <task id="LOCAL-00037" summary="修正了详细页面的@链接只显示最后一个的问题.图片也居中了,">
       <created>1356158915102</created>
+      <option name="number" value="00037" />
+      <option name="project" value="LOCAL" />
       <updated>1356158915102</updated>
     </task>
     <task id="LOCAL-00038" summary="完成了@我的微博的数据库存储,添加了新的表格,对一些方法进行了重构,但需要在覆盖时注意,返回的对象需要有三个值.">
       <created>1356164291101</created>
+      <option name="number" value="00038" />
+      <option name="project" value="LOCAL" />
       <updated>1356164291101</updated>
     </task>
     <task id="LOCAL-00039" summary="修改了侧边栏的资源,排列顺序.">
       <created>1356181674100</created>
+      <option name="number" value="00039" />
+      <option name="project" value="LOCAL" />
       <updated>1356181674100</updated>
     </task>
     <task id="LOCAL-00040" summary="侧边栏使用弱引用保存Fragment.">
       <created>1356183058100</created>
+      <option name="number" value="00040" />
+      <option name="project" value="LOCAL" />
       <updated>1356183058100</updated>
     </task>
     <task id="LOCAL-00041" summary="showUIToast，再次修改了提示信息的显示。即使在Fragment已经销毁时，也要显示信息。&#10;修改了任务的列表项布局。添加任务时，也不再截取文字了。">
       <created>1356222979100</created>
+      <option name="number" value="00041" />
+      <option name="project" value="LOCAL" />
       <updated>1356222979100</updated>
     </task>
     <task id="LOCAL-00042" summary="添加了反馈与关于的其它信息">
       <created>1356223900100</created>
+      <option name="number" value="00042" />
+      <option name="project" value="LOCAL" />
       <updated>1356223900100</updated>
     </task>
     <task id="LOCAL-00043" summary="调整了侧边栏的内容顺序">
       <created>1356224157100</created>
+      <option name="number" value="00043" />
+      <option name="project" value="LOCAL" />
       <updated>1356224157100</updated>
     </task>
     <task id="LOCAL-00044" summary="修改详细后退键按下时,如果还在评论页面,就滑动到左侧">
       <created>1356243730100</created>
+      <option name="number" value="00044" />
+      <option name="project" value="LOCAL" />
       <updated>1356243730100</updated>
     </task>
     <task id="LOCAL-00045">
       <created>1356243778100</created>
+      <option name="number" value="00045" />
+      <option name="project" value="LOCAL" />
       <updated>1356243778100</updated>
     </task>
     <task id="LOCAL-00046" summary="url链接处理失败,不需要编码.@还是有些问题.&#10;处理了url的链接问题,修改了后退键的行为,增加配置项.&#10;修正了附近照片没有数据的bug.">
       <created>1356400565162</created>
+      <option name="number" value="00046" />
+      <option name="project" value="LOCAL" />
       <updated>1356400565162</updated>
     </task>
     <task id="LOCAL-00047" summary="修正加载分组的api过期时导致崩溃的bug.&#10;修复了其它关于api初始化的问题&#10;删除了ldpi的logo,替换了其它的logo">
       <created>1356586313132</created>
+      <option name="number" value="00047" />
+      <option name="project" value="LOCAL" />
       <updated>1356586313132</updated>
     </task>
     <task id="LOCAL-00048" summary="侧边栏使用弱引用保存Fragment.">
       <created>1356586406101</created>
+      <option name="number" value="00048" />
+      <option name="project" value="LOCAL" />
       <updated>1356586406101</updated>
     </task>
     <task id="LOCAL-00049" summary="添加字体颜色配置,修正了字体大小的bug">
       <created>1356684617101</created>
+      <option name="number" value="00049" />
+      <option name="project" value="LOCAL" />
       <updated>1356684617101</updated>
     </task>
     <task id="LOCAL-00050" summary="字体配置修改可变的字体.完善其它的提示信息.&#10;修正评论页面的背景">
       <created>1356705035138</created>
+      <option name="number" value="00050" />
+      <option name="project" value="LOCAL" />
       <updated>1356705035138</updated>
     </task>
     <task id="LOCAL-00051" summary="添加评论监听器,可以在异步评论成功后更新评论的列表,新评论未添加到列表中.">
       <created>1356705864102</created>
+      <option name="number" value="00051" />
+      <option name="project" value="LOCAL" />
       <updated>1356705864102</updated>
     </task>
     <task id="LOCAL-00052" summary="code.google网址反馈去除,不可用,github也需要登录.&#10;认证js的bug导致崩溃.看来只能支持2.3的系统了.api level提高到8&#10;导航模式去除了tab标签,完全使用侧边栏">
       <created>1357437229100</created>
+      <option name="number" value="00052" />
+      <option name="project" value="LOCAL" />
       <updated>1357437229100</updated>
     </task>
     <task id="LOCAL-00053">
       <created>1357437418101</created>
+      <option name="number" value="00053" />
+      <option name="project" value="LOCAL" />
       <updated>1357437418101</updated>
     </task>
     <task id="LOCAL-00054" summary="修正详细页面链接的颜色,替换了资源,使用%s.&#10;">
       <created>1357535035102</created>
+      <option name="number" value="00054" />
+      <option name="project" value="LOCAL" />
       <updated>1357535035102</updated>
     </task>
     <task id="LOCAL-00055" summary="升级了pull的库">
       <created>1357535066114</created>
+      <option name="number" value="00055" />
+      <option name="project" value="LOCAL" />
       <updated>1357535066114</updated>
     </task>
     <task id="LOCAL-00056">
       <created>1357536709100</created>
+      <option name="number" value="00056" />
+      <option name="project" value="LOCAL" />
       <updated>1357536709101</updated>
     </task>
     <task id="LOCAL-00057" summary="升级了相关的库,添加了繁体中文的配置.&#10;这版本算是今年最后的版本了,该放弃了.">
       <created>1357560706138</created>
+      <option name="number" value="00057" />
+      <option name="project" value="LOCAL" />
       <updated>1357560706138</updated>
     </task>
     <task id="LOCAL-00058" summary="替换了大的logo图标,v4库">
       <created>1358505045100</created>
+      <option name="number" value="00058" />
+      <option name="project" value="LOCAL" />
       <updated>1358505045100</updated>
     </task>
     <task id="LOCAL-00059" summary="添加侧边栏的light主题图标,且重命名">
       <created>1358642057100</created>
+      <option name="number" value="00059" />
+      <option name="project" value="LOCAL" />
       <updated>1358642057100</updated>
     </task>
     <task id="LOCAL-00060" summary="删除不用的资源,重构资源的名字">
       <created>1358643305100</created>
+      <option name="number" value="00060" />
+      <option name="project" value="LOCAL" />
       <updated>1358643305100</updated>
     </task>
     <task id="LOCAL-00061" summary="去除了QuickAction依赖,修改了颜色引用.&#10;修改了设置xml文件的加载,以便更清楚地定位一些机器崩溃的bug&#10;升级了abs库,">
       <created>1359618690103</created>
+      <option name="number" value="00061" />
+      <option name="project" value="LOCAL" />
       <updated>1359618690103</updated>
     </task>
     <task id="LOCAL-00062" summary="添加pull库的繁体中文翻译">
       <created>1359618705115</created>
+      <option name="number" value="00062" />
+      <option name="project" value="LOCAL" />
       <updated>1359618705115</updated>
     </task>
     <task id="LOCAL-00063" summary="完成个人资料重构,微博操作移入到utils包中.&#10;SStatusData添加泛型对象">
       <created>1359628657109</created>
+      <option name="number" value="00063" />
+      <option name="project" value="LOCAL" />
       <updated>1359628657109</updated>
     </task>
     <task id="LOCAL-00064" summary="修正了登录用户的资料查看，使用大图，且保存大头像的链接，去除定时更新资料，改为手动更新用户资料。&#10;评论添加菜单项，">
       <created>1359685947101</created>
+      <option name="number" value="00064" />
+      <option name="project" value="LOCAL" />
       <updated>1359685947101</updated>
     </task>
     <task id="LOCAL-00065" summary="详细页面使用自定义的ActionBar,但是无法显示标题.把菜单中内容的更多操作放到右上角自定义ActionBar中.实现全面解除QuickAction依赖">
       <created>1359688790100</created>
+      <option name="number" value="00065" />
+      <option name="project" value="LOCAL" />
       <updated>1359688790100</updated>
     </task>
     <task id="LOCAL-00066" summary="处理了关注与粉丝,但还是有些bug,特别是只传昵称时,不能查看关注与粉丝,微博数据.&#10;tab初始化时添加Bundle参数.">
       <created>1359767393114</created>
+      <option name="number" value="00066" />
+      <option name="project" value="LOCAL" />
       <updated>1359767393114</updated>
     </task>
     <task id="LOCAL-00067" summary="添加设置Fragment,&#10;登录页面添加显式认证,显示webview,oauth2也加入无用户名密码认证过期后回到登录页面.&#10;删除ldpi资源.&#10;添加删除当前的无用户名认证的数据信息方法&#10;">
       <created>1361143459103</created>
+      <option name="number" value="00067" />
+      <option name="project" value="LOCAL" />
       <updated>1361143459103</updated>
     </task>
     <task id="LOCAL-00068" summary="添加自定义的key认证.">
       <created>1361143625101</created>
+      <option name="number" value="00068" />
+      <option name="project" value="LOCAL" />
       <updated>1361143625101</updated>
     </task>
     <task id="LOCAL-00069" summary="全面解除QuickAction依赖,删除旧的无用代码,保持清洁">
       <created>1361183236100</created>
+      <option name="number" value="00069" />
+      <option name="project" value="LOCAL" />
       <updated>1361183236100</updated>
     </task>
     <task id="LOCAL-00070" summary="刷新方法提到BaseFragment,去除了其它菜单,暂时先用着.">
       <created>1361192028128</created>
+      <option name="number" value="00070" />
+      <option name="project" value="LOCAL" />
       <updated>1361192028128</updated>
     </task>
     <task id="LOCAL-00071" summary="删除桌面控件布局">
       <created>1361441286100</created>
+      <option name="number" value="00071" />
+      <option name="project" value="LOCAL" />
       <updated>1361441286100</updated>
     </task>
     <task id="LOCAL-00072" summary="详细页面打开浏览器添加了设置,可以使用内部浏览器&#10;主页数据加载移入Impl中.&#10;分组显示人数&#10;">
       <created>1361449575100</created>
+      <option name="number" value="00072" />
+      <option name="project" value="LOCAL" />
       <updated>1361449575100</updated>
     </task>
     <task id="LOCAL-00073" summary="详细页面打开浏览器添加了设置,可以使用内部浏览器&#10;主页数据加载移入Impl中.&#10;分组显示人数&#10;widget完成,需要添加一个服务来处理,因为在Widget里的数据会被清除的.&#10;">
       <created>1361530077101</created>
+      <option name="number" value="00073" />
+      <option name="project" value="LOCAL" />
       <updated>1361530077101</updated>
     </task>
     <task id="LOCAL-00074" summary="私信回复对话框出错.&#10;widget完成,">
       <created>1361533341100</created>
+      <option name="number" value="00074" />
+      <option name="project" value="LOCAL" />
       <updated>1361533341100</updated>
     </task>
     <task id="LOCAL-00075" summary="反选图标添加不同主题,清除选中的标志&#10;服务启动后更新桌面饰件">
       <created>1361537474100</created>
+      <option name="number" value="00075" />
+      <option name="project" value="LOCAL" />
       <updated>1361537474100</updated>
     </task>
     <task id="LOCAL-00076" summary="补充 收藏图标">
       <created>1361683128103</created>
+      <option name="number" value="00076" />
+      <option name="project" value="LOCAL" />
       <updated>1361683128103</updated>
     </task>
     <task id="LOCAL-00077" summary="添加下载好友的DialogFragment,与搜索共用一个布局.&#10;@微博添加屏蔽功能">
       <created>1361688488100</created>
+      <option name="number" value="00077" />
+      <option name="project" value="LOCAL" />
       <updated>1361688488100</updated>
     </task>
     <task id="LOCAL-00078" summary="添加了主页的ActionBar&#10;修改@数据 如果与新数据大小差不多就删除所有的">
       <created>1362402700102</created>
+      <option name="number" value="00078" />
+      <option name="project" value="LOCAL" />
       <updated>1362402700102</updated>
     </task>
     <task id="LOCAL-00079" summary="添加微博加载数量配置,添加ebookdroid的设置类,">
       <created>1363350082111</created>
+      <option name="number" value="00079" />
+      <option name="project" value="LOCAL" />
       <updated>1363350082111</updated>
     </task>
     <task id="LOCAL-00080" summary="添加清除当前的列表数据与监听器.&#10;最小字体设置为12&#10;侧边栏的字体调整为默认的,个人资料与设置都调整为默认大小">
       <created>1363353481103</created>
+      <option name="number" value="00080" />
+      <option name="project" value="LOCAL" />
       <updated>1363353481103</updated>
     </task>
     <task id="LOCAL-00081" summary="添加多图浏览,与自定义View,TagsViewGroup,有修改.&#10;增加查看图片时下载按钮,提示文字等.&#10;升级数据库,增加多图的存储.修改微博解析,加入多图.&#10;图片下载时,缓存的View改变,且增加空值检查.避免不必要的返回.&#10;弹出的图片查看进度修改,使用文本加圆形进度.">
       <created>1370568007101</created>
+      <option name="number" value="00081" />
+      <option name="project" value="LOCAL" />
       <updated>1370568007101</updated>
     </task>
     <task id="LOCAL-00082" summary="添加多图浏览,与自定义View,TagsViewGroup,有修改.&#10;增加查看图片时下载按钮,提示文字等.&#10;升级数据库,增加多图的存储.修改微博解析,加入多图.&#10;图片下载时,缓存的View改变,且增加空值检查.避免不必要的返回.&#10;弹出的图片查看进度修改,使用文本加圆形进度.">
       <created>1370568065100</created>
+      <option name="number" value="00082" />
+      <option name="project" value="LOCAL" />
       <updated>1370568065100</updated>
     </task>
     <task id="LOCAL-00083" summary="重构侧边栏的包.">
       <created>1370568253100</created>
+      <option name="number" value="00083" />
+      <option name="project" value="LOCAL" />
       <updated>1370568253100</updated>
     </task>
     <task id="LOCAL-00084">
       <created>1370568297102</created>
+      <option name="number" value="00084" />
+      <option name="project" value="LOCAL" />
       <updated>1370568297102</updated>
     </task>
     <task id="LOCAL-00085" summary="修正了TagsViewGroup的一些问题,修正了解析后的bug,导致主页的转发微博有多图无法显示.恢复了RelativeLayout布局,修正了这个布局无法使用的bug&#10;保存图片后显示路径.">
       <created>1370737138101</created>
+      <option name="number" value="00085" />
+      <option name="project" value="LOCAL" />
       <updated>1370737138101</updated>
     </task>
     <task id="LOCAL-00086" summary="修正保存图片的路径空指针bug">
       <created>1370737245100</created>
+      <option name="number" value="00086" />
+      <option name="project" value="LOCAL" />
       <updated>1370737245100</updated>
     </task>
     <task id="LOCAL-00087" summary="发微博添加表情,去除之前的定位代码">
       <created>1370776561288</created>
+      <option name="number" value="00087" />
+      <option name="project" value="LOCAL" />
       <updated>1370776561288</updated>
     </task>
-    <option name="localTasksCounter" value="88" />
+    <task id="LOCAL-00088" summary="修改ft,Fragment切换时销毁view&#10;个人资料只在选中后才加载数据.">
+      <created>1401607876495</created>
+      <option name="number" value="00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1401607876495</updated>
+    </task>
+    <task id="LOCAL-00089" summary="查看粉丝,使用透明的ActionBar.但还有些bug,下次将滚动加入,隐藏ActionBar">
+      <created>1401611161936</created>
+      <option name="number" value="00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1401611161936</updated>
+    </task>
+    <task id="LOCAL-00090" summary="查看粉丝,使用透明的ActionBar.但还有些bug,下次将滚动加入,隐藏ActionBar">
+      <created>1401611781658</created>
+      <option name="number" value="00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1401611781658</updated>
+    </task>
+    <task id="LOCAL-00091" summary="透明的ActionBar.&#10;重构">
+      <created>1401951495624</created>
+      <option name="number" value="00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1401951495625</updated>
+    </task>
+    <task id="LOCAL-00092" summary="修正他人微博点击位置的bug&#10;去除不用的代码">
+      <created>1401974051565</created>
+      <option name="number" value="00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1401974051565</updated>
+    </task>
+    <task id="LOCAL-00093" summary="进度图形修改.">
+      <created>1401975062290</created>
+      <option name="number" value="00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1401975062290</updated>
+    </task>
+    <option name="localTasksCounter" value="94" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -1295,122 +1683,88 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="54" y="-8" width="1320" height="784" extended-state="6" />
-    <editor active="true" />
+    <frame x="56" y="-8" width="1318" height="784" extended-state="6" />
+    <editor active="false" />
     <layout>
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293461" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5897833" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293461" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25488663" sideWeight="0.61764705" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972136" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34055728" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38235295" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4876161" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.7774343" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972136" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3802164" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293461" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32921174" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25097734" sideWeight="0.61764705" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4683153" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.74806803" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="81" y="8" width="1281" height="759" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293461" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21657544" sideWeight="0.65634674" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.48377126" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22908522" sideWeight="0.503096" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2314308" sideWeight="0.65634674" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34365326" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38702112" sideWeight="0.5" order="6" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.284153" sideWeight="0.5" order="6" side_tool="false" content_ui="combo" />
+      <window_info id="Ant Build" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="myTodoPanelSettings">
-      <value>
-        <are-packages-shown value="false" />
-        <are-modules-shown value="false" />
-        <flatten-packages value="false" />
-        <is-autoscroll-to-source value="false" />
-      </value>
+      <TodoPanelSettings />
     </option>
-    <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
-    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
-    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
-    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
-    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
-    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
-    <option name="SHORT_DIFF_HORIZONTALLY" value="true" />
-    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
-    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
-    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
-    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
-    <option name="SHOW_FILE_HISTORY_DETAILS" value="true" />
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
-    <option name="SHOW_DIRTY_RECURSIVELY" value="false" />
-    <option name="LIMIT_HISTORY" value="true" />
-    <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
-    <option name="UPDATE_FILTER_SCOPE_NAME" />
-    <option name="USE_COMMIT_MESSAGE_MARGIN" value="false" />
-    <option name="COMMIT_MESSAGE_MARGIN_SIZE" value="72" />
-    <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
-    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="发微博添加表情,去除之前的定位代码" />
-    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
-    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
-    <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
-    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
-    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
-    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
-    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
-    <option name="ACTIVE_VCS_NAME" />
-    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
-    <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
-    <option name="UPDATE_FILTER_BY_SCOPE" value="false" />
-    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
-    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="完成个人资料重构,微博操作移入到utils包中.&#10;SStatusData添加泛型对象" />
-    <MESSAGE value="修正了登录用户的资料查看，使用大图，且保存大头像的链接，去除定时更新资料，改为手动更新用户资料。&#10;评论添加菜单项，" />
-    <MESSAGE value="详细页面使用自定义的ActionBar,但是无法显示标题.把菜单中内容的更多操作放到右上角自定义ActionBar中.实现全面解除QuickAction依赖" />
-    <MESSAGE value="处理了关注与粉丝,但还是有些bug,特别是只传昵称时,不能查看关注与粉丝,微博数据.&#10;tab初始化时添加Bundle参数." />
-    <MESSAGE value="添加设置Fragment,&#10;登录页面添加显式认证,显示webview,oauth2也加入无用户名密码认证过期后回到登录页面.&#10;删除ldpi资源.&#10;添加删除当前的无用户名认证的数据信息方法&#10;" />
-    <MESSAGE value="添加自定义的key认证." />
-    <MESSAGE value="全面解除QuickAction依赖,删除旧的无用代码,保持清洁" />
-    <MESSAGE value="刷新方法提到BaseFragment,去除了其它菜单,暂时先用着." />
-    <MESSAGE value="删除桌面控件布局" />
-    <MESSAGE value="详细页面打开浏览器添加了设置,可以使用内部浏览器&#10;主页数据加载移入Impl中.&#10;分组显示人数&#10;webview保存密码&#10;删除TwitterWidget&#10;" />
-    <MESSAGE value="详细页面打开浏览器添加了设置,可以使用内部浏览器&#10;主页数据加载移入Impl中.&#10;分组显示人数&#10;" />
-    <MESSAGE value="详细页面打开浏览器添加了设置,可以使用内部浏览器&#10;主页数据加载移入Impl中.&#10;分组显示人数&#10;widget完成,需要添加一个服务来处理,因为在Widget里的数据会被清除的.&#10;" />
-    <MESSAGE value="私信回复对话框出错.&#10;widget完成," />
-    <MESSAGE value="反选图标添加不同主题,清除选中的标志&#10;服务启动后更新桌面饰件" />
-    <MESSAGE value="补充 收藏图标" />
-    <MESSAGE value="添加下载好友的DialogFragment,与搜索共用一个布局.&#10;@微博添加屏蔽功能" />
-    <MESSAGE value="添加了主页的ActionBar&#10;修改@数据 如果与新数据大小差不多就删除所有的" />
-    <MESSAGE value="添加微博加载数量配置,添加ebookdroid的设置类," />
-    <MESSAGE value="添加清除当前的列表数据与监听器.&#10;最小字体设置为12&#10;侧边栏的字体调整为默认的,个人资料与设置都调整为默认大小" />
-    <MESSAGE value="添加多图浏览,与自定义View,TagsViewGroup,有修改.&#10;重构侧边栏的包.&#10;增加查看图片时下载按钮,提示文字等.&#10;升级数据库,增加多图的存储.修改微博解析,加入多图.&#10;图片下载时,缓存的View改变,且增加空值检查.避免不必要的返回.小幅提升性能&#10;弹出的图片查看进度修改,使用文本加圆形进度." />
-    <MESSAGE value="添加多图浏览,与自定义View,TagsViewGroup,有修改.&#10;增加查看图片时下载按钮,提示文字等.&#10;升级数据库,增加多图的存储.修改微博解析,加入多图.&#10;图片下载时,缓存的View改变,且增加空值检查.避免不必要的返回.&#10;弹出的图片查看进度修改,使用文本加圆形进度." />
-    <MESSAGE value="重构侧边栏的包." />
-    <MESSAGE value="修正了TagsViewGroup的一些问题,修正了解析后的bug,导致主页的转发微博有多图无法显示.恢复了RelativeLayout布局,修正了这个布局无法使用的bug&#10;保存图片后显示路径." />
-    <MESSAGE value="修正保存图片的路径空指针bug" />
-    <MESSAGE value="发微博添加表情,去除之前的定位代码" />
+    <MESSAGE value="详情与用户 标签页添加手势滑动关闭" />
+    <MESSAGE value="添加动画效果,在页面切换" />
+    <MESSAGE value="update portrait bg&#10;enlarge time line portrait" />
+    <MESSAGE value="publish 1.6.1" />
+    <MESSAGE value="线程数量默认为1，有些机器太多了,会崩溃." />
+    <MESSAGE value="更新图片查看.只加载当前的图片,其它为缩略图." />
+    <MESSAGE value="修正 详情页的大图加载.默认不加载大图.&#10;弹出框查看图片仍然不能显示小图.&#10;选中的图片不是第一张,不添加onpredraw监听.&#10;" />
+    <MESSAGE value="使用api level19的selector作背景&#10;" />
+    <MESSAGE value="fill_parent替换&#10;grid修正bug" />
+    <MESSAGE value="添加详情页的头部背景&#10;staggeredgrid selector替换" />
+    <MESSAGE value="退出 区分左右滑动,分别向不同的方向显示动画&#10;日期解析修改.但其实无错,显示时间时,如果为空,不处理.&#10;主题 默认为白色.&#10;更新个人信息页." />
+    <MESSAGE value="fix imageviewer don't load large bitmap,if index&gt;0" />
+    <MESSAGE value="manifest use android:hardwareAccelerated=&quot;true&quot; default settings.&#10;scroll more smooth." />
+    <MESSAGE value="统一测试api,&#10;staggeredgrid调用notifydatasetchanged会导致重新回到顶部." />
+    <MESSAGE value="进度添加颜色值,与属性&#10;查看图片添加显示小图,但还是无法正常处理所有的图片.对于长条图片,无法定位到顶部.&#10;测试Fragment 清除.&#10;网络去除 选中的背景,使用边框." />
+    <MESSAGE value="硬件加速去除." />
+    <MESSAGE value="修正asynctask的调用.&#10;滑动的动画从中间开始.&#10;列表布局添加背景,形成卡片式,转发内容左侧的颜色变化.添加列表中的@,url点击处理,但是点击文本,还是会造成与onitemclick冲突&#10;表情布局修改,增加图标表情大小" />
+    <MESSAGE value="图片查看再修改,gif先显示小图.添加页码" />
+    <MESSAGE value="修正去除分隔线 导致无法上拉刷新的bug" />
+    <MESSAGE value="update readme" />
+    <MESSAGE value="修改ft,Fragment切换时销毁view&#10;个人资料只在选中后才加载数据." />
+    <MESSAGE value="查看粉丝,使用透明的ActionBar.但还有些bug,下次将滚动加入,隐藏ActionBar" />
+    <MESSAGE value="透明的ActionBar.&#10;重构" />
+    <MESSAGE value="修正他人微博点击位置的bug&#10;去除不用的代码" />
+    <MESSAGE value="进度图形修改." />
+    <option name="LAST_COMMIT_MESSAGE" value="进度图形修改." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
+      <option name="time" value="1" />
     </breakpoint-manager>
+    <watches-manager />
   </component>
   <component name="XcodeMetaData" SELECTED_TARGET="default_target" />
   <component name="antWorkspaceConfiguration">
@@ -1418,318 +1772,339 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../apiLibrary/src/com/me/microblog/view/ImageViewerDialog.java">
+    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/view/EmojiPanelView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="493" column="34" selection-start="17359" selection-end="17359" vertical-scroll-proportion="0.0" vertical-offset="6546" max-vertical-offset="7446">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="382" max-vertical-offset="4012">
+          <caret line="49" column="82" selection-start-line="49" selection-start-column="82" selection-end-line="49" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/view/UserGridItemView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="365" max-vertical-offset="4080">
+          <caret line="52" column="82" selection-start-line="52" selection-start-column="82" selection-end-line="52" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/view/UserItemView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="382" max-vertical-offset="4437">
+          <caret line="54" column="82" selection-start-line="54" selection-start-column="82" selection-end-line="54" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/HomeGridFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1887">
+          <caret line="35" column="25" selection-start-line="35" selection-start-column="25" selection-end-line="35" selection-end-column="25" />
           <folding>
-            <element signature="e#6251#6259#0" expanded="true" />
-            <element signature="e#7230#7273#0" expanded="true" />
-            <element signature="e#7461#7487#0" expanded="true" />
-            <element signature="e#11385#11416#0" expanded="true" />
+            <element signature="method#_onCreateView#0;class#HomeGridFragment#0" expanded="false" />
+            <element signature="method#initApi#0;class#HomeGridFragment#0" expanded="false" />
+            <element signature="method#onResume#0;class#HomeGridFragment#0" expanded="false" />
+            <element signature="method#clear#0;class#HomeGridFragment#0" expanded="false" />
+            <element signature="method#pullToRefreshData#0;class#HomeGridFragment#0" expanded="false" />
+            <element signature="method#fetchData#0;class#HomeGridFragment#0" expanded="false" />
+            <element signature="e#4680#4716#0" expanded="false" />
+            <element signature="method#loadData#0;class#HomeGridFragment#0" expanded="false" />
+            <element signature="e#5586#5607#0" expanded="false" />
+            <element signature="method#notifyChanged#0;class#HomeGridFragment#0" expanded="false" />
+            <element signature="method#refreshNewData#0;class#HomeGridFragment#0" expanded="false" />
+            <element signature="method#refreshAdapter#0;class#HomeGridFragment#0" expanded="false" />
+            <element signature="method#clearHomeNotify#0;class#HomeGridFragment#0" expanded="false" />
+            <element signature="method#loadLocalData#0;class#HomeGridFragment#0" expanded="false" />
+            <element signature="method#notifyService#0;class#HomeGridFragment#0" expanded="false" />
+            <element signature="method#fetchMore#0;class#HomeGridFragment#0" expanded="false" />
+            <element signature="method#updateGroupTimeline#0;class#HomeGridFragment#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../apiLibrary/src/com/me/microblog/core/SinaUserApi.java">
+    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/ui/HomeActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="13" selection-start="380" selection-end="380" vertical-scroll-proportion="0.13178295" vertical-offset="0" max-vertical-offset="4573">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/impl/SinaPlaceStatusImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="96" selection-start="1451" selection-end="1585" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="1207">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/place/PlaceStatusListFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="413" column="15" selection-start="8688" selection-end="12532" vertical-scroll-proportion="0.0" vertical-offset="4013" max-vertical-offset="4658">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3009">
+          <caret line="84" column="32" selection-start-line="84" selection-start-column="32" selection-end-line="84" selection-end-column="32" />
           <folding>
-            <element signature="method#createFavorite#0;class#PlaceStatusListFragment#0" expanded="false" />
-            <element signature="method#commentStatus#0;class#PlaceStatusListFragment#0" expanded="false" />
-            <element signature="method#repostStatus#0;class#PlaceStatusListFragment#0" expanded="false" />
-            <element signature="method#deleteStatus#0;class#PlaceStatusListFragment#0" expanded="false" />
-            <element signature="method#viewStatusUser#0;class#PlaceStatusListFragment#0" expanded="false" />
-            <element signature="method#quickRepostStatus#0;class#PlaceStatusListFragment#0" expanded="false" />
-            <element signature="method#onReceiveLocation#0;class#MyLocationListenner#0;class#PlaceStatusListFragment#0" expanded="false" />
-            <element signature="method#onReceivePoi#0;class#MyLocationListenner#0;class#PlaceStatusListFragment#0" expanded="false" />
+            <element signature="method#setImageD#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#HomeActivity#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#onCreate#0;class#HomeActivity#0" expanded="false" />
+            <element signature="e#3984#4004#0" expanded="false" />
+            <element signature="e#4980#5038#0" expanded="false" />
+            <element signature="method#onActionItemClick#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#selectItem#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#setCustomActionBar#0;class#HomeActivity#0" expanded="false" />
+            <element signature="e#9395#9430#0" expanded="false" />
+            <element signature="method#onRestoreInstanceState#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#onSaveInstanceState#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#doInit#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#delayStartService#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#navigationFragment#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#onResume#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#applyTheme#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#refreshSidebar#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#onPause#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#onDestroy#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#onBackPressed#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#onCreateOptionsMenu#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#onOptionsItemSelected#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#refresh#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#clear#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#onConfigurationChanged#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#reloadPreferences#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#onNewIntent#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#exitConfirm#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#onRefreshStarted#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#onRefreshFinished#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#onRefreshFailed#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#navigateToHot#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#newStatus#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#showPrefs#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#atStatus#0;class#HomeActivity#0" expanded="false" />
+            <element signature="class#MsgBroadcastReceiver#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#onReceive#0;class#MsgBroadcastReceiver#0;class#HomeActivity#0" expanded="false" />
+            <element signature="class#ExitBroadcastReceiver#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#onReceive#0;class#ExitBroadcastReceiver#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#receiveUnread#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#checkUpdate#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#addGroupNav#0;class#HomeActivity#0" expanded="false" />
+            <element signature="class#35529:35854" expanded="false" />
+            <element signature="method#onItemSelected#0;class#35529:35854" expanded="false" />
+            <element signature="method#onNothingSelected#0;class#35529:35854" expanded="false" />
+            <element signature="method#navigation#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#loadGroup#0;class#HomeActivity#0" expanded="false" />
+            <element signature="method#updateGroup#0;class#HomeActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../apiLibrary/src/com/me/microblog/core/SinaPlaceApi.java">
+    <entry file="file://$PROJECT_DIR$/../apiLibrary/src/com/me/microblog/util/WeiboLog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="649" column="29" selection-start="20478" selection-end="20478" vertical-scroll-proportion="1.6852713" vertical-offset="35" max-vertical-offset="1496">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1071">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
           <folding>
-            <element signature="method#getPlaceFriendTimeline#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getPlaceUserFriendTimeline#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getPlacePoiFriendTimeline#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getPlaceNearbyFriendTimeline#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getPlaceStatusShow#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getPlaceUser#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getUserPhotos#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getUserPhotos#1;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getPlaceUserTips#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getPlacePoi#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getPlacesUsers#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getPoiTips#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getPlacePhotos#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getPlaceSearch#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getPlaceCategory#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getPlaceNearbyPoi#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getPlacesNearbyUsers#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#getNearbyPhotos#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#addCheckin#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#addPhotos#0;class#SinaPlaceApi#0" expanded="false" />
-            <element signature="method#addPlaceTip#0;class#SinaPlaceApi#0" expanded="false" />
+            <element signature="method#d#0;class#WeiboLog#0" expanded="false" />
+            <element signature="method#d#1;class#WeiboLog#0" expanded="false" />
+            <element signature="method#i#0;class#WeiboLog#0" expanded="false" />
+            <element signature="method#i#1;class#WeiboLog#0" expanded="false" />
+            <element signature="method#i#2;class#WeiboLog#0" expanded="false" />
+            <element signature="method#v#0;class#WeiboLog#0" expanded="false" />
+            <element signature="method#v#1;class#WeiboLog#0" expanded="false" />
+            <element signature="method#e#0;class#WeiboLog#0" expanded="false" />
+            <element signature="method#e#1;class#WeiboLog#0" expanded="false" />
+            <element signature="method#e#2;class#WeiboLog#0" expanded="false" />
+            <element signature="method#w#0;class#WeiboLog#0" expanded="false" />
+            <element signature="method#w#1;class#WeiboLog#0" expanded="false" />
+            <element signature="method#getStackTrace#0;class#WeiboLog#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/impl/AbsStatusImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/ui/WebviewActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="20" selection-start="644" selection-end="644" vertical-scroll-proportion="0.5534884" vertical-offset="0" max-vertical-offset="645">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/home_time_line_item.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="34" selection-start="5696" selection-end="5696" vertical-scroll-proportion="0.0" vertical-offset="1502" max-vertical-offset="2839">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/view/BaseItemView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="27" selection-start="2112" selection-end="2112" vertical-scroll-proportion="0.0" vertical-offset="448" max-vertical-offset="6868">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../apiLibrary/src/com/me/microblog/core/WeiboParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="539" column="63" selection-start="18851" selection-end="18851" vertical-scroll-proportion="0.49302325" vertical-offset="2249" max-vertical-offset="5491">
+        <state vertical-scroll-proportion="0.94736844" vertical-offset="0" max-vertical-offset="1343">
+          <caret line="263" column="16" selection-start-line="263" selection-start-column="16" selection-end-line="263" selection-end-column="16" />
           <folding>
-            <element signature="method#WeiboParser#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseBoolean#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#contructJSONObject#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#contructJSONArray#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseComment#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseComment#1;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseComments#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseComments#1;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseComments2#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseCount#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseCounts#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseDate#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseDate#1;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseDirectMessage#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseDirectMessage#1;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseDirectMessage#2;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseDirectMessages#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseRateLimitStatus#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseRateLimitStatus#1;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseRelationship#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseRelationship#1;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseGeo#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseSAnnotation#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parsePlaces#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parsePlace#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseStatus#1;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseStatuses#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseStatuses#1;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseStatuses2#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseStatusesHot#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseFavorite#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseFavorite#1;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseFavorites#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseFavorites#1;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseResult#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseUnread#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseUnread#1;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseSetUnread#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseUser#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseUser#1;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseID#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#getUsers#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#getSuggestions#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseUseresMap#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseStatusesMap#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseSchoolsMap#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseCompaniesMap#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseAppsMap#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseUsers#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#getUserObjs#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#getUserObjs2#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#getIDs#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseTrends#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseCitys#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseAllCity#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseProvince#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseCity#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseUpdateInfo#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseSPoi#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseSPoiResult#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseSPoiSearchResult#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parsePlacePois#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parsePlacePois#1;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parsePlacePoi#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parsePlacePoi#1;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseGroups#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseGroups#1;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseGroups#2;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseGroup#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseQVideo#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseQMusic#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseQStatus#0;class#WeiboParser#0" expanded="false" />
-            <element signature="method#parseQStatuses#0;class#WeiboParser#0" expanded="false" />
+            <element signature="method#onCreate#0;class#WebviewActivity#0" expanded="false" />
+            <element signature="class#3083:4551" expanded="false" />
+            <element signature="method#onPageFinished#0;class#3083:4551" expanded="false" />
+            <element signature="method#onReceivedError#0;class#3083:4551" expanded="false" />
+            <element signature="method#onReceivedSslError#0;class#3083:4551" expanded="false" />
+            <element signature="method#setCustomActionBar#0;class#WebviewActivity#0" expanded="false" />
+            <element signature="method#clickMethod#0;class#WebviewActivity#0" expanded="false" />
+            <element signature="e#10364#10440#0" expanded="false" />
+            <element signature="method#onBackPressed#0;class#WebviewActivity#0" expanded="false" />
+            <element signature="method#onDestroy#0;class#WebviewActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/impl/SinaPlaceUserImpl.java">
+    <entry file="file://$PROJECT_DIR$/../ImageFetcherLibrary/src/cn/archko/thread/AsyncTask.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="98" selection-start="1715" selection-end="1715" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="391">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2091">
+          <caret line="183" column="52" selection-start-line="183" selection-start-column="52" selection-end-line="183" selection-end-column="52" />
           <folding>
-            <element signature="method#SinaPlaceUserImpl#0;class#SinaPlaceUserImpl#0" expanded="false" />
-            <element signature="method#loadData#0;class#SinaPlaceUserImpl#0" expanded="false" />
-            <element signature="method#saveData#0;class#SinaPlaceUserImpl#0" expanded="false" />
+            <element signature="class#8904:9127" expanded="false" />
+            <element signature="class#SerialExecutor#0;class#AsyncTask#0" expanded="false" />
+            <element signature="method#execute#0;class#SerialExecutor#0;class#AsyncTask#0" expanded="false" />
+            <element signature="method#scheduleNext#0;class#SerialExecutor#0;class#AsyncTask#0" expanded="false" />
+            <element signature="class#Status#0;class#AsyncTask#0" expanded="false" />
+            <element signature="method#AsyncTask#0;class#AsyncTask#0" expanded="false" />
+            <element signature="class#12345:12944" expanded="false" />
+            <element signature="method#done#0;class#12345:12944" expanded="false" />
+            <element signature="method#postResultIfNotInvoked#0;class#AsyncTask#0" expanded="false" />
+            <element signature="method#postResult#0;class#AsyncTask#0" expanded="false" />
+            <element signature="method#onPreExecute#0;class#AsyncTask#0" expanded="false" />
+            <element signature="method#onPostExecute#0;class#AsyncTask#0" expanded="false" />
+            <element signature="method#onProgressUpdate#0;class#AsyncTask#0" expanded="false" />
+            <element signature="method#onCancelled#1;class#AsyncTask#0" expanded="false" />
+            <element signature="method#cancel#0;class#AsyncTask#0" expanded="false" />
+            <element signature="method#execute#0;class#AsyncTask#0" expanded="false" />
+            <element signature="method#executeOnExecutor#0;class#AsyncTask#0" expanded="false" />
+            <element signature="method#publishProgress#0;class#AsyncTask#0" expanded="false" />
+            <element signature="method#finish#0;class#AsyncTask#0" expanded="false" />
+            <element signature="class#InternalHandler#0;class#AsyncTask#0" expanded="false" />
+            <element signature="e#25505#25566#0" expanded="false" />
+            <element signature="method#handleMessage#0;class#InternalHandler#0;class#AsyncTask#0" expanded="false" />
+            <element signature="class#WorkerRunnable#0;class#AsyncTask#0" expanded="false" />
+            <element signature="class#AsyncTaskResult#0;class#AsyncTask#0" expanded="false" />
+            <element signature="method#AsyncTaskResult#0;class#AsyncTaskResult#0;class#AsyncTask#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/HomeFragment.java">
+    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/utils/AKUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="141" column="28" selection-start="4019" selection-end="4019" vertical-scroll-proportion="0.0" vertical-offset="2380" max-vertical-offset="5066">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/time_line_item.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="0" selection-start="1930" selection-end="1930" vertical-scroll-proportion="-0.21085271" vertical-offset="765" max-vertical-offset="2176">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/place/PlaceNearbyUsersFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="60" selection-start="291" selection-end="291" vertical-scroll-proportion="0.0" vertical-offset="69" max-vertical-offset="714">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/place/PlaceFriendsFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="92" selection-start="1744" selection-end="1744" vertical-scroll-proportion="0.026356589" vertical-offset="561" max-vertical-offset="1377">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/place/PlaceUserListFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="53" selection-start="1026" selection-end="1026" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4641">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850">
+          <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
           <folding>
-            <element signature="docComment;method#initLocation#0;class#PlaceUserListFragment#0" expanded="true" />
-            <element signature="docComment;class#MyLocationListenner#0;class#PlaceUserListFragment#0" expanded="true" />
-            <element signature="class#MyLocationListenner#0;class#PlaceUserListFragment#0" expanded="false" />
-            <element signature="method#onReceiveLocation#0;class#MyLocationListenner#0;class#PlaceUserListFragment#0" expanded="false" />
-            <element signature="method#onReceivePoi#0;class#MyLocationListenner#0;class#PlaceUserListFragment#0" expanded="false" />
+            <element signature="method#showToast#0;class#AKUtils#0" expanded="false" />
+            <element signature="method#showToast#1;class#AKUtils#0" expanded="false" />
+            <element signature="method#showToast#2;class#AKUtils#0" expanded="false" />
+            <element signature="method#showToast#3;class#AKUtils#0" expanded="false" />
+            <element signature="method#stripTrailingSlash#0;class#AKUtils#0" expanded="false" />
+            <element signature="method#millisToString#0;class#AKUtils#0" expanded="false" />
+            <element signature="method#scaleDownBitmap#0;class#AKUtils#0" expanded="false" />
+            <element signature="method#cropBorders#0;class#AKUtils#0" expanded="false" />
+            <element signature="method#logout#0;class#AKUtils#0" expanded="false" />
+            <element signature="method#exit#0;class#AKUtils#0" expanded="false" />
+            <element signature="method#showColorPicker#0;class#AKUtils#0" expanded="false" />
+            <element signature="class#AtClicker#0;class#AKUtils#0" expanded="false" />
+            <element signature="method#updateDrawState#0;class#AtClicker#0;class#AKUtils#0" expanded="false" />
+            <element signature="method#onClick#0;class#AtClicker#0;class#AKUtils#0" expanded="false" />
+            <element signature="class#UrlClicker#0;class#AKUtils#0" expanded="false" />
+            <element signature="method#updateDrawState#0;class#UrlClicker#0;class#AKUtils#0" expanded="false" />
+            <element signature="method#onClick#0;class#UrlClicker#0;class#AKUtils#0" expanded="false" />
+            <element signature="method#highlightAtClickable#0;class#AKUtils#0" expanded="false" />
+            <element signature="method#highlightUrlClickable#0;class#AKUtils#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/UserListFragment.java">
+    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/StatusCommentsFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="79" column="7" selection-start="2442" selection-end="2570" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="1394">
+        <state vertical-scroll-proportion="1.3684211" vertical-offset="0" max-vertical-offset="1360">
+          <caret line="246" column="5" selection-start-line="246" selection-start-column="5" selection-end-line="246" selection-end-column="5" />
           <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="docComment;class#UserListFragment#0" expanded="false" />
-            <element signature="method#onCreate#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#fetchMore#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#getView#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#onCreateCustomMenu#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#onPrepareCustomMenu#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#onMenuItemClick#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#itemClick#0;class#UserListFragment#0" expanded="false" />
-            <element signature="docComment;method#viewUserStatuses#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#viewUserStatuses#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#viewUserFollows#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#viewUserFriends#0;class#UserListFragment#0" expanded="false" />
-            <element signature="docComment;method#followUser#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#followUser#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#atUser#0;class#UserListFragment#0" expanded="false" />
-            <element signature="docComment;method#createFavorite#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#createFavorite#0;class#UserListFragment#0" expanded="false" />
-            <element signature="docComment;method#commentStatus#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#commentStatus#0;class#UserListFragment#0" expanded="false" />
-            <element signature="docComment;method#repostStatus#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#repostStatus#0;class#UserListFragment#0" expanded="false" />
-            <element signature="docComment;method#deleteStatus#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#deleteStatus#0;class#UserListFragment#0" expanded="false" />
-            <element signature="docComment;method#viewStatusUser#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#viewStatusUser#0;class#UserListFragment#0" expanded="false" />
-            <element signature="docComment;method#quickRepostStatus#0;class#UserListFragment#0" expanded="false" />
-            <element signature="method#quickRepostStatus#0;class#UserListFragment#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/ImageAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="23" selection-start="2962" selection-end="2962" vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="3213">
-          <folding>
-            <element signature="method#ImageAdapter#0;class#ImageAdapter#0" expanded="false" />
-            <element signature="method#onClickItem#0;class#ImageAdapter#0" expanded="false" />
-            <element signature="class#ViewHolder#0;class#ImageAdapter#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/view/PlaceItemView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="21" selection-start="1437" selection-end="1437" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3179">
-          <folding>
-            <element signature="method#PlaceItemView#0;class#PlaceItemView#0" expanded="false" />
-            <element signature="e#6164#6217#0" expanded="true" />
-            <element signature="e#6342#6407#0" expanded="true" />
-            <element signature="e#6442#6508#0" expanded="true" />
-            <element signature="method#onClick#0;class#PlaceItemView#0" expanded="false" />
-            <element signature="method#updateBitmap#0;class#PlaceItemView#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/home_time_line_item_img.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="37" selection-start="570" selection-end="574" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/view/TagsViewGroup.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="343" column="112" selection-start="11813" selection-end="12009" vertical-scroll-proportion="0.0" vertical-offset="2343" max-vertical-offset="3808">
-          <folding>
-            <element signature="method#initFromAttributes#0;class#TagsViewGroup#0" expanded="false" />
-            <element signature="method#setAdapter#0;class#TagsViewGroup#0" expanded="false" />
-            <element signature="method#onMeasure#0;class#TagsViewGroup#0" expanded="false" />
-            <element signature="e#8378#8437#0" expanded="false" />
-            <element signature="e#8726#8842#0" expanded="false" />
-            <element signature="method#onLayout#0;class#TagsViewGroup#0" expanded="false" />
-            <element signature="class#AdapterDataSetObserver#0;class#TagsViewGroup#0" expanded="false" />
-            <element signature="method#handleDataChanged#0;class#TagsViewGroup#0" expanded="false" />
+            <element signature="method#onCreate#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="method#initApi#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="method#onResume#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="method#_onCreateView#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="method#_onActivityCreated#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="method#fetchMore#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="method#getView#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="method#loadData#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="method#fetchData#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="e#5864#5896#0" expanded="false" />
+            <element signature="method#refreshAdapter#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="method#refresh#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="method#itemClick#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="method#onCreateCustomMenu#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="method#onMenuItemClick#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="e#9079#9085#0" expanded="false" />
+            <element signature="method#initDialog#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="class#9823:12198" expanded="false" />
+            <element signature="method#finish#0;class#9823:12198" expanded="false" />
+            <element signature="method#hideProgressBar#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="method#replyComment#0;class#StatusCommentsFragment#0" expanded="false" />
+            <element signature="method#addComment#0;class#StatusCommentsFragment#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="58" selection-start="2049" selection-end="2049" vertical-scroll-proportion="0.34263566" vertical-offset="459" max-vertical-offset="3502">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3519">
+          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding>
+            <element signature="e#9634#10128#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/home_action_item.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="136" max-vertical-offset="425">
+          <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/ui/PrefsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3563" max-vertical-offset="6239">
+          <caret line="315" column="22" selection-start-line="315" selection-start-column="22" selection-end-line="315" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/ak_about_app.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33943427" vertical-offset="2244" max-vertical-offset="3434">
+          <caret line="144" column="28" selection-start-line="144" selection-start-column="28" selection-end-line="144" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/AboutAppFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="629" max-vertical-offset="2890">
+          <caret line="77" column="55" selection-start-line="77" selection-start-column="55" selection-end-line="77" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/colors.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.5075" vertical-offset="603" max-vertical-offset="1003">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/umeng_tools.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/UserTimelineFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2013" max-vertical-offset="3791">
+          <caret line="195" column="24" selection-start-line="195" selection-start-column="24" selection-end-line="195" selection-end-column="24" />
+          <folding>
+            <element signature="e#2357#2417#0" expanded="false" />
+            <element signature="class#5008:5387" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/umeng_common_strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.45655608" vertical-offset="0" max-vertical-offset="633">
+          <caret line="17" column="55" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/umeng_update_string.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="633">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/string_analytics.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.7832168" vertical-offset="0" max-vertical-offset="357">
+          <caret line="15" column="53" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1788,7 +2163,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.6</last-edited>
+          <last-edited>1.8</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1800,7 +2175,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>Android|APlane</last-edited>
+          <last-edited>APlane</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1824,6 +2199,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
+          <last-edited>aplane_lib</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
