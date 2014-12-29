@@ -57,7 +57,7 @@ public final class ImageCache {
     /**
      * Default disk cache size 10MB
      */
-    private static final int DISK_CACHE_SIZE = 1024 * 1024 * 50;
+    private static final int DISK_CACHE_SIZE = 1024 * 1024 * 20;
 
     /**
      * Compression settings when writing images to disk cache

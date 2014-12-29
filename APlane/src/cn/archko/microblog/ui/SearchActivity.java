@@ -474,7 +474,7 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
 
         private SearchItemView(Context context) {
             super(context);
-            ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(
+            ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
                 R.layout.sidebar_item, this);
             setMinimumHeight(40);
             mTitle=(TextView) findViewById(R.id.title);

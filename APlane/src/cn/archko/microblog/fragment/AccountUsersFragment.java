@@ -164,7 +164,7 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
 
         private AUItemView(Context context) {
             super(context);
-            ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.sidebar_item, this);
+            ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.sidebar_item, this);
             setMinimumHeight(48);
             mTitle=(TextView) findViewById(R.id.title);
             mMsg=(TextView) findViewById(R.id.msg);

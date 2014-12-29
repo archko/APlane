@@ -2,14 +2,19 @@ package cn.archko.microblog.ui;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.view.MenuItemCompat;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.DownloadListener;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -25,6 +30,8 @@ import com.bulletnoid.android.widget.SwipeAwayLayout;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtil;
 import cn.archko.microblog.utils.AKUtils;
+import com.me.microblog.util.DisplayUtil;
+import com.me.microblog.util.WeiboLog;
 
 /**
  * @author archko date:2013-2-21
@@ -66,14 +73,17 @@ public class WebviewActivity extends SkinFragmentActivity {
         mGo.setOnClickListener(clickListener);
 
         setCustomActionBar();
+        changeOriention(getResources().getConfiguration().orientation);
 
         WebSettings settings=mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
+        settings.setDomStorageEnabled(true);
         settings.setPluginState(WebSettings.PluginState.ON);
         //settings.setJavaScriptCanOpenWindowsAutomatically(true);
         settings.setSavePassword(true);
+        mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
         WebViewClient wvc=new WebViewClient() {
 
@@ -106,6 +116,11 @@ public class WebviewActivity extends SkinFragmentActivity {
                 //handler.cancel(); 默认的处理方式，WebView变成空白页
                 handler.proceed();//接受证书
                 //handleMessage(Message msg); 其他处理
+            }
+
+            @Override
+            public void onFormResubmission(WebView view, Message dontResend, Message resend) {
+                resend.sendToTarget();
             }
         };
         mWebView.setWebViewClient(wvc);
@@ -144,9 +159,20 @@ public class WebviewActivity extends SkinFragmentActivity {
                 overridePendingTransition(0, animId);
             }
         });
+
+        mWebView.setDownloadListener(new DownloadListener() {
+            @Override
+            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+                Uri uri=Uri.parse(url);
+                Intent intent=new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void setCustomActionBar() {
+        WeiboLog.d("setCustomActionBar");
         View cusActionBar=getLayoutInflater().inflate(R.layout.ak_webview_nav, null);
         mActionBar.setCustomView(cusActionBar);
         mActionBar.setDisplayShowCustomEnabled(true);
@@ -223,6 +249,23 @@ public class WebviewActivity extends SkinFragmentActivity {
             if (!TextUtils.isEmpty(url)) {
                 mWebView.loadUrl(url);
             }
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        changeOriention(newConfig.orientation);
+    }
+
+    private void changeOriention(int orientation) {
+        WeiboLog.d("changeOriention:"+orientation);
+        if (orientation==Configuration.ORIENTATION_PORTRAIT) {
+            mActionBar.show();
+            DisplayUtil.setFullscreen(getWindow(), false);
+        } else if (orientation==Configuration.ORIENTATION_LANDSCAPE) {
+            mActionBar.hide();
+            DisplayUtil.setFullscreen(getWindow(), true);
         }
     }
 

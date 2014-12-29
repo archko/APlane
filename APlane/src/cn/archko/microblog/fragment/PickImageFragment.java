@@ -544,7 +544,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
         private ItemView(Context context) {
             super(context);
-            ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.ak_pick_image_item, this);
+            ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.ak_pick_image_item, this);
             mIcon=(ImageView) findViewById(R.id.iv_portrait);
         }
 

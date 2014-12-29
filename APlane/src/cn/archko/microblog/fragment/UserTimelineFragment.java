@@ -181,6 +181,9 @@ public class UserTimelineFragment extends StatusListFragment {
 
     @Override
     protected void loadData() {
+        if (mAdapter==null) {
+            mAdapter=new TimeLineAdapter();
+        }
         if (mDataList!=null&&mDataList.size()>0) {
             mAdapter.notifyDataSetChanged();
         } else {

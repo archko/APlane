@@ -135,7 +135,7 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
 
         private DraftItemView(Context context) {
             super(context);
-            ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.task_item, this);
+            ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.task_item, this);
             mName=(TextView) findViewById(R.id.tv_name);
             mContentFirst=(TextView) findViewById(R.id.tv_content_first);
             mContentSencond=(TextView) findViewById(R.id.tv_content_sencond);

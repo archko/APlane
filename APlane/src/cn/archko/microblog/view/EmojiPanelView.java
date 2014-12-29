@@ -47,7 +47,7 @@ public class EmojiPanelView extends LinearLayout {
     }
 
     private void init(Context context) {
-        ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.emoji_panel, this);
+        ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.emoji_panel, this);
         btn_emoji_picture=(Button) findViewById(R.id.btn_emoji_picture);
         btn_emoji_love=(Button) findViewById(R.id.btn_emoji_love);
         btn_emoji_pig=(Button) findViewById(R.id.btn_emoji_pig);

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="" />
-    <mapping directory="$PROJECT_DIR$/../SlidingMenuLib" vcs="" />
-    <mapping directory="$PROJECT_DIR$/../apiLibrary" vcs="" />
-    <mapping directory="$PROJECT_DIR$/../pulltorefreshlibrary" vcs="" />
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../SlidingMenuLib" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../apiLibrary" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../pulltorefreshlibrary" vcs="Git" />
   </component>
 </project>
 

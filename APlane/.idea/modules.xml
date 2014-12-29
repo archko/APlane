@@ -3,9 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/APlane.iml" filepath="$PROJECT_DIR$/APlane.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../SlidingMenuLibrary/SlidingMenuLibrary.iml" filepath="$PROJECT_DIR$/../SlidingMenuLibrary/SlidingMenuLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../ImageFetcherLibrary/ImageFetcherLibrary.iml" filepath="$PROJECT_DIR$/../ImageFetcherLibrary/ImageFetcherLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../PhotoViewLibrary/PhotoViewLibrary.iml" filepath="$PROJECT_DIR$/../PhotoViewLibrary/PhotoViewLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/../apiLibrary/apiLibrary.iml" filepath="$PROJECT_DIR$/../apiLibrary/apiLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../bulletnoidStaggeredGridViewLibrary/bulletnoidStaggeredGridViewLibrary.iml" filepath="$PROJECT_DIR$/../bulletnoidStaggeredGridViewLibrary/bulletnoidStaggeredGridViewLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/../pulltorefreshlibrary/pulltorefreshlibrary.iml" filepath="$PROJECT_DIR$/../pulltorefreshlibrary/pulltorefreshlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../roundedimageview/roundedimageview.iml" filepath="$PROJECT_DIR$/../roundedimageview/roundedimageview.iml" />
     </modules>
   </component>
 </project>

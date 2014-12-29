@@ -692,7 +692,7 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
 
         private UserItemView(Context context) {
             super(context);
-            ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(
+            ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
                 R.layout.at_user_item, this);
             mName=(TextView) findViewById(R.id.tv_name);
             mPortrait=(ImageView) findViewById(R.id.iv_portrait);

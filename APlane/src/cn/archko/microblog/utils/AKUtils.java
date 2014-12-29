@@ -11,22 +11,17 @@ import android.preference.PreferenceManager;
 import android.text.Spannable;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.service.AKWidgetService;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.service.WeiboService;
-import cn.archko.microblog.ui.LoginActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.view.ColorSchemeDialog;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtil;
+import com.me.microblog.util.NotifyUtil;
 import com.me.microblog.util.WeiboLog;
 
 import java.text.DecimalFormat;
@@ -41,19 +36,23 @@ import java.util.regex.Pattern;
 public class AKUtils {
 
     public static void showToast(final String message) {
-        Toast.makeText(App.getAppContext(), message, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(App.getAppContext(), message, Toast.LENGTH_SHORT).show();
+        NotifyUtil.showToast(message);
     }
 
     public static void showToast(final int resId) {
-        Toast.makeText(App.getAppContext(), resId, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(App.getAppContext(), resId, Toast.LENGTH_SHORT).show();
+        NotifyUtil.showToast(resId);
     }
 
     public static void showToast(final String message, final int delay) {
-        Toast.makeText(App.getAppContext(), message, delay).show();
+        //Toast.makeText(App.getAppContext(), message, delay).show();
+        NotifyUtil.showToast(message, delay);
     }
 
     public static void showToast(final int resId, final int delay) {
-        Toast.makeText(App.getAppContext(), resId, delay).show();
+        //Toast.makeText(App.getAppContext(), resId, delay).show();
+        NotifyUtil.showToast(resId, delay);
     }
 
     public static String stripTrailingSlash(String _s) {
@@ -132,24 +131,6 @@ public class AKUtils {
         // Cut off the transparency on the borders
         return Bitmap.createBitmap(bitmap, left, top,
             (width-(2*left)), (height-(2*top)));
-    }
-
-    public static int convertPxToDp(int px) {
-        WindowManager wm=(WindowManager) App.getAppContext().
-            getSystemService(Context.WINDOW_SERVICE);
-        Display display=wm.getDefaultDisplay();
-        DisplayMetrics metrics=new DisplayMetrics();
-        display.getMetrics(metrics);
-        float logicalDensity=metrics.density;
-        int dp=Math.round(px/logicalDensity);
-        return dp;
-    }
-
-    public static int convertDpToPx(int dp) {
-        return Math.round(
-            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-                App.getAppContext().getResources().getDisplayMetrics())
-        );
     }
 
     //--------------------- logout ---------------------

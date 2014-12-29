@@ -23,6 +23,7 @@ import com.me.microblog.WeiboUtil;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.BaseApi;
 import com.me.microblog.util.Constants;
+import com.me.microblog.util.DisplayUtil;
 import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
 import com.me.microblog.view.MyWebView;
@@ -69,7 +70,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
 
     public AKSnapImageView(Context context, String bean) {
         super(context);
-        ((LayoutInflater) context.getSystemService("layout_inflater")).inflate(R.layout.imageviewer_all, this);
+        ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.imageviewer_all, this);
         mWebViewParent=findViewById(R.id.lay_webview_parent);
         myWebView=(MyWebView) findViewById(R.id.webview);
         imageView=(PhotoView) findViewById(R.id.imageview);
@@ -355,7 +356,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                         BitmapFactory.Options opts=new BitmapFactory.Options();
                         opts.inJustDecodeBounds=true;
                         BitmapFactory.decodeFile(file.getAbsolutePath(), opts);
-                        setMeasureSpec(myWebView, AKUtils.convertDpToPx(opts.outWidth), AKUtils.convertDpToPx(opts.outHeight));
+                        setMeasureSpec(myWebView, DisplayUtil.convertDpToPx(opts.outWidth), DisplayUtil.convertDpToPx(opts.outHeight));
                         myWebView.loadUrl("file://"+file.getAbsolutePath());
                     } catch (Exception e) {
                         e.printStackTrace();

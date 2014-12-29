@@ -575,7 +575,7 @@ public class ViewStatusDetailActivity extends BaseOauthFragmentActivity implemen
      * 显示快速评论的View
      */
     private void initActionModeView() {
-        mCustomModeView=(RelativeLayout) ((LayoutInflater) getApplicationContext().getSystemService("layout_inflater"))
+        mCustomModeView=(RelativeLayout) ((LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE))
             .inflate(R.layout.status_quick_comment, null);
         mQuickCommentBtn=(ImageView) mCustomModeView.findViewById(R.id.btn_comment);
         mQuickComnet=(EditText) mCustomModeView.findViewById(R.id.et_quick_comment);

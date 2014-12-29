@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.impl.SinaHomeStatusImpl;
@@ -13,6 +14,7 @@ import cn.archko.microblog.service.WeiboService;
 import cn.archko.microblog.ui.PrefsActivity;
 import cn.archko.microblog.ui.SkinFragmentActivity;
 import cn.archko.microblog.utils.AKUtils;
+import cn.archko.microblog.view.AKImageItemView;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.Group;
@@ -56,7 +58,7 @@ public class HomeGridFragment extends StaggeredGridFragment {
     @Override
     public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root=super._onCreateView(inflater, container, savedInstanceState);
-        mGridView.setColumnCount(1);
+        mGridView.setColumnCount(2);
         return root;
     }
 
@@ -73,6 +75,29 @@ public class HomeGridFragment extends StaggeredGridFragment {
             AKUtils.showToast("初始化api异常.");
             //getActivity().finish();
         }
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
+
+        AKImageItemView itemView=null;
+        Status status=mDataList.get(position);
+
+        boolean updateFlag=true;
+        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            updateFlag=false;
+        }
+
+        showLargeBitmap=true;
+        if (convertView==null) {
+            itemView=new AKImageItemView(getActivity(), mListView, mCacheDir, status, updateFlag, true, showLargeBitmap, showBitmap);
+        } else {
+            itemView=(AKImageItemView) convertView;
+        }
+        itemView.update(status, updateFlag, true, showLargeBitmap, showBitmap);
+
+        return itemView;
     }
 
     @Override
