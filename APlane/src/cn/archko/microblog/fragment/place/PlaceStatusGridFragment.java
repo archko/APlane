@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.StaggeredGridFragment;
+import cn.archko.microblog.fragment.abs.AbsStatusAbstraction;
+import cn.archko.microblog.fragment.abs.BaseFragment;
 import cn.archko.microblog.fragment.impl.SinaPlaceStatusImpl;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.ui.UserFragmentActivity;
@@ -20,6 +22,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
+import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.SendTask;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
@@ -57,7 +60,6 @@ public class PlaceStatusGridFragment extends StaggeredGridFragment {
     @Override
     public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root=super._onCreateView(inflater, container, savedInstanceState);
-        mGridView.setColumnCount(2);
         return root;
     }
 
@@ -111,6 +113,11 @@ public class PlaceStatusGridFragment extends StaggeredGridFragment {
     public void onResume() {
         super.onResume();
         WeiboLog.d(TAG, "onResume:"+this);
+    }
+
+    @Override
+    protected SStatusData getData(Object... params) throws WeiboException {
+        return null;
     }
 
     @Override
@@ -358,9 +365,6 @@ public class PlaceStatusGridFragment extends StaggeredGridFragment {
         //option.setCoorType("");        //设置坐标类型
         //option.setAddrType("all");        //设置地址信息，仅设置为“all”时有地址信息，默认无地址信息
         option.setScanSpan(1);    //设置定位模式，小于1秒则一次定位;大于等于1秒则定时定位
-        option.setServiceName("com.baidu.location.service_v2.9");
-        option.setPoiNumber(10);
-        option.disableCache(true);
         mLocClient.setLocOption(option);
     }
 
@@ -433,12 +437,6 @@ public class PlaceStatusGridFragment extends StaggeredGridFragment {
             if (poiLocation.getLocType()==BDLocation.TypeNetWorkLocation) {
                 sb.append("\naddr : ");
                 sb.append(poiLocation.getAddrStr());
-            }
-            if (poiLocation.hasPoi()) {
-                sb.append("\nPoi:");
-                sb.append(poiLocation.getPoi());
-            } else {
-                sb.append("noPoi information");
             }
             //logMsg(sb.toString());
         }

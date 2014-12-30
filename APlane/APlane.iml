@@ -25,7 +25,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="true">
     <output url="file://$MODULE_DIR$/bin" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
@@ -37,15 +37,13 @@
       <excludeFolder url="file://$MODULE_DIR$/picture" />
       <excludeFolder url="file://$MODULE_DIR$/proguard_logs" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="apiLibrary" />
     <orderEntry type="module" module-name="pulltorefreshlibrary" />
     <orderEntry type="module" module-name="PhotoViewLibrary" />
-    <orderEntry type="module" module-name="bulletnoidStaggeredGridViewLibrary" />
     <orderEntry type="module" module-name="roundedimageview" />
     <orderEntry type="module" module-name="ImageFetcherLibrary" />
     <orderEntry type="library" name="aplane_lib" level="project" />
   </component>
 </module>
-

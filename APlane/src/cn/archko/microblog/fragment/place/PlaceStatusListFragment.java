@@ -351,9 +351,6 @@ public class PlaceStatusListFragment extends StatusListFragment {
         //option.setCoorType("");        //设置坐标类型
         //option.setAddrType("all");        //设置地址信息，仅设置为“all”时有地址信息，默认无地址信息
         option.setScanSpan(1);    //设置定位模式，小于1秒则一次定位;大于等于1秒则定时定位
-        option.setServiceName("com.baidu.location.service_v2.9");
-        option.setPoiNumber(10);
-        option.disableCache(true);
         mLocClient.setLocOption(option);
     }
 
@@ -426,12 +423,6 @@ public class PlaceStatusListFragment extends StatusListFragment {
             if (poiLocation.getLocType()==BDLocation.TypeNetWorkLocation) {
                 sb.append("\naddr : ");
                 sb.append(poiLocation.getAddrStr());
-            }
-            if (poiLocation.hasPoi()) {
-                sb.append("\nPoi:");
-                sb.append(poiLocation.getPoi());
-            } else {
-                sb.append("noPoi information");
             }
             //logMsg(sb.toString());
         }

@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.impl.SinaHomeStatusImpl;
@@ -14,7 +13,6 @@ import cn.archko.microblog.service.WeiboService;
 import cn.archko.microblog.ui.PrefsActivity;
 import cn.archko.microblog.ui.SkinFragmentActivity;
 import cn.archko.microblog.utils.AKUtils;
-import cn.archko.microblog.view.AKImageItemView;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.Group;
@@ -58,7 +56,6 @@ public class HomeGridFragment extends StaggeredGridFragment {
     @Override
     public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root=super._onCreateView(inflater, container, savedInstanceState);
-        mGridView.setColumnCount(2);
         return root;
     }
 
@@ -77,7 +74,7 @@ public class HomeGridFragment extends StaggeredGridFragment {
         }
     }
 
-    @Override
+    /*@Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
 
@@ -98,7 +95,7 @@ public class HomeGridFragment extends StaggeredGridFragment {
         itemView.update(status, updateFlag, true, showLargeBitmap, showBitmap);
 
         return itemView;
-    }
+    }*/
 
     @Override
     public void onResume() {

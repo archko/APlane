@@ -3,6 +3,7 @@ package cn.archko.microblog.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +21,7 @@ import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.ThreadBeanItemView;
-import com.bulletnoid.android.widget.StaggeredGridView.StaggeredGridView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshStaggeredGridView;
 import com.me.microblog.bean.SendTask;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
@@ -42,17 +41,11 @@ import java.util.Date;
 public abstract class StaggeredGridFragment extends AbsBaseListFragment<Status> {
 
     public static final String TAG="StaggeredGridFragment";
-    protected PullToRefreshStaggeredGridView mPullRefreshListView;
-    protected StaggeredGridView mGridView;
+    protected RecyclerView mGridView;
 
     public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root=(ViewGroup) inflater.inflate(R.layout.ak_staggered_grid_list, null);
         mEmptyTxt=(TextView) root.findViewById(R.id.empty_txt);
-        mPullRefreshListView=(PullToRefreshStaggeredGridView) root.findViewById(R.id.pull_refresh_grid);
-        mPullRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
-        mGridView=mPullRefreshListView.getRefreshableView();
-        mGridView.setSelector(R.drawable.list_selector_holo_light);
-        mGridView.setColumnCount(1);
 
         up=(ImageView) root.findViewById(R.id.up);
         down=(ImageView) root.findViewById(R.id.down);
@@ -72,56 +65,20 @@ public abstract class StaggeredGridFragment extends AbsBaseListFragment<Status> 
         if (view.getId()==R.id.up) {
             showZoom();
             if (showNavPageBtn) {
-                mGridView.performAccessibilityAction(0x00002000);
             }
         } else if (view.getId()==R.id.down) {
             showZoom();
             if (showNavPageBtn) {
-                mGridView.performAccessibilityAction(0x00001000);
             }
         }
     }
 
     public void _onActivityCreated(Bundle savedInstanceState) {
         WeiboLog.d(TAG, "_onActivityCreated");
-        mPullRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<StaggeredGridView>() {
-
-            @Override
-            public void onPullDownToRefresh(PullToRefreshBase<StaggeredGridView> refreshView) {
-                pullToRefreshData();
-            }
-
-            @Override
-            public void onPullUpToRefresh(PullToRefreshBase<StaggeredGridView> refreshView) {
-                fetchMore();
-            }
-        });
-        //mGridView.setOnScrollListener(this);
-        mGridView.setOnItemClickListener(new StaggeredGridView.OnItemClickListener() {
-            @Override
-            public void onItemClick(StaggeredGridView parent, View view, int pos, long id) {
-                WeiboLog.d(TAG, "itemClick:"+pos);
-                selectedPos=pos;
-
-                itemClick(view);
-            }
-        });
-        /*mGridView.setOnItemLongClickListener(new StaggeredGridView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(StaggeredGridView parent, View view, int pos, long id) {
-                WeiboLog.d(TAG, "itemLongClick:"+pos);
-                selectedPos=pos;
-                //showButtonBar(view);
-                itemLongClick(view);
-                return true;
-            }
-        });*/
 
         if (mAdapter==null) {
             mAdapter=new TimeLineAdapter();
         }
-
-        mGridView.setAdapter(mAdapter);
 
         WeiboLog.i(TAG, "isLoading:"+isLoading+" status:"+(null==mDataList ? "null" : mDataList.size()));
         loadData();
