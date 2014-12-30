@@ -142,65 +142,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1024095b-2e82-4701-8b71-c29a3cbee985" name="Default" comment="修复设置线程崩溃的bug.&#10;toast自定义view.&#10;修复重复转发的bug.&#10;">
-      <change type="DELETED" beforePath="D:\Projects\APlane\PhotoViewLibrary\gen\uk\co\senab\photoview\BuildConfig.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\Projects\APlane\PhotoViewLibrary\gen\uk\co\senab\photoview\Manifest.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\Projects\APlane\PhotoViewLibrary\gen\uk\co\senab\photoview\R.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/aplane_lib.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="AKWeibo.iws" />
     <ignored path=".idea/workspace.xml" />
-    <ignored path="APlane_1.3.1.apk" />
-    <ignored path="APlane_1.3.0.apk" />
-    <ignored path="gen/cn/archko/microblog/R.java" />
-    <ignored path="../apiLibrary/gen/com/me/microblog/Manifest.java" />
-    <ignored path="gen/cn/archko/microblog/BuildConfig.java" />
-    <ignored path="gen/cn/archko/microblog/Manifest.java" />
-    <ignored path="../apiLibrary/gen/com/me/microblog/R.java" />
-    <ignored path="../SlidingMenuLibrary/gen/com/jeremyfeinstein/slidingmenu/lib/Manifest.java" />
-    <ignored path="../SlidingMenuLibrary/gen/com/jeremyfeinstein/slidingmenu/lib/R.java" />
-    <ignored path="../pulltorefreshlibrary/gen/com/handmark/pulltorefresh/library/Manifest.java" />
-    <ignored path="../SlidingMenuLibrary/gen/com/jeremyfeinstein/slidingmenu/lib/BuildConfig.java" />
-    <ignored path="../pulltorefreshlibrary/gen/com/handmark/pulltorefresh/library/BuildConfig.java" />
-    <ignored path="../pulltorefreshlibrary/gen/com/handmark/pulltorefresh/library/R.java" />
-    <ignored path="src/cn/archko/microblog/fragment/TabFragment.java" />
-    <ignored path="../apiLibrary/src/com/me/microblog/cache/DiskLruCache.java" />
-    <ignored path="../apiLibrary/gen/com/me/microblog/BuildConfig.java" />
-    <ignored path="APlane-1.4.1.apk" />
-    <ignored path="APlane-1.4.0.apk" />
-    <ignored path="src/cn/archko/microblog/fragment/PublicGridFragment.java" />
-    <ignored path="../bulletnoidStaggeredGridViewLibrary/gen/com/bulletnoid/android/widget/R.java" />
-    <ignored path="../bulletnoidStaggeredGridViewLibrary/gen/com/bulletnoid/android/widget/Manifest.java" />
-    <ignored path="../bulletnoidStaggeredGridViewLibrary/gen/com/bulletnoid/android/widget/BuildConfig.java" />
-    <ignored path="res/drawable/bg_striped_abs.xml" />
-    <ignored path="res/drawable-mdpi/bg_action_bar_striped.png" />
-    <ignored path="res/drawable/ak_txt_progress_bg.xml" />
-    <ignored path="res/layout/ak_test_view.xml" />
-    <ignored path="../AUILlibrary/gen/com/nostra13/universalimageloader/R.java" />
-    <ignored path="../AUILlibrary/gen/com/nostra13/universalimageloader/Manifest.java" />
-    <ignored path="../AUILlibrary/gen/com/nostra13/universalimageloader/BuildConfig.java" />
-    <ignored path="../roundedimageview/gen/com/makeramen/R.java" />
-    <ignored path="../roundedimageview/gen/com/makeramen/BuildConfig.java" />
-    <ignored path="../roundedimageview/gen/com/makeramen/Manifest.java" />
-    <ignored path="../ImageFetcherLibrary/gen/com/andrew/apollo/cache/Manifest.java" />
-    <ignored path="../ImageFetcherLibrary/gen/com/andrew/apollo/cache/R.java" />
-    <ignored path="../ImageFetcherLibrary/gen/com/andrew/apollo/cache/BuildConfig.java" />
-    <ignored mask="*.apk" />
-    <ignored path="$PROJECT_DIR$/classes/" />
-    <ignored path="$PROJECT_DIR$/.idea/" />
-    <ignored path="$PROJECT_DIR$/doc/" />
-    <ignored path="$PROJECT_DIR$/picture/" />
-    <ignored path="$PROJECT_DIR$/proguard_logs/" />
-    <ignored path="$PROJECT_DIR$/bin/" />
-    <ignored path="$PROJECT_DIR$/../PhotoViewLibrary/bin/" />
-    <ignored path="$PROJECT_DIR$/../apiLibrary/bin/" />
-    <ignored path="$PROJECT_DIR$/../bulletnoidStaggeredGridViewLibrary/bin/" />
-    <ignored path="src/cn/archko/microblog/view/AKImageItemView.java" />
-    <ignored path="src/cn/archko/microblog/listeners/TabListener.java" />
-    <ignored path="src/cn/archko/microblog/fragment/AKTabFragment.java" />
-    <ignored path="res/drawable-mdpi/bg_stripes_dark.png" />
-    <ignored path="src/cn/archko/microblog/fragment/LHomeTabs.java" />
-    <ignored path="../apiLibrary/src/com/me/microblog/util/MapUtil.java" />
+    <ignored path="../apiLibrary/gen/" />
+    <ignored path="classes/" />
+    <ignored path="gen/" />
+    <ignored path="../ImageFetcherLibrary/gen/" />
+    <ignored path="../PhotoViewLibrary/gen/" />
+    <ignored path="../pulltorefreshlibrary/gen/" />
+    <ignored path="../roundedimageview/gen/" />
+    <manually-removed-from-ignored>
+      <directory path="$PROJECT_DIR$/../PhotoViewLibrary/bin/" />
+      <directory path="$PROJECT_DIR$/../bulletnoidStaggeredGridViewLibrary/bin/" />
+      <directory path="$PROJECT_DIR$/bin/" />
+      <directory path="$PROJECT_DIR$/../apiLibrary/bin/" />
+      <directory path="$PROJECT_DIR$/doc/" />
+      <directory path="$PROJECT_DIR$/.idea/" />
+      <directory path="$PROJECT_DIR$/proguard_logs/" />
+      <directory path="$PROJECT_DIR$/picture/" />
+      <directory path="$PROJECT_DIR$/classes/" />
+    </manually-removed-from-ignored>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -294,26 +260,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="1105">
               <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StaggeredGridFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/StaggeredGridFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1" max-vertical-offset="4811">
-              <caret line="57" column="36" selection-start-line="57" selection-start-column="36" selection-end-line="57" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="modules.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.idea/modules.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4063745" vertical-offset="0" max-vertical-offset="502">
-              <caret line="12" column="26" selection-start-line="12" selection-start-column="10" selection-end-line="12" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -454,10 +400,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NewStatusActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="NewStatusActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/ui/NewStatusActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="18308" max-vertical-offset="19567">
+            <state vertical-scroll-proportion="-6.804781" vertical-offset="18308" max-vertical-offset="19567">
               <caret line="1015" column="27" selection-start-line="1015" selection-start-column="27" selection-end-line="1015" selection-end-column="27" />
               <folding />
             </state>
@@ -693,34 +639,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="PhotoViewLibrary" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="APlane" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="PhotoViewLibrary" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gen" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="photoview" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="APlane" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="APlane" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -739,7 +657,7 @@
     <property name="recentsLimit" value="5" />
     <property name="ExportedApkPath" value="K:\Open\weibo\trunk\AKWeibo\AKWeibo.apk" />
     <property name="ExportedModule" value="AKWeibo" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/umeng_sdk.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../roundedimageview/gen" />
     <property name="GoToClass.includeJavaFiles" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
@@ -750,7 +668,7 @@
     <property name="AndroidIncludeSystemProguardFile" value="false" />
     <property name="AndroidProguardConfigPath" value="K:\Open\weibo\trunk\AKWeibo\proguard.cfg" />
     <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
-    <property name="options.lastSelected" value="Template Data Languages" />
+    <property name="options.lastSelected" value="project.propVCSSupport.Ignored.Files" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="AndroidRunProguardForReleaseBuild" value="true" />
@@ -958,12 +876,6 @@
       <updated>1340779013110</updated>
       <workItem from="1362394621442" duration="4176000" />
       <workItem from="1362399016497" duration="5382000" />
-    </task>
-    <task id="LOCAL-00046" summary="url链接处理失败,不需要编码.@还是有些问题.&#10;处理了url的链接问题,修改了后退键的行为,增加配置项.&#10;修正了附近照片没有数据的bug.">
-      <created>1356400565162</created>
-      <option name="number" value="00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1356400565162</updated>
     </task>
     <task id="LOCAL-00047" summary="修正加载分组的api过期时导致崩溃的bug.&#10;修复了其它关于api初始化的问题&#10;删除了ldpi的logo,替换了其它的logo">
       <created>1356586313132</created>
@@ -1253,7 +1165,13 @@
       <option name="project" value="LOCAL" />
       <updated>1419920459133</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <task id="LOCAL-00095" summary="修复设置线程崩溃的bug.&#10;toast自定义view.&#10;修复重复转发的bug.&#10;">
+      <created>1419921844504</created>
+      <option name="number" value="00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1419921844505</updated>
+    </task>
+    <option name="localTasksCounter" value="96" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -1281,10 +1199,11 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="54" y="-8" width="1554" height="916" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33761233" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972136" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37997434" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293461" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32921174" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -1304,7 +1223,6 @@
       <window_info id="Hierarchy" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.284153" sideWeight="0.5" order="6" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37997434" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25082508" sideWeight="0.61764705" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1329,7 +1247,6 @@
       <TodoPanelSettings />
     </option>
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
-    <MESSAGE value="添加动画效果,在页面切换" />
     <MESSAGE value="update portrait bg&#10;enlarge time line portrait" />
     <MESSAGE value="publish 1.6.1" />
     <MESSAGE value="线程数量默认为1，有些机器太多了,会崩溃." />
@@ -1354,7 +1271,8 @@
     <MESSAGE value="修正他人微博点击位置的bug&#10;去除不用的代码" />
     <MESSAGE value="进度图形修改." />
     <MESSAGE value="更新sdk到21,使用新的support包,去除不用的lib" />
-    <option name="LAST_COMMIT_MESSAGE" value="更新sdk到21,使用新的support包,去除不用的lib" />
+    <MESSAGE value="修复设置线程崩溃的bug.&#10;toast自定义view.&#10;修复重复转发的bug.&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复设置线程崩溃的bug.&#10;toast自定义view.&#10;修复重复转发的bug.&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1371,28 +1289,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/abs/AbsStatusAbstraction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1105">
-          <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/StatusDetailFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2686" max-vertical-offset="3655">
-          <caret line="721" column="40" selection-start-line="721" selection-start-column="19" selection-end-line="721" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../roundedimageview/project.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="778">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../roundedimageview/roundedimageview.iml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="778">
@@ -1537,22 +1433,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/ui/NewStatusActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="18308" max-vertical-offset="19567">
-          <caret line="1015" column="27" selection-start-line="1015" selection-start-column="27" selection-end-line="1015" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/StaggeredGridFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1" max-vertical-offset="4811">
-          <caret line="57" column="36" selection-start-line="57" selection-start-column="36" selection-end-line="57" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/UserTimelineFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2550" max-vertical-offset="4029">
@@ -1566,8 +1446,48 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.idea/modules.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4063745" vertical-offset="0" max-vertical-offset="502">
-          <caret line="12" column="26" selection-start-line="12" selection-start-column="10" selection-end-line="12" selection-end-column="10" />
+        <state vertical-scroll-proportion="0.26666668" vertical-offset="0" max-vertical-offset="765">
+          <caret line="12" column="50" selection-start-line="12" selection-start-column="10" selection-end-line="12" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/fragment/StaggeredGridFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4875817" vertical-offset="1" max-vertical-offset="4811">
+          <caret line="57" column="36" selection-start-line="57" selection-start-column="36" selection-end-line="57" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/copyright/profiles_settings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="515">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/vcs.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="515">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="27914">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cn/archko/microblog/ui/NewStatusActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.804781" vertical-offset="18308" max-vertical-offset="19567">
+          <caret line="1015" column="27" selection-start-line="1015" selection-start-column="27" selection-end-line="1015" selection-end-column="27" />
           <folding />
         </state>
       </provider>

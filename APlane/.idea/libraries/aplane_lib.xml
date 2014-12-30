@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="aplane_lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/locSDK_4.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/httpmime-4.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/android-support-v13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/apache-mime4j-core-0.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/umeng-analytics-v5.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/umeng-update-v2.4.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/android-support-v7-recyclerview.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
