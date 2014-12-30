@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,20 +21,17 @@ import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.AKSpannableStringBuilder;
 import com.me.microblog.bean.Comment;
 import com.me.microblog.bean.User;
 import com.me.microblog.cache.ImageCache2;
-import com.me.microblog.thread.DownloadPool;
-import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
 /*import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
 
-import java.lang.ref.WeakReference;
 import java.util.regex.Matcher;
 
 /**
@@ -168,15 +163,15 @@ public class CommentItemView extends BaseItemView implements View.OnClickListene
             if (null==spannableString) {
                 txt=comment.text;
                 spannableString=new AKSpannableStringBuilder(txt);
-                AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
-                AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
+                AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtils.ATPATTERN);
+                AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtils.getWebPattern());
                 comment.mSpannable=spannableString;
             }
             mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
             //mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
             String source=comment.source;
-            Matcher atMatcher=WeiboUtil.comeFrom.matcher(source);
+            Matcher atMatcher= WeiboUtils.comeFrom.matcher(source);
             if (atMatcher.find()) {
                 int start=atMatcher.start();
                 int end=atMatcher.end();
@@ -190,8 +185,8 @@ public class CommentItemView extends BaseItemView implements View.OnClickListene
             if (null==spannableString) {
                 txt=mComment.status.text;
                 spannableString=new AKSpannableStringBuilder(txt);
-                AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
-                AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
+                AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtils.ATPATTERN);
+                AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtils.getWebPattern());
                 mComment.status.mStatusSpannable=spannableString;
             }
             mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);

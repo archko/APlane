@@ -31,7 +31,7 @@ import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.AKSpannableStringBuilder;
 import com.me.microblog.bean.SendTask;
 import com.me.microblog.bean.Status;
@@ -246,7 +246,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             dir+=Constants.PICTURE_DIR;
         }
 
-        String path=dir+WeiboUtil.getWeiboUtil().getMd5(name)+WeiboUtil.getExt(name);
+        String path=dir+ WeiboUtils.getWeiboUtil().getMd5(name)+ WeiboUtils.getExt(name);
         WeiboLog.d(TAG, "viewLargeBitmap:"+path);
 
         File file=new File(path);
@@ -282,7 +282,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             //return;
         }
 
-        String path=dir+WeiboUtil.getWeiboUtil().getMd5(originalPic)+WeiboUtil.getExt(originalPic);
+        String path=dir+ WeiboUtils.getWeiboUtil().getMd5(originalPic)+ WeiboUtils.getExt(originalPic);
         WeiboLog.d(TAG, "原图.path:"+path);
         final File file=new File(path);
         if (file.exists()) {
@@ -413,7 +413,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                 if (name.endsWith("gif")) {
                     dir+=Constants.GIF;
 
-                    String path=dir+WeiboUtil.getWeiboUtil().getMd5(name)+WeiboUtil.getExt(name);
+                    String path=dir+ WeiboUtils.getWeiboUtil().getMd5(name)+ WeiboUtils.getExt(name);
                     WeiboLog.d(TAG, "viewLargeBitmap:"+path);
                     File gif=new File(path);
                     if (gif.exists()) {
@@ -563,7 +563,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
 
         String source=mStatus.source;
         if (!TextUtils.isEmpty(source)) {
-            Matcher atMatcher=WeiboUtil.comeFrom.matcher(source);
+            Matcher atMatcher= WeiboUtils.comeFrom.matcher(source);
             if (atMatcher.find()) {
                 int start=atMatcher.start();
                 int end=atMatcher.end();
@@ -579,8 +579,8 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         AKSpannableStringBuilder spannableString=(AKSpannableStringBuilder) mStatus.mStatusSpannable;
         if (null==spannableString) {
             spannableString=new AKSpannableStringBuilder(buildSmile(title));
-            AKUtils.highlightAtClickable(getActivity(), spannableString, WeiboUtil.ATPATTERN);
-            AKUtils.highlightUrlClickable(getActivity(), spannableString, WeiboUtil.getWebPattern());
+            AKUtils.highlightAtClickable(getActivity(), spannableString, WeiboUtils.ATPATTERN);
+            AKUtils.highlightUrlClickable(getActivity(), spannableString, WeiboUtils.getWebPattern());
             mStatus.mStatusSpannable=spannableString;
         }
         mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
@@ -617,8 +617,8 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             spannableString=(AKSpannableStringBuilder) mStatus.mRetweetedSpannable;
             if (null==spannableString) {
                 spannableString=new AKSpannableStringBuilder(title);
-                AKUtils.highlightAtClickable(getActivity(), spannableString, WeiboUtil.ATPATTERN);
-                AKUtils.highlightUrlClickable(getActivity(), spannableString, WeiboUtil.getWebPattern());
+                AKUtils.highlightAtClickable(getActivity(), spannableString, WeiboUtils.ATPATTERN);
+                AKUtils.highlightUrlClickable(getActivity(), spannableString, WeiboUtils.getWebPattern());
                 mStatus.mRetweetedSpannable=spannableString;
             }
             mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
@@ -800,7 +800,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                 dir=mCacheDir+Constants.GIF;
             }
 
-            String path=dir+WeiboUtil.getWeiboUtil().getMd5(mBmiddlePic)+WeiboUtil.getExt(mBmiddlePic);
+            String path=dir+ WeiboUtils.getWeiboUtil().getMd5(mBmiddlePic)+ WeiboUtils.getExt(mBmiddlePic);
             WeiboLog.d(TAG, "DownloadThread.path:"+path);
             final File file=new File(path);
             if (file.exists()) {

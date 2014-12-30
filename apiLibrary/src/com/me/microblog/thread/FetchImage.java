@@ -15,7 +15,7 @@ import java.lang.ref.WeakReference;
 
 import android.widget.ImageView;
 import com.me.microblog.R;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.cache.Md5Digest;
 import com.me.microblog.core.ImageManager;
@@ -131,7 +131,7 @@ public class FetchImage extends Thread {
                 return;
             }
 
-            String ext=WeiboUtil.getExt(uri);
+            String ext= WeiboUtils.getExt(uri);
             String name=Md5Digest.getInstance().getMd5(uri);
             if (null==name) {
                 app.mDownloadPool.ActiveThread_Pop();

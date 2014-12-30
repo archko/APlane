@@ -18,7 +18,7 @@ import cn.archko.microblog.utils.AKUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.AKSpannableStringBuilder;
 import com.me.microblog.bean.Status;
 import com.me.microblog.util.DateUtils;
@@ -123,8 +123,8 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
             AKSpannableStringBuilder spannableString=(AKSpannableStringBuilder) mStatus.mStatusSpannable;
             if (null==spannableString) {
                 spannableString=new AKSpannableStringBuilder(mStatus.text);
-                AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
-                AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
+                AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtils.ATPATTERN);
+                AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtils.getWebPattern());
                 mStatus.mStatusSpannable=spannableString;
             }
             mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
@@ -150,7 +150,7 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
             }
 
             String source=mStatus.source;
-            Matcher atMatcher=WeiboUtil.comeFrom.matcher(source);
+            Matcher atMatcher= WeiboUtils.comeFrom.matcher(source);
             if (atMatcher.find()) {
                 int start=atMatcher.start();
                 int end=atMatcher.end();
@@ -172,8 +172,8 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
                     spannableString=(AKSpannableStringBuilder) mStatus.mRetweetedSpannable;
                     if (null==spannableString) {
                         spannableString=new AKSpannableStringBuilder(title);
-                        AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtil.ATPATTERN);
-                        AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtil.getWebPattern());
+                        AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtils.ATPATTERN);
+                        AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtils.getWebPattern());
                         mStatus.mRetweetedSpannable=spannableString;
                     }
                     mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);

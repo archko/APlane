@@ -20,8 +20,8 @@ import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.view.ColorSchemeDialog;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
-import com.me.microblog.WeiboUtil;
-import com.me.microblog.util.NotifyUtil;
+import com.me.microblog.WeiboUtils;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
 
 import java.text.DecimalFormat;
@@ -37,22 +37,22 @@ public class AKUtils {
 
     public static void showToast(final String message) {
         //Toast.makeText(App.getAppContext(), message, Toast.LENGTH_SHORT).show();
-        NotifyUtil.showToast(message);
+        NotifyUtils.showToast(message);
     }
 
     public static void showToast(final int resId) {
         //Toast.makeText(App.getAppContext(), resId, Toast.LENGTH_SHORT).show();
-        NotifyUtil.showToast(resId);
+        NotifyUtils.showToast(resId);
     }
 
     public static void showToast(final String message, final int delay) {
         //Toast.makeText(App.getAppContext(), message, delay).show();
-        NotifyUtil.showToast(message, delay);
+        NotifyUtils.showToast(message, delay);
     }
 
     public static void showToast(final int resId, final int delay) {
         //Toast.makeText(App.getAppContext(), resId, delay).show();
-        NotifyUtil.showToast(resId, delay);
+        NotifyUtils.showToast(resId, delay);
     }
 
     public static String stripTrailingSlash(String _s) {
@@ -139,7 +139,7 @@ public class AKUtils {
      * 注销
      */
     public static void logout(Activity activity) {
-        WeiboUtil.logout(activity);
+        WeiboUtils.logout(activity);
         ((App) App.getAppContext()).logout();
 
         Intent intent=new Intent(activity, SendTaskService.class);
@@ -191,7 +191,7 @@ public class AKUtils {
 
     //--------------------- 内容点击器 ---------------------
 
-    public static class AtClicker extends WeiboUtil.MyClicker {
+    public static class AtClicker extends WeiboUtils.MyClicker {
 
         Context mContext;
 
@@ -224,7 +224,7 @@ public class AKUtils {
 
     }
 
-    public static class UrlClicker extends WeiboUtil.MyClicker {
+    public static class UrlClicker extends WeiboUtils.MyClicker {
 
         Context mContext;
 
@@ -255,7 +255,7 @@ public class AKUtils {
             SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
             boolean prefWebview=mPrefs.getBoolean(PreferenceUtils.PREF_WEBVIEW, true);
             if (!prefWebview) {
-                WeiboUtil.openUrlByDefaultBrowser(mContext, name);
+                WeiboUtils.openUrlByDefaultBrowser(mContext, name);
             } else {
                 /*Intent intent=new Intent(getActivity(), WebviewActivity.class);
                 intent.putExtra("url", name);

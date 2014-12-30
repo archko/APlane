@@ -16,7 +16,7 @@ import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.service.SendTaskService;
 import com.andrew.apollo.utils.ThemeUtils;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.SendTask;
 import com.me.microblog.bean.Status;
 import com.me.microblog.db.TwitterTable;
@@ -122,7 +122,7 @@ public class RepostStatusActivity extends CommentStatusActivity {
         if (retweetedStatus!=null) {
             String title="@"+retweetedStatus.user.screenName+":"+retweetedStatus.text+" ";
             SpannableString spannableString=new SpannableString(title);
-            WeiboUtil.highlightContent(RepostStatusActivity.this, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
+            WeiboUtils.highlightContent(RepostStatusActivity.this, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
             mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
             repost_ori_btn.setText(retweetedStatus.user.screenName);
             mContentSecondLayout.setVisibility(View.VISIBLE);

@@ -2,7 +2,7 @@ package com.me.microblog.core.sina;
 
 import android.text.TextUtils;
 import com.me.microblog.WeiboException;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.Group;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Status;
@@ -44,7 +44,7 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
         String urlString=getBaseUrl()+"friendships/groups.json";
 
         String rs=get(urlString, true);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         /*if (!TextUtils.isEmpty(rs)){//&&!"[]".equals(rs)) { 不管有没有数据，都保存，
             WeiboUtil.saveStatus(rs, App.getAppContext().getFilesDir().getAbsolutePath(), Constants.GROUP_FILE);
         }*/
@@ -104,7 +104,7 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
         nvps.add(pair);
 
         String rs=get(urlString, true, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseStatuses2(rs);
     }
 
@@ -140,7 +140,7 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
         }
 
         String rs=get(urlString, true, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.getUserObjs2(rs);
     }
 
@@ -164,7 +164,7 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
         nvps.add(pair);
 
         String rs=get(urlString, true, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseGroup(rs);
     }
 
@@ -203,7 +203,7 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
         }
 
         String rs=post(urlString, false, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseGroup(rs);
     }
 
@@ -247,7 +247,7 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
         }
 
         String rs=post(urlString, true, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseGroup(rs);
     }
 
@@ -305,7 +305,7 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
         nvps.add(pair);
 
         String rs=post(urlString, true, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseGroup(rs);
     }
 
@@ -347,7 +347,7 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
         }
 
         String rs=post(urlString, true, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseResult(rs);
     }
 
@@ -387,7 +387,7 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
         }
 
         String rs=post(urlString, true, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return rs;
     }
 
@@ -415,7 +415,7 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
         nvps.add(pair);
 
         String rs=post(urlString, true, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseGroup(rs);
     }
 
@@ -446,7 +446,7 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
         nvps.add(pair);
 
         String rs=post(urlString, true, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseResult(rs);
     }
 }

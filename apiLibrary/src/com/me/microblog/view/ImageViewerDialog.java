@@ -13,19 +13,17 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.me.microblog.App;
 import com.me.microblog.R;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.BaseApi;
 import com.me.microblog.util.Constants;
+import com.me.microblog.util.StreamUtils;
 import com.me.microblog.util.WeiboLog;
 
 import java.io.BufferedInputStream;
@@ -116,13 +114,6 @@ public class ImageViewerDialog extends AlertDialog {
      * @param url
      */
     void setDefaultBackground(String url) {
-        Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(url);
-        
-        if (null!=bitmap&&!bitmap.isRecycled()) {
-            mImage.setImageBitmap(bitmap);
-            mImage.setVisibility(View.VISIBLE);
-            return;
-        }
     }
 
     public ImageViewerDialog(Context ctx, String imageUrl, String saveDir, Drawable d, String thumb) {
@@ -198,7 +189,7 @@ public class ImageViewerDialog extends AlertDialog {
         } else {
             dir+=WeiboUtil.PICTURE_DIR;
         }*/
-        String targetFilePath=dir+System.currentTimeMillis()+WeiboUtil.getExt(uri);
+        String targetFilePath=dir+System.currentTimeMillis()+ WeiboUtils.getExt(uri);
 
         /*String source=mSaveDir;
         if (imageType==Constants.GIF_TYPE) {
@@ -206,7 +197,7 @@ public class ImageViewerDialog extends AlertDialog {
         } else {
             source+=Constants.PICTURE_DIR;
         }source+WeiboUtil.getWeiboUtil().getMd5(uri)+WeiboUtil.getExt(uri)*/
-        boolean flag=ImageCache2.getInstance().getImageManager().copyFileToFile(targetFilePath, mPath);
+        boolean flag= StreamUtils.copyFileToFile(targetFilePath, mPath);
         WeiboLog.d(TAG, "保存图片:"+targetFilePath);
         mSave.setVisibility(View.GONE);
         if (flag) {
@@ -280,7 +271,7 @@ public class ImageViewerDialog extends AlertDialog {
             }
 
             //identity folder and file.
-            final String name=WeiboUtil.getWeiboUtil().getMd5(uri)+WeiboUtil.getExt(uri);
+            final String name= WeiboUtils.getWeiboUtil().getMd5(uri)+ WeiboUtils.getExt(uri);
             String path=dir+name;
             mPath=path;
             WeiboLog.d(TAG, "DownloadThread.path:"+path);

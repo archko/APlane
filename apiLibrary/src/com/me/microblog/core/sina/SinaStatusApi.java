@@ -2,7 +2,7 @@ package com.me.microblog.core.sina;
 
 import android.text.TextUtils;
 import com.me.microblog.WeiboException;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.Count;
 import com.me.microblog.bean.Favorite;
 import com.me.microblog.bean.SStatusData;
@@ -65,7 +65,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
 
         String rs=get(urlString, true, nvps);
         //WeiboUtil.savePublicTimeLine(rs);
-        WeiboUtil.printResult(TAG, "getPublicTimeline:"+rs);
+        WeiboUtils.printResult(TAG, "getPublicTimeline:" + rs);
         return getStatuses2(rs);
     }
 
@@ -220,7 +220,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
         }
 
         String rs=get(urlString, true, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
     }
 
     /**
@@ -674,7 +674,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
 
         String rs=post(urlString, false, nvps);
 
-        WeiboUtil.printResult(TAG, "uploadPic:"+rs);
+        WeiboUtils.printResult(TAG, "uploadPic:" + rs);
         return WeiboParser.parseStatus(rs);
     }
 
@@ -709,7 +709,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
         httppost.setEntity(multipartentity);
 
         String rs=TwitterOAuth2.execute(httppost);
-        WeiboUtil.printResult(TAG, "uploadPic:"+rs);
+        WeiboUtils.printResult(TAG, "uploadPic:" + rs);
         //return WeiboParser.parseStatus(rs);
     }
 
@@ -753,7 +753,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
         nvps.add(pair);
 
         String rs=get(urlString, true, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseStatus(rs);
     }
 
@@ -856,7 +856,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
         nvps.add(pair);
 
         String rs=post(urlString, true, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseFavorite(rs);
     }
 
@@ -877,7 +877,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
         nvps.add(pair);
 
         String rs=post(urlString, true, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseFavorite(rs);
     }
 
@@ -898,7 +898,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
         nvps.add(pair);
 
         String rs=post(urlString, true, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseResult(rs);
     }
 
@@ -948,7 +948,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
         nvps.add(pair);
 
         String rs=get(urlString, true, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseFavorite(rs);
     }
 }

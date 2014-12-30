@@ -16,7 +16,7 @@ import com.me.microblog.App;
  *
  * @author archko
  */
-public class DisplayUtil {
+public class DisplayUtils {
 
     private static String TAG="DisplayUtil";
 

@@ -2,7 +2,6 @@ package cn.archko.microblog.ui;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -41,7 +39,6 @@ import cn.archko.microblog.fragment.HomeGridFragment;
 import cn.archko.microblog.fragment.PrefsFragment;
 import cn.archko.microblog.fragment.abs.BaseFragment;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
-import cn.archko.microblog.service.AKWidgetService;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.service.WeiboService;
 import cn.archko.microblog.sliding.app.SidebarAdapter;
@@ -52,7 +49,7 @@ import com.me.microblog.App;
 import com.me.microblog.action.ActionResult;
 import com.me.microblog.action.AsyncActionTask;
 import com.me.microblog.bean.Group;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.Unread;
 import com.me.microblog.core.ImageManager;
 import com.me.microblog.util.Constants;
@@ -300,7 +297,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
 
         delayStartService();
 
-        if (!WeiboUtil.isHoneycombOrLater()) {
+        if (! WeiboUtils.isHoneycombOrLater()) {
             if (null==mExitReceiver) {
                 mExitReceiver=new ExitBroadcastReceiver();
             }

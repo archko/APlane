@@ -17,9 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
-import com.me.microblog.WeiboUtil;
-import com.me.microblog.cache.ImageCache2;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.util.DateUtils;
+import com.me.microblog.util.StreamUtils;
 import com.me.microblog.util.WeiboLog;
 import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.view.AKSnapImageView;
@@ -235,8 +235,8 @@ public class ImageViewerActivity extends Activity {
             try {
                 String path=(String) params[0];
                 targetFilePath=Environment.getExternalStorageDirectory().getAbsolutePath()+"/image"+
-                    DateUtils.formatDate(new Date(), "yyyy-MM-dd_HH-mm-ss")+WeiboUtil.getExt(path);
-                flag=ImageCache2.getInstance().getImageManager().copyFileToFile(targetFilePath, path);
+                    DateUtils.formatDate(new Date(), "yyyy-MM-dd_HH-mm-ss")+ WeiboUtils.getExt(path);
+                flag= StreamUtils.copyFileToFile(targetFilePath, path);
             } catch (Exception e) {
                 e.printStackTrace();
             }

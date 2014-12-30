@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.LazyViewPager;
@@ -38,7 +37,7 @@ import com.andrew.apollo.utils.ThemeUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.bulletnoid.android.widget.SwipeAwayLayout;
 import com.me.microblog.App;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.ContentItem;
 import com.me.microblog.bean.SendTask;
 import com.me.microblog.bean.Status;
@@ -704,7 +703,7 @@ public class ViewStatusDetailActivity extends BaseOauthFragmentActivity implemen
             }
 
             SpannableString spannableString=new SpannableString(sb);
-            ArrayList<ContentItem> contentItems=WeiboUtil.getAtHighlightContent(this, spannableString);
+            ArrayList<ContentItem> contentItems= WeiboUtils.getAtHighlightContent(this, spannableString);
             if (contentItems.size()>0) {
                 for (ContentItem ci : contentItems) {
                     item=new ActionItem(Constants.OP_ID_MORE_CONTENT_OTHER, String.valueOf(ci.content));

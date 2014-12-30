@@ -27,7 +27,7 @@ import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.db.MyHelper;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.oauth.OauthBean;
@@ -384,7 +384,7 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
             @Override
             public void run() {
                 AKUtils.showToast(R.string.account_change_suc);
-                if (!WeiboUtil.isHoneycombOrLater()) {
+                if (! WeiboUtils.isHoneycombOrLater()) {
                     Intent intent;
                     intent=new Intent(Constants.EXIT_APP);
                     getActivity().sendBroadcast(intent);

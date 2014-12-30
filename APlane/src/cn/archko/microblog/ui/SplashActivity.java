@@ -20,14 +20,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
-import cn.archko.microblog.fragment.AccountUsersFragment;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
-import com.me.microblog.WeiboUtil;
 import com.me.microblog.bean.UpdateInfo;
 import com.me.microblog.core.ImageManager;
 import com.me.microblog.core.WeiboParser;
 import com.me.microblog.util.Constants;
+import com.me.microblog.util.StreamUtils;
 import com.me.microblog.util.WeiboLog;
 
 import java.io.IOException;
@@ -165,7 +164,7 @@ public class SplashActivity extends NavModeActivity {
                 String xml=null;
                 try {
                     InputStream is=ImageManager.getImageStream(mUpdateUrl);
-                    xml=WeiboUtil.parseInputStream(is);
+                    xml= StreamUtils.parseInputStream(is);
                     WeiboLog.v(TAG, "xml:"+xml);
 
                     final UpdateInfo updateInfo;

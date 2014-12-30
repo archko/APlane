@@ -15,7 +15,7 @@ import com.me.microblog.R;
  *
  * @author: archko 2014/8/25 :15:38
  */
-public class NotifyUtil {
+public class NotifyUtils {
 
     public final static View makeToastView(String txt) {
         View overlay=((LayoutInflater) App.getAppContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).

@@ -3,7 +3,7 @@ package com.me.microblog.core.sina;
 import android.text.TextUtils;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.Trends;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.WeiboParser;
@@ -43,9 +43,9 @@ public class SinaTrendApi extends AbsApiImpl {
         nvps.add(pair);
 
         String rs=get(urlString, false, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         if (!TextUtils.isEmpty(rs)&&!"[]".equals(rs)&&"daily".equals(type)) {
-            WeiboUtil.saveStatus(rs, App.getAppContext().getFilesDir().getAbsolutePath(), Constants.TREND_FILE);
+            WeiboUtils.saveStatus(rs, App.getAppContext().getFilesDir().getAbsolutePath(), Constants.TREND_FILE);
         }
         return WeiboParser.parseTrends(rs);
     }
@@ -89,7 +89,7 @@ public class SinaTrendApi extends AbsApiImpl {
         nvps.add(pair);
 
         String rs=get(urlString, true, nvps);
-        WeiboUtil.printResult(TAG, "unfollowTrend:"+rs);
+        WeiboUtils.printResult(TAG, "unfollowTrend:" + rs);
         return WeiboParser.parseResult(rs);
     }
 }

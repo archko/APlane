@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import com.me.microblog.R;
 import com.me.microblog.WeiboException;
-import com.me.microblog.WeiboUtil;
 import com.me.microblog.bean.*;
 import com.me.microblog.http.RateLimitStatus;
 
@@ -20,6 +19,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import com.me.microblog.util.PinYin;
+import com.me.microblog.util.StreamUtils;
 import com.me.microblog.util.WeiboLog;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -1445,7 +1445,7 @@ public class WeiboParser {
         String line;
         try {
             is=ctx.getResources().openRawResource(R.raw.provinces);
-            line=WeiboUtil.parseInputStream(is);
+            line= StreamUtils.parseInputStream(is);
             JSONObject jo=contructJSONObject(line);
             JSONArray provinces=jo.optJSONArray("provinces");
             return parseAllCity(provinces);

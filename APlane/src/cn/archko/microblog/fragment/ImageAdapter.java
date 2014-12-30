@@ -1,6 +1,5 @@
 package cn.archko.microblog.fragment;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,11 +15,8 @@ import cn.archko.microblog.R;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
-import com.me.microblog.WeiboUtil;
 import cn.archko.microblog.ui.ImageViewerActivity;
-import com.me.microblog.util.Constants;
-import com.me.microblog.util.Util;
-import com.me.microblog.util.WeiboLog;
+import com.me.microblog.util.DisplayUtils;
 /*import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
@@ -200,10 +196,10 @@ public class ImageAdapter extends BaseAdapter {
             if (picture.getScaleType()!=ImageView.ScaleType.FIT_XY){
                 RelativeLayout.LayoutParams lp=(RelativeLayout.LayoutParams) picture.getLayoutParams();
                 if (null==lp) {
-                    lp=new RelativeLayout.LayoutParams(Util.convertDpToPx(62), Util.convertDpToPx(80));
+                    lp=new RelativeLayout.LayoutParams(DisplayUtils.convertDpToPx(62), DisplayUtils.convertDpToPx(80));
                 }else {
-                    lp.width=Util.convertDpToPx(62);
-                    lp.height=Util.convertDpToPx(80);
+                    lp.width=DisplayUtils.convertDpToPx(62);
+                    lp.height=DisplayUtils.convertDpToPx(80);
                 }
                 picture.setLayoutParams(lp);
                 picture.setScaleType(ImageView.ScaleType.FIT_XY);

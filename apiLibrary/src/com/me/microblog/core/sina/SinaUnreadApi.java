@@ -2,12 +2,11 @@ package com.me.microblog.core.sina;
 
 import android.text.TextUtils;
 import com.me.microblog.WeiboException;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.Unread;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.WeiboParser;
 import com.me.microblog.core.abs.IUnreadApi;
-import com.me.microblog.util.WeiboLog;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public class SinaUnreadApi extends AbsApiImpl implements IUnreadApi{
         String rs=null;
         try {
             rs=get(urlString, false, nvps);
-            WeiboUtil.printResult(TAG, "rs:"+rs);
+            WeiboUtils.printResult(TAG, "rs:" + rs);
         } catch (WeiboException e) {
             int code=e.getStatusCode();
             if (code==400) {
@@ -83,7 +82,7 @@ public class SinaUnreadApi extends AbsApiImpl implements IUnreadApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         //TODO return WeiboParser.parseResult(rs);
         return rs;//return WeiboParser.parseSetUnread(rs);
     }

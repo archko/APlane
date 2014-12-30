@@ -1,13 +1,12 @@
 package com.me.microblog.core.sina;
 
 import com.me.microblog.WeiboException;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.DirectMessage;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.WeiboParser;
 import com.me.microblog.core.abs.IDMApi;
-import com.me.microblog.util.WeiboLog;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboUtil.printResult(TAG, "dm:"+rs);
+        WeiboUtils.printResult(TAG, "dm:" + rs);
         return WeiboParser.parseDirectMessages(rs);
     }
 
@@ -94,7 +93,7 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
         }
 
         String rs=get(urlString, false, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseDirectMessages(rs);
     }
 
@@ -114,7 +113,7 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
         urlString+="?access_token="+mAccessToken;
 
         String rs=get(urlString, false, null);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseDirectMessages(rs);
     }
 
@@ -138,7 +137,7 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
         nvps.add(pair);
 
         String rs=post(urlString, false, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseDirectMessage(rs);
     }
 
@@ -162,7 +161,7 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
         nvps.add(pair);
 
         String rs=post(urlString, false, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseDirectMessage(rs);
     }
 
@@ -182,7 +181,7 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
         nvps.add(pair);
 
         String rs=post(urlString, false, nvps);
-        WeiboUtil.printResult(TAG, "rs:"+rs);
+        WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseDirectMessage(rs);
     }
 }

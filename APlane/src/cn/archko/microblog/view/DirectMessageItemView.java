@@ -3,7 +3,6 @@ package cn.archko.microblog.view;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -21,19 +20,16 @@ import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.DirectMessage;
 import com.me.microblog.bean.User;
 import com.me.microblog.cache.ImageCache2;
-import com.me.microblog.thread.DownloadPool;
-import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
 /*import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
 
-import java.lang.ref.WeakReference;
 import java.util.regex.Matcher;
 
 /**
@@ -147,7 +143,7 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
         mContentFirst.setText(titleString);
 
         String source=directMessage.source;
-        Matcher atMatcher=WeiboUtil.comeFrom.matcher(source);
+        Matcher atMatcher= WeiboUtils.comeFrom.matcher(source);
         if (atMatcher.find()) {
             int start=atMatcher.start();
             int end=atMatcher.end();

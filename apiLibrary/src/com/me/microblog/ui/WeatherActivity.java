@@ -31,7 +31,7 @@ import com.me.microblog.http.IXmlParser;
 import com.me.microblog.http.RssXMLPullHandler;
 import com.me.microblog.http.WeatherBean;
 import com.me.microblog.R;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 
@@ -327,7 +327,7 @@ public class WeatherActivity extends Activity {
                 ImageView currentIcon=(ImageView) params[0];
                 String url=(String) params[1];
 
-                String filePath=getCacheDir()+WeiboUtil.getWeiboUtil().getMd5(url)+WeiboUtil.getExt(url);
+                String filePath=getCacheDir()+ WeiboUtils.getWeiboUtil().getMd5(url)+ WeiboUtils.getExt(url);
                 WeiboLog.d("filePath:"+filePath);
                 File file=new File(filePath);
                 if (file.exists()) {

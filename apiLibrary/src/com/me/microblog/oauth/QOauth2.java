@@ -18,9 +18,9 @@ import org.apache.http.protocol.HttpContext;
 
 import android.content.Context;
 
-import com.me.microblog.WeiboUtil;
 import com.me.microblog.http.SSLSocketFactoryEx;
 import com.me.microblog.util.WeiboLog;
+import org.apache.http.util.EntityUtils;
 
 /**
  * 
@@ -72,7 +72,7 @@ public class QOauth2 extends BaseOauth2 {
 					.toString() : (currentHost.toURI() + currentReq.getURI());
 			WeiboLog.d("currentUrl:" + currentUrl);
 
-            WeiboLog.d("httpResponse:"+WeiboUtil.parseInputStream(httpResponse));
+            WeiboLog.d("httpResponse:"+ EntityUtils.toString(httpResponse.getEntity()));
             
             return fetchAccessToken(client);
         } catch (IOException ex) {

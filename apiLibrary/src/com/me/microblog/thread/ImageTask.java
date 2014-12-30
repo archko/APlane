@@ -13,13 +13,12 @@ import android.preference.PreferenceManager;
 import android.widget.ImageView;
 import com.me.microblog.App;
 import com.me.microblog.R;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.cache.Md5Digest;
 import com.me.microblog.core.ImageManager;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.thread.DownloadPoolThread.AsyncDrawable;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -145,7 +144,7 @@ public class ImageTask extends Thread {
                 return;
             }
 
-            String ext=WeiboUtil.getExt(uri);
+            String ext= WeiboUtils.getExt(uri);
             String name=Md5Digest.getInstance().getMd5(uri)+ext;
             if (null==name) {
                 //app.mDownloadPool.ActiveThread_Pop();

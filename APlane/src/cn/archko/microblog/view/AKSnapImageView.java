@@ -19,13 +19,12 @@ import cn.archko.microblog.ui.PrefsActivity;
 import com.andrew.apollo.cache.ImageCache;
 import com.me.microblog.App;
 import cn.archko.microblog.R;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.BaseApi;
 import com.me.microblog.util.Constants;
-import com.me.microblog.util.DisplayUtil;
+import com.me.microblog.util.DisplayUtils;
 import com.me.microblog.util.WeiboLog;
-import cn.archko.microblog.utils.AKUtils;
 import com.me.microblog.view.MyWebView;
 import com.me.microblog.view.TextProgressBar;
 import uk.co.senab.photoview.PhotoView;
@@ -138,10 +137,10 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
             dir=App.mCacheDir+Constants.GIF;
         }
 
-        String name=WeiboUtil.getWeiboUtil().getMd5(bean)+WeiboUtil.getExt(bean);
+        String name= WeiboUtils.getWeiboUtil().getMd5(bean)+ WeiboUtils.getExt(bean);
         mThumbPath=dir+name;
 
-        name=WeiboUtil.getWeiboUtil().getMd5(bmiddlePic)+WeiboUtil.getExt(bmiddlePic);
+        name= WeiboUtils.getWeiboUtil().getMd5(bmiddlePic)+ WeiboUtils.getExt(bmiddlePic);
         mBmidPath=dir+name;
 
         //loadView(bean);
@@ -356,7 +355,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                         BitmapFactory.Options opts=new BitmapFactory.Options();
                         opts.inJustDecodeBounds=true;
                         BitmapFactory.decodeFile(file.getAbsolutePath(), opts);
-                        setMeasureSpec(myWebView, DisplayUtil.convertDpToPx(opts.outWidth), DisplayUtil.convertDpToPx(opts.outHeight));
+                        setMeasureSpec(myWebView, DisplayUtils.convertDpToPx(opts.outWidth), DisplayUtils.convertDpToPx(opts.outHeight));
                         myWebView.loadUrl("file://"+file.getAbsolutePath());
                     } catch (Exception e) {
                         e.printStackTrace();

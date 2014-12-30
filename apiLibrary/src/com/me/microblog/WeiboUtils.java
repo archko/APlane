@@ -3,10 +3,8 @@ package com.me.microblog;
 import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +15,6 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -27,8 +24,8 @@ import com.me.microblog.bean.Status;
 import com.me.microblog.core.WeiboParser;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.util.Constants;
+import com.me.microblog.util.StreamUtils;
 import com.me.microblog.util.WeiboLog;
-import org.apache.http.HttpResponse;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -45,10 +42,10 @@ import java.util.List;
  * @description:
  * @author: archko 11-6-24
  */
-public class WeiboUtil {
+public class WeiboUtils {
 
     private MessageDigest mDigest;
-    private static WeiboUtil md5Util=new WeiboUtil();
+    private static WeiboUtils md5Util=new WeiboUtils();
     static int sActiveTabIndex=-1;
     public static final Pattern p=Pattern.compile("@[^(:| |：| |,|@)]*(:| |：| |,|。)", Pattern.MULTILINE);
     public static final Pattern ATPATTERN=Pattern.compile("@[[^@\\s%s|(:| |：|　|,|。|\\[)]0-9]{1,20}", Pattern.MULTILINE);
@@ -60,7 +57,7 @@ public class WeiboUtil {
     private static Pattern webpattern2;
     public static final Pattern comeFrom=Pattern.compile("<a[^>]*>");
 
-    private WeiboUtil() {
+    private WeiboUtils() {
         try {
             mDigest=MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
@@ -69,7 +66,7 @@ public class WeiboUtil {
         }
     }
 
-    public static WeiboUtil getWeiboUtil() {
+    public static WeiboUtils getWeiboUtil() {
         return md5Util;
     }
 
@@ -80,7 +77,7 @@ public class WeiboUtil {
     }
 
     public static String getFilePath(String dir, String url) {
-        WeiboUtil weiboUtil=WeiboUtil.getWeiboUtil();
+        WeiboUtils weiboUtil= WeiboUtils.getWeiboUtil();
         String file=dir+"/"+weiboUtil.getMd5(url);
         return file;
     }
@@ -99,7 +96,7 @@ public class WeiboUtil {
     public static String checkDiskCache(String dir, String fileName) {
         String str1=String.valueOf(dir);
         String filePath=dir+"/"+fileName;
-        WeiboUtil weiboUtil=WeiboUtil.getWeiboUtil();
+        WeiboUtils weiboUtil= WeiboUtils.getWeiboUtil();
         String str2=weiboUtil.getMd5(filePath);
         boolean isExists=new File(str2).exists();
         if (!isExists)
@@ -108,37 +105,6 @@ public class WeiboUtil {
     }
 
     ///////////////////////////////////
-
-    /**
-     * 读取HttpResponse返回的流.
-     *
-     * @param response
-     * @return
-     * @throws IOException
-     */
-    public static String parseInputStream(HttpResponse response) throws IOException {
-        InputStream is=response.getEntity().getContent();
-        return parseInputStream(is);
-    }
-
-    /**
-     * 从输入流中读取字符串.
-     *
-     * @param is 输入流
-     * @return
-     * @throws IOException
-     */
-    public static String parseInputStream(InputStream is) throws IOException {
-        BufferedReader reader=new BufferedReader(new InputStreamReader(is), 1000);
-        StringBuilder responseBody=new StringBuilder();
-        String line=reader.readLine();
-        while (line!=null) {
-            responseBody.append(line);
-            line=reader.readLine();
-        }
-        String string=responseBody.toString();
-        return string;
-    }
 
     public static void highlightContent(Context context, Spannable spannable, int color) {
         Matcher atMatcher=getAtPattern().matcher(spannable);
@@ -268,7 +234,7 @@ public class WeiboUtil {
     public static List<Status> getStatusFromLocal(String path) {
         List<Status> list=null;
         try {
-            String rs=parseInputStream(new FileInputStream(path));
+            String rs= StreamUtils.parseInputStream(new FileInputStream(path));
             list=WeiboParser.parseStatuses(rs);
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
@@ -283,7 +249,7 @@ public class WeiboUtil {
     public static List<Status> getStatusFromLocal(InputStream is) {
         List<Status> list=null;
         try {
-            String rs=parseInputStream(is);
+            String rs= StreamUtils.parseInputStream(is);
             list=WeiboParser.parseStatuses(rs);
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();

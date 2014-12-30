@@ -2,7 +2,6 @@ package cn.archko.microblog.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,11 +31,10 @@ import com.andrew.apollo.utils.ThemeUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
-import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.sina.SinaUserApi;
 import com.me.microblog.core.factory.AbsApiFactory;
@@ -368,8 +366,8 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
                             String title=status.text+" ";
                             SpannableString spannableString=new SpannableString(title);
                             //WeiboUtil.highlightContent(getActivity(), spannableString, getResources().getColor(R.color.holo_dark_item_at));
-                            highlightAtClickable(spannableString, WeiboUtil.ATPATTERN);
-                            highlightUrlClickable(spannableString, WeiboUtil.getWebPattern());
+                            highlightAtClickable(spannableString, WeiboUtils.ATPATTERN);
+                            highlightUrlClickable(spannableString, WeiboUtils.getWebPattern());
                             mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
                             mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -384,8 +382,8 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
                                 title=retStatus.text+" ";
                                 spannableString=new SpannableString(title);
                                 //WeiboUtil.highlightContent(getActivity(), spannableString, getResources().getColor(R.color.holo_dark_item_highliht_link));
-                                highlightAtClickable(spannableString, WeiboUtil.ATPATTERN);
-                                highlightUrlClickable(spannableString, WeiboUtil.getWebPattern());
+                                highlightAtClickable(spannableString, WeiboUtils.ATPATTERN);
+                                highlightUrlClickable(spannableString, WeiboUtils.getWebPattern());
                                 mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
                                 mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
                                 mContentSecondLayout.setVisibility(View.VISIBLE);
@@ -660,7 +658,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
     //--------------------- 内容点击器 ---------------------
 
-    private class AtClicker extends WeiboUtil.MyClicker {
+    private class AtClicker extends WeiboUtils.MyClicker {
 
         @Override
         public void updateDrawState(TextPaint textPaint) {
@@ -729,7 +727,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
         }
     }
 
-    private class UrlClicker extends WeiboUtil.MyClicker {
+    private class UrlClicker extends WeiboUtils.MyClicker {
 
         @Override
         public void updateDrawState(TextPaint textPaint) {
@@ -753,7 +751,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
             //String str1=URLEncoder.encode(this.name);
             boolean prefWebview=mPrefs.getBoolean(PreferenceUtils.PREF_WEBVIEW, true);
             if (!prefWebview) {
-                WeiboUtil.openUrlByDefaultBrowser(getActivity(), name);
+                WeiboUtils.openUrlByDefaultBrowser(getActivity(), name);
             } else {
                 /*Intent intent=new Intent(getActivity(), WebviewActivity.class);
                 intent.putExtra("url", name);

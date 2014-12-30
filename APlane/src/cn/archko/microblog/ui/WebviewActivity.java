@@ -28,9 +28,9 @@ import cn.archko.microblog.R;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.bulletnoid.android.widget.SwipeAwayLayout;
 import com.me.microblog.App;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import cn.archko.microblog.utils.AKUtils;
-import com.me.microblog.util.DisplayUtil;
+import com.me.microblog.util.DisplayUtils;
 import com.me.microblog.util.WeiboLog;
 
 /**
@@ -262,10 +262,10 @@ public class WebviewActivity extends SkinFragmentActivity {
         WeiboLog.d("changeOriention:"+orientation);
         if (orientation==Configuration.ORIENTATION_PORTRAIT) {
             mActionBar.show();
-            DisplayUtil.setFullscreen(getWindow(), false);
+            DisplayUtils.setFullscreen(getWindow(), false);
         } else if (orientation==Configuration.ORIENTATION_LANDSCAPE) {
             mActionBar.hide();
-            DisplayUtil.setFullscreen(getWindow(), true);
+            DisplayUtils.setFullscreen(getWindow(), true);
         }
     }
 
@@ -288,7 +288,7 @@ public class WebviewActivity extends SkinFragmentActivity {
         if (itemId==android.R.id.home) {
             finish();
         } else if (itemId==Menu.FIRST) {
-            WeiboUtil.openUrlByDefaultBrowser(WebviewActivity.this, mOriginUrl);
+            WeiboUtils.openUrlByDefaultBrowser(WebviewActivity.this, mOriginUrl);
         }
 
         return super.onOptionsItemSelected(item);

@@ -32,7 +32,7 @@ import cn.archko.microblog.service.SendTaskService;
 import com.andrew.apollo.utils.ThemeUtils;
 import cn.archko.microblog.view.EmojiPanelView;
 import com.bulletnoid.android.widget.SwipeAwayLayout;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.AtUser;
 import com.me.microblog.bean.SendTask;
 import com.me.microblog.bean.Status;
@@ -453,7 +453,7 @@ public class CommentStatusActivity extends BaseOauthFragmentActivity {
         if (retweetedStatus!=null) {
             String title="@"+retweetedStatus.user.screenName+":"+retweetedStatus.text+" ";
             SpannableString spannableString=new SpannableString(title);
-            WeiboUtil.highlightContent(CommentStatusActivity.this, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
+            WeiboUtils.highlightContent(CommentStatusActivity.this, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
             mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
             mContentSecondLayout.setVisibility(View.VISIBLE);
         } else {

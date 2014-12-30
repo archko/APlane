@@ -29,7 +29,6 @@ import cn.archko.microblog.fragment.abs.AtUserListener;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
-import com.me.microblog.WeiboUtil;
 import com.me.microblog.bean.AtUser;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Trend;
@@ -43,6 +42,7 @@ import com.me.microblog.db.TwitterTable;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.SqliteWrapper;
+import com.me.microblog.util.StreamUtils;
 import com.me.microblog.util.WeiboLog;
 
 import java.io.File;
@@ -138,7 +138,7 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
         mSearchBtn=(ImageView) root.findViewById(R.id.search_btn);
         mSearchCloseBtn=(ImageView) root.findViewById(R.id.search_close_btn);
 
-        mHeaderLayout=(RelativeLayout) ((LayoutInflater) getActivity().getSystemService("layout_inflater"))
+        mHeaderLayout=(RelativeLayout) ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
             .inflate(R.layout.at_user_item, null);
         mHeaderLayout.findViewById(R.id.iv_portrait).setVisibility(View.GONE);
         mName=(TextView) mHeaderLayout.findViewById(R.id.tv_name);
@@ -487,7 +487,7 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
             long now=DateUtils.parseDateString(DateUtils.formatDate(new Date(), "yyyy-MM-dd"), "yyyy-MM-dd").getTime();
             WeiboLog.d("lastModified:"+file.lastModified()+" now;"+now);
             try {
-                String content=WeiboUtil.parseInputStream(new FileInputStream(file));
+                String content= StreamUtils.parseInputStream(new FileInputStream(file));
                 Trends trends=WeiboParser.parseTrends(content);
                 updateTrendsTmp(trends, searchMode);
             } catch (IOException e) {

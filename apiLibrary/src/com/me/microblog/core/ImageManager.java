@@ -5,9 +5,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
 import com.me.microblog.WeiboException;
-import com.me.microblog.WeiboUtil;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.util.WeiboLog;
 import org.apache.http.HttpResponse;
@@ -78,8 +77,8 @@ public class ImageManager {
                 return null;
             }
             int len=is.available();
-            WeiboUtil weiboUtil=WeiboUtil.getWeiboUtil();
-            String filepath=dir+weiboUtil.getMd5(url)+WeiboUtil.getExt(url);
+            WeiboUtils weiboUtil= WeiboUtils.getWeiboUtil();
+            String filepath=dir+weiboUtil.getMd5(url)+ WeiboUtils.getExt(url);
             //writeStreamToFile(is, filepath);
             saveStreamAsFile(is, filepath);
 
@@ -123,8 +122,8 @@ public class ImageManager {
                 return null;
             }
             int len=is.available();
-            WeiboUtil weiboUtil=WeiboUtil.getWeiboUtil();
-            String filepath=dir+weiboUtil.getMd5(url)+WeiboUtil.getExt(url);
+            WeiboUtils weiboUtil= WeiboUtils.getWeiboUtil();
+            String filepath=dir+weiboUtil.getMd5(url)+ WeiboUtils.getExt(url);
 
             //saveStreamAsFile(is, filepath);
 
@@ -195,8 +194,8 @@ public class ImageManager {
                 return null;
             }
 
-            WeiboUtil weiboUtil=WeiboUtil.getWeiboUtil();
-            String filePath=dir+weiboUtil.getMd5(url)+WeiboUtil.getExt(url);
+            WeiboUtils weiboUtil= WeiboUtils.getWeiboUtil();
+            String filePath=dir+weiboUtil.getMd5(url)+ WeiboUtils.getExt(url);
             boolean res=saveBytesAsFile(is, filePath);
 
             if (res) {
@@ -364,7 +363,7 @@ public class ImageManager {
      * @return 图片
      */
     public Bitmap loadBitmapFromSysByUrl(String url, String dir) {
-        String path=dir+WeiboUtil.getWeiboUtil().getMd5(url)+WeiboUtil.getExt(url);
+        String path=dir+ WeiboUtils.getWeiboUtil().getMd5(url)+ WeiboUtils.getExt(url);
         WeiboLog.d(TAG, "loadBitmapFromSysByUrl.path:"+path);
         return loadBitmapFromSysByPath(path);
     }
@@ -378,7 +377,7 @@ public class ImageManager {
      * @return 图片
      */
     public Bitmap loadBitmapFromSysByUrl(String url, String dir, int ratio) {
-        String path=dir+WeiboUtil.getWeiboUtil().getMd5(url)+WeiboUtil.getExt(url);
+        String path=dir+ WeiboUtils.getWeiboUtil().getMd5(url)+ WeiboUtils.getExt(url);
         WeiboLog.d(TAG, "loadBitmapFromSysByUrl.path:"+path+" ratio:"+ratio);
         return loadBitmapFromSysByPath(path, ratio);
     }

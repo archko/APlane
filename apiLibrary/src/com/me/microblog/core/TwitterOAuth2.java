@@ -2,8 +2,8 @@ package com.me.microblog.core;
 
 import android.text.TextUtils;
 import com.me.microblog.WeiboException;
-import com.me.microblog.WeiboUtil;
 import com.me.microblog.http.SSLSocketFactoryEx;
+import com.me.microblog.util.StreamUtils;
 import com.me.microblog.util.WeiboLog;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
-import java.util.zip.ZipException;
 
 /**
  * 获得Oauth2认证签名.
@@ -63,7 +62,7 @@ public class TwitterOAuth2 {
             //WeiboLog.d("", "statusCode:" + statusCode);
             final String reason=response.getStatusLine().getReasonPhrase();
 
-            string=WeiboUtil.parseInputStream(response);
+            string=EntityUtils.toString(response.getEntity());
 
             if (statusCode!=200) {
                 WeiboLog.e(reason);
@@ -127,13 +126,13 @@ public class TwitterOAuth2 {
             if (flag) {
                 //WeiboLog.i("Twitter", "gzip.");
                 try {
-                    string=WeiboUtil.parseInputStream(new GZIPInputStream(response.getEntity().getContent()));
+                    string= StreamUtils.parseInputStream(new GZIPInputStream(response.getEntity().getContent()));
                 } catch (IOException e) {
                     e.printStackTrace();
-                    string=WeiboUtil.parseInputStream(response);
+                    string=EntityUtils.toString(response.getEntity());
                 }
             } else {
-                string=WeiboUtil.parseInputStream(response);
+                string=EntityUtils.toString(response.getEntity());
             }
         } catch (IOException ex) {
             ex.printStackTrace();
