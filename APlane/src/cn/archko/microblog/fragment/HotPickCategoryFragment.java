@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.archko.microblog.R;
+import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
 import cn.archko.microblog.fragment.abs.BaseFragment;
 import cn.archko.microblog.fragment.abs.FragmentCallback;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -24,7 +25,7 @@ import com.me.microblog.util.WeiboLog;
  * @author: archko 12-9-12
  */
 @Deprecated
-public class HotPickCategoryFragment extends BaseFragment {
+public class HotPickCategoryFragment extends AbstractBaseFragment {
 
     FragmentCallback mFragmentCallback;
     //String category=keys[0];

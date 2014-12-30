@@ -36,7 +36,8 @@ import cn.archko.microblog.action.GroupAction;
 import cn.archko.microblog.fragment.HomeFragment;
 import cn.archko.microblog.fragment.HomeGridFragment;
 import cn.archko.microblog.fragment.PrefsFragment;
-import cn.archko.microblog.fragment.abs.BaseFragment;
+import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
+import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.service.WeiboService;
@@ -415,8 +416,8 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
             mThemeId = themeId;
             applyThemeId(themeId);
             final Fragment current = getFragmentManager().findFragmentById(R.id.fragment_placeholder);
-            if (current != null && current instanceof BaseFragment) {
-                BaseFragment baseFragment = (BaseFragment) current;
+            if (current != null && current instanceof AbstractBaseFragment) {
+                AbstractBaseFragment baseFragment = (AbstractBaseFragment) current;
                 baseFragment.themeBackground();
             }
 
@@ -574,13 +575,13 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
     }
 
     private void refresh() {
-        BaseFragment current = (BaseFragment) getFragmentManager().findFragmentById(R.id.fragment_placeholder);
+        AbstractBaseFragment current = (AbstractBaseFragment) getFragmentManager().findFragmentById(R.id.fragment_placeholder);
         WeiboLog.d(TAG, "refresh.current:" + current);
         current.refresh();
     }
 
     private void clear() {
-        BaseFragment current = (BaseFragment) getFragmentManager().findFragmentById(R.id.fragment_placeholder);
+        AbstractBaseFragment current = (AbstractBaseFragment) getFragmentManager().findFragmentById(R.id.fragment_placeholder);
         WeiboLog.d(TAG, "clear.current:" + current);
         current.clear();
     }

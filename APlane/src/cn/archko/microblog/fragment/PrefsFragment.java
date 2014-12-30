@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import cn.archko.microblog.R;
+import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
 import cn.archko.microblog.fragment.abs.BaseFragment;
 import cn.archko.microblog.ui.AccountUserActivity;
 import cn.archko.microblog.ui.NewStatusActivity;
@@ -24,7 +25,7 @@ import com.me.microblog.util.WeiboLog;
  * @description: 设置, 所有的设置从此开始
  * @author: archko 13-2-17
  */
-public class PrefsFragment extends BaseFragment {
+public class PrefsFragment extends AbstractBaseFragment {
 
     public static final String TAG = "PrefsFragment";
     public static final int MODE_EXIT = 0;

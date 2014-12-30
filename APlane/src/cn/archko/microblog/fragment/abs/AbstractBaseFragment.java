@@ -1,26 +1,37 @@
 package cn.archko.microblog.fragment.abs;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 import cn.archko.microblog.R;
+import cn.archko.microblog.listeners.FragmentListListener;
+import com.andrew.apollo.utils.ThemeUtils;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.oauth.Oauth2;
+import com.me.microblog.oauth.Oauth2Handler;
+import com.me.microblog.oauth.OauthCallback;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
+
+import java.io.File;
 
 /**
  * @version 1.00.00
  * @description: 基础的Fragment，
  * @author: archko 11-11-17
  */
-public abstract class AbstractBaseFragment extends BaseFragment implements PopupMenu.OnMenuItemClickListener {
+public abstract class AbstractBaseFragment extends Fragment implements FragmentListListener,
+    PopupMenu.OnMenuItemClickListener {
 
     public static final String TAG = "AbstractBaseFragment";
     public static final int THREAD_INIT = 1;
@@ -40,6 +51,137 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
      */
     public long currentUserId = - 1l;
 
+    //---------------------  ---------------------
+    public SharedPreferences mPrefs;
+    public String mCacheDir;   //缓存图片存储上级目录.
+    /**
+     * 用于主题设置背景的,需要子类初始化.
+     */
+    public View mRoot;
+
+    /**
+     * 监听器用于显示进度
+     */
+    public OnRefreshListener mRefreshListener;
+    //--------------------- 认证 ---------------------
+    public Oauth2Handler mOauth2Handler;
+    public OauthCallback mOauthCallback = new OauthCallback() {
+        @Override
+        public void postOauthSuc(Object[] params) {
+            postOauth(params);
+        }
+
+        @Override
+        public void postOauthFailed(int oauthCode) {
+            oauthFailed(oauthCode);
+        }
+    };
+
+    //--------------------- 认证 ---------------------
+
+    /**
+     * When creating, retrieve this instance's number from its arguments.
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mOauth2Handler = new Oauth2Handler(getActivity(), mOauthCallback);
+
+        long aUserId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
+        this.currentUserId = aUserId;
+
+        mCacheDir = ((App) getActivity().getApplicationContext()).mCacheDir;
+        File file = new File(mCacheDir);
+        if (! file.exists()) {
+            file.mkdir();
+        }
+        WeiboLog.v(TAG, "onCreate:" + this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        WeiboLog.v(TAG, "onPause:" + this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        WeiboLog.v(TAG, "onResume:" + this);
+    }
+
+    /**
+     * 这是一个可刷新的方法,当ActionBar中的按钮按下时,就可以刷新它了.
+     */
+    public void refresh() {
+    }
+
+    /**
+     *
+     */
+    public void clear() {
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        WeiboLog.v(TAG, "onAttach:" + this);
+        try {
+            mRefreshListener = (OnRefreshListener) activity;
+        } catch (ClassCastException e) {
+            //throw new ClassCastException(activity.toString()+" must implement OnRefreshListener");
+            mRefreshListener = null;
+        }
+    }
+
+    //------------------------------------
+
+    /**
+     * 查看Status原文信息,包括评论.
+     */
+    protected void viewOriginalStatus(View achor) {
+    }
+
+    /**
+     * 创建收藏.
+     */
+    protected void createFavorite() {
+    }
+
+    /**
+     * 跳转到到评论界面
+     */
+    protected void commentStatus() {
+    }
+
+    /**
+     * 到转发界面
+     */
+    protected void repostStatus() {
+    }
+
+    /**
+     * 删除，需要根据不同的类型的列表处理。不是所有的微博都可以删除
+     */
+    protected void viewStatusUser() {
+    }
+
+    /**
+     * 快速转发
+     */
+    protected void quickRepostStatus() {
+        //throw new IllegalArgumentException("not implemented!");
+    }
+
+    //--------------------- theme ---------------------
+    public void themeBackground() {
+        if (null != mRoot) {
+            ThemeUtils.getsInstance().themeBackground(mRoot, getActivity());
+        }
+    }
+
     //--------------------- popupMenu ---------------------
     /**
      * 列表选中的位置
@@ -54,17 +196,6 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
             prepareMenu(view);
         }
     };
-
-    /**
-     * When creating, retrieve this instance's number from its arguments.
-     */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        long aUserId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
-        this.currentUserId = aUserId;
-    }
 
     @Override
     public void onDestroy() {
@@ -144,9 +275,13 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
      * @param oauthCode 认证失败的代码,如果是特定的,就需要重新登录.
      */
     public void oauthFailed(int oauthCode) {
+        if (oauthCode == Constants.USER_PASS_IS_NULL) {
+            NotifyUtils.showToast(com.me.microblog.R.string.oauth_runtime_user_pass_is_null);
+        } else {
+            NotifyUtils.showToast(com.me.microblog.R.string.oauth_runtime_failed);
+        }
     }
 
-    @Override
     public void postOauth(Object[] params) {
         NotifyUtils.showToast(R.string.oauth_runtime_suc);
         mCommonTask = new CommonTask();
@@ -365,25 +500,6 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
     }
 
     /**
-     * 显示自定义菜单
-     *
-     * @param anchor
-     */
-    /*public boolean showCustomMenu(View anchor) {
-        if (mMenuBuilder.size()<0) {
-            WeiboLog.w(TAG, "no menu item!");
-            return false;
-        }
-
-        View anchorView=anchor;
-        if (null==mMenuHelper) {
-            mMenuHelper=new MenuPopupHelper(getActivity(), mMenuBuilder, null, false);
-        }
-        mMenuHelper.setAnchorView(anchorView);
-        return mMenuHelper.tryShow();
-    }*/
-
-    /**
      * 创建菜单项，供子类覆盖，以便动态地添加菜单项。
      *
      * @param menuBuilder
@@ -400,10 +516,6 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
     public void onPrepareCustomMenu(PopupMenu menuBuilder) {
         /*menuBuilder.add(0, 1, 0, "title1");*/
     }
-
-    /*public boolean onMenuItemSelected(PopupMenu menu, MenuItem item) {
-        return false;
-    }*/
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {

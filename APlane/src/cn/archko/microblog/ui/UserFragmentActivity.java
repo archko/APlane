@@ -12,7 +12,7 @@ import cn.archko.microblog.fragment.UserFollowersGridFragment;
 import cn.archko.microblog.fragment.UserFriendsGridFragment;
 import cn.archko.microblog.fragment.UserInfoFragment;
 import cn.archko.microblog.fragment.UserTimelineFragment;
-import cn.archko.microblog.fragment.abs.BaseFragment;
+import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
 import com.me.microblog.bean.User;
@@ -108,7 +108,7 @@ public class UserFragmentActivity extends AbstractFragmentTabsPager {
 
     private void refresh() {
         int index = mViewPager.getCurrentItem();
-        BaseFragment current = (BaseFragment) getFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + index);
+        AbstractBaseFragment current = (AbstractBaseFragment) getFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + index);
         WeiboLog.d(TAG, "refresh.current:" + current);
         current.refresh();
     }
@@ -138,7 +138,7 @@ public class UserFragmentActivity extends AbstractFragmentTabsPager {
 
     @Override
     protected void selectPage(int position) {
-        ((BaseFragment) mTabsAdapter.getItem(position)).refresh();
+        ((AbstractBaseFragment) mTabsAdapter.getItem(position)).refresh();
     }
 
     /**
