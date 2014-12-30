@@ -1,7 +1,5 @@
 package cn.archko.microblog.listeners;
 
-import java.util.ArrayList;
-
 /**
  * 获取图片
  *

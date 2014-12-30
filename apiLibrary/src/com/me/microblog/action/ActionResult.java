@@ -5,11 +5,11 @@ package com.me.microblog.action;
  */
 public class ActionResult {
 
-    public final static int ACTION_FALL=0;
-    public final static int ACTION_SUCESS=1;
+    public final static int ACTION_FALL = 0;
+    public final static int ACTION_SUCESS = 1;
 
     public ActionResult() {
-        resoultCode=ACTION_FALL;
+        resoultCode = ACTION_FALL;
     }
 
     /**

@@ -1,7 +1,6 @@
 package com.me.microblog.oauth;
 
 /**
- *
  * @author archko
  */
 public interface Oauth1 {

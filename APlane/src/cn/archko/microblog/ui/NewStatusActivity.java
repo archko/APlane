@@ -1,38 +1,36 @@
 package cn.archko.microblog.ui;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.os.Environment;
-import android.os.Handler;
-import android.text.Selection;
-import android.view.*;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.Selection;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.DraftListFragment;
 import cn.archko.microblog.fragment.PickImageFragment;
@@ -41,11 +39,10 @@ import cn.archko.microblog.fragment.abs.AtUserListener;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
 import cn.archko.microblog.listeners.OnPickPhotoListener;
 import cn.archko.microblog.service.SendTaskService;
-import cn.archko.microblog.utils.AKUtils;
-import com.andrew.apollo.utils.PreferenceUtils;
-import com.andrew.apollo.utils.ThemeUtils;
 import cn.archko.microblog.view.AutoCompleteView;
 import cn.archko.microblog.view.EmojiPanelView;
+import com.andrew.apollo.utils.PreferenceUtils;
+import com.andrew.apollo.utils.ThemeUtils;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -56,14 +53,19 @@ import com.me.microblog.bean.Draft;
 import com.me.microblog.bean.SendTask;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.util.Constants;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author root
  */
 public class NewStatusActivity extends BaseOauthFragmentActivity implements ActionBar.OnNavigationListener, OnPickPhotoListener {
 
-    private static final String TAG="NewStatusActivity";
+    private static final String TAG = "NewStatusActivity";
     private ActionBar mActionBar;
     private AutoCompleteView content;
     private ImageView mPreview, mCloseImage;
@@ -86,25 +88,25 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
     Button mCrop, mRotate, mFilter;
     private Button mEditPhoto;
 
-    private String imgUrl="";
-    boolean isDone=false;
+    private String imgUrl = "";
+    boolean isDone = false;
     /**
      * 自动完成的用户名
      */
-    ArrayList<String> mAtNames=null;
-    Handler mHandler=new Handler();
+    ArrayList<String> mAtNames = null;
+    Handler mHandler = new Handler();
     /**
      * 话题列表
      */
-    ArrayList<String> trendList=null;
+    ArrayList<String> trendList = null;
     /**
      * 经度，为0时就是不发位置
      */
-    double longitude=0.0;
+    double longitude = 0.0;
     /**
      * 纬度，为0时就是不发位置
      */
-    double latitude=0.0;
+    double latitude = 0.0;
     /**
      * 地理位置是否启用，默认是启用的，可以取消。
      */
@@ -124,27 +126,27 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
      */
     Draft mDraft;
     Button mDraftBtn;
-    public static final int REQUEST_DRAFT=1024;
+    public static final int REQUEST_DRAFT = 1024;
 
-    ArrayAdapter<CharSequence> mVisibleAdapter=null;
+    ArrayAdapter<CharSequence> mVisibleAdapter = null;
     /**
      * 选中的位置。
      */
-    int selectedPos=0;
+    int selectedPos = 0;
 
-    public static final int MODE_NORMAL=0;
-    public static final int MODE_PICK_PHOTO=1;
-    int mode=MODE_NORMAL;
+    public static final int MODE_NORMAL = 0;
+    public static final int MODE_PICK_PHOTO = 1;
+    int mode = MODE_NORMAL;
     //--------------------- 认证 ---------------------
 
     /**
      * 认证失败后的操作
      */
     void oauthFailed() {
-        AKUtils.showToast(R.string.new_status_failed, Toast.LENGTH_LONG);
+        NotifyUtils.showToast(R.string.new_status_failed, Toast.LENGTH_LONG);
     }
 
-    private View.OnClickListener clickListener=new View.OnClickListener() {
+    private View.OnClickListener clickListener = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
@@ -193,8 +195,8 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             }
 
             case R.id.btn_emo: {
-                int emoVisible=mEmojiPanelView.getVisibility();
-                if (emoVisible==View.VISIBLE) {
+                int emoVisible = mEmojiPanelView.getVisibility();
+                if (emoVisible == View.VISIBLE) {
                     //mEmotionGridview.setVisibility(View.GONE);
                     mEmojiPanelView.setVisibility(View.GONE);
                 } else {
@@ -211,8 +213,8 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             }
 
             case R.id.status_content: {
-                int emoVisible=mEmojiPanelView.getVisibility();
-                if (emoVisible==View.VISIBLE) {
+                int emoVisible = mEmojiPanelView.getVisibility();
+                if (emoVisible == View.VISIBLE) {
                     imm.hideSoftInputFromWindow(content.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                 }
                 break;
@@ -224,17 +226,17 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             }
 
             case R.id.crop_btn: {
-                AKUtils.showToast("Not implemted!");
+                NotifyUtils.showToast("Not implemted!");
                 break;
             }
 
             case R.id.rotate_btn: {
-                AKUtils.showToast("Not implemted!");
+                NotifyUtils.showToast("Not implemted!");
                 break;
             }
 
             case R.id.filter_btn: {
-                AKUtils.showToast("Not implemted!");
+                NotifyUtils.showToast("Not implemted!");
                 break;
             }
 
@@ -249,32 +251,32 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
     }
 
     private void pickPhoto() {
-        Fragment newFragment=new PickImageFragment();
-        WeiboLog.v(TAG, "pickPhoto:"+imgUrl);
-        if (!TextUtils.isEmpty(imgUrl)) {
-            Bundle args=new Bundle();
+        Fragment newFragment = new PickImageFragment();
+        WeiboLog.v(TAG, "pickPhoto:" + imgUrl);
+        if (! TextUtils.isEmpty(imgUrl)) {
+            Bundle args = new Bundle();
             args.putString(PickImageFragment.KEY_PHOTO, imgUrl);
             newFragment.setArguments(args);
         }
         // Add the fragment to the activity, pushing this transaction
         // on to the back stack.
-        FragmentTransaction ft=getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.add(android.R.id.content, newFragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.addToBackStack(null);
         ft.commit();
 
-        mode=MODE_PICK_PHOTO;
+        mode = MODE_PICK_PHOTO;
         updateActionBar();
     }
 
     @Override
     public void onPickOne(String path) {
-        imgUrl=path;
-        WeiboLog.v(TAG, "pick:"+path);
+        imgUrl = path;
+        WeiboLog.v(TAG, "pick:" + path);
         getFragmentManager().popBackStack(getFragmentManager().getBackStackEntryAt(0).getId(),
             FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        mode=MODE_NORMAL;
+        mode = MODE_NORMAL;
         updateActionBar();
     }
 
@@ -282,7 +284,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
      * 对于不同的状态,处理不同的ActionBar.
      */
     private void updateActionBar() {
-        if (mode==MODE_NORMAL) {
+        if (mode == MODE_NORMAL) {
             mActionBar.setTitle(R.string.text_new_status);
             mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         } else {
@@ -296,15 +298,15 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
      */
     private void sendWeibo() {
         imm.hideSoftInputFromWindow(content.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
-        String contentString=content.getEditableText().toString();
+        String contentString = content.getEditableText().toString();
         if (TextUtils.isEmpty(contentString)) {
-            AKUtils.showToast(R.string.new_status_should_not_null);
+            NotifyUtils.showToast(R.string.new_status_should_not_null);
             return;
         }
 
-        int len=contentString.length();
-        if (len>Constants.INPUT_STRING_COUNT) {
-            AKUtils.showToast(R.string.text_exceed_max_num);
+        int len = contentString.length();
+        if (len > Constants.INPUT_STRING_COUNT) {
+            NotifyUtils.showToast(R.string.text_exceed_max_num);
             return;
         }
         //send.setEnabled(false);
@@ -312,7 +314,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         addTask(contentString);
     }
 
-    private TextWatcher watcher=new TextWatcher() {
+    private TextWatcher watcher = new TextWatcher() {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -325,10 +327,10 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         @Override
         public void afterTextChanged(Editable e) {
             WeiboLog.i(TAG, "");
-            String string=e.toString();
-            int len=string.length();
+            String string = e.toString();
+            int len = string.length();
 
-            mCharNum.setText(String.valueOf(Constants.INPUT_STRING_COUNT-len));
+            mCharNum.setText(String.valueOf(Constants.INPUT_STRING_COUNT - len));
         }
     };
 
@@ -337,15 +339,15 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         mCloseImage.setVisibility(View.GONE);
         mImageOperaBar.setVisibility(View.GONE);
         mLocProgressBar.setVisibility(View.GONE);
-        imgUrl="";
+        imgUrl = "";
     }
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        final ActionBar bar=getActionBar();
-        mActionBar=bar;
+        final ActionBar bar = getActionBar();
+        mActionBar = bar;
         mActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         mActionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -355,7 +357,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         mActionBar.setTitle(R.string.text_new_status);
         setContentView(R.layout.status_new);
 
-        imm=(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         initViews();
 
@@ -363,7 +365,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
 
         initLocation();
 
-        mVisibleAdapter=ArrayAdapter.createFromResource(this, R.array.status_visible_arr, android.R.layout.simple_spinner_item);
+        mVisibleAdapter = ArrayAdapter.createFromResource(this, R.array.status_visible_arr, android.R.layout.simple_spinner_item);
         mVisibleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         mActionBar.setListNavigationCallbacks(mVisibleAdapter, this);
@@ -375,48 +377,48 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
      * 初始化微博的数据，有内部调用与外部分享调用。
      */
     private void initData() {
-        Intent intent=getIntent();
-        WeiboLog.d(TAG, "initData:"+intent);
-        if (null!=intent) {
-            String action=intent.getAction();
+        Intent intent = getIntent();
+        WeiboLog.d(TAG, "initData:" + intent);
+        if (null != intent) {
+            String action = intent.getAction();
             if (Intent.ACTION_SEND.equals(action)) {
-                Uri uri=(Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-                WeiboLog.d(TAG, "uri: ->"+uri);
-                if (null!=uri) {
+                Uri uri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                WeiboLog.d(TAG, "uri: ->" + uri);
+                if (null != uri) {
                     processGalleryData(uri);
                     imm.hideSoftInputFromWindow(content.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                 }
 
-                String type=intent.getType();
+                String type = intent.getType();
                 if (type.startsWith("text/")) {
-                    String txt=intent.getExtras().getString("android.intent.extra.TEXT");
-                    WeiboLog.d(TAG, "txt: ->"+txt);
-                    if (!TextUtils.isEmpty(txt)) {
+                    String txt = intent.getExtras().getString("android.intent.extra.TEXT");
+                    WeiboLog.d(TAG, "txt: ->" + txt);
+                    if (! TextUtils.isEmpty(txt)) {
                         content.setText(txt);
                         Selection.setSelection(content.getText(), txt.length());
                     }
                 } else {
                 }
             } else if (Constants.INTENT_NEW_BLOG.equals(action)) {
-                String at_some=intent.getStringExtra("at_some");
-                WeiboLog.d("处理@："+at_some);
-                if (!TextUtils.isEmpty(at_some)) {
-                    at_some+=" ";
+                String at_some = intent.getStringExtra("at_some");
+                WeiboLog.d("处理@：" + at_some);
+                if (! TextUtils.isEmpty(at_some)) {
+                    at_some += " ";
                     content.setText(at_some);
                     content.setSelection(at_some.length());
                 } else {
-                    at_some=intent.getStringExtra("trend");
-                    WeiboLog.d("处理话题："+at_some);
-                    if (!TextUtils.isEmpty(at_some)) {
-                        at_some+=" ";
+                    at_some = intent.getStringExtra("trend");
+                    WeiboLog.d("处理话题：" + at_some);
+                    if (! TextUtils.isEmpty(at_some)) {
+                        at_some += " ";
                         content.setText(at_some);
                         content.setSelection(at_some.length());
                     }
                 }
 
-                Draft draft=(Draft) intent.getSerializableExtra("draft");
-                if (null!=draft) {
-                    mDraft=draft;
+                Draft draft = (Draft) intent.getSerializableExtra("draft");
+                if (null != draft) {
+                    mDraft = draft;
                     initDraft(draft);
                 }
             }
@@ -424,33 +426,33 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
     }
 
     void initViews() {
-        content=(AutoCompleteView) findViewById(R.id.status_content);
+        content = (AutoCompleteView) findViewById(R.id.status_content);
 
         content.addTextChangedListener(watcher);
         content.setOnClickListener(clickListener);
 
-        mPreview=(ImageView) findViewById(R.id.iv_status_img);
-        mCloseImage=(ImageView) findViewById(R.id.status_img_close);
+        mPreview = (ImageView) findViewById(R.id.iv_status_img);
+        mCloseImage = (ImageView) findViewById(R.id.status_img_close);
         mCloseImage.setOnClickListener(clickListener);
-        mImageOperaBar=(LinearLayout) findViewById(R.id.image_opera_bar);
-        mCharNum=(TextView) findViewById(R.id.char_num);
-        mPictureBtn=(Button) findViewById(R.id.btn_picture);
-        mLocBtn=(Button) findViewById(R.id.btn_location);
-        mTrendBtn=(Button) findViewById(R.id.btn_trend);
-        mAtBtn=(Button) findViewById(R.id.btn_at);
-        mLocResultBtn=(Button) findViewById(R.id.location);
-        mEmoBtn=(Button) findViewById(R.id.btn_emo);
-        mDraftBtn=(Button) findViewById(R.id.btn_draft);
-        mClearLocBtn=(ImageView) findViewById(R.id.search_close_btn);
-        mLocProgressBar=(ProgressBar) findViewById(R.id.loc_progress_bar);
+        mImageOperaBar = (LinearLayout) findViewById(R.id.image_opera_bar);
+        mCharNum = (TextView) findViewById(R.id.char_num);
+        mPictureBtn = (Button) findViewById(R.id.btn_picture);
+        mLocBtn = (Button) findViewById(R.id.btn_location);
+        mTrendBtn = (Button) findViewById(R.id.btn_trend);
+        mAtBtn = (Button) findViewById(R.id.btn_at);
+        mLocResultBtn = (Button) findViewById(R.id.location);
+        mEmoBtn = (Button) findViewById(R.id.btn_emo);
+        mDraftBtn = (Button) findViewById(R.id.btn_draft);
+        mClearLocBtn = (ImageView) findViewById(R.id.search_close_btn);
+        mLocProgressBar = (ProgressBar) findViewById(R.id.loc_progress_bar);
 
-        mCrop=(Button) findViewById(R.id.crop_btn);
-        mRotate=(Button) findViewById(R.id.rotate_btn);
-        mFilter=(Button) findViewById(R.id.filter_btn);
-        mEditPhoto=(Button) findViewById(R.id.edit_btn);
+        mCrop = (Button) findViewById(R.id.crop_btn);
+        mRotate = (Button) findViewById(R.id.rotate_btn);
+        mFilter = (Button) findViewById(R.id.filter_btn);
+        mEditPhoto = (Button) findViewById(R.id.edit_btn);
 
         //mEmotionGridview=(GridView) findViewById(R.id.faces);
-        mEmojiPanelView=(EmojiPanelView) findViewById(R.id.emoji_panel);
+        mEmojiPanelView = (EmojiPanelView) findViewById(R.id.emoji_panel);
 
         mPictureBtn.setOnClickListener(clickListener);
         mLocBtn.setOnClickListener(clickListener);
@@ -481,29 +483,29 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        WeiboLog.d(TAG, "onNavigationItemSelected:"+itemPosition);
-        selectedPos=itemPosition;
+        WeiboLog.d(TAG, "onNavigationItemSelected:" + itemPosition);
+        selectedPos = itemPosition;
         return true;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(0, MENU_FIRST, 0, R.string.new_status_drafts).
-            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS|
+            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS |
                 MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         menu.add(0, MENU_SECOND, 0, R.string.text_new_status).
-            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS|
+            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS |
                 MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         /*SubMenu sub=menu.addSubMenu("Theme");
         sub.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS|MenuItem.SHOW_AS_ACTION_WITH_TEXT);*/
 
-        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         //int overFlowId=R.drawable.abs__ic_menu_moreoverflow_normal_holo_dark;
-        int postId=R.drawable.send_light;
+        int postId = R.drawable.send_light;
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
         } else {
-            postId=R.drawable.send_light;
+            postId = R.drawable.send_light;
             //overFlowId=R.drawable.abs__ic_menu_moreoverflow_normal_holo_light;
         }
         menu.findItem(MENU_SECOND).setIcon(postId);
@@ -513,21 +515,21 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId=item.getItemId();
-        if (itemId==android.R.id.home) {
-            WeiboLog.d(TAG, "onOptionsItemSelected:"+mode);
-            if (mode==MODE_NORMAL) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            WeiboLog.d(TAG, "onOptionsItemSelected:" + mode);
+            if (mode == MODE_NORMAL) {
             } else {
                 getFragmentManager().popBackStack(getFragmentManager().getBackStackEntryAt(0).getId(),
                     FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                mode=MODE_NORMAL;
+                mode = MODE_NORMAL;
                 updateActionBar();
                 return true;
             }
             showExistDialog();
-        } else if (MENU_FIRST==itemId) {
+        } else if (MENU_FIRST == itemId) {
             getDraft();
-        } else if (MENU_SECOND==itemId) {
+        } else if (MENU_SECOND == itemId) {
             sendWeibo();
         }
 
@@ -538,13 +540,13 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
      * 获取地理位置，由地图api获取
      */
     private void initLocation() {
-        mLocClient=new LocationClient(getApplicationContext());
+        mLocClient = new LocationClient(getApplicationContext());
         mLocClient.registerLocationListener(myListener);
     }
 
     void clearLocation() {
-        longitude=0.0d;
-        latitude=0.0d;
+        longitude = 0.0d;
+        latitude = 0.0d;
         mLocResultBtn.setText(null);
         mClearLocBtn.setVisibility(View.GONE);
         mLocResultBtn.setVisibility(View.GONE);
@@ -571,20 +573,20 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
      * 显示退出对话框
      */
     void showExistDialog() {
-        String contentString=content.getEditableText().toString();
-        if (TextUtils.isEmpty(contentString)&&TextUtils.isEmpty(imgUrl)) {
+        String contentString = content.getEditableText().toString();
+        if (TextUtils.isEmpty(contentString) && TextUtils.isEmpty(imgUrl)) {
             finish();
             return;
         }
 
-        LayoutInflater inflater=LayoutInflater.from(NewStatusActivity.this);
-        View view=inflater.inflate(R.layout.home_dialog_view, null);
+        LayoutInflater inflater = LayoutInflater.from(NewStatusActivity.this);
+        View view = inflater.inflate(R.layout.home_dialog_view, null);
         ThemeUtils.getsInstance().themeBackground(view, NewStatusActivity.this);
 
-        Button cancelButton=(Button) view.findViewById(R.id.cancel);
-        Button updateButton=(Button) view.findViewById(R.id.ok);
-        Button installButton=(Button) view.findViewById(R.id.install);
-        TextView msgView=(TextView) view.findViewById(R.id.update_msg);
+        Button cancelButton = (Button) view.findViewById(R.id.cancel);
+        Button updateButton = (Button) view.findViewById(R.id.ok);
+        Button installButton = (Button) view.findViewById(R.id.install);
+        TextView msgView = (TextView) view.findViewById(R.id.update_msg);
 
         installButton.setVisibility(View.VISIBLE);
         cancelButton.setText(R.string.new_status_cancel);
@@ -593,11 +595,11 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         installButton.setText(R.string.new_status_exit);
         msgView.setText(R.string.new_status_exit_msg);
 
-        AlertDialog.Builder builder=new AlertDialog.Builder(NewStatusActivity.this)
+        AlertDialog.Builder builder = new AlertDialog.Builder(NewStatusActivity.this)
             .setTitle(R.string.app_name)
             .setView(view);
 
-        final AlertDialog dialog=builder.create();
+        final AlertDialog dialog = builder.create();
         dialog.show();
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -630,7 +632,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode==RESULT_OK) {    //TODO 需要处理返回的视频的情况.
+        if (resultCode == RESULT_OK) {    //TODO 需要处理返回的视频的情况.
             /*if (requestCode==CAMERA_WITH_DATA_TO_THUMB) {
                 processGalleryData(data.getData());
             } else if (requestCode==PHOTO_PICKED_WITH_DATA) {
@@ -650,10 +652,10 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
                     }
                 }
             } else*/
-            if (requestCode==REQUEST_DRAFT) {
-                Draft draft=(Draft) data.getSerializableExtra("draft");
-                if (null!=draft) {
-                    mDraft=draft;
+            if (requestCode == REQUEST_DRAFT) {
+                Draft draft = (Draft) data.getSerializableExtra("draft");
+                if (null != draft) {
+                    mDraft = draft;
                     initDraft(draft);
                 }
             }/* else if (requestCode==EDIT_PHOTO_PICKED_WITH_DATA) {
@@ -665,33 +667,33 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
     }
 
     private void addTask(String content) {
-        if (content.length()>Constants.INPUT_STRING_COUNT) {
-            content=content.substring(0, Constants.INPUT_STRING_COUNT);
-            AKUtils.showToast(R.string.new_status_too_more_txt);
+        if (content.length() > Constants.INPUT_STRING_COUNT) {
+            content = content.substring(0, Constants.INPUT_STRING_COUNT);
+            NotifyUtils.showToast(R.string.new_status_too_more_txt);
             return;
         }
 
-        Intent taskService=new Intent(NewStatusActivity.this, SendTaskService.class);
-        SendTask task=new SendTask();
-        task.uid=currentUserId;
-        task.userId=currentUserId;
-        task.content=content;
-        task.data=latitude+"-"+longitude;
-        task.type=TwitterTable.SendQueueTbl.SEND_TYPE_STATUS;
-        task.imgUrl=imgUrl;
-        task.createAt=new Date().getTime();
-        task.text=String.valueOf(selectedPos);
+        Intent taskService = new Intent(NewStatusActivity.this, SendTaskService.class);
+        SendTask task = new SendTask();
+        task.uid = currentUserId;
+        task.userId = currentUserId;
+        task.content = content;
+        task.data = latitude + "-" + longitude;
+        task.type = TwitterTable.SendQueueTbl.SEND_TYPE_STATUS;
+        task.imgUrl = imgUrl;
+        task.createAt = new Date().getTime();
+        task.text = String.valueOf(selectedPos);
         taskService.putExtra("send_task", task);
         NewStatusActivity.this.startService(taskService);
-        AKUtils.showToast("新微博任务添加到队列服务中了。");
+        NotifyUtils.showToast("新微博任务添加到队列服务中了。");
         NewStatusActivity.this.finish();
     }
 
     //--------------------- autocomplete listview ---------------------
-    AtUserListener mAtUserListener=new AtUserListener() {
+    AtUserListener mAtUserListener = new AtUserListener() {
         @Override
         public void getAtUser(AtUser atUser) {
-            if (null!=atUser) {
+            if (null != atUser) {
                 completeText(atUser.name);
             }
         }
@@ -703,38 +705,38 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
      * @param type 类型,是搜索用户还是话题
      */
     private void showCompleteFragment(int type) {
-        FragmentTransaction ft=getFragmentManager().beginTransaction();
-        Fragment prev=getFragmentManager().findFragmentByTag("dialog");
-        if (prev!=null) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
             ft.remove(prev);
         }
         ft.addToBackStack(null);
 
-        Bundle args=new Bundle();
+        Bundle args = new Bundle();
         args.putInt("type", type);
-        SearchDialogFragment searchDialogFragment=new SearchDialogFragment();
+        SearchDialogFragment searchDialogFragment = new SearchDialogFragment();
         searchDialogFragment.setArguments(args);
         searchDialogFragment.setAtUserListener(mAtUserListener);
         searchDialogFragment.show(ft, "dialog");
     }
 
     private void autoCompleteAt() {
-        Editable editable=content.getText();
-        String txt=editable.toString();
-        int start=content.getSelectionStart();
-        int end=content.getSelectionEnd();
+        Editable editable = content.getText();
+        String txt = editable.toString();
+        int start = content.getSelectionStart();
+        int end = content.getSelectionEnd();
         //WeiboLog.v(TAG, "start:"+start+" txt:"+txt+" end:"+end);
 
-        String startTxt=txt.substring(0, start);
-        String endTxt=txt.substring(end);
+        String startTxt = txt.substring(0, start);
+        String endTxt = txt.substring(end);
         //WeiboLog.v(TAG, "startTxt:"+startTxt+"->endTxt:"+endTxt);
 
         /*NewStatusActivity(11798): start:5 txt:gdgjmngddgn end:5
         D/NewStatusActivity(11798): startTxt:gdgjm->endTxt:ngddgn*/
 
-        txt=startTxt+" @ "+endTxt;
+        txt = startTxt + " @ " + endTxt;
         content.setText(txt);
-        content.setSelection(start+2);
+        content.setSelection(start + 2);
 
         /*queryNames();
         if (mAtNames.size()>0) {
@@ -744,18 +746,18 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
     }
 
     private void autoCompleteTrends() {
-        Editable editable=content.getText();
-        String txt=editable.toString();
-        int start=content.getSelectionStart();
-        int end=content.getSelectionEnd();
+        Editable editable = content.getText();
+        String txt = editable.toString();
+        int start = content.getSelectionStart();
+        int end = content.getSelectionEnd();
         //WeiboLog.v(TAG, "start:"+start+" txt:"+txt+" end:"+end);
 
-        String startTxt=txt.substring(0, start);
-        String endTxt=txt.substring(end);
+        String startTxt = txt.substring(0, start);
+        String endTxt = txt.substring(end);
 
-        txt=startTxt+" ## "+endTxt;
+        txt = startTxt + " ## " + endTxt;
         content.setText(txt);
-        content.setSelection(start+2);
+        content.setSelection(start + 2);
 
         //getTrends();
         showCompleteFragment(2);
@@ -763,9 +765,9 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
 
     @Override
     public void onBackPressed() {
-        WeiboLog.d(TAG, "onBackPressed:"+mode);
-        if (mode==MODE_NORMAL) {
-            if (!isDone) {
+        WeiboLog.d(TAG, "onBackPressed:" + mode);
+        if (mode == MODE_NORMAL) {
+            if (! isDone) {
                 showExistDialog();
             } else {
                 if (TextUtils.isEmpty(imgUrl)) {
@@ -777,35 +779,35 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         } else {
             getFragmentManager().popBackStack(getFragmentManager().getBackStackEntryAt(0).getId(),
                 FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            mode=MODE_NORMAL;
+            mode = MODE_NORMAL;
             updateActionBar();
         }
 
-        if (mEmojiPanelView.getVisibility()==View.VISIBLE) {
+        if (mEmojiPanelView.getVisibility() == View.VISIBLE) {
             mEmojiPanelView.setVisibility(View.GONE);
         }
     }
 
     private void completeText(String item) {
-        Editable editable=content.getText();
-        String txt=editable.toString();
-        int start=content.getSelectionStart();
-        int end=content.getSelectionEnd();
+        Editable editable = content.getText();
+        String txt = editable.toString();
+        int start = content.getSelectionStart();
+        int end = content.getSelectionEnd();
         //WeiboLog.d(TAG, "start:"+start+" txt:"+txt+" end:"+end);
 
-        String startTxt=txt.substring(0, start);
-        String endTxt=txt.substring(end);
+        String startTxt = txt.substring(0, start);
+        String endTxt = txt.substring(end);
         //WeiboLog.d(TAG, "startTxt:"+startTxt+"->endTxt:"+endTxt);
 
         /*NewStatusActivity(11798): start:7 txt:gdgjm @ ngddgn end:7
         NewStatusActivity(11798): startTxt:gdgjm @->endTxt: ngddgn*/
 
-        String result=startTxt+item+endTxt;
+        String result = startTxt + item + endTxt;
         content.setText(result);
         // make sure we keep the caret at the end of the text view
         /*Editable spannable=content.getText();
         Selection.setSelection(spannable, spannable.length());*/
-        content.setSelection(start+item.length()+1);
+        content.setSelection(start + item.length() + 1);
     }
 
     //--------------------- 草稿 ---------------------
@@ -814,7 +816,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
      * 多草稿列表中获取一个草稿
      */
     private void getDraft() {
-        Intent intent=new Intent(NewStatusActivity.this, AccountUserActivity.class);
+        Intent intent = new Intent(NewStatusActivity.this, AccountUserActivity.class);
         intent.putExtra("type", AccountUserActivity.TYPE_DRAFT_ONLY);
         intent.putExtra("mode", DraftListFragment.GET_DRAFT);
         startActivityForResult(intent, REQUEST_DRAFT);
@@ -825,14 +827,14 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
      * 初始化草稿
      */
     private void initDraft(Draft draft) {
-        if (draft.uid==currentUserId) {
+        if (draft.uid == currentUserId) {
             content.setText(draft.content);
-            final String url=draft.imgUrl;
-            if (!TextUtils.isEmpty(url)) {
-                imgUrl=url;
+            final String url = draft.imgUrl;
+            if (! TextUtils.isEmpty(url)) {
+                imgUrl = url;
                 //showPhoto(imgUrl);    //TODO
             } else {
-                imgUrl=null;
+                imgUrl = null;
                 mPreview.setImageBitmap(null);
 
                 mPreview.setVisibility(View.VISIBLE);
@@ -846,19 +848,19 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
      * 存储草稿，如果原来是编辑的，就修改，如果是新建就保存。
      */
     private void saveDraft() {
-        String newContent=content.getEditableText().toString();
+        String newContent = content.getEditableText().toString();
         try {
-            if (currentUserId==-1) {
+            if (currentUserId == - 1) {
                 WeiboLog.e(TAG, "用户id不存在，系统出错！");
-            } else if (TextUtils.isEmpty(newContent)&&TextUtils.isEmpty(imgUrl)) {
+            } else if (TextUtils.isEmpty(newContent) && TextUtils.isEmpty(imgUrl)) {
                 WeiboLog.w(TAG, "内容为空，不保存！");
-                AKUtils.showToast("内容为空，不保存！");
+                NotifyUtils.showToast("内容为空，不保存！");
             } else {
-                ContentResolver resolver=getContentResolver();
-                if (null==mDraft) {   //create
-                    ContentValues cv=new ContentValues();
-                    if (newContent.length()>Constants.INPUT_STRING_COUNT) {
-                        newContent=newContent.substring(0, Constants.INPUT_STRING_COUNT);
+                ContentResolver resolver = getContentResolver();
+                if (null == mDraft) {   //create
+                    ContentValues cv = new ContentValues();
+                    if (newContent.length() > Constants.INPUT_STRING_COUNT) {
+                        newContent = newContent.substring(0, Constants.INPUT_STRING_COUNT);
                     }
 
                     cv.put(TwitterTable.DraftTbl.UID, currentUserId);
@@ -869,11 +871,11 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
                     cv.put(TwitterTable.DraftTbl.TYPE, TwitterTable.DraftTbl.STATUS_TYPE);
 
                     resolver.insert(TwitterTable.DraftTbl.CONTENT_URI, cv);
-                    AKUtils.showToast("成功插入新的草稿！");
+                    NotifyUtils.showToast("成功插入新的草稿！");
                 } else {    //update
-                    ContentValues cv=new ContentValues();
-                    if (newContent.length()>Constants.INPUT_STRING_COUNT) {
-                        newContent=newContent.substring(0, Constants.INPUT_STRING_COUNT);
+                    ContentValues cv = new ContentValues();
+                    if (newContent.length() > Constants.INPUT_STRING_COUNT) {
+                        newContent = newContent.substring(0, Constants.INPUT_STRING_COUNT);
                     }
 
                     cv.put(TwitterTable.DraftTbl.UID, currentUserId);
@@ -883,7 +885,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
                     cv.put(TwitterTable.DraftTbl.CREATED_AT, new Date().getTime());
 
                     resolver.update(Uri.withAppendedPath(TwitterTable.DraftTbl.CONTENT_URI, String.valueOf(mDraft.id)), cv, null, null);
-                    AKUtils.showToast("成功更新草稿！");
+                    NotifyUtils.showToast("成功更新草稿！");
                 }
             }
         } catch (Exception e) {
@@ -895,7 +897,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
 
     //--------------------- geo ---------------------
     private LocationClient mLocClient;
-    public MyLocationListenner myListener=new MyLocationListenner();
+    public MyLocationListenner myListener = new MyLocationListenner();
     private boolean mIsStart;
 
     @Override
@@ -906,13 +908,13 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
     private void stopMap() {
         WeiboLog.d(TAG, "stopMap.");
         mLocClient.stop();
-        mIsStart=false;
+        mIsStart = false;
     }
 
     private void startMap() {
         WeiboLog.d(TAG, "startMap.");
         mLocClient.start();
-        mIsStart=true;
+        mIsStart = true;
     }
 
     @Override
@@ -921,7 +923,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
     }
 
     private void setLocationOption() {
-        LocationClientOption option=new LocationClientOption();
+        LocationClientOption option = new LocationClientOption();
         //option.setOpenGps();                //打开gps
         //option.setCoorType("");        //设置坐标类型
         option.setScanSpan(1);    //设置定位模式，小于1秒则一次定位;大于等于1秒则定时定位
@@ -935,11 +937,11 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
 
         @Override
         public void onReceiveLocation(BDLocation location) {
-            if (location==null) {
+            if (location == null) {
                 return;
             }
 
-            StringBuilder sb=new StringBuilder(256);
+            StringBuilder sb = new StringBuilder(256);
             sb.append("time : ");
             sb.append(location.getTime());
             sb.append("\nerror code : ");
@@ -950,12 +952,12 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             sb.append(location.getLongitude());
             sb.append("\nradius : ");
             sb.append(location.getRadius());
-            if (location.getLocType()==BDLocation.TypeGpsLocation) {
+            if (location.getLocType() == BDLocation.TypeGpsLocation) {
                 sb.append("\nspeed : ");
                 sb.append(location.getSpeed());
                 sb.append("\nsatellite : ");
                 sb.append(location.getSatelliteNumber());
-            } else if (location.getLocType()==BDLocation.TypeNetWorkLocation) {
+            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
                 sb.append("\n省：");
                 sb.append(location.getProvince());
                 sb.append("\n市：");
@@ -968,13 +970,13 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             sb.append("\nsdk version : ");
             sb.append(mLocClient.getVersion());
             //logMsg(sb.toString());
-            WeiboLog.v(TAG, " sb:"+sb.toString());
+            WeiboLog.v(TAG, " sb:" + sb.toString());
 
             sb.setLength(0);
             sb.append(location.getCity()).append(location.getDistrict()).append(location.getAddrStr());
-            longitude=location.getLongitude();
-            latitude=location.getLatitude();
-            String log=String.format(
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+            String log = String.format(
                 "纬度:%f 经度:%f",
                 location.getLongitude(), location.getLatitude());
             mLocResultBtn.setText(TextUtils.isEmpty(location.getAddrStr()) ? log : location.getAddrStr());
@@ -983,14 +985,14 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             mLocProgressBar.setVisibility(View.GONE);
 
             stopMap();
-            WeiboLog.v(TAG, " geo:"+sb.toString());
+            WeiboLog.v(TAG, " geo:" + sb.toString());
         }
 
         public void onReceivePoi(BDLocation poiLocation) {
-            if (poiLocation==null) {
+            if (poiLocation == null) {
                 return;
             }
-            StringBuffer sb=new StringBuffer(256);
+            StringBuffer sb = new StringBuffer(256);
             sb.append("Poi time : ");
             sb.append(poiLocation.getTime());
             sb.append("\nerror code : ");
@@ -1001,7 +1003,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             sb.append(poiLocation.getLongitude());
             sb.append("\nradius : ");
             sb.append(poiLocation.getRadius());
-            if (poiLocation.getLocType()==BDLocation.TypeNetWorkLocation) {
+            if (poiLocation.getLocType() == BDLocation.TypeNetWorkLocation) {
                 sb.append("\naddr : ");
                 sb.append(poiLocation.getAddrStr());
             }
@@ -1013,18 +1015,18 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
     /**
      * 编辑
      */
-    public static final int EDIT_PHOTO_PICKED_WITH_DATA=3029;
+    public static final int EDIT_PHOTO_PICKED_WITH_DATA = 3029;
 
-    public static final int CAMERA_WITH_DATA_TO_THUMB=3025;
+    public static final int CAMERA_WITH_DATA_TO_THUMB = 3025;
     /*用来标识请求照相功能的 activity*/
-    public static final int CAMERA_WITH_DATA=3023;
+    public static final int CAMERA_WITH_DATA = 3023;
     /*用来标识请求 gallery 的 activity*/
-    public static final int PHOTO_PICKED_WITH_DATA=3021;
+    public static final int PHOTO_PICKED_WITH_DATA = 3021;
     /*拍照的照片存储位置*/
-    private static final File PHOTO_DIR=new File(Environment.getExternalStorageDirectory()+"/DCIM/Camera");
+    private static final File PHOTO_DIR = new File(Environment.getExternalStorageDirectory() + "/DCIM/Camera");
     private File mCurrentPhotoFile;//照相机拍照得到的图片
-    private static final int MAX_IMAGE_SIZE=5000000;
-    Uri mPhotoUri=null;
+    private static final int MAX_IMAGE_SIZE = 5000000;
+    Uri mPhotoUri = null;
 
     /**
      * 编辑照片
@@ -1048,32 +1050,32 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
      * @param data
      */
     private void processGalleryData(Uri imageFileUri) {
-        String[] proj={MediaStore.Images.Media.DATA};
-        Cursor cur=null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cur = null;
 
         try {
-            WeiboLog.i(TAG, "imageFileUri:"+imageFileUri);
-            cur=getContentResolver().query(imageFileUri, proj, null, null, null);
-            int imageIdx=cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            WeiboLog.i(TAG, "imageFileUri:" + imageFileUri);
+            cur = getContentResolver().query(imageFileUri, proj, null, null, null);
+            int imageIdx = cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cur.moveToFirst();
-            imgUrl=cur.getString(imageIdx);
-            WeiboLog.i(TAG, "imgUrl:"+imgUrl);
+            imgUrl = cur.getString(imageIdx);
+            WeiboLog.i(TAG, "imgUrl:" + imgUrl);
 
-            File file=new File(imgUrl);
+            File file = new File(imgUrl);
             if (file.exists()) {
-                if (file.length()>MAX_IMAGE_SIZE) {
-                    AKUtils.showToast("上传的图片超过了5m，新浪不支持！");
+                if (file.length() > MAX_IMAGE_SIZE) {
+                    NotifyUtils.showToast("上传的图片超过了5m，新浪不支持！");
                     clearImagePreview();
                     return;
                 }
-                mPhotoUri=imageFileUri;
+                mPhotoUri = imageFileUri;
                 //showPhoto(imageFileUri);
             }
 
         } catch (Exception e) {
             WeiboLog.e(e.toString());
         } finally {
-            if (null!=cur) {
+            if (null != cur) {
                 cur.close();
             }
         }
@@ -1100,7 +1102,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
                             doTakePhoto();
                             // 用户点击了从照相机 获取
                         } else {
-                            AKUtils.showToast(R.string.new_no_sdcard, Toast.LENGTH_SHORT);
+                            NotifyUtils.showToast(R.string.new_no_sdcard, Toast.LENGTH_SHORT);
                         }
                         break;
                     }
@@ -1134,7 +1136,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             final Intent intent=getTakePickIntent(mCurrentPhotoFile);
             startActivityForResult(intent, CAMERA_WITH_DATA);
         } catch (ActivityNotFoundException e) {
-            AKUtils.showToast(R.string.new_photo_picker_not_found, Toast.LENGTH_LONG);
+            NotifyUtils.showToast(R.string.new_photo_picker_not_found, Toast.LENGTH_LONG);
         }
     }
 
@@ -1163,7 +1165,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(choosePictureIntent, CAMERA_WITH_DATA_TO_THUMB);
         } catch (ActivityNotFoundException e) {
-            AKUtils.showToast(R.string.new_photo_picker_not_found, Toast.LENGTH_LONG);
+            NotifyUtils.showToast(R.string.new_photo_picker_not_found, Toast.LENGTH_LONG);
         }
     }
 

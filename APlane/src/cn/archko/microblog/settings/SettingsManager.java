@@ -22,12 +22,11 @@ public class SettingsManager {
 
     static ListenerProxy listeners = new ListenerProxy(IAppSettingsChangeListener.class);
 
-
     public static void init(final Context context) {
         if (ctx == null) {
             ctx = context;
             prefs = PreferenceManager.getDefaultSharedPreferences(context);
-          
+
             AppSettings.init();
         }
     }

@@ -8,9 +8,8 @@ import com.me.microblog.WeiboException;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.factory.AbsApiFactory;
 import com.me.microblog.core.factory.ApiConfigFactory;
-import com.me.microblog.util.Constants;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00
@@ -19,7 +18,7 @@ import cn.archko.microblog.utils.AKUtils;
  */
 public class PlaceNearbyPhotosFragment extends PlaceStatusListFragment {
 
-    public static final String TAG="PlaceNearbyPhotosFragment";
+    public static final String TAG = "PlaceNearbyPhotosFragment";
 
     /**
      * When creating, retrieve this instance's number from its arguments.
@@ -37,15 +36,15 @@ public class PlaceNearbyPhotosFragment extends PlaceStatusListFragment {
 
     @Override
     public void initApi() {
-        mStatusImpl=new SinaPlaceStatusImpl();
+        mStatusImpl = new SinaPlaceStatusImpl();
 
-        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
         try {
-            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.placeApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
-            AKUtils.showToast("初始化api异常.");
+            NotifyUtils.showToast("初始化api异常.");
             //getActivity().finish();
         }
     }
@@ -75,27 +74,27 @@ public class PlaceNearbyPhotosFragment extends PlaceStatusListFragment {
      * @param isHomeStore 是否是主页,只有主页有存储
      */
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        WeiboLog.i(TAG, "sinceId:"+sinceId+", maxId:"+maxId+", isRefresh:"+isRefresh+", isHomeStore:"+isHomeStore);
-        if (!App.hasInternetConnection(getActivity())) {
-            AKUtils.showToast(R.string.network_error);
-            if (mRefreshListener!=null) {
+        WeiboLog.i(TAG, "sinceId:" + sinceId + ", maxId:" + maxId + ", isRefresh:" + isRefresh + ", isHomeStore:" + isHomeStore);
+        if (! App.hasInternetConnection(getActivity())) {
+            NotifyUtils.showToast(R.string.network_error);
+            if (mRefreshListener != null) {
                 mRefreshListener.onRefreshFinished();
             }
             refreshAdapter(false, false);
             return;
         }
 
-        int count=weibo_count;
-        if (!isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
+        int count = weibo_count;
+        if (! isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
             //count++;
         } else {
             //page=1;
         }
-        if (count>50) {
-            count=50;
+        if (count > 50) {
+            count = 50;
         }
 
-        if (!isLoading) {
+        if (! isLoading) {
             newTask(new Object[]{isRefresh, sinceId, maxId, count, page, isHomeStore, "nearby_photos"}, null);
         }
     }

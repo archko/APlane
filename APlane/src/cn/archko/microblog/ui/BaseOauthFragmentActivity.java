@@ -4,8 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.PopupMenu;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
 import com.me.microblog.util.Constants;
@@ -18,13 +16,13 @@ import com.me.microblog.util.Constants;
 public class BaseOauthFragmentActivity extends SkinFragmentActivity implements
     PopupMenu.OnMenuItemClickListener, OnRefreshListener {
 
-    public final int MENU_FIRST=Menu.FIRST;
-    public final int MENU_SECOND=Menu.FIRST+1;
+    public final int MENU_FIRST = Menu.FIRST;
+    public final int MENU_SECOND = Menu.FIRST + 1;
     SharedPreferences mPrefs;
     /**
      * 当前登录用户的id
      */
-    long currentUserId=-1l;
+    long currentUserId = - 1l;
     //--------------------- 认证 ---------------------
     /*Oauth2Handler mOauth2Handler;
     OauthCallback mOauthCallback=new OauthCallback() {
@@ -57,13 +55,13 @@ public class BaseOauthFragmentActivity extends SkinFragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPrefs=PreferenceManager.getDefaultSharedPreferences(this);
-        long aUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
-        this.currentUserId=aUserId;
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        long aUserId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
+        this.currentUserId = aUserId;
 
         //mOauth2Handler=new Oauth2Handler(this, mOauthCallback);
 
-        mActionBar=getActionBar();
+        mActionBar = getActionBar();
     }
 
     @Override

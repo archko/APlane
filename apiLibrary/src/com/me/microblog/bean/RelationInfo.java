@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class RelationInfo implements Serializable {
 
-    public static final long serialVersionUID=3894560643019408216L;
+    public static final long serialVersionUID = 3894560643019408216L;
 
     public boolean followedBy;
     public boolean following;

@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00
@@ -18,24 +18,24 @@ import cn.archko.microblog.utils.AKUtils;
  * 覆盖basePostOperation方法，因为它与网络数据相关，而且当数据为空时，会在footerview中显示
  * @author: archko 12-10-17
  */
-public abstract class AbstractLocalListFragment<T> extends AbsBaseListFragment<T> {
+public abstract class AbstractLocalListFragment <T> extends AbsBaseListFragment<T> {
 
-    public static final String TAG="AccountUsersFragment";
+    public static final String TAG = "AccountUsersFragment";
 
     protected void pullToRefreshData() {
-        isRefreshing=true;
-        newTaskNoNet(new Object[]{true, -1l, -1l, 1, page, false}, null);
+        isRefreshing = true;
+        newTaskNoNet(new Object[]{true, - 1l, - 1l, 1, page, false}, null);
     }
 
     //TODO 需要强制刷新数据，避免编辑后的问题。
     @Override
     protected void loadData() {
-        if (mDataList!=null&&mDataList.size()>0) {
+        if (mDataList != null && mDataList.size() > 0) {
             mAdapter.notifyDataSetChanged();
         } else {
-            if (!isLoading) {
+            if (! isLoading) {
                 //newTask(new Object[]{}, null);
-                newTaskNoNet(new Object[]{true, -1l, -1l, 1, page, false}, null);
+                newTaskNoNet(new Object[]{true, - 1l, - 1l, 1, page, false}, null);
             } else {
                 mEmptyTxt.setText(R.string.list_pre_empty_txt);
                 mEmptyTxt.setVisibility(View.VISIBLE);
@@ -103,7 +103,7 @@ public abstract class AbstractLocalListFragment<T> extends AbsBaseListFragment<T
      * 添加新的帐户。
      */
     public void addNewData() {
-        AKUtils.showToast("not implemented!");
+        NotifyUtils.showToast("not implemented!");
     }
 
     /**

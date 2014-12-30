@@ -33,28 +33,28 @@ public class DownloadPiece {
      * @param dir      存储目录，这是图片存储的绝对目录，可以由url+dir计算得到存储的绝对路径。
      */
     public DownloadPiece(Handler h, String uri, int type, boolean cache, String dir, boolean isShowLargeBitmap, ImageView imageView) {
-        this.uri=uri;
+        this.uri = uri;
         //this.name=name;
-        this.handler=h;
-        this.type=type;
+        this.handler = h;
+        this.type = type;
         //this.filepath=filepath;
-        this.cache=cache;
-        this.dir=dir;
-        this.isShowLargeBitmap=isShowLargeBitmap;
-        this.mImageReference=new WeakReference<ImageView>(imageView);
+        this.cache = cache;
+        this.dir = dir;
+        this.isShowLargeBitmap = isShowLargeBitmap;
+        this.mImageReference = new WeakReference<ImageView>(imageView);
     }
 
     @Override
     public String toString() {
-        return "DownloadPiece{"+
-            "handler="+handler+
-            ", dir='"+dir+'\''+
-            ", uri='"+uri+'\''+
-            ", type="+type+
-            ", filepath='"+filepath+'\''+
-            ", cache="+cache+
-            ", isShowLargeBitmap="+isShowLargeBitmap+
-            ", mImageReference="+mImageReference+
+        return "DownloadPiece{" +
+            "handler=" + handler +
+            ", dir='" + dir + '\'' +
+            ", uri='" + uri + '\'' +
+            ", type=" + type +
+            ", filepath='" + filepath + '\'' +
+            ", cache=" + cache +
+            ", isShowLargeBitmap=" + isShowLargeBitmap +
+            ", mImageReference=" + mImageReference +
             '}';
     }
 }

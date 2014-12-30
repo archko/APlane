@@ -17,7 +17,7 @@ import com.me.microblog.util.WeiboLog;
 @Deprecated
 public class HotCommentFragment extends StatusListFragment {
 
-    public static final String TAG="HotCommentFragment";
+    public static final String TAG = "HotCommentFragment";
 
     /**
      * 需要注意,在主页时,需要缓存图片数据.所以cache为false,其它的不缓存,比如随便看看.
@@ -31,18 +31,18 @@ public class HotCommentFragment extends StatusListFragment {
     public View getView(int position, View convertView, ViewGroup parent) {
         //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
 
-        ThreadBeanItemView itemView=null;
-        Status status=mDataList.get(position);
+        ThreadBeanItemView itemView = null;
+        Status status = mDataList.get(position);
 
-        boolean updateFlag=true;
-        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag=false;
+        boolean updateFlag = true;
+        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            updateFlag = false;
         }
 
-        if (convertView==null) {
-            itemView=new ThreadBeanItemView(getActivity(), mListView, mCacheDir, status, updateFlag, false, showLargeBitmap, showBitmap);
+        if (convertView == null) {
+            itemView = new ThreadBeanItemView(getActivity(), mListView, mCacheDir, status, updateFlag, false, showLargeBitmap, showBitmap);
         } else {
-            itemView=(ThreadBeanItemView) convertView;
+            itemView = (ThreadBeanItemView) convertView;
         }
         itemView.update(status, updateFlag, false, showLargeBitmap, showBitmap);
 
@@ -52,8 +52,8 @@ public class HotCommentFragment extends StatusListFragment {
     //--------------------- 数据加载 ---------------------
     public SStatusData<Status> getStatuses(Long sinceId, Long maxId, int c, int p)
         throws WeiboException {
-        WeiboLog.d(TAG, " HotCommentFragment.getStatuses."+sinceId+" maxId:"+maxId+" count:"+c+" page:"+p);
-        SStatusData<Status> sStatusData=null;
+        WeiboLog.d(TAG, " HotCommentFragment.getStatuses." + sinceId + " maxId:" + maxId + " count:" + c + " page:" + p);
+        SStatusData<Status> sStatusData = null;
         /*SWeiboApi2 sWeiboApi2=((SWeiboApi2) App.getMicroBlog(App.getAppContext()));
         if (null==sWeiboApi2) {
             sStatusData=new SStatusData<Status>();

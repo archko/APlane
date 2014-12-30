@@ -12,9 +12,10 @@ import com.me.microblog.bean.AKSpannableStringBuilder;
 import com.me.microblog.bean.Favorite;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
-//import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.util.regex.Matcher;
+
+//import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 /**
  * 修改后继承ThreadBeanItemView,多了一个Touch,左边的头像点击后的处理.
@@ -23,9 +24,9 @@ import java.util.regex.Matcher;
  */
 public class FavItemView extends ThreadBeanItemView implements Checkable {
 
-    private static final String TAG="FavItemView";
+    private static final String TAG = "FavItemView";
 
-    private boolean checked=false;
+    private boolean checked = false;
 
     protected Favorite mFavorite;    //微博收藏
 
@@ -45,16 +46,16 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
 
     @Override
     public void setChecked(boolean aChecked) {
-        if (checked==aChecked) {
+        if (checked == aChecked) {
             return;
         }
-        checked=aChecked;
+        checked = aChecked;
         setBackgroundResource(checked ? R.drawable.abs__list_longpressed_holo : android.R.color.transparent);
     }
 
     @Override
     public void toggle() {
-        setChecked(!checked);
+        setChecked(! checked);
     }
 
     /**
@@ -68,37 +69,37 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
      */
     public void update(final Favorite bean, boolean updateFlag, boolean cache, boolean showLargeBitmap,
         boolean showBitmap) {
-        if (mFavorite==bean) {
+        if (mFavorite == bean) {
             WeiboLog.v(TAG, "相同的内容不更新。");
             if (updateFlag) {   //需要加载数据,否则会无法更新列表的图片.
                 loadPicture(updateFlag, cache);
-                isShowBitmap=showBitmap;
+                isShowBitmap = showBitmap;
                 loadPortrait(updateFlag, cache);
             }
             return;
         }
 
         try {
-            mFavorite=bean;
-            mRetweetedStatus=bean.mStatus.retweetedStatus;
+            mFavorite = bean;
+            mRetweetedStatus = bean.mStatus.retweetedStatus;
             //TODO 因为现在的微博可能没有包user属性。可能被删除了。
             try {
                 mName.setText(mStatus.user.screenName);
             } catch (Exception e) {
             }
 
-            String title=mStatus.text;
-            AKSpannableStringBuilder spannableString=(AKSpannableStringBuilder) mStatus.mStatusSpannable;
-            if (null==spannableString) {
-                spannableString=new AKSpannableStringBuilder(mStatus.text);
+            String title = mStatus.text;
+            AKSpannableStringBuilder spannableString = (AKSpannableStringBuilder) mStatus.mStatusSpannable;
+            if (null == spannableString) {
+                spannableString = new AKSpannableStringBuilder(mStatus.text);
                 AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtils.ATPATTERN);
                 AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtils.getWebPattern());
-                mStatus.mStatusSpannable=spannableString;
+                mStatus.mStatusSpannable = spannableString;
             }
             mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
             //mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
-            if (null==mStatus.user) {
+            if (null == mStatus.user) {
                 WeiboLog.i(TAG, "微博可能被删除，无法显示！");
                 mName.setText(null);
                 mSourceFrom.setText(null);
@@ -107,29 +108,29 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
                 mCommentNum.setText(null);
                 mContentSencond.setText(null);
                 mLocation.setText(null);
-                if (null!=mStatusPicture&&mStatusPictureLay!=null) {
+                if (null != mStatusPicture && mStatusPictureLay != null) {
                     mStatusPicture.setVisibility(View.GONE);
                     mStatusPictureLay.setVisibility(GONE);
                 }
-                if (mContentSencond.getVisibility()==VISIBLE) {
+                if (mContentSencond.getVisibility() == VISIBLE) {
                     mContentSencond.setVisibility(GONE);
                 }
-                if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==VISIBLE) {
+                if (null != mContentSecondLayout && mContentSecondLayout.getVisibility() == VISIBLE) {
                     mContentSecondLayout.setVisibility(GONE);
                 }
                 return;
             }
 
-            String source=mStatus.source;
-            Matcher atMatcher= WeiboUtils.comeFrom.matcher(source);
+            String source = mStatus.source;
+            Matcher atMatcher = WeiboUtils.comeFrom.matcher(source);
             if (atMatcher.find()) {
-                int start=atMatcher.start();
-                int end=atMatcher.end();
-                String cfString=source.substring(end, source.length()-4);
+                int start = atMatcher.start();
+                int end = atMatcher.end();
+                String cfString = source.substring(end, source.length() - 4);
                 mSourceFrom.setText(mContext.getString(R.string.text_come_from, cfString));
             }
 
-            if (null!=mStatus.createdAt) {
+            if (null != mStatus.createdAt) {
                 mCreateAt.setText(DateUtils.getDateString(mStatus.createdAt));
             } else {
                 mCreateAt.setText(null);
@@ -139,22 +140,22 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
             mCommentNum.setText(getResources().getString(R.string.text_comment_num, mStatus.c_num));
 
             //处理转发的微博
-            if (mRetweetedStatus!=null) {
-                if (mContentSencond.getVisibility()==GONE) {
+            if (mRetweetedStatus != null) {
+                if (mContentSencond.getVisibility() == GONE) {
                     mContentSencond.setVisibility(View.VISIBLE);
                 }
-                if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==GONE) {
+                if (null != mContentSecondLayout && mContentSecondLayout.getVisibility() == GONE) {
                     mContentSecondLayout.setVisibility(VISIBLE);
                 }
 
                 try {
-                    title="@"+mRetweetedStatus.user.screenName+":"+mRetweetedStatus.text+" ";
-                    spannableString=(AKSpannableStringBuilder) mStatus.mRetweetedSpannable;
-                    if (null==spannableString) {
-                        spannableString=new AKSpannableStringBuilder(title);
+                    title = "@" + mRetweetedStatus.user.screenName + ":" + mRetweetedStatus.text + " ";
+                    spannableString = (AKSpannableStringBuilder) mStatus.mRetweetedSpannable;
+                    if (null == spannableString) {
+                        spannableString = new AKSpannableStringBuilder(title);
                         AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtils.ATPATTERN);
                         AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtils.getWebPattern());
-                        mStatus.mRetweetedSpannable=spannableString;
+                        mStatus.mRetweetedSpannable = spannableString;
                     }
                     mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
                     //mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
@@ -162,22 +163,22 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
                     e.printStackTrace();
                 }
             } else {
-                if (mContentSencond.getVisibility()==VISIBLE) {
+                if (mContentSencond.getVisibility() == VISIBLE) {
                     mContentSencond.setVisibility(View.GONE);
                 }
-                if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==VISIBLE) {
+                if (null != mContentSecondLayout && mContentSecondLayout.getVisibility() == VISIBLE) {
                     mContentSecondLayout.setVisibility(GONE);
                 }
             }
 
             //location
-            sAnnotation=mStatus.annotations;
-            if (null==sAnnotation||sAnnotation.place==null) {
-                if (mLoctationlayout.getVisibility()==VISIBLE) {
+            sAnnotation = mStatus.annotations;
+            if (null == sAnnotation || sAnnotation.place == null) {
+                if (mLoctationlayout.getVisibility() == VISIBLE) {
                     mLoctationlayout.setVisibility(GONE);
                 }
             } else {
-                if (mLoctationlayout.getVisibility()==GONE) {
+                if (mLoctationlayout.getVisibility() == GONE) {
                     mLoctationlayout.setVisibility(VISIBLE);
                 }
                 mLocation.setText(sAnnotation.place.title);

@@ -25,35 +25,35 @@ import java.util.ArrayList;
  */
 public class GifView extends View implements GifAction {
 
-    public static final String TAG="GifView";
+    public static final String TAG = "GifView";
     /**
      * gif解码器
      */
-    private GifDecoder gifDecoder=null;
+    private GifDecoder gifDecoder = null;
     /**
      * 当前要画的帧的图
      */
-    private Bitmap currentImage=null;
+    private Bitmap currentImage = null;
 
-    private boolean isRun=true;
+    private boolean isRun = true;
 
-    private boolean pause=false;
+    private boolean pause = false;
 
-    private int showWidth=-1;
-    private int showHeight=-1;
-    private Rect rect=null;
+    private int showWidth = - 1;
+    private int showHeight = - 1;
+    private Rect rect = null;
 
     public void setRun(boolean run) {
-        isRun=run;
+        isRun = run;
     }
 
     public void setPause(boolean pause) {
-        this.pause=pause;
+        this.pause = pause;
     }
 
-    private DrawThread drawThread=null;
+    private DrawThread drawThread = null;
 
-    private GifImageType animationType=GifImageType.ANIMATION;
+    private GifImageType animationType = GifImageType.ANIMATION;
 
     /**
      * 解码过程中，Gif动画显示的方式<br>
@@ -80,7 +80,7 @@ public class GifView extends View implements GifAction {
         ANIMATION(3);
 
         GifImageType(int i) {
-            nativeInt=i;
+            nativeInt = i;
         }
 
         final int nativeInt;
@@ -104,11 +104,11 @@ public class GifView extends View implements GifAction {
      * @param gif 要设置的图片
      */
     public void setGifDecoderImage(byte[] gif) {
-        if (gifDecoder!=null) {
+        if (gifDecoder != null) {
             gifDecoder.free();
-            gifDecoder=null;
+            gifDecoder = null;
         }
-        gifDecoder=new GifDecoder(gif, this);
+        gifDecoder = new GifDecoder(gif, this);
         gifDecoder.start();
     }
 
@@ -119,11 +119,11 @@ public class GifView extends View implements GifAction {
      */
     private void setGifDecoderImage(InputStream is) {
         Log.d(TAG, "setGifDecoderImage.");
-        if (gifDecoder!=null) {
+        if (gifDecoder != null) {
             gifDecoder.free();
-            gifDecoder=null;
+            gifDecoder = null;
         }
-        gifDecoder=new GifDecoder(is, this);
+        gifDecoder = new GifDecoder(is, this);
         gifDecoder.start();
     }
 
@@ -152,8 +152,8 @@ public class GifView extends View implements GifAction {
      */
     public void setGifImage(int resId) {
         Log.d(TAG, "setGifImage.");
-        Resources r=this.getResources();
-        InputStream is=r.openRawResource(resId);
+        Resources r = this.getResources();
+        InputStream is = r.openRawResource(resId);
         setGifDecoderImage(is);
     }
 
@@ -161,24 +161,24 @@ public class GifView extends View implements GifAction {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         //Log.d(TAG, "onDraw.currentImage:"+currentImage);
-        if (gifFrames==null||frameLength<1) {
-            Log.d(TAG, "gifFrames:"+frameLength);
+        if (gifFrames == null || frameLength < 1) {
+            Log.d(TAG, "gifFrames:" + frameLength);
             return;
         }
 
         //Log.d(TAG, "onDraw:ci:"+currentImage);
 
-        if (currentImage==null) {
-            currentImage=gifFrames.get(currImageIdx).image;
+        if (currentImage == null) {
+            currentImage = gifFrames.get(currImageIdx).image;
         }
 
-        if (currentImage==null) {
+        if (currentImage == null) {
             return;
         }
-        int saveCount=canvas.getSaveCount();
+        int saveCount = canvas.getSaveCount();
         canvas.save();
         canvas.translate(getPaddingLeft(), getPaddingTop());
-        if (showWidth==-1) {
+        if (showWidth == - 1) {
             canvas.drawBitmap(currentImage, 0, 0, null);
         } else {
             canvas.drawBitmap(currentImage, null, rect, null);
@@ -189,10 +189,10 @@ public class GifView extends View implements GifAction {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         //Log.d(TAG, "onMeasure:"+widthMeasureSpec+" height:"+heightMeasureSpec);
-        int pleft=getPaddingLeft();
-        int pright=getPaddingRight();
-        int ptop=getPaddingTop();
-        int pbottom=getPaddingBottom();
+        int pleft = getPaddingLeft();
+        int pright = getPaddingRight();
+        int ptop = getPaddingTop();
+        int pbottom = getPaddingBottom();
 
         int widthSize;
         int heightSize;
@@ -200,22 +200,22 @@ public class GifView extends View implements GifAction {
         int w;
         int h;
 
-        if (gifDecoder==null) {
-            w=1;
-            h=1;
+        if (gifDecoder == null) {
+            w = 1;
+            h = 1;
         } else {
-            w=gifDecoder.width;
-            h=gifDecoder.height;
+            w = gifDecoder.width;
+            h = gifDecoder.height;
         }
 
-        w+=pleft+pright;
-        h+=ptop+pbottom;
+        w += pleft + pright;
+        h += ptop + pbottom;
 
-        w=Math.max(w, getSuggestedMinimumWidth());
-        h=Math.max(h, getSuggestedMinimumHeight());
+        w = Math.max(w, getSuggestedMinimumWidth());
+        h = Math.max(h, getSuggestedMinimumHeight());
 
-        widthSize=resolveSize(w, widthMeasureSpec);
-        heightSize=resolveSize(h, heightMeasureSpec);
+        widthSize = resolveSize(w, widthMeasureSpec);
+        heightSize = resolveSize(h, heightMeasureSpec);
 
         //Log.d(TAG, "widthSize:"+widthSize+" heightSize:"+heightSize+" w:"+w+" h:"+h);
 
@@ -228,13 +228,13 @@ public class GifView extends View implements GifAction {
      */
     public void showCover() {
         Log.d(TAG, "showCover.");
-        if (gifFrames==null||frameLength<1) {
+        if (gifFrames == null || frameLength < 1) {
             return;
         }
 
-        pause=true;
-        isRun=false;
-        currentImage=gifFrames.get(currImageIdx).image;
+        pause = true;
+        isRun = false;
+        currentImage = gifFrames.get(currImageIdx).image;
         invalidate();
     }
 
@@ -245,18 +245,18 @@ public class GifView extends View implements GifAction {
     public void showAnimation() {
         Log.d(TAG, "showAnimation.");
         if (pause) {
-            pause=false;
+            pause = false;
         }
 
-        if (!isRun) {
-            isRun=true;
+        if (! isRun) {
+            isRun = true;
         }
 
-        if (drawThread==null) {
-            drawThread=new DrawThread();
+        if (drawThread == null) {
+            drawThread = new DrawThread();
         } else {
             drawThread.interrupt();
-            drawThread=new DrawThread();
+            drawThread = new DrawThread();
         }
         drawThread.start();
     }
@@ -268,8 +268,8 @@ public class GifView extends View implements GifAction {
      * @param type 显示方式
      */
     public void setGifImageType(GifImageType type) {
-        if (gifDecoder==null) {
-            animationType=type;
+        if (gifDecoder == null) {
+            animationType = type;
         }
     }
 
@@ -281,15 +281,15 @@ public class GifView extends View implements GifAction {
      * @param height 要显示的图片高
      */
     public void setShowDimension(int width, int height) {
-        Log.d(TAG, "setShowDimension.width:"+width+" height:"+height);
-        if (width>0&&height>0) {
-            showWidth=width;
-            showHeight=height;
-            rect=new Rect();
-            rect.left=0;
-            rect.top=0;
-            rect.right=width;
-            rect.bottom=height;
+        Log.d(TAG, "setShowDimension.width:" + width + " height:" + height);
+        if (width > 0 && height > 0) {
+            showWidth = width;
+            showHeight = height;
+            rect = new Rect();
+            rect.left = 0;
+            rect.top = 0;
+            rect.right = width;
+            rect.bottom = height;
             requestLayout();
             invalidate();
         }
@@ -297,20 +297,20 @@ public class GifView extends View implements GifAction {
 
     @Override
     public void parseOk(boolean parseStatus, int frameIndex) {
-        Log.d(TAG, "parseOk.frameIndex:"+frameIndex);
+        Log.d(TAG, "parseOk.frameIndex:" + frameIndex);
         decodeFinish(parseStatus, frameIndex);
     }
 
     private void decodeFinish(boolean parseStatus, int frameIndex) {
-        if (!parseStatus) {
+        if (! parseStatus) {
             Log.d(TAG, "解析失败。");
-            if (null!=imageLoadCallback) {
+            if (null != imageLoadCallback) {
                 imageLoadCallback.loadError();
             }
             return;
         }
 
-        if (gifDecoder==null) {
+        if (gifDecoder == null) {
             Log.d(TAG, "前一次解析放弃。");
             /*if (null!=imageLoadCallback) {
                    imageLoadCallback.loadError();
@@ -318,27 +318,27 @@ public class GifView extends View implements GifAction {
             return;
         }
 
-        gifFrames=gifDecoder.getFrameArrayList();
-        currImageIdx=0;
-        frameLength=gifFrames.size();
+        gifFrames = gifDecoder.getFrameArrayList();
+        currImageIdx = 0;
+        frameLength = gifFrames.size();
 
         //if (rect==null) {
         mHandler.post(new Runnable() {
 
             @Override
             public void run() {
-                if (null!=imageLoadCallback) {
+                if (null != imageLoadCallback) {
                     imageLoadCallback.loadFinish();
                 }
-                
-                Bitmap bitmap=gifFrames.get(0).image;
-                Log.d(TAG, "gif帧间隔为："+gifFrames.get(0).delay);
+
+                Bitmap bitmap = gifFrames.get(0).image;
+                Log.d(TAG, "gif帧间隔为：" + gifFrames.get(0).delay);
                 setShowDimension(bitmap.getWidth(), bitmap.getHeight());
             }
         });
         //}
         gifDecoder.free();
-        gifDecoder=null;
+        gifDecoder = null;
 
         System.gc();
 
@@ -353,26 +353,26 @@ public class GifView extends View implements GifAction {
     //这个方法不一定执行.如果没有销毁资源,会导致cpu与内存占用率很高.
     @Override
     public void dispatchWindowVisibilityChanged(int visibility) {
-        Log.d(TAG, "dispatchWindowVisibilityChanged:"+visibility);
-        if (visibility==GONE||visibility==INVISIBLE) {
+        Log.d(TAG, "dispatchWindowVisibilityChanged:" + visibility);
+        if (visibility == GONE || visibility == INVISIBLE) {
             stopAnimate();
         }
     }
 
     private void startAnimate() {
-        Log.d(TAG, "startAnimate.animationType:"+animationType);
+        Log.d(TAG, "startAnimate.animationType:" + animationType);
         switch (animationType) {
             case ANIMATION:
                 Log.d(TAG, "ANIMATION.");
-                if (frameLength>1) {
-                    if (drawThread==null) {
-                        drawThread=new DrawThread();
+                if (frameLength > 1) {
+                    if (drawThread == null) {
+                        drawThread = new DrawThread();
                     } else {
                         drawThread.interrupt();
-                        drawThread=new DrawThread();
+                        drawThread = new DrawThread();
                     }
                     drawThread.start();
-                } else if (frameLength==1) {
+                } else if (frameLength == 1) {
                     reDraw();
                 }
                 break;
@@ -380,12 +380,12 @@ public class GifView extends View implements GifAction {
             case COVER:
                 Log.d(TAG, "COVER.");
 
-                GifFrame frame=gifFrames.get(currImageIdx++);
-                if (currImageIdx>=frameLength) {
-                    currImageIdx=0;//重新播放。
+                GifFrame frame = gifFrames.get(currImageIdx++);
+                if (currImageIdx >= frameLength) {
+                    currImageIdx = 0;//重新播放。
                 }
 
-                currentImage=frame.image;
+                currentImage = frame.image;
                 reDraw();
                 break;
         }
@@ -396,9 +396,9 @@ public class GifView extends View implements GifAction {
      */
     public void stopAnimate() {
         Log.d(TAG, "stopAnimate.");
-        isRun=false;
-        pause=true;
-        if(gifDecoder!=null){
+        isRun = false;
+        pause = true;
+        if (gifDecoder != null) {
             try {
                 gifDecoder.interrupt();
                 gifDecoder = null;
@@ -406,7 +406,7 @@ public class GifView extends View implements GifAction {
                 e.printStackTrace();
             }
         }
-        if (drawThread!=null) {
+        if (drawThread != null) {
             try {
                 drawThread.interrupt();
             } catch (Exception e) {
@@ -417,13 +417,13 @@ public class GifView extends View implements GifAction {
 
     private void reDraw() {
         Log.d(TAG, "reDraw.");
-        if (mHandler!=null) {
-            Message msg=mHandler.obtainMessage();
+        if (mHandler != null) {
+            Message msg = mHandler.obtainMessage();
             mHandler.sendMessage(msg);
         }
     }
 
-    private Handler mHandler=new Handler() {
+    private Handler mHandler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
@@ -441,22 +441,22 @@ public class GifView extends View implements GifAction {
         @Override
         public void run() {
             //Log.d(TAG, "DrawThread.run.");
-            if (gifFrames==null||frameLength<1) {
+            if (gifFrames == null || frameLength < 1) {
                 return;
             }
 
             while (isRun) {
-                GifFrame frame=gifFrames.get(currImageIdx++);
-                if (currImageIdx>=frameLength) {
-                    currImageIdx=0;//重新播放。
+                GifFrame frame = gifFrames.get(currImageIdx++);
+                if (currImageIdx >= frameLength) {
+                    currImageIdx = 0;//重新播放。
                     //break;
                 }
 
-                currentImage=frame.image;
-                if (pause==false) {
-                    long delay=frame.delay;
+                currentImage = frame.image;
+                if (pause == false) {
+                    long delay = frame.delay;
                     //Log.d(TAG, "run.currentImage:"+currentImage+" pause:"+pause+" isRun:"+isRun+" delay:"+delay);
-                    Message msg=mHandler.obtainMessage();
+                    Message msg = mHandler.obtainMessage();
                     mHandler.sendMessage(msg);
                     SystemClock.sleep(delay);
                 } else {
@@ -470,14 +470,14 @@ public class GifView extends View implements GifAction {
     }
 
     //////----------------------
-    ArrayList<GifFrame> gifFrames=new ArrayList<GifFrame>(); //存储帧,当前帧不应该太多,如果一个gif较大,如超过8m会是个问题.
-    int currImageIdx=0;//当前显示的解析图片索引
-    int frameLength=0; //帧的长度
+    ArrayList<GifFrame> gifFrames = new ArrayList<GifFrame>(); //存储帧,当前帧不应该太多,如果一个gif较大,如超过8m会是个问题.
+    int currImageIdx = 0;//当前显示的解析图片索引
+    int frameLength = 0; //帧的长度
 
     //回调方法,通过它可以回调解码失败或成功后的一些操作.
     ImageViewerDialog.IImageLoadCallback imageLoadCallback;
 
     public void setImageLoadCallback(ImageViewerDialog.IImageLoadCallback imageLoadCallback) {
-        this.imageLoadCallback=imageLoadCallback;
+        this.imageLoadCallback = imageLoadCallback;
     }
 }

@@ -5,7 +5,7 @@ package com.me.microblog.bean;
  */
 public class QVideo {
 
-    public static final long serialVersionUID=3894560643019408217L;
+    public static final long serialVersionUID = 3894560643019408217L;
 
     /**
      * 缩略图
@@ -30,12 +30,12 @@ public class QVideo {
 
     @Override
     public String toString() {
-        return "QVideo{"+
-            "picurl='"+picurl+'\''+
-            ", player='"+player+'\''+
-            ", realurl='"+realurl+'\''+
-            ", shorturl='"+shorturl+'\''+
-            ", title='"+title+'\''+
+        return "QVideo{" +
+            "picurl='" + picurl + '\'' +
+            ", player='" + player + '\'' +
+            ", realurl='" + realurl + '\'' +
+            ", shorturl='" + shorturl + '\'' +
+            ", title='" + title + '\'' +
             '}';
     }
 }

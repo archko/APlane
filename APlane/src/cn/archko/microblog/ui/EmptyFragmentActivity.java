@@ -6,10 +6,9 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import cn.archko.microblog.fragment.PickImageFragment;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00
@@ -23,7 +22,7 @@ public class EmptyFragmentActivity extends SkinFragmentActivity implements OnRef
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mActionBar=getActionBar();
+        mActionBar = getActionBar();
         mActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         mActionBar.setDisplayShowTitleEnabled(true);
         mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -35,25 +34,25 @@ public class EmptyFragmentActivity extends SkinFragmentActivity implements OnRef
     }
 
     public void initFragment() {
-        Intent intent=getIntent();
-        if (null==intent) {
-            AKUtils.showToast("System error, no intent!");
+        Intent intent = getIntent();
+        if (null == intent) {
+            NotifyUtils.showToast("System error, no intent!");
             finish();
             return;
         }
 
-        String title=intent.getStringExtra("title");
+        String title = intent.getStringExtra("title");
         mActionBar.setTitle(title);
-        String className=intent.getStringExtra("fragment_class");
+        String className = intent.getStringExtra("fragment_class");
 
         try {
-            WeiboLog.d("start a fragment:"+title+" fragment Class:"+className);
-            Fragment newFragment=Fragment.instantiate(this, className);
-            Bundle args=intent.getExtras();
-            if (null!=args) {
+            WeiboLog.d("start a fragment:" + title + " fragment Class:" + className);
+            Fragment newFragment = Fragment.instantiate(this, className);
+            Bundle args = intent.getExtras();
+            if (null != args) {
                 newFragment.setArguments(args);
             }
-            FragmentTransaction ft=getFragmentManager().beginTransaction();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.add(android.R.id.content, newFragment).commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,21 +60,21 @@ public class EmptyFragmentActivity extends SkinFragmentActivity implements OnRef
     }
 
     public void initFragment(String className) {
-        Intent intent=getIntent();
-        if (null==intent) {
-            AKUtils.showToast("System error, no intent!");
+        Intent intent = getIntent();
+        if (null == intent) {
+            NotifyUtils.showToast("System error, no intent!");
             finish();
             return;
         }
 
-        String title=intent.getStringExtra("title");
+        String title = intent.getStringExtra("title");
         mActionBar.setTitle(title);
         //String className=intent.getStringExtra("fragment_class");
 
         try {
-            WeiboLog.d("start a fragment:"+title+" fragment Class:"+className);
-            Fragment newFragment=Fragment.instantiate(this, className);
-            FragmentTransaction ft=getFragmentManager().beginTransaction();
+            WeiboLog.d("start a fragment:" + title + " fragment Class:" + className);
+            Fragment newFragment = Fragment.instantiate(this, className);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.add(android.R.id.content, newFragment).commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,7 +84,7 @@ public class EmptyFragmentActivity extends SkinFragmentActivity implements OnRef
     public void addNewFragment(Fragment newFragment) {
         // Add the fragment to the activity, pushing this transaction
         // on to the back stack.
-        FragmentTransaction ft=getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(android.R.id.content, newFragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.addToBackStack(null);
@@ -94,8 +93,8 @@ public class EmptyFragmentActivity extends SkinFragmentActivity implements OnRef
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId=item.getItemId();
-        if (itemId==android.R.id.home) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
             finish();
         }
 

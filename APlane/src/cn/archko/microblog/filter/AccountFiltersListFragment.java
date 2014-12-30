@@ -1,18 +1,10 @@
 package cn.archko.microblog.filter;
 
 import android.app.ListFragment;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.BaseColumns;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -21,28 +13,22 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-
 import cn.archko.microblog.R;
-
-import java.util.ArrayList;
 
 public class AccountFiltersListFragment extends ListFragment {
 
-    private static final String THIS_FILE="AccountFiltersListFragment";
+    private static final String THIS_FILE = "AccountFiltersListFragment";
 
     private boolean dualPane;
-    private Long curCheckFilterId=-1l;
+    private Long curCheckFilterId = - 1l;
     private View mHeaderView;
     private AccountFiltersListAdapter mAdapter;
     private long accountId;
 
-    private final static String CURRENT_CHOICE="curChoice";
+    private final static String CURRENT_CHOICE = "curChoice";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,13 +37,13 @@ public class AccountFiltersListFragment extends ListFragment {
     }
 
     public void setAccountId(long accId) {
-        accountId=accId;
+        accountId = accId;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ListView lv=getListView();
+        ListView lv = getListView();
 
         //getListView().setSelector(R.drawable.transparent);
         lv.setCacheColorHint(Color.TRANSPARENT);
@@ -72,11 +58,11 @@ public class AccountFiltersListFragment extends ListFragment {
             //curCheckWizard = savedInstanceState.getString(CURRENT_WIZARD);
         }*/
         setListShown(false);
-        if (mAdapter==null) {
-            if (mHeaderView!=null) {
+        if (mAdapter == null) {
+            if (mHeaderView != null) {
                 lv.addHeaderView(mHeaderView, null, true);
             }
-            mAdapter=new AccountFiltersListAdapter(getActivity(), null);
+            mAdapter = new AccountFiltersListAdapter(getActivity(), null);
             //getListView().setEmptyView(getActivity().findViewById(R.id.progress_container));
             //getActivity().findViewById(android.R.id.empty).setVisibility(View.GONE);
             setListAdapter(mAdapter);
@@ -211,12 +197,12 @@ public class AccountFiltersListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
 
-        Log.d(THIS_FILE, "Checked "+position+" et "+id);
+        Log.d(THIS_FILE, "Checked " + position + " et " + id);
 
-        ListView lv=getListView();
+        ListView lv = getListView();
         //lv.setItemChecked(position, true);
 
-        curCheckFilterId=id;
+        curCheckFilterId = id;
         showDetails(id);
     }
 
@@ -250,11 +236,11 @@ public class AccountFiltersListFragment extends ListFragment {
         // Otherwise we need to launch a new activity to display
         // the dialog fragment with selected text.
 
-        Intent it=new Intent(getActivity(), EditFilter.class);
+        Intent it = new Intent(getActivity(), EditFilter.class);
         it.putExtra(Intent.EXTRA_UID, filterId);
         it.putExtra(Filter.FIELD_ACCOUNT, accountId);
         startActivity(it);
-        	
+
         	/*
         }
         */
@@ -283,9 +269,9 @@ public class AccountFiltersListFragment extends ListFragment {
     // Context menu stuff
     // Activate / deactive menu
     // Modify the account
-    public static final int MENU_ITEM_MODIFY=Menu.FIRST;
+    public static final int MENU_ITEM_MODIFY = Menu.FIRST;
     // Delete the account
-    public static final int MENU_ITEM_DELETE=Menu.FIRST+1;
+    public static final int MENU_ITEM_DELETE = Menu.FIRST + 1;
 
     /**
      * Retrieve filter id from a given context menu info pressed
@@ -296,10 +282,10 @@ public class AccountFiltersListFragment extends ListFragment {
     private long filterIdFromContextMenuInfo(ContextMenuInfo cmi) {
         AdapterView.AdapterContextMenuInfo info;
         try {
-            info=(AdapterView.AdapterContextMenuInfo) cmi;
+            info = (AdapterView.AdapterContextMenuInfo) cmi;
         } catch (ClassCastException e) {
             Log.e(THIS_FILE, "bad menuInfo", e);
-            return -1;
+            return - 1;
         }
         return info.id;
     }
@@ -307,8 +293,8 @@ public class AccountFiltersListFragment extends ListFragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        final long filterId=filterIdFromContextMenuInfo(menuInfo);
-        if (filterId==-1) {
+        final long filterId = filterIdFromContextMenuInfo(menuInfo);
+        if (filterId == - 1) {
             return;
         }
 
@@ -319,8 +305,8 @@ public class AccountFiltersListFragment extends ListFragment {
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
-        final long filterId=filterIdFromContextMenuInfo(item.getMenuInfo());
-        if (filterId==-1) {
+        final long filterId = filterIdFromContextMenuInfo(item.getMenuInfo());
+        if (filterId == - 1) {
             // For some reason the requested item isn't available, do nothing
             return super.onContextItemSelected(item);
         }
@@ -340,11 +326,11 @@ public class AccountFiltersListFragment extends ListFragment {
     }
 
     private void onClickAddFilter() {
-        showDetails(-1);
+        showDetails(- 1);
     }
 
     public void changeCursor(Cursor c) {
-        if (mAdapter!=null) {
+        if (mAdapter != null) {
             mAdapter.changeCursor(c);
         }
     }

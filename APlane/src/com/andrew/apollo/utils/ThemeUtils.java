@@ -1,14 +1,8 @@
 package com.andrew.apollo.utils;
 
-import android.annotation.TargetApi;
-import android.graphics.drawable.Drawable;
 import android.app.ActionBar;
 import android.content.Context;
-import android.graphics.Shader;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.view.View;
-import cn.archko.microblog.R;
 import com.me.microblog.App;
 
 /**
@@ -25,8 +19,8 @@ public final class ThemeUtils {
     }
 
     public static ThemeUtils getsInstance() {
-        if (null==sInstance) {
-            sInstance=new ThemeUtils();
+        if (null == sInstance) {
+            sInstance = new ThemeUtils();
         }
         return sInstance;
     }
@@ -36,7 +30,7 @@ public final class ThemeUtils {
      * @param context
      */
     public void themeActionBar(ActionBar actionBar, Context context) {
-        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         /*if ("1".equals(themeId)) {
             BitmapDrawable bg=(BitmapDrawable) context.getResources().getDrawable(R.drawable.bg_striped_split_img);
             bg.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);

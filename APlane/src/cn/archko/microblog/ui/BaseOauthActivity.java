@@ -5,11 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
-import android.widget.PopupMenu;
 import com.me.microblog.oauth.Oauth2Handler;
 import com.me.microblog.oauth.OauthCallback;
 import com.me.microblog.util.Constants;
-import com.me.microblog.util.WeiboLog;
 
 /**
  * 包含认证的
@@ -21,10 +19,10 @@ public class BaseOauthActivity extends SkinActivity {
     /**
      * 当前登录用户的id
      */
-    long currentUserId=-1l;
+    long currentUserId = - 1l;
     //--------------------- 认证 ---------------------
     Oauth2Handler mOauth2Handler;
-    OauthCallback mOauthCallback=new OauthCallback() {
+    OauthCallback mOauthCallback = new OauthCallback() {
         @Override
         public void postOauthSuc(Object[] params) {
             oauthSuccessfully(params);
@@ -54,19 +52,19 @@ public class BaseOauthActivity extends SkinActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPreferences=PreferenceManager.getDefaultSharedPreferences(this);
-        long aUserId=mPreferences.getLong(Constants.PREF_CURRENT_USER_ID, -1);
-        this.currentUserId=aUserId;
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        long aUserId = mPreferences.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
+        this.currentUserId = aUserId;
 
-        mOauth2Handler=new Oauth2Handler(this, mOauthCallback);
-        final ActionBar bar=getActionBar();
+        mOauth2Handler = new Oauth2Handler(this, mOauthCallback);
+        final ActionBar bar = getActionBar();
         bar.hide();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId=item.getItemId();
-        if (itemId==android.R.id.home) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
             finish();
         }
 

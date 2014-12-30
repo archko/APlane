@@ -21,7 +21,7 @@ public class TaskQueueActivity extends SkinFragmentActivity implements OnRefresh
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mActionBar=getActionBar();
+        mActionBar = getActionBar();
         mActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         mActionBar.setDisplayShowTitleEnabled(true);
         mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -31,15 +31,15 @@ public class TaskQueueActivity extends SkinFragmentActivity implements OnRefresh
 
         mActionBar.setTitle(R.string.tab_label_send_task);
 
-        Fragment newFragment=Fragment.instantiate(this, TaskListFragment.class.getName());
-        FragmentTransaction ft=getFragmentManager().beginTransaction();
+        Fragment newFragment = Fragment.instantiate(this, TaskListFragment.class.getName());
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.add(android.R.id.content, newFragment).commit();
     }
 
     public void addNewFragment(Fragment newFragment) {
         // Add the fragment to the activity, pushing this transaction
         // on to the back stack.
-        FragmentTransaction ft=getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(android.R.id.content, newFragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.addToBackStack(null);
@@ -48,8 +48,8 @@ public class TaskQueueActivity extends SkinFragmentActivity implements OnRefresh
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId=item.getItemId();
-        if (itemId==android.R.id.home) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
             finish();
         }
 

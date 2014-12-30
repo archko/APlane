@@ -54,15 +54,15 @@ public class WeiboOperation {
      */
     public static void toRepostStatus(Context context, Status status) {
         try {
-            Intent intent=new Intent();
+            Intent intent = new Intent();
             intent.setClass(context, RepostStatusActivity.class);
-            if (null!=status) {
-                status.mStatusSpannable=null;
-                status.mRetweetedSpannable=null;
+            if (null != status) {
+                status.mStatusSpannable = null;
+                status.mRetweetedSpannable = null;
                 intent.putExtra("status", status);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                ((Activity)context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
+                ((Activity) context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,7 +77,7 @@ public class WeiboOperation {
      */
     public static void quickRepostStatus(long id) {
         try {
-            RepostTask task=new RepostTask();
+            RepostTask task = new RepostTask();
             task.execute(new Object[]{"", 0, id});
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,15 +92,15 @@ public class WeiboOperation {
      */
     public static void toViewOriginalStatus(Context context, Status status) {
         try {
-            Intent intent=new Intent();
+            Intent intent = new Intent();
             intent.setClass(context, ViewStatusDetailActivity.class);
-            if (null!=status) {
-                status.mStatusSpannable=null;
-                status.mRetweetedSpannable=null;
+            if (null != status) {
+                status.mStatusSpannable = null;
+                status.mRetweetedSpannable = null;
                 intent.putExtra("status", status);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                ((Activity)context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);   //只动画新的,从右到左.
+                ((Activity) context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);   //只动画新的,从右到左.
                 //((Activity)context).overridePendingTransition(R.anim.enter_left, R.anim.enter_right);//连续的动画.两个页面从右到左
             }
         } catch (Exception e) {
@@ -110,16 +110,16 @@ public class WeiboOperation {
 
     public static void toViewOriginalStatus(Context context, Status status, boolean refresh) {
         try {
-            Intent intent=new Intent();
+            Intent intent = new Intent();
             intent.setClass(context, ViewStatusDetailActivity.class);
-            if (null!=status) {
-                status.mStatusSpannable=null;
-                status.mRetweetedSpannable=null;
+            if (null != status) {
+                status.mStatusSpannable = null;
+                status.mRetweetedSpannable = null;
                 intent.putExtra("status", status);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("refresh", refresh);
                 context.startActivity(intent);
-                ((Activity)context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
+                ((Activity) context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -134,15 +134,15 @@ public class WeiboOperation {
      */
     public static void toCommentStatus(Context context, Status status) {
         try {
-            Intent intent=new Intent();
+            Intent intent = new Intent();
             intent.setClass(context, CommentStatusActivity.class);
-            if (null!=status) {
-                status.mStatusSpannable=null;
-                status.mRetweetedSpannable=null;
+            if (null != status) {
+                status.mStatusSpannable = null;
+                status.mRetweetedSpannable = null;
                 intent.putExtra("status", status);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                ((Activity)context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
+                ((Activity) context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -157,21 +157,21 @@ public class WeiboOperation {
      */
     public static void toViewStatusUser(Context context, User user, int type) {
         try {
-            if (null!=user) {
-                Intent intent=new Intent(context, UserFragmentActivity.class);
+            if (null != user) {
+                Intent intent = new Intent(context, UserFragmentActivity.class);
                 intent.putExtra("nickName", user.screenName);
                 intent.putExtra("user_id", user.id);
                 intent.putExtra("user", user);
                 intent.putExtra("type", type);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                ((Activity)context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
+                ((Activity) context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
 
-                AtUser atUser=new AtUser();
-                atUser.name=user.screenName;
-                atUser.id=user.id;
-                atUser.pinyin=PinYin.getPinYin(user.screenName);
-                AddAtUserThread addAtUserThread=new AddAtUserThread(atUser);
+                AtUser atUser = new AtUser();
+                atUser.name = user.screenName;
+                atUser.id = user.id;
+                atUser.pinyin = PinYin.getPinYin(user.screenName);
+                AddAtUserThread addAtUserThread = new AddAtUserThread(atUser);
                 addAtUserThread.start();
             }
         } catch (Exception e) {
@@ -187,19 +187,19 @@ public class WeiboOperation {
      */
     public static void toViewStatusUser(Context context, String screenName, long id, int type) {
         try {
-            Intent intent=new Intent(context, UserFragmentActivity.class);
+            Intent intent = new Intent(context, UserFragmentActivity.class);
             intent.putExtra("nickName", screenName);
             intent.putExtra("type", type);
             intent.putExtra("user_id", id);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
-            ((Activity)context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
+            ((Activity) context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
 
-            AtUser atUser=new AtUser();
-            atUser.name=screenName;
-            atUser.id=id;
-            atUser.pinyin=PinYin.getPinYin(screenName);
-            AddAtUserThread addAtUserThread=new AddAtUserThread(atUser);
+            AtUser atUser = new AtUser();
+            atUser.name = screenName;
+            atUser.id = id;
+            atUser.pinyin = PinYin.getPinYin(screenName);
+            AddAtUserThread addAtUserThread = new AddAtUserThread(atUser);
             addAtUserThread.start();
         } catch (Exception e) {
             e.printStackTrace();
@@ -214,16 +214,16 @@ public class WeiboOperation {
      */
     public static void toAtUser(Context context, String atString) {
         try {
-            if (!atString.startsWith("@")) {
-                atString="@"+atString;
+            if (! atString.startsWith("@")) {
+                atString = "@" + atString;
             }
-            Intent intent=new Intent(context, NewStatusActivity.class);
+            Intent intent = new Intent(context, NewStatusActivity.class);
             intent.putExtra("at_some", atString);
             intent.putExtra("user_id", 100);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setAction(Constants.INTENT_NEW_BLOG);
             context.startActivity(intent);
-            ((Activity)context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
+            ((Activity) context).overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -234,10 +234,10 @@ public class WeiboOperation {
      */
     public static void createFavorite(final Context context, Status status, Handler handler) {
         try {
-            if (null!=status) {
-                String type="0";
-                Long statusId=status.id;
-                OperaThread operaThread=new OperaThread(context, handler, new Object[]{type, statusId});
+            if (null != status) {
+                String type = "0";
+                Long statusId = status.id;
+                OperaThread operaThread = new OperaThread(context, handler, new Object[]{type, statusId});
                 //task.execute(new Object[]{type, statusId});
                 operaThread.start();
             }
@@ -247,7 +247,7 @@ public class WeiboOperation {
     }
 
     public static void startNewHome(final Activity activity) {
-        Intent intent=new Intent(activity, SplashActivity.class);
+        Intent intent = new Intent(activity, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -255,8 +255,8 @@ public class WeiboOperation {
         activity.finish();
     }
 
-    public static void startAccountActivity(Activity activity){
-        Intent loginIntent=new Intent(activity, EmptyFragmentActivity.class);
+    public static void startAccountActivity(Activity activity) {
+        Intent loginIntent = new Intent(activity, EmptyFragmentActivity.class);
         loginIntent.putExtra("title", "添加帐户");
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         loginIntent.putExtra("fragment_class", AccountUsersFragment.class.getName());
@@ -265,8 +265,8 @@ public class WeiboOperation {
         activity.overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
     }
 
-    public static void startWebview(Activity activity, String name){
-        Intent intent=new Intent(activity, WebviewActivity.class);
+    public static void startWebview(Activity activity, String name) {
+        Intent intent = new Intent(activity, WebviewActivity.class);
         intent.putExtra("url", name);
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
@@ -282,17 +282,17 @@ public class WeiboOperation {
         Object params;
 
         OperaThread(Context context, Handler handler, Object[] objects) {
-            mContext=context;
-            mHandler=handler;
-            params=objects;
+            mContext = context;
+            mHandler = handler;
+            params = objects;
         }
 
         @Override
         public void run() {
             preOperation();
-            Object result=null;
+            Object result = null;
             try {
-                result=backgroundTrans(0);
+                result = backgroundTrans(0);
             } catch (WeiboException e) {
                 e.printStackTrace();
             } finally {
@@ -310,14 +310,14 @@ public class WeiboOperation {
          * 操作后的行为。
          */
         void postOperation(Object result) {
-            if (result==null) {
+            if (result == null) {
                 WeiboLog.i("createFavorite failed!");
             } else {
-                final com.me.microblog.bean.Status status=(com.me.microblog.bean.Status) result;
+                final com.me.microblog.bean.Status status = (com.me.microblog.bean.Status) result;
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(mContext, "收藏成功! "+status.text, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "收藏成功! " + status.text, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -333,7 +333,7 @@ public class WeiboOperation {
             if (null==weiboApi2) {
                 return null;
             }*/
-            SinaStatusApi weiboApi2=new SinaStatusApi();
+            SinaStatusApi weiboApi2 = new SinaStatusApi();
             weiboApi2.updateToken();
             return weiboApi2.createFavorite(sid).mStatus;
         }
@@ -357,12 +357,12 @@ public class WeiboOperation {
 
         Object[] pre(Object... params) {
             WeiboLog.d("pre,repost.");
-            com.me.microblog.bean.Status status=null;
+            com.me.microblog.bean.Status status = null;
             try {
-                String content=String.valueOf(params[0]);
-                String is_comment=String.valueOf(params[1]);
-                long id=(Long) params[2];
-                SinaStatusApi statusApi=new SinaStatusApi();
+                String content = String.valueOf(params[ 0 ]);
+                String is_comment = String.valueOf(params[ 1 ]);
+                long id = (Long) params[ 2 ];
+                SinaStatusApi statusApi = new SinaStatusApi();
                 statusApi.updateToken();
                 //status=((SWeiboApi2) App.getMicroBlog(App.getAppContext())).repostStatus(id, content, is_comment);
                 status = statusApi.repostStatus(id, content, is_comment);
@@ -376,14 +376,14 @@ public class WeiboOperation {
 
         void post(Object[] resultObj) {
             WeiboLog.d("转发结束.");
-            if (resultObj==null) {
+            if (resultObj == null) {
                 Toast.makeText(App.getAppContext(), R.string.repost_failed, Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            com.me.microblog.bean.Status status=(com.me.microblog.bean.Status) resultObj[0];
-            WeiboLog.d("转发结束.status:"+status);
-            if (status!=null) {
+            com.me.microblog.bean.Status status = (com.me.microblog.bean.Status) resultObj[ 0 ];
+            WeiboLog.d("转发结束.status:" + status);
+            if (status != null) {
                 Toast.makeText(App.getAppContext(), R.string.repost_suc, Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(App.getAppContext(), R.string.repost_failed, Toast.LENGTH_SHORT).show();
@@ -399,14 +399,14 @@ public class WeiboOperation {
         AtUser atUser;
 
         AddAtUserThread(AtUser atUser) {
-            this.atUser=atUser;
+            this.atUser = atUser;
         }
 
         @Override
         public void run() {
             try {
-                SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
-                long currentUserId=prefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+                long currentUserId = prefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
                 SqliteWrapper.saveAtUser(App.getAppContext(), atUser, currentUserId, TwitterTable.UserTbl.TYPE_RECENT_AT);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -421,16 +421,16 @@ public class WeiboOperation {
      * @return 对象列表
      */
     public static ArrayList readLocalData(String filepath) {
-        WeiboLog.v("readLocalData,path:"+filepath);
-        File file=new File(filepath);
-        ArrayList data=null;
+        WeiboLog.v("readLocalData,path:" + filepath);
+        File file = new File(filepath);
+        ArrayList data = null;
         if (file.exists()) {
-            FileInputStream fis=null;
+            FileInputStream fis = null;
             try {
-                fis=new FileInputStream(file);
-                BufferedInputStream br=new BufferedInputStream(fis);
-                ObjectInputStream in=new ObjectInputStream(br);
-                data=(ArrayList) in.readObject();
+                fis = new FileInputStream(file);
+                BufferedInputStream br = new BufferedInputStream(fis);
+                ObjectInputStream in = new ObjectInputStream(br);
+                data = (ArrayList) in.readObject();
                 in.close();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -438,7 +438,7 @@ public class WeiboOperation {
                 e.printStackTrace();
             } catch (Exception e) {
             } finally {
-                if (null!=fis) {
+                if (null != fis) {
                     try {
                         fis.close();
                     } catch (IOException e) {
@@ -458,19 +458,19 @@ public class WeiboOperation {
      * @param filepath 文件绝对路径
      */
     public static void writeLocalData(ArrayList data, String filepath) {
-        if (null!=data&&data.size()>0) {
-            FileOutputStream fos=null;
-            ObjectOutputStream out=null;
+        if (null != data && data.size() > 0) {
+            FileOutputStream fos = null;
+            ObjectOutputStream out = null;
             try {
-                File file=new File(filepath);
-                fos=new FileOutputStream(file);
-                out=new ObjectOutputStream(fos);
+                File file = new File(filepath);
+                fos = new FileOutputStream(file);
+                out = new ObjectOutputStream(fos);
                 out.writeObject(data);
                 out.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                if (null!=fos) {
+                if (null != fos) {
                     try {
                         fos.close();
                     } catch (IOException e) {

@@ -16,10 +16,10 @@ import java.util.List;
  * @author: archko Date: 13-1-28 Time: 下午7:20
  * @description:
  */
-public class SinaUnreadApi extends AbsApiImpl implements IUnreadApi{
+public class SinaUnreadApi extends AbsApiImpl implements IUnreadApi {
 
-    public static final String TAG="SinaUnreadApi";
-    static boolean mAdvanceTokenAvalible=false;
+    public static final String TAG = "SinaUnreadApi";
+    static boolean mAdvanceTokenAvalible = false;
     //--------------------- 未读 ---------------------
 
     /**
@@ -30,30 +30,29 @@ public class SinaUnreadApi extends AbsApiImpl implements IUnreadApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public Unread getUnread(long uid) throws WeiboException {
-        String urlString=getBaseUrl()+"remind/unread_count.json";
-        if (mAdvanceTokenAvalible&&!TextUtils.isEmpty(mAccessToken)) {
-            urlString+="?access_token="+mAccessToken;
+        String urlString = getBaseUrl() + "remind/unread_count.json";
+        if (mAdvanceTokenAvalible && ! TextUtils.isEmpty(mAccessToken)) {
+            urlString += "?access_token=" + mAccessToken;
         }
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("uid", String.valueOf(uid));
+        pair = new BasicNameValuePair("uid", String.valueOf(uid));
         nvps.add(pair);
 
-        String rs=null;
+        String rs = null;
         try {
-            rs=get(urlString, false, nvps);
+            rs = get(urlString, false, nvps);
             WeiboUtils.printResult(TAG, "rs:" + rs);
         } catch (WeiboException e) {
-            int code=e.getStatusCode();
-            if (code==400) {
-                mAdvanceTokenAvalible=false;
+            int code = e.getStatusCode();
+            if (code == 400) {
+                mAdvanceTokenAvalible = false;
             }
             //e.printStackTrace();
-            urlString=getBaseUrl()+"remind/unread_count.json";
-            rs=get(urlString, false, nvps);
+            urlString = getBaseUrl() + "remind/unread_count.json";
+            rs = get(urlString, false, nvps);
         }
         return WeiboParser.parseUnread(rs);
     }
@@ -71,17 +70,17 @@ public class SinaUnreadApi extends AbsApiImpl implements IUnreadApi{
      * @throws WeiboException
      */
     public String setUnread(String type) throws WeiboException {
-        String urlString=getBaseUrl()+"remind/set_count.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "remind/set_count.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("type", type);
+        pair = new BasicNameValuePair("type", type);
         nvps.add(pair);
 
-        if (!TextUtils.isEmpty(mAccessToken)) {
+        if (! TextUtils.isEmpty(mAccessToken)) {
             nvps.add(new BasicNameValuePair("access_token", mAccessToken));
         }
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         //TODO return WeiboParser.parseResult(rs);
         return rs;//return WeiboParser.parseSetUnread(rs);

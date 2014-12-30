@@ -16,9 +16,9 @@ import java.util.List;
  * @author: archko Date: 13-1-28 Time: 下午7:20
  * @description:
  */
-public class SinaDMApi extends AbsApiImpl implements IDMApi{
+public class SinaDMApi extends AbsApiImpl implements IDMApi {
 
-    public static final String TAG="SinaDMApi";
+    public static final String TAG = "SinaDMApi";
     //--------------------- 高级信息 ---------------------
 
     /**
@@ -31,27 +31,27 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
      */
     public SStatusData<DirectMessage> getSentDirectMessages(long sinnceId, long maxId, int count, int page)
         throws WeiboException {
-        String urlString=getBaseUrl()+"direct_messages/sent.json";
-        urlString+="?access_token="+mAccessToken;
+        String urlString = getBaseUrl() + "direct_messages/sent.json";
+        urlString += "?access_token=" + mAccessToken;
 
-        ArrayList<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        ArrayList<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair basicNameValuePair;
-        basicNameValuePair=new BasicNameValuePair("count", String.valueOf(count));
+        basicNameValuePair = new BasicNameValuePair("count", String.valueOf(count));
         nvps.add(basicNameValuePair);
-        basicNameValuePair=new BasicNameValuePair("page", String.valueOf(page));
+        basicNameValuePair = new BasicNameValuePair("page", String.valueOf(page));
         nvps.add(basicNameValuePair);
 
-        if (sinnceId>0) {
-            basicNameValuePair=new BasicNameValuePair("since_id", String.valueOf(sinnceId));
+        if (sinnceId > 0) {
+            basicNameValuePair = new BasicNameValuePair("since_id", String.valueOf(sinnceId));
             nvps.add(basicNameValuePair);
         }
-        if (0<maxId) {
-            basicNameValuePair=new BasicNameValuePair("max_id", String.valueOf(maxId));
+        if (0 < maxId) {
+            basicNameValuePair = new BasicNameValuePair("max_id", String.valueOf(maxId));
             nvps.add(basicNameValuePair);
         }
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboUtils.printResult(TAG, "dm:" + rs);
         return WeiboParser.parseDirectMessages(rs);
     }
@@ -73,26 +73,26 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
      */
     public SStatusData<DirectMessage> getDirectMessages(long sinceId, long maxId, int count, int page)
         throws WeiboException {
-        String urlString=getBaseUrl()+"direct_messages.json";
-        urlString+="?access_token="+mAccessToken;
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "direct_messages.json";
+        urlString += "?access_token=" + mAccessToken;
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair basicNameValuePair;
-        basicNameValuePair=new BasicNameValuePair("count", String.valueOf(count));
+        basicNameValuePair = new BasicNameValuePair("count", String.valueOf(count));
         nvps.add(basicNameValuePair);
-        basicNameValuePair=new BasicNameValuePair("page", String.valueOf(page));
+        basicNameValuePair = new BasicNameValuePair("page", String.valueOf(page));
         nvps.add(basicNameValuePair);
 
-        if (sinceId>-1) {
-            basicNameValuePair=new BasicNameValuePair("since_id", String.valueOf(sinceId));
+        if (sinceId > - 1) {
+            basicNameValuePair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
             nvps.add(basicNameValuePair);
         }
-        if (0<maxId) {
-            basicNameValuePair=new BasicNameValuePair("max_id", String.valueOf(maxId));
+        if (0 < maxId) {
+            basicNameValuePair = new BasicNameValuePair("max_id", String.valueOf(maxId));
             nvps.add(basicNameValuePair);
         }
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseDirectMessages(rs);
     }
@@ -109,10 +109,10 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
      * @throws WeiboException
      */
     public SStatusData<DirectMessage> getDirectMessagesUsers() throws WeiboException {
-        String urlString=getBaseUrl()+"direct_messages/user_list.json";
-        urlString+="?access_token="+mAccessToken;
+        String urlString = getBaseUrl() + "direct_messages/user_list.json";
+        urlString += "?access_token=" + mAccessToken;
 
-        String rs=get(urlString, false, null);
+        String rs = get(urlString, false, null);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseDirectMessages(rs);
     }
@@ -126,17 +126,17 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
      * @throws WeiboException
      */
     public DirectMessage sendDirectMessage(long uid, String text) throws WeiboException {
-        String urlString=getBaseUrl()+"direct_messages/new.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "direct_messages/new.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
         nvps.add(new BasicNameValuePair("access_token", mAccessToken));
 
-        pair=new BasicNameValuePair("uid", String.valueOf(uid));
+        pair = new BasicNameValuePair("uid", String.valueOf(uid));
         nvps.add(pair);
-        pair=new BasicNameValuePair("text", text);
+        pair = new BasicNameValuePair("text", text);
         nvps.add(pair);
 
-        String rs=post(urlString, false, nvps);
+        String rs = post(urlString, false, nvps);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseDirectMessage(rs);
     }
@@ -150,17 +150,17 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
      * @throws WeiboException
      */
     public DirectMessage sendDirectMessage(String screen_name, String text) throws WeiboException {
-        String urlString=getBaseUrl()+"direct_messages/new.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "direct_messages/new.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
         nvps.add(new BasicNameValuePair("access_token", mAccessToken));
 
-        pair=new BasicNameValuePair("screen_name", screen_name);
+        pair = new BasicNameValuePair("screen_name", screen_name);
         nvps.add(pair);
-        pair=new BasicNameValuePair("text", text);
+        pair = new BasicNameValuePair("text", text);
         nvps.add(pair);
 
-        String rs=post(urlString, false, nvps);
+        String rs = post(urlString, false, nvps);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseDirectMessage(rs);
     }
@@ -173,14 +173,14 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi{
      * @throws WeiboException
      */
     public final DirectMessage destroyDirectMessage(long id) throws WeiboException {
-        String urlString=getBaseUrl()+"direct_messages/destroy.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "direct_messages/destroy.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
         nvps.add(new BasicNameValuePair("access_token", mAccessToken));
-        pair=new BasicNameValuePair("id", String.valueOf(id));
+        pair = new BasicNameValuePair("id", String.valueOf(id));
         nvps.add(pair);
 
-        String rs=post(urlString, false, nvps);
+        String rs = post(urlString, false, nvps);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseDirectMessage(rs);
     }

@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.me.microblog.R;
+import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.City;
 import com.me.microblog.bean.Province;
 import com.me.microblog.core.BaseApi;
@@ -30,8 +32,6 @@ import com.me.microblog.http.ForecastCondition;
 import com.me.microblog.http.IXmlParser;
 import com.me.microblog.http.RssXMLPullHandler;
 import com.me.microblog.http.WeatherBean;
-import com.me.microblog.R;
-import com.me.microblog.WeiboUtils;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 
@@ -58,7 +58,7 @@ import java.util.ArrayList;
 public class WeatherActivity extends Activity {
 
     EditText location_edit;
-    Button button,provinceBtn;
+    Button button, provinceBtn;
     TextView location, current_temp, current_condition, current_wind_condition, current_humidity;
     TextView first, first_temp, first_condition;
     TextView second, second_temp, second_condition;
@@ -68,40 +68,40 @@ public class WeatherActivity extends Activity {
 
     //////--------
     private SharedPreferences mPreferences;
-    private static final int TYPE_NET=0;
-    private static final int TYPE_LOCAL=1;
+    private static final int TYPE_NET = 0;
+    private static final int TYPE_LOCAL = 1;
     /**
      * 查询天气的数据类型
      */
-    int mWeatherDataType=TYPE_LOCAL;
+    int mWeatherDataType = TYPE_LOCAL;
     ArrayList<Province> mProvinces;
-    View.OnClickListener clickListener=new View.OnClickListener() {
+    View.OnClickListener clickListener = new View.OnClickListener() {
 
         @Override
-        public void onClick(View view){
-            int id=view.getId();
-            if (id==R.id.button) {
-                String location_pinying=location_edit.getText().toString();
-                String l="Fuzhou";
+        public void onClick(View view) {
+            int id = view.getId();
+            if (id == R.id.button) {
+                String location_pinying = location_edit.getText().toString();
+                String l = "Fuzhou";
                 if (TextUtils.isEmpty(location_pinying)) {
-                    String location=mPreferences.getString(Constants.PREF_LOCATION,null);
+                    String location = mPreferences.getString(Constants.PREF_LOCATION, null);
                     if (TextUtils.isEmpty(location)) {
-                        l=location;
+                        l = location;
                     }
                 } else {
-                    l=location_pinying;
+                    l = location_pinying;
                 }
-                WeiboLog.d("查询的地名： "+l);
+                WeiboLog.d("查询的地名： " + l);
 
-                SharedPreferences.Editor editor=mPreferences.edit();
-                editor.putString(Constants.PREF_LOCATION,l);
+                SharedPreferences.Editor editor = mPreferences.edit();
+                editor.putString(Constants.PREF_LOCATION, l);
                 editor.commit();
 
-                queryWeatherByNet(l,l);
-            } else if (id==R.id.city_btn) {
-                if (null==mProvinces) {
-                    ArrayList<Province> provinces=WeiboParser.parseCitys(WeatherActivity.this);
-                    mProvinces=provinces;
+                queryWeatherByNet(l, l);
+            } else if (id == R.id.city_btn) {
+                if (null == mProvinces) {
+                    ArrayList<Province> provinces = WeiboParser.parseCitys(WeatherActivity.this);
+                    mProvinces = provinces;
                     //WeiboLog.d("provinces:"+provinces);
                 }
                 showProvinceDialog();
@@ -116,44 +116,44 @@ public class WeatherActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.weather);
-        mPreferences=WeatherActivity.this.getSharedPreferences("weather", Context.MODE_PRIVATE);
+        mPreferences = WeatherActivity.this.getSharedPreferences("weather", Context.MODE_PRIVATE);
 
-        location_edit=(EditText) findViewById(R.id.location_edit);
-        button=(Button) findViewById(R.id.button);
-        provinceBtn=(Button) findViewById(R.id.city_btn);
+        location_edit = (EditText) findViewById(R.id.location_edit);
+        button = (Button) findViewById(R.id.button);
+        provinceBtn = (Button) findViewById(R.id.city_btn);
         button.setOnClickListener(clickListener);
         provinceBtn.setOnClickListener(clickListener);
 
-        location=(TextView) findViewById(R.id.location);
-        current_temp=(TextView) findViewById(R.id.current_temp);
-        current_condition=(TextView) findViewById(R.id.current_condition);
-        current_wind_condition=(TextView) findViewById(R.id.current_wind_condition);
-        current_humidity=(TextView) findViewById(R.id.current_humidity);
-        current_icon=(ImageView) findViewById(R.id.current_icon);
+        location = (TextView) findViewById(R.id.location);
+        current_temp = (TextView) findViewById(R.id.current_temp);
+        current_condition = (TextView) findViewById(R.id.current_condition);
+        current_wind_condition = (TextView) findViewById(R.id.current_wind_condition);
+        current_humidity = (TextView) findViewById(R.id.current_humidity);
+        current_icon = (ImageView) findViewById(R.id.current_icon);
 
         //first
-        first=(TextView) findViewById(R.id.first);
-        first_temp=(TextView) findViewById(R.id.first_temp);
-        first_condition=(TextView) findViewById(R.id.first_condition);
-        first_icon=(ImageView) findViewById(R.id.first_icon);
+        first = (TextView) findViewById(R.id.first);
+        first_temp = (TextView) findViewById(R.id.first_temp);
+        first_condition = (TextView) findViewById(R.id.first_condition);
+        first_icon = (ImageView) findViewById(R.id.first_icon);
 
         //second   
-        second=(TextView) findViewById(R.id.second);
-        second_temp=(TextView) findViewById(R.id.second_temp);
-        second_condition=(TextView) findViewById(R.id.second_condition);
-        second_icon=(ImageView) findViewById(R.id.second_icon);
+        second = (TextView) findViewById(R.id.second);
+        second_temp = (TextView) findViewById(R.id.second_temp);
+        second_condition = (TextView) findViewById(R.id.second_condition);
+        second_icon = (ImageView) findViewById(R.id.second_icon);
 
         //third  
-        third=(TextView) findViewById(R.id.third);
-        third_temp=(TextView) findViewById(R.id.third_temp);
-        third_condition=(TextView) findViewById(R.id.third_condition);
-        third_icon=(ImageView) findViewById(R.id.third_icon);
+        third = (TextView) findViewById(R.id.third);
+        third_temp = (TextView) findViewById(R.id.third_temp);
+        third_condition = (TextView) findViewById(R.id.third_condition);
+        third_icon = (ImageView) findViewById(R.id.third_icon);
 
         //fouth  
-        fouth=(TextView) findViewById(R.id.fouth);
-        fouth_temp=(TextView) findViewById(R.id.fouth_temp);
-        fouth_condition=(TextView) findViewById(R.id.fouth_condition);
-        fouth_icon=(ImageView) findViewById(R.id.fouth_icon);
+        fouth = (TextView) findViewById(R.id.fouth);
+        fouth_temp = (TextView) findViewById(R.id.fouth_temp);
+        fouth_condition = (TextView) findViewById(R.id.fouth_condition);
+        fouth_icon = (ImageView) findViewById(R.id.fouth_icon);
 
         restoreWeather();
     }
@@ -162,33 +162,33 @@ public class WeatherActivity extends Activity {
      * 从本地文件还原天气数据
      */
     private void restoreWeather() {
-        FetchWeatherTask fetchStatusesTask=new FetchWeatherTask();
+        FetchWeatherTask fetchStatusesTask = new FetchWeatherTask();
         fetchStatusesTask.execute(new Object[]{"", TYPE_LOCAL});
 
-        long time=mPreferences.getLong(Constants.WEA_TIMESTAMP, -1);
-        long now=System.currentTimeMillis();
-        long delta=now-time-3600000;
-        if (time==-1||delta>0) {
-            String location=mPreferences.getString(Constants.PREF_LOCATION, null);
-            String locationAlias=mPreferences.getString(Constants.WEA_LOCATION_ALIAS, "");
-            if (location==null) {
-                location=Constants.WEA_DEFAULT_CITY;
+        long time = mPreferences.getLong(Constants.WEA_TIMESTAMP, - 1);
+        long now = System.currentTimeMillis();
+        long delta = now - time - 3600000;
+        if (time == - 1 || delta > 0) {
+            String location = mPreferences.getString(Constants.PREF_LOCATION, null);
+            String locationAlias = mPreferences.getString(Constants.WEA_LOCATION_ALIAS, "");
+            if (location == null) {
+                location = Constants.WEA_DEFAULT_CITY;
             }
 
             if (TextUtils.isEmpty(locationAlias)) {
-                locationAlias=location;
+                locationAlias = location;
             }
 
-            fetchStatusesTask=new FetchWeatherTask();
+            fetchStatusesTask = new FetchWeatherTask();
             fetchStatusesTask.execute(new Object[]{location, TYPE_NET});
         } else {
             WeiboLog.d("取消本地查询");
         }
     }
 
-    private void queryWeatherByNet(String name, String s){
+    private void queryWeatherByNet(String name, String s) {
         location.setText(s);
-        FetchWeatherTask weatherTask=new FetchWeatherTask();
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
         weatherTask.execute(new Object[]{name, TYPE_NET});
     }
 
@@ -216,15 +216,15 @@ public class WeatherActivity extends Activity {
         @Override
         protected Object doInBackground(Object... params) {
             try {
-                String location=(String) params[0];
-                Integer type=(Integer) params[1];
+                String location = (String) params[ 0 ];
+                Integer type = (Integer) params[ 1 ];
 
-                String filePath=getCacheDir()+"/"+Constants.WEATHER_FILE;
-                WeiboLog.d("filePath:"+filePath);
-                if (TYPE_LOCAL==type) {
-                    File file=new File(filePath);
+                String filePath = getCacheDir() + "/" + Constants.WEATHER_FILE;
+                WeiboLog.d("filePath:" + filePath);
+                if (TYPE_LOCAL == type) {
+                    File file = new File(filePath);
                     if (file.exists()) {
-                        IXmlParser handler=new RssXMLPullHandler();
+                        IXmlParser handler = new RssXMLPullHandler();
                         handler.parseRss(new FileInputStream(file));
                         return handler.getWeatherBean();
                     } else {
@@ -232,15 +232,15 @@ public class WeatherActivity extends Activity {
                     }
                 }
 
-                String url=Constants.WEA_URL_STRING+location;
-                BufferedReader reader=getByURLConnection(url);
-                if (null!=reader) {
-                    SharedPreferences.Editor editor=mPreferences.edit();
+                String url = Constants.WEA_URL_STRING + location;
+                BufferedReader reader = getByURLConnection(url);
+                if (null != reader) {
+                    SharedPreferences.Editor editor = mPreferences.edit();
                     editor.putLong(Constants.WEA_TIMESTAMP, System.currentTimeMillis());
                     editor.commit();
 
                     saveWeatherToSys(reader, filePath);
-                    IXmlParser handler=new RssXMLPullHandler();
+                    IXmlParser handler = new RssXMLPullHandler();
 
                     handler.parseRss(new FileInputStream(filePath));
                     return handler.getWeatherBean();
@@ -255,65 +255,65 @@ public class WeatherActivity extends Activity {
         protected void onPostExecute(Object result) {
             setProgressBarIndeterminateVisibility(false);
             WeiboLog.d("onPostExecute");
-            if (null==result) {
+            if (null == result) {
                 WeiboLog.d("获取数据失败。");
                 //Toast.makeText(WeatherActivity.this, "获取数据失败", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            WeatherBean weatherBean=(WeatherBean) result;
-            if (null==weatherBean) {
+            WeatherBean weatherBean = (WeatherBean) result;
+            if (null == weatherBean) {
                 WeiboLog.d("解析数据失败。");
                 Toast.makeText(WeatherActivity.this, "解析数据失败", Toast.LENGTH_SHORT).show();
                 return;
             }
-            WeiboLog.d("weatherBean:"+weatherBean);
+            WeiboLog.d("weatherBean:" + weatherBean);
 
-            String loc=mPreferences.getString(Constants.PREF_LOCATION, "");
-            location.setText(weatherBean.forecast_date+" -- "+loc);
+            String loc = mPreferences.getString(Constants.PREF_LOCATION, "");
+            location.setText(weatherBean.forecast_date + " -- " + loc);
             current_temp.setText(weatherBean.temp_c);
             current_condition.setText(weatherBean.condition);
             current_wind_condition.setText(weatherBean.wind_condition);
             current_humidity.setText(weatherBean.humidity);
 
             //////
-            String current_icon_url=weatherBean.icon;
-            FetchWeatherIconTask fetchWeatherIconTask=new FetchWeatherIconTask();
+            String current_icon_url = weatherBean.icon;
+            FetchWeatherIconTask fetchWeatherIconTask = new FetchWeatherIconTask();
             fetchWeatherIconTask.execute(new Object[]{current_icon, current_icon_url});
 
             //first
-            ArrayList<ForecastCondition> forecastConditions=weatherBean.getForecastConditions();
-            if (forecastConditions!=null&&forecastConditions.size()>0) {
-                ForecastCondition forecastCondition=forecastConditions.get(0);
+            ArrayList<ForecastCondition> forecastConditions = weatherBean.getForecastConditions();
+            if (forecastConditions != null && forecastConditions.size() > 0) {
+                ForecastCondition forecastCondition = forecastConditions.get(0);
                 first.setText(forecastCondition.day_of_week);
-                first_temp.setText(forecastCondition.high+"/"+forecastCondition.low);
+                first_temp.setText(forecastCondition.high + "/" + forecastCondition.low);
                 first_condition.setText(forecastCondition.condition);
-                String icon_url=forecastCondition.icon;
-                fetchWeatherIconTask=new FetchWeatherIconTask();
+                String icon_url = forecastCondition.icon;
+                fetchWeatherIconTask = new FetchWeatherIconTask();
                 fetchWeatherIconTask.execute(new Object[]{first_icon, icon_url});
 
-                forecastCondition=forecastConditions.get(1);
+                forecastCondition = forecastConditions.get(1);
                 second.setText(forecastCondition.day_of_week);
-                second_temp.setText(forecastCondition.high+"/"+forecastCondition.low);
+                second_temp.setText(forecastCondition.high + "/" + forecastCondition.low);
                 second_condition.setText(forecastCondition.condition);
-                icon_url=forecastCondition.icon;
-                fetchWeatherIconTask=new FetchWeatherIconTask();
+                icon_url = forecastCondition.icon;
+                fetchWeatherIconTask = new FetchWeatherIconTask();
                 fetchWeatherIconTask.execute(new Object[]{second_icon, icon_url});
 
-                forecastCondition=forecastConditions.get(2);
+                forecastCondition = forecastConditions.get(2);
                 third.setText(forecastCondition.day_of_week);
-                third_temp.setText(forecastCondition.high+"/"+forecastCondition.low);
+                third_temp.setText(forecastCondition.high + "/" + forecastCondition.low);
                 third_condition.setText(forecastCondition.condition);
-                icon_url=forecastCondition.icon;
-                fetchWeatherIconTask=new FetchWeatherIconTask();
+                icon_url = forecastCondition.icon;
+                fetchWeatherIconTask = new FetchWeatherIconTask();
                 fetchWeatherIconTask.execute(new Object[]{third_icon, icon_url});
 
-                forecastCondition=forecastConditions.get(3);
+                forecastCondition = forecastConditions.get(3);
                 fouth.setText(forecastCondition.day_of_week);
-                fouth_temp.setText(forecastCondition.high+"/"+forecastCondition.low);
+                fouth_temp.setText(forecastCondition.high + "/" + forecastCondition.low);
                 fouth_condition.setText(forecastCondition.condition);
-                icon_url=forecastCondition.icon;
-                fetchWeatherIconTask=new FetchWeatherIconTask();
+                icon_url = forecastCondition.icon;
+                fetchWeatherIconTask = new FetchWeatherIconTask();
                 fetchWeatherIconTask.execute(new Object[]{fouth_icon, icon_url});
             }
         }
@@ -324,23 +324,23 @@ public class WeatherActivity extends Activity {
         @Override
         protected Object doInBackground(Object... params) {
             try {
-                ImageView currentIcon=(ImageView) params[0];
-                String url=(String) params[1];
+                ImageView currentIcon = (ImageView) params[ 0 ];
+                String url = (String) params[ 1 ];
 
-                String filePath=getCacheDir()+ WeiboUtils.getWeiboUtil().getMd5(url)+ WeiboUtils.getExt(url);
-                WeiboLog.d("filePath:"+filePath);
-                File file=new File(filePath);
+                String filePath = getCacheDir() + WeiboUtils.getWeiboUtil().getMd5(url) + WeiboUtils.getExt(url);
+                WeiboLog.d("filePath:" + filePath);
+                File file = new File(filePath);
                 if (file.exists()) {
-                    Bitmap bitmap=BitmapFactory.decodeFile(filePath);
+                    Bitmap bitmap = BitmapFactory.decodeFile(filePath);
                     return new Object[]{currentIcon, bitmap};
                 } else {
-                    String iconUrl=Constants.GOOGLE_WEATHER+url;
-                    InputStream inputStream=ImageManager.getImageStream(iconUrl);
+                    String iconUrl = Constants.GOOGLE_WEATHER + url;
+                    InputStream inputStream = ImageManager.getImageStream(iconUrl);
 
-                    if (inputStream!=null) {
-                        Bitmap bitmap=BitmapFactory.decodeStream(inputStream);
+                    if (inputStream != null) {
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                         FileOutputStream fileOutputStream;
-                        fileOutputStream=new FileOutputStream(filePath);
+                        fileOutputStream = new FileOutputStream(filePath);
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
                         return new Object[]{currentIcon, bitmap};
                     }
@@ -355,14 +355,14 @@ public class WeatherActivity extends Activity {
         @Override
         protected void onPostExecute(Object result) {
             WeiboLog.d("onPostExecute");
-            if (null==result) {
+            if (null == result) {
                 WeiboLog.d("获取图片失败。");
                 return;
             }
 
             try {
-                ImageView imageView=(ImageView) ((Object[]) result)[0];
-                Bitmap bitmap=(Bitmap) ((Object[]) result)[1];
+                ImageView imageView = (ImageView) ((Object[]) result)[ 0 ];
+                Bitmap bitmap = (Bitmap) ((Object[]) result)[ 1 ];
                 imageView.setImageBitmap(bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -377,27 +377,27 @@ public class WeatherActivity extends Activity {
      * @param filePath 存储的文件
      */
     private void saveWeatherToSys(BufferedReader br, String filePath) {
-        BufferedWriter writer=null;
+        BufferedWriter writer = null;
         try {
-            writer=new BufferedWriter(new FileWriter(filePath));
-            char[] buffer=new char[1024];
-            int i=0;
+            writer = new BufferedWriter(new FileWriter(filePath));
+            char[] buffer = new char[ 1024 ];
+            int i = 0;
 
-            while ((i=br.read(buffer))!=-1) {
+            while ((i = br.read(buffer)) != - 1) {
                 writer.write(buffer, 0, i);
             }
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (writer!=null) {
+            if (writer != null) {
                 try {
                     writer.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if (br!=null) {
+            if (br != null) {
                 try {
                     br.close();
                 } catch (IOException e) {
@@ -416,17 +416,17 @@ public class WeatherActivity extends Activity {
     public BufferedReader getByURLConnection(String urlString) {
         URL url;
         HttpURLConnection uc;
-        BufferedReader is=null;
+        BufferedReader is = null;
         try {
-            url=new URL(urlString);
-            uc=(HttpURLConnection) url.openConnection();
+            url = new URL(urlString);
+            uc = (HttpURLConnection) url.openConnection();
             uc.setRequestProperty("User-Agent", BaseApi.USERAGENT);
             //Map<String, List<String>> headers=uc.getHeaderFields();
-            String encode="UTF-8";
+            String encode = "UTF-8";
             if ("UTF-8".equalsIgnoreCase(encode)) {
-                is=new BufferedReader(new InputStreamReader(uc.getInputStream()), 4*1000);
+                is = new BufferedReader(new InputStreamReader(uc.getInputStream()), 4 * 1000);
             } else {
-                is=new BufferedReader(new InputStreamReader(url.openStream(), encode), 4*1000);
+                is = new BufferedReader(new InputStreamReader(url.openStream(), encode), 4 * 1000);
             }
         } catch (MalformedURLException e) {
             //e.printStackTrace();
@@ -441,30 +441,30 @@ public class WeatherActivity extends Activity {
 
     //-----------------------------
     Button cancelBtn, okBtn;
-    Spinner selProvinceSpinner,selCitySpinner;
+    Spinner selProvinceSpinner, selCitySpinner;
     Dialog mCityDialog;
     ArrayAdapter mProvinceAdapter;
-    View.OnClickListener cityListener=new View.OnClickListener(){
+    View.OnClickListener cityListener = new View.OnClickListener() {
         @Override
-        public void onClick(View view){
-            int id=view.getId();
-            if (id==R.id.cancel) {
+        public void onClick(View view) {
+            int id = view.getId();
+            if (id == R.id.cancel) {
                 mCityDialog.cancel();
-            } else if (id==R.id.ok) {
+            } else if (id == R.id.ok) {
                 mCityDialog.dismiss();
                 try {
-                    String name=(String) selCitySpinner.getSelectedItem();
-                    WeiboLog.d("选中的城市名："+name);
-                    String[] names=name.split("-");
-                    String pinyin=names[1];
+                    String name = (String) selCitySpinner.getSelectedItem();
+                    WeiboLog.d("选中的城市名：" + name);
+                    String[] names = name.split("-");
+                    String pinyin = names[ 1 ];
 
-                    if (!TextUtils.isEmpty(pinyin)) {
-                        SharedPreferences.Editor editor=mPreferences.edit();
-                        editor.putString(Constants.WEA_LOCATION,pinyin);
-                        editor.putString(Constants.WEA_LOCATION_ALIAS,names[0]);
+                    if (! TextUtils.isEmpty(pinyin)) {
+                        SharedPreferences.Editor editor = mPreferences.edit();
+                        editor.putString(Constants.WEA_LOCATION, pinyin);
+                        editor.putString(Constants.WEA_LOCATION_ALIAS, names[ 0 ]);
                         editor.commit();
 
-                        queryWeatherByNet(pinyin,names[0]);
+                        queryWeatherByNet(pinyin, names[ 0 ]);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -477,18 +477,18 @@ public class WeatherActivity extends Activity {
      * 显示省份与天气对话框
      */
     private void showProvinceDialog() {
-        if (null==mProvinces||mProvinces.size()<1) {
+        if (null == mProvinces || mProvinces.size() < 1) {
             return;
         }
 
-        if(null==mCityDialog){
+        if (null == mCityDialog) {
             initCityDialog();
         }
 
-        if (null==mProvinceAdapter) {
-            mProvinceAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        if (null == mProvinceAdapter) {
+            mProvinceAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
             mProvinceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            for(Province province:mProvinces){
+            for (Province province : mProvinces) {
                 mProvinceAdapter.add(province.name);
                 //WeiboLog.d("添加省份:"+province.name);
             }
@@ -499,12 +499,12 @@ public class WeatherActivity extends Activity {
     }
 
     private void initCityDialog() {
-        LayoutInflater inflater=LayoutInflater.from(WeatherActivity.this);
-        View view=inflater.inflate(R.layout.wea_dialog, null);
-        cancelBtn=(Button) view.findViewById(R.id.cancel);
-        okBtn=(Button) view.findViewById(R.id.ok);
-        selProvinceSpinner=(Spinner) view.findViewById(R.id.sel_province_btn);
-        selCitySpinner=(Spinner) view.findViewById(R.id.sel_city_btn);
+        LayoutInflater inflater = LayoutInflater.from(WeatherActivity.this);
+        View view = inflater.inflate(R.layout.wea_dialog, null);
+        cancelBtn = (Button) view.findViewById(R.id.cancel);
+        okBtn = (Button) view.findViewById(R.id.ok);
+        selProvinceSpinner = (Spinner) view.findViewById(R.id.sel_province_btn);
+        selCitySpinner = (Spinner) view.findViewById(R.id.sel_city_btn);
 
         cancelBtn.setOnClickListener(cityListener);
         okBtn.setOnClickListener(cityListener);
@@ -512,7 +512,7 @@ public class WeatherActivity extends Activity {
         selProvinceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String name=(String) mProvinceAdapter.getItem(i);
+                String name = (String) mProvinceAdapter.getItem(i);
                 setCitySpinner(name);
             }
 
@@ -521,25 +521,25 @@ public class WeatherActivity extends Activity {
             }
         });
 
-        AlertDialog.Builder builder=new AlertDialog.Builder(WeatherActivity.this)
+        AlertDialog.Builder builder = new AlertDialog.Builder(WeatherActivity.this)
             .setTitle(R.string.wea_city_title)
             .setView(view);
 
-        final AlertDialog dialog=builder.create();
-        mCityDialog=dialog;
+        final AlertDialog dialog = builder.create();
+        mCityDialog = dialog;
     }
 
     void setCitySpinner(String name) {
-        WeiboLog.d("setCitySpinner.选择的省份:"+name);
+        WeiboLog.d("setCitySpinner.选择的省份:" + name);
         for (Province province : mProvinces) {
             if (province.name.equals(name)) {
-                ArrayAdapter adapter=new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+                ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                ArrayList<City> cities=province.cities;
+                ArrayList<City> cities = province.cities;
 
-                if (null!=cities) {
+                if (null != cities) {
                     for (City city : cities) {
-                        adapter.add(city.name+"-"+city.pinyin);
+                        adapter.add(city.name + "-" + city.pinyin);
                     }
 
                     selCitySpinner.setAdapter(adapter);

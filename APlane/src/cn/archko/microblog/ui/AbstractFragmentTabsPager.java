@@ -11,7 +11,6 @@ import android.support.v4.view.LazyViewPager;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 import cn.archko.microblog.R;
-import cn.archko.microblog.fragment.abs.AbsStatusAbstraction;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
 import com.andrew.apollo.utils.ThemeUtils;
 import com.bulletnoid.android.widget.SwipeAwayLayout;
@@ -26,11 +25,11 @@ import java.util.ArrayList;
  */
 public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity implements OnRefreshListener {
 
-    public static final String TAG="AbstractFragmentTabsPager";
+    public static final String TAG = "AbstractFragmentTabsPager";
     protected LazyViewPager mViewPager;
     protected ActionTabsAdapter mTabsAdapter;
     protected ActionBar.TabListener mTabListener;
-    protected int currentTabIdx=0;
+    protected int currentTabIdx = 0;
     protected ActionBar mActionBar;
 
     @Override
@@ -38,16 +37,16 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
         super.onCreate(savedInstanceState);
 
         _onCreate(savedInstanceState);
-        SwipeAwayLayout view_root=(SwipeAwayLayout) findViewById(R.id.view_root);
+        SwipeAwayLayout view_root = (SwipeAwayLayout) findViewById(R.id.view_root);
         view_root.setSwipeOrientation(SwipeAwayLayout.LEFT_RIGHT);
 
         view_root.setOnSwipeAwayListener(new SwipeAwayLayout.OnSwipeAwayListener() {
             @Override
             public void onSwipedAway(int mCloseOrientation) {
                 finish();
-                int animId=R.anim.exit_left;
-                if (mCloseOrientation==SwipeAwayLayout.RIGHT_ONLY) {
-                    animId=R.anim.exit_to_left;
+                int animId = R.anim.exit_left;
+                if (mCloseOrientation == SwipeAwayLayout.RIGHT_ONLY) {
+                    animId = R.anim.exit_to_left;
                 }
                 overridePendingTransition(0, animId);
             }
@@ -62,17 +61,17 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
     protected void _onCreate(Bundle bundle) {
         setContentView(R.layout.ak_tabs_pager);
 
-        final ActionBar bar=getActionBar();
-        mActionBar=bar;
+        final ActionBar bar = getActionBar();
+        mActionBar = bar;
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         //bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         bar.setDisplayShowTitleEnabled(false);  //隐藏主面的标题
         bar.setDisplayShowHomeEnabled(false);   //隐藏整个标题栏
 
-        mViewPager=(LazyViewPager) findViewById(R.id.pager);
-        mTabsAdapter=new ActionTabsAdapter(this, bar, mViewPager);
+        mViewPager = (LazyViewPager) findViewById(R.id.pager);
+        mTabsAdapter = new ActionTabsAdapter(this, bar, mViewPager);
 
-        mTabListener=new ActionBar.TabListener() {
+        mTabListener = new ActionBar.TabListener() {
             @Override
             public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
                 mTabsAdapter.onTabItemChanged(bar.getSelectedNavigationIndex());
@@ -104,13 +103,13 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
     protected abstract void addTab(ActionBar bar);
 
     protected void addItem(Class<?> fragmentClass, int iconId, String tag, int txtId, ActionBar bar, Bundle bundle) {
-        ActionBar.Tab tab=null;
-        tab=bar.newTab();
-        if (iconId!=-1) {
+        ActionBar.Tab tab = null;
+        tab = bar.newTab();
+        if (iconId != - 1) {
             tab.setIcon(iconId);
         }
 
-        if (txtId!=-1) {
+        if (txtId != - 1) {
             tab.setText(txtId);
         }
         tab.setTabListener(mTabListener);
@@ -118,8 +117,8 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
     }
 
     protected void addItem(Class<?> fragmentClass, String tag, String txt, ActionBar bar) {
-        ActionBar.Tab tab=null;
-        tab=bar.newTab();
+        ActionBar.Tab tab = null;
+        tab = bar.newTab();
         tab.setText(txt);
         tab.setTabListener(mTabListener);
         mTabsAdapter.addTab(tab, fragmentClass, null, tag);
@@ -138,8 +137,8 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
         private final Context mContext;
         private final ActionBar mTabHost;
         private final LazyViewPager mViewPager;
-        private final ArrayList<TabInfo> mTabs=new ArrayList<TabInfo>();
-        private final SparseArray<WeakReference<Fragment>> mFragmentArray=new SparseArray<WeakReference<Fragment>>();
+        private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
+        private final SparseArray<WeakReference<Fragment>> mFragmentArray = new SparseArray<WeakReference<Fragment>>();
 
         final class TabInfo {
 
@@ -148,17 +147,17 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
             private final Bundle args;
 
             TabInfo(String _tag, Class<?> _class, Bundle _args) {
-                tag=_tag;
-                clss=_class;
-                args=_args;
+                tag = _tag;
+                clss = _class;
+                args = _args;
             }
         }
 
         public ActionTabsAdapter(Activity activity, ActionBar actionBar, LazyViewPager pager) {
             super(activity.getFragmentManager());
-            mContext=activity;
-            mTabHost=actionBar;
-            mViewPager=pager;
+            mContext = activity;
+            mTabHost = actionBar;
+            mViewPager = pager;
             //mTabHost.setOnTabChangedListener(this);
             mViewPager.setAdapter(this);
             mViewPager.setOnPageChangeListener(this);
@@ -168,7 +167,7 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
             /*tabSpec.setContent(new DummyTabFactory(mContext));
             String tag=tabSpec.getTag();*/
 
-            TabInfo info=new TabInfo(tag, clss, args);
+            TabInfo info = new TabInfo(tag, clss, args);
             mTabs.add(info);
             mTabHost.addTab(tabSpec);
             notifyDataSetChanged();
@@ -181,13 +180,13 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
          * @return
          */
         public int getFragmentItem(Class clazz) {
-            int index=-1;
+            int index = - 1;
             TabInfo tabInfo;
-            for (int i=0; i<mTabs.size(); i++) {
-                tabInfo=mTabs.get(i);
-                if (tabInfo.clss==clazz) {
-                    WeiboLog.d("找到对应的Fragment为："+clazz+" 位置:"+i);
-                    index=i;
+            for (int i = 0; i < mTabs.size(); i++) {
+                tabInfo = mTabs.get(i);
+                if (tabInfo.clss == clazz) {
+                    WeiboLog.d("找到对应的Fragment为：" + clazz + " 位置:" + i);
+                    index = i;
                     break;
                 }
             }
@@ -199,7 +198,7 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
          */
         public void updateTab(int pos, String newTag) {
             mTabHost.getTabAt(pos).setText(newTag);
-            WeiboLog.i("pos:"+pos+" newTag:"+newTag);
+            WeiboLog.i("pos:" + pos + " newTag:" + newTag);
         }
 
         @Override
@@ -209,13 +208,13 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
 
         @Override
         public Fragment getItem(int position) {
-            WeiboLog.v(TAG, "getItem:"+position);
-            final WeakReference<Fragment> mWeakFragment=mFragmentArray.get(position);
-            if (mWeakFragment!=null&&mWeakFragment.get()!=null) {
+            WeiboLog.v(TAG, "getItem:" + position);
+            final WeakReference<Fragment> mWeakFragment = mFragmentArray.get(position);
+            if (mWeakFragment != null && mWeakFragment.get() != null) {
                 return mWeakFragment.get();
             }
 
-            TabInfo info=mTabs.get(position);
+            TabInfo info = mTabs.get(position);
             return Fragment.instantiate(mContext, info.clss.getName(), info.args);
         }
 
@@ -224,14 +223,14 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
          */
         @Override
         public Object instantiateItem(final ViewGroup container, final int position) {
-            WeiboLog.v("instantiateItem:"+position);
-            WeakReference<Fragment> mWeakFragment=mFragmentArray.get(position);
-            if (mWeakFragment!=null&&mWeakFragment.get()!=null) {
+            WeiboLog.v("instantiateItem:" + position);
+            WeakReference<Fragment> mWeakFragment = mFragmentArray.get(position);
+            if (mWeakFragment != null && mWeakFragment.get() != null) {
                 //mWeakFragment.clear();
                 return mWeakFragment.get();
             }
 
-            final Fragment mFragment=(Fragment) super.instantiateItem(container, position);
+            final Fragment mFragment = (Fragment) super.instantiateItem(container, position);
             mFragmentArray.put(position, new WeakReference<Fragment>(mFragment));
             return mFragment;
         }
@@ -242,8 +241,8 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
         @Override
         public void destroyItem(final ViewGroup container, final int position, final Object object) {
             super.destroyItem(container, position, object);
-            final WeakReference<Fragment> mWeakFragment=mFragmentArray.get(position);
-            if (mWeakFragment!=null) {
+            final WeakReference<Fragment> mWeakFragment = mFragmentArray.get(position);
+            if (mWeakFragment != null) {
                 mWeakFragment.clear();
             }
         }
@@ -264,7 +263,7 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
             widget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
             mTabHost.setCurrentTab(position);
             widget.setDescendantFocusability(oldFocusability);*/
-            WeiboLog.d("onPageSelected:"+position);
+            WeiboLog.d("onPageSelected:" + position);
             mTabHost.selectTab(mTabHost.getTabAt(position));
             updateTitle(position);
             selectPage(position);
@@ -284,7 +283,7 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
 
         public void onTabItemChanged(int index) {
             mViewPager.setCurrentItem(index);
-            WeiboLog.d("onTabItemChanged.index:"+index);
+            WeiboLog.d("onTabItemChanged.index:" + index);
         }
 
         /**

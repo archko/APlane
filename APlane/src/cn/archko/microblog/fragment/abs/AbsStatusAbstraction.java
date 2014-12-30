@@ -10,7 +10,7 @@ import com.me.microblog.util.WeiboLog;
  * @author: archko Date: 13-1-28 Time: 下午6:42
  * @description:
  */
-public abstract class AbsStatusAbstraction<T> extends AbstractBaseFragment {
+public abstract class AbsStatusAbstraction <T> extends AbstractBaseFragment {
 
     public AbsStatusImpl<T> mStatusImpl;
 
@@ -31,14 +31,14 @@ public abstract class AbsStatusAbstraction<T> extends AbstractBaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (null==mStatusImpl) {
+        if (null == mStatusImpl) {
             throw new IllegalArgumentException("需要设置数据获取实现!");
         }
         mStatusImpl.updateToken();
     }
 
     public void setStatusImpl(AbsStatusImpl<T> statusImpl) {
-        mStatusImpl=statusImpl;
+        mStatusImpl = statusImpl;
     }
 
     @Override
@@ -59,8 +59,8 @@ public abstract class AbsStatusAbstraction<T> extends AbstractBaseFragment {
      */
     public Object[] baseBackgroundOperation(Object... objects) {
         try {
-            WeiboLog.d(TAG, "baseBackgroundOperation:"+objects);
-            SStatusData<T> sStatusData=(SStatusData<T>) getData(objects);
+            WeiboLog.d(TAG, "baseBackgroundOperation:" + objects);
+            SStatusData<T> sStatusData = (SStatusData<T>) getData(objects);
 
             saveData(sStatusData);
             return new Object[]{sStatusData, objects};

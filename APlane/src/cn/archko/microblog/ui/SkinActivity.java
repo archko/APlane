@@ -1,12 +1,10 @@
 package cn.archko.microblog.ui;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 import cn.archko.microblog.R;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
@@ -27,17 +25,17 @@ public class SkinActivity extends Activity implements PopupMenu.OnMenuItemClickL
             requestWindowFeature(Window.FEATURE_NO_TITLE);
         }*/
 
-        int theme=R.style.Theme_AK;
-        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        int theme = R.style.Theme_AK;
+        String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
-            theme=R.style.Theme_AK;
+            theme = R.style.Theme_AK;
         } else if ("2".equals(themeId)) {
-            theme=R.style.Theme_AK_Light;
+            theme = R.style.Theme_AK_Light;
         } else if ("3".equals(themeId)) {
             //theme=R.style.Theme_AndroidDevelopers;
         }
-        theme=R.style.Theme_AK_Light;
+        theme = R.style.Theme_AK_Light;
         setTheme(theme);
         getActionBar().hide();
     }
@@ -50,7 +48,7 @@ public class SkinActivity extends Activity implements PopupMenu.OnMenuItemClickL
      * @param anchorView 菜单显示的锚点View。
      */
     public void prepareMenu(View anchorView) {
-        PopupMenu popupMenu=new PopupMenu(this, anchorView);
+        PopupMenu popupMenu = new PopupMenu(this, anchorView);
 
         onCreateCustomMenu(popupMenu);
         onPrepareCustomMenu(popupMenu);

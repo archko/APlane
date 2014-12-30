@@ -1,11 +1,10 @@
 package com.me.microblog.bean;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Group implements Serializable {
 
-    public static final long serialVersionUID=3894560643019408225L;
+    public static final long serialVersionUID = 3894560643019408225L;
 
     /**
      * 分组ID
@@ -71,6 +70,6 @@ public class Group implements Serializable {
             ", member_count="+member_count+
             ", createdAt="+createdAt+
             '}';*/
-        return name+" ("+member_count+")";    //由于在主页使用ArrayAdapter，所以这里只能返回字符串。
+        return name + " (" + member_count + ")";    //由于在主页使用ArrayAdapter，所以这里只能返回字符串。
     }
 }

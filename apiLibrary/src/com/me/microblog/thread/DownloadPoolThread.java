@@ -2,9 +2,7 @@ package com.me.microblog.thread;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
@@ -45,42 +43,42 @@ import java.util.List;
 @Deprecated
 public class DownloadPoolThread extends Thread {
 
-    public static final String TAG="DownloadPoolThread";
-    public static int MAX_THREAD_COUNT=2;
+    public static final String TAG = "DownloadPoolThread";
+    public static int MAX_THREAD_COUNT = 2;
     //private DefaultHttpClient httpClient;
-    private int mActiveThread=0;
+    private int mActiveThread = 0;
     private List<DownloadPiece> mQuery;
     private List<String> mUrls;
 
     private static DownloadPoolThread mInstance;
 
     public static DownloadPoolThread getDownloadPoolThread() {
-        if (mInstance==null) {
-            mInstance=new DownloadPoolThread();
+        if (mInstance == null) {
+            mInstance = new DownloadPoolThread();
         }
 
         return mInstance;
     }
 
     public void setThreadCount(int threadCount) {
-        MAX_THREAD_COUNT=threadCount;
+        MAX_THREAD_COUNT = threadCount;
     }
 
     private DownloadPoolThread() {
-        this.mQuery=new ArrayList<DownloadPiece>();
-        this.mUrls=new ArrayList<String>();
-        connectionManager=new ThreadSafeClientConnManager(params, createRegitry());
+        this.mQuery = new ArrayList<DownloadPiece>();
+        this.mUrls = new ArrayList<String>();
+        connectionManager = new ThreadSafeClientConnManager(params, createRegitry());
         init();
     }
 
     private HttpParams params;
     ClientConnectionManager connectionManager;
-    private boolean isStop=false;
-    public static final int READ_TIMEOUT=24000;
-    public static final int CONNECT_TIMEOUT=12000;
+    private boolean isStop = false;
+    public static final int READ_TIMEOUT = 24000;
+    public static final int CONNECT_TIMEOUT = 12000;
 
     {
-        params=new BasicHttpParams();
+        params = new BasicHttpParams();
         HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
         HttpProtocolParams.setContentCharset(params, "UTF-8");
         HttpProtocolParams.setUseExpectContinue(params, true);
@@ -101,14 +99,14 @@ public class DownloadPoolThread extends Thread {
     }
 
     private final static SchemeRegistry createRegitry() {
-        SchemeRegistry schemeRegistry=new SchemeRegistry();
+        SchemeRegistry schemeRegistry = new SchemeRegistry();
         // Register the "http" and "https" protocol schemes, they are
         // required by the default operator to look up socket factories.
-        SocketFactory sf=PlainSocketFactory.getSocketFactory();
+        SocketFactory sf = PlainSocketFactory.getSocketFactory();
         schemeRegistry.register(new Scheme("http", sf, 80));
         //    sf = SSLSocketFactory.getSocketFactory();
 
-        SSLSocketFactory ssf=SSLSocketFactory.getSocketFactory();
+        SSLSocketFactory ssf = SSLSocketFactory.getSocketFactory();
         schemeRegistry.register(new Scheme("https", ssf, 443));
 
         return schemeRegistry;
@@ -128,11 +126,11 @@ public class DownloadPoolThread extends Thread {
 
         WeiboLog.d(TAG, "initDecodeThread:");
         synchronized (this) {
-            final Thread previewThread=new Thread() {
+            final Thread previewThread = new Thread() {
                 @Override
                 public void run() {
                     Looper.prepare();
-                    mHandler=new Handler() {
+                    mHandler = new Handler() {
                         @Override
                         public void handleMessage(Message msg) {
                             internalhandleMessage(msg);
@@ -196,8 +194,8 @@ public class DownloadPoolThread extends Thread {
 
     private void internalStart(Message msg) {
         //Log.d(TAG, "internalStart:");
-        if (null!=msg&&null!=msg.obj) {
-            DownloadPiece mpiece=(DownloadPiece) msg.obj;
+        if (null != msg && null != msg.obj) {
+            DownloadPiece mpiece = (DownloadPiece) msg.obj;
             if (TextUtils.isEmpty(mpiece.uri)) {
                 WeiboLog.d(TAG, "internalStart uri is null.");
                 return;
@@ -206,7 +204,7 @@ public class DownloadPoolThread extends Thread {
             mQuery.add(mpiece);
         }
 
-        if (mActiveThread>=MAX_THREAD_COUNT) {
+        if (mActiveThread >= MAX_THREAD_COUNT) {
             /*if (null!=mHandler) {
                 mHandler.postDelayed(new Runnable() {
                     @Override
@@ -216,13 +214,13 @@ public class DownloadPoolThread extends Thread {
                 }, 1000l);
             }*/
         } else {
-            if (mQuery.size()>0) {
-                DownloadPiece piece=mQuery.get(0);
-                if (!mUrls.contains(piece.uri)) {
+            if (mQuery.size() > 0) {
+                DownloadPiece piece = mQuery.get(0);
+                if (! mUrls.contains(piece.uri)) {
                     FrechImg_Impl(piece);
                     mQuery.remove(0);
                 } else {
-                    WeiboLog.v(TAG, "已经存在url:"+piece);
+                    WeiboLog.v(TAG, "已经存在url:" + piece);
                 }
             }
         }
@@ -232,13 +230,13 @@ public class DownloadPoolThread extends Thread {
      * 资源释放
      */
     public void release() {
-        if (null!=mHandler) {
+        if (null != mHandler) {
             mHandler.sendEmptyMessage(2);
         }
     }
 
     public void internalRelease() {
-        if (this.mHandler!=null) {
+        if (this.mHandler != null) {
             this.mHandler.removeCallbacksAndMessages(null);
         }
         quitLooper();
@@ -257,9 +255,9 @@ public class DownloadPoolThread extends Thread {
      * 下载完成一个,通知,减少线程数量.
      */
     public void pop() {
-        if (null!=mHandler) {
-            Message msg=Message.obtain();
-            msg.what=3;
+        if (null != mHandler) {
+            Message msg = Message.obtain();
+            msg.what = 3;
             mHandler.sendMessage(msg);
         }
     }
@@ -270,7 +268,7 @@ public class DownloadPoolThread extends Thread {
 
     //=======================================
     public void popDownloadQuery(String url) {
-        if (null!=mUrls&&null!=url) {
+        if (null != mUrls && null != url) {
             mUrls.remove(url);
         }
 
@@ -295,9 +293,9 @@ public class DownloadPoolThread extends Thread {
      * @param cache     是否缓存
      */
     public void Push(DownloadPiece mpiece) {
-        Message msg=Message.obtain();
-        msg.obj=mpiece;
-        msg.what=0;
+        Message msg = Message.obtain();
+        msg.obj = mpiece;
+        msg.what = 0;
         mHandler.sendMessage(msg);
     }
 
@@ -312,24 +310,24 @@ public class DownloadPoolThread extends Thread {
      * @param imageView 图片视图
      */
     public void Push(Handler handler, String uri, int type, boolean cache, String dir, ImageView imageView) {
-        Message msg=Message.obtain();
-        DownloadPiece piece=new DownloadPiece(handler, uri, type, cache, dir, false, imageView);
-        msg.obj=piece;
-        msg.what=0;
+        Message msg = Message.obtain();
+        DownloadPiece piece = new DownloadPiece(handler, uri, type, cache, dir, false, imageView);
+        msg.obj = piece;
+        msg.what = 0;
         mHandler.sendMessage(msg);
     }
 
     private void FrechImg_Impl(DownloadPiece piece) {
-        final String uri=piece.uri;
+        final String uri = piece.uri;
         //WeiboLog.v(TAG, "FrechImg_Impl:"+uri);
-        if (uri==null||piece.dir==null) {
+        if (uri == null || piece.dir == null) {
             WeiboLog.w(TAG, "名字不存在。");
             pop();
             return;
         }
 
         if (cancelWork(piece)) {
-            WeiboLog.i(TAG, "viewWeakRef is null."+uri);
+            WeiboLog.i(TAG, "viewWeakRef is null." + uri);
             //downloading.remove(uri);
             pop();
             return;
@@ -337,43 +335,43 @@ public class DownloadPoolThread extends Thread {
 
         mUrls.add(uri);
 
-        final Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(uri);
-        final WeakReference<ImageView> viewWeakReference=piece.mImageReference;
-        ImageView imageView=(ImageView) viewWeakReference.get();
-        if (null!=bitmap) {
-            if (!cancelWork(piece)&&null!=piece.handler) {
+        final Bitmap bitmap = ImageCache2.getInstance().getBitmapFromMemCache(uri);
+        final WeakReference<ImageView> viewWeakReference = piece.mImageReference;
+        ImageView imageView = (ImageView) viewWeakReference.get();
+        if (null != bitmap) {
+            if (! cancelWork(piece) && null != piece.handler) {
                 piece.handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        ImageView view=(ImageView) viewWeakReference.get();
-                        if (null!=view) {
+                        ImageView view = (ImageView) viewWeakReference.get();
+                        if (null != view) {
                             view.setImageBitmap(bitmap);
                         } else {
-                            WeiboLog.v(TAG, "view is null;"+uri);
+                            WeiboLog.v(TAG, "view is null;" + uri);
                         }
                     }
                 });
             } else {
-                WeiboLog.v(TAG, "null==viewWeakReference:"+uri);
+                WeiboLog.v(TAG, "null==viewWeakReference:" + uri);
             }
             popDownloadQuery(uri);
             return;
         } else if (executePotentialWork(piece.uri, viewWeakReference.get())) {
             //mApp.mDownloadPool.ActiveThread_Push();
-            String str3=Uri.encode(uri, ":/");
-            HttpGet httpGet=new HttpGet(str3);
+            String str3 = Uri.encode(uri, ":/");
+            HttpGet httpGet = new HttpGet(str3);
             httpGet.setHeader("User-Agent", BaseApi.USERAGENT);
-            DefaultHttpClient httpClient=new DefaultHttpClient(connectionManager, params);
-            ImageTask imageTask=new ImageTask(App.getAppContext(), httpClient, httpGet, piece);
+            DefaultHttpClient httpClient = new DefaultHttpClient(connectionManager, params);
+            ImageTask imageTask = new ImageTask(App.getAppContext(), httpClient, httpGet, piece);
             //final AsyncDrawable asyncDrawable=new AsyncDrawable(imageTask);
             AsyncDrawable asyncDrawable;
-            Drawable drawable=imageView.getDrawable();
-            if (null==drawable) {
-                asyncDrawable=new AsyncDrawable(null, null, imageTask);
+            Drawable drawable = imageView.getDrawable();
+            if (null == drawable) {
+                asyncDrawable = new AsyncDrawable(null, null, imageTask);
             } else {
-                asyncDrawable=new AsyncDrawable(null, imageTask.mDefault, imageTask);
+                asyncDrawable = new AsyncDrawable(null, imageTask.mDefault, imageTask);
             }
-            if (null!=piece.handler) {
+            if (null != piece.handler) {
                 setDrawable(imageView, asyncDrawable, piece.handler);
             }
             imageTask.startThread();
@@ -392,10 +390,10 @@ public class DownloadPoolThread extends Thread {
     }
 
     public static final boolean executePotentialWork(final Object data, final ImageView imageView) {
-        final ImageTask bitmapWorkerTask=getBitmapWorkerTask(imageView);
-        if (bitmapWorkerTask!=null) {
-            final Object bitmapData=bitmapWorkerTask.mPiece;
-            if (bitmapData==null||!((DownloadPiece) bitmapData).uri.equals(data)) {
+        final ImageTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
+        if (bitmapWorkerTask != null) {
+            final Object bitmapData = bitmapWorkerTask.mPiece;
+            if (bitmapData == null || ! ((DownloadPiece) bitmapData).uri.equals(data)) {
                 bitmapWorkerTask.cancel(true);
             } else {
                 // The same work is already in progress
@@ -406,10 +404,10 @@ public class DownloadPoolThread extends Thread {
     }
 
     public static final ImageTask getBitmapWorkerTask(final ImageView imageView) {
-        if (imageView!=null) {
-            final Drawable drawable=imageView.getDrawable();
+        if (imageView != null) {
+            final Drawable drawable = imageView.getDrawable();
             if (drawable instanceof AsyncDrawable) {
-                final AsyncDrawable asyncDrawable=(AsyncDrawable) drawable;
+                final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
                 return asyncDrawable.getBitmapWorkerTask();
             }
         }
@@ -431,7 +429,7 @@ public class DownloadPoolThread extends Thread {
         public AsyncDrawable(final Resources res, final Bitmap bitmap,
             final ImageTask mBitmapWorkerTask) {
             super(bitmap);
-            mBitmapWorkerTaskReference=new WeakReference<ImageTask>(mBitmapWorkerTask);
+            mBitmapWorkerTaskReference = new WeakReference<ImageTask>(mBitmapWorkerTask);
         }
 
         /**
@@ -443,11 +441,11 @@ public class DownloadPoolThread extends Thread {
     }
 
     public static boolean cancelWork(DownloadPiece piece) {
-        if (null==piece) {
+        if (null == piece) {
             return false;
         }
-        WeakReference<ImageView> viewWeakReference=piece.mImageReference;//DownloadPool.downloading.get(uri);
-        if (null==viewWeakReference||viewWeakReference.get()==null) {
+        WeakReference<ImageView> viewWeakReference = piece.mImageReference;//DownloadPool.downloading.get(uri);
+        if (null == viewWeakReference || viewWeakReference.get() == null) {
             return true;
         }
         return false;

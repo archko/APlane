@@ -1,6 +1,5 @@
 package cn.archko.microblog.utils.listeners;
 
-
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -35,9 +34,8 @@ public class ListenerProxy {
 
     /**
      * Constructor.
-     * 
-     * @param listenerInterfaces
-     *            a list of listener interfaces to implement
+     *
+     * @param listenerInterfaces a list of listener interfaces to implement
      */
     public ListenerProxy(final Class<?>... listenerInterfaces) {
         if (isEmpty(listenerInterfaces)) {
@@ -48,7 +46,7 @@ public class ListenerProxy {
             if (listener == null) {
                 throw new IllegalArgumentException("Listener class cannot be null");
             }
-            if (!listener.isInterface()) {
+            if (! listener.isInterface()) {
                 throw new IllegalArgumentException("Listener class should be an interface");
             }
         }
@@ -60,9 +58,8 @@ public class ListenerProxy {
 
     /**
      * Adds the target listener.
-     * 
-     * @param listener
-     *            the listener to add
+     *
+     * @param listener the listener to add
      */
     public void addListener(final Object listener) {
         if (listener != null) {
@@ -89,9 +86,8 @@ public class ListenerProxy {
 
     /**
      * Removes the target listener.
-     * 
-     * @param listener
-     *            the listener to remove
+     *
+     * @param listener the listener to remove
      */
     public void removeListener(final Object listener) {
         if (listener != null) {
@@ -129,9 +125,8 @@ public class ListenerProxy {
 
     /**
      * Gets the proxy listener casted to the given listener type.
-     * 
-     * @param <Listener>
-     *            listener type
+     *
+     * @param <Listener> listener type
      * @return an instance of the <code>Listener</code> type
      */
     @SuppressWarnings("unchecked")
@@ -146,18 +141,14 @@ public class ListenerProxy {
 
         /**
          * Processes a method invocation on a proxy instance and returns the result.
-         * 
-         * @param proxy
-         *            the proxy instance that the method was invoked on
-         * @param method
-         *            the <code>Method</code> instance corresponding to the interface method invoked on the proxy instance.
-         * @param args
-         *            an array of objects containing the values of the arguments passed in the method invocation on the proxy
-         *            instance.
+         *
+         * @param proxy  the proxy instance that the method was invoked on
+         * @param method the <code>Method</code> instance corresponding to the interface method invoked on the proxy instance.
+         * @param args   an array of objects containing the values of the arguments passed in the method invocation on the proxy
+         *               instance.
          * @return the value to return from the method invocation on the proxy instance.
-         * @throws Throwable
-         *             the exception to throw from the method invocation on the proxy instance.
-     * @see java.lang.reflect.InvocationHandler#invoke(Object, java.lang.reflect.Method, Object[])
+         * @throws Throwable the exception to throw from the method invocation on the proxy instance.
+         * @see java.lang.reflect.InvocationHandler#invoke(Object, java.lang.reflect.Method, Object[])
          */
         public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
             final Class<?> listenerClass = method.getDeclaringClass();
@@ -177,7 +168,7 @@ public class ListenerProxy {
     }
 
     public static boolean isEmpty(final Object[] array) {
-        return length(array)==0;
+        return length(array) == 0;
     }
 
     /**
@@ -185,10 +176,10 @@ public class ListenerProxy {
      * @return real array length or <code>0</code> if reference is <code>null</code>
      */
     public static int length(final Object[] arr) {
-        return arr!=null ? arr.length : 0;
+        return arr != null ? arr.length : 0;
     }
 
     public static boolean isNotEmpty(final Collection<?> c) {
-        return c!=null&&!c.isEmpty();
+        return c != null && ! c.isEmpty();
     }
 }

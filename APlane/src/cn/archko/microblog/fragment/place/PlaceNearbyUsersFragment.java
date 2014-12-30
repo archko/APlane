@@ -1,7 +1,6 @@
 package cn.archko.microblog.fragment.place;
 
 import android.view.View;
-import com.me.microblog.util.WeiboLog;
 
 /**
  * @version 1.00.00
@@ -11,7 +10,7 @@ import com.me.microblog.util.WeiboLog;
  */
 public class PlaceNearbyUsersFragment extends PlaceUserListFragment {
 
-    public static final String TAG="PlaceNearbyUsersFragment";
+    public static final String TAG = "PlaceNearbyUsersFragment";
     //--------------------- 数据加载 ---------------------
 
     /*public SStatusData<User> getStatuses(Long sinceId, Long maxId, int c, int p)

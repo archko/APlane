@@ -5,7 +5,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.impl.SinaHotPostStatusImpl;
-import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.view.ThreadBeanItemView;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
@@ -15,6 +14,7 @@ import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.factory.AbsApiFactory;
 import com.me.microblog.core.factory.ApiConfigFactory;
 import com.me.microblog.util.Constants;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
 
 /**
@@ -25,19 +25,19 @@ import com.me.microblog.util.WeiboLog;
 @Deprecated
 public class HotRepostFragment extends StatusListFragment {
 
-    public static final String TAG="HotRepostFragment";
+    public static final String TAG = "HotRepostFragment";
 
     @Override
     public void initApi() {
-        mStatusImpl=new SinaHotPostStatusImpl();
+        mStatusImpl = new SinaHotPostStatusImpl();
 
-        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
         try {
-            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
-            AKUtils.showToast("初始化api异常.");
+            NotifyUtils.showToast("初始化api异常.");
             //getActivity().finish();
         }
     }
@@ -54,18 +54,18 @@ public class HotRepostFragment extends StatusListFragment {
     public View getView(int position, View convertView, ViewGroup parent) {
         //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
 
-        ThreadBeanItemView itemView=null;
-        Status status=mDataList.get(position);
+        ThreadBeanItemView itemView = null;
+        Status status = mDataList.get(position);
 
-        boolean updateFlag=true;
-        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag=false;
+        boolean updateFlag = true;
+        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            updateFlag = false;
         }
 
-        if (convertView==null) {
-            itemView=new ThreadBeanItemView(getActivity(), mListView, mCacheDir, status, updateFlag, false, showLargeBitmap, showBitmap);
+        if (convertView == null) {
+            itemView = new ThreadBeanItemView(getActivity(), mListView, mCacheDir, status, updateFlag, false, showLargeBitmap, showBitmap);
         } else {
-            itemView=(ThreadBeanItemView) convertView;
+            itemView = (ThreadBeanItemView) convertView;
         }
         itemView.update(status, updateFlag, false, showLargeBitmap, showBitmap);
 
@@ -75,8 +75,8 @@ public class HotRepostFragment extends StatusListFragment {
     //--------------------- 数据加载 ---------------------
     public SStatusData<Status> getStatuses(Long sinceId, Long maxId, int c, int p)
         throws WeiboException {
-        WeiboLog.d(TAG, " HotRepostFragment.getStatuses."+sinceId+" maxId:"+maxId+" count:"+c+" page:"+p);
-        SStatusData<Status> sStatusData=null;
+        WeiboLog.d(TAG, " HotRepostFragment.getStatuses." + sinceId + " maxId:" + maxId + " count:" + c + " page:" + p);
+        SStatusData<Status> sStatusData = null;
         /*SWeiboApi2 sWeiboApi2=((SWeiboApi2) App.getMicroBlog(App.getAppContext()));
         if (null==sWeiboApi2) {
             sStatusData=new SStatusData<Status>();
@@ -92,33 +92,33 @@ public class HotRepostFragment extends StatusListFragment {
 
     @Override
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        WeiboLog.i("sinceId:"+sinceId+", maxId:"+maxId+", isRefresh:"+isRefresh+", isHomeStore:"+isHomeStore);
-        if (!App.hasInternetConnection(getActivity())) {
-            AKUtils.showToast(R.string.network_error);
-            if (mRefreshListener!=null) {
+        WeiboLog.i("sinceId:" + sinceId + ", maxId:" + maxId + ", isRefresh:" + isRefresh + ", isHomeStore:" + isHomeStore);
+        if (! App.hasInternetConnection(getActivity())) {
+            NotifyUtils.showToast(R.string.network_error);
+            if (mRefreshListener != null) {
                 mRefreshListener.onRefreshFinished();
             }
             refreshAdapter(false, false);
             return;
         }
 
-        int count=weibo_count;
+        int count = weibo_count;
         /*if (isHomeStore) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。TODO
             //count++;
         } else {*/
         //page=1;
-        int status=mPrefs.getInt(Constants.PREF_SERVICE_AT, 0);
-        WeiboLog.d(TAG, "新提及我的微博数:"+status);
-        if (status>0) {
-            if (status>Constants.WEIBO_COUNT*8) {
-                status=Constants.WEIBO_COUNT*8;
+        int status = mPrefs.getInt(Constants.PREF_SERVICE_AT, 0);
+        WeiboLog.d(TAG, "新提及我的微博数:" + status);
+        if (status > 0) {
+            if (status > Constants.WEIBO_COUNT * 8) {
+                status = Constants.WEIBO_COUNT * 8;
             }
 
-            count=status;
+            count = status;
         }
         //}
 
-        if (!isLoading) {
+        if (! isLoading) {
             newTask(new Object[]{isRefresh, sinceId, maxId, count, page, isHomeStore}, null);
         }
     }

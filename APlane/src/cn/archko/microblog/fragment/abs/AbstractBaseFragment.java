@@ -12,8 +12,8 @@ import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.oauth.Oauth2;
 import com.me.microblog.util.Constants;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00
@@ -22,35 +22,35 @@ import cn.archko.microblog.utils.AKUtils;
  */
 public abstract class AbstractBaseFragment extends BaseFragment implements PopupMenu.OnMenuItemClickListener {
 
-    public static final String TAG="AbstractBaseFragment";
-    public static final int THREAD_INIT=1;
-    public static final int THREAD_RUNNING=2;
-    public static final int THREAD_CANCELED=3;
-    public static final int THREAD_FINISHED=4;
-    public static final int THREAD_DEAD=5;
+    public static final String TAG = "AbstractBaseFragment";
+    public static final int THREAD_INIT = 1;
+    public static final int THREAD_RUNNING = 2;
+    public static final int THREAD_CANCELED = 3;
+    public static final int THREAD_FINISHED = 4;
+    public static final int THREAD_DEAD = 5;
     /**
      * 需要维护线程的状态，因为当阻塞时，退出Activity，线程返回后继续操作会引起异常。
      */
-    protected int mThreadStatus=THREAD_INIT;
+    protected int mThreadStatus = THREAD_INIT;
     protected CommonTask mCommonTask;
     protected QueryTask mQueryTask;
     protected OperationTask mOperationTask;
     /**
      * 当前登录用户的id
      */
-    public long currentUserId=-1l;
+    public long currentUserId = - 1l;
 
     //--------------------- popupMenu ---------------------
     /**
      * 列表选中的位置
      */
-    public int selectedPos=0;
+    public int selectedPos = 0;
     /*MenuBuilder mMenuBuilder=null;
     MenuPopupHelper mMenuHelper=null;*/
-    PopupWindowListener mPopupWindowListener=new PopupWindowListener() {
+    PopupWindowListener mPopupWindowListener = new PopupWindowListener() {
         @Override
         public void show(View view, int pos) {
-            selectedPos=pos;
+            selectedPos = pos;
             prepareMenu(view);
         }
     };
@@ -62,15 +62,15 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        long aUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
-        this.currentUserId=aUserId;
+        long aUserId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
+        this.currentUserId = aUserId;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        WeiboLog.v(TAG, "onDestroy:"+this);
-        mThreadStatus=THREAD_DEAD;
+        WeiboLog.v(TAG, "onDestroy:" + this);
+        mThreadStatus = THREAD_DEAD;
     }
 
     //---------------------------------
@@ -83,9 +83,9 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
      */
     protected void newTask(Object[] params, String msg) {
         WeiboLog.d(TAG, "newTask:");
-        if (!App.hasInternetConnection(getActivity())) {
-            AKUtils.showToast(R.string.network_error, Toast.LENGTH_LONG);
-            if (mRefreshListener!=null) {
+        if (! App.hasInternetConnection(getActivity())) {
+            NotifyUtils.showToast(R.string.network_error, Toast.LENGTH_LONG);
+            if (mRefreshListener != null) {
                 mRefreshListener.onRefreshFailed();
             }
             basePostOperation(null);
@@ -93,26 +93,26 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
             return;
         }
 
-        if (mThreadStatus==THREAD_RUNNING||(mCommonTask!=null&&mCommonTask.getStatus()==AsyncTask.Status.RUNNING)) {
-            if (!TextUtils.isEmpty(msg)) {
-                AKUtils.showToast(msg, Toast.LENGTH_SHORT);
+        if (mThreadStatus == THREAD_RUNNING || (mCommonTask != null && mCommonTask.getStatus() == AsyncTask.Status.RUNNING)) {
+            if (! TextUtils.isEmpty(msg)) {
+                NotifyUtils.showToast(msg, Toast.LENGTH_SHORT);
             }
             return;
         }
 
-        App app=(App) App.getAppContext();
-        if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB) {
-            mCommonTask=new CommonTask();
+        App app = (App) App.getAppContext();
+        if (app.getOauthBean().oauthType == Oauth2.OAUTH_TYPE_WEB) {
+            mCommonTask = new CommonTask();
             mCommonTask.execute(params);
         } else {
-            if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
+            if (System.currentTimeMillis() >= app.getOauthBean().expireTime && app.getOauthBean().expireTime != 0) {
                 WeiboLog.i(TAG, "web认证，token过期了.");
-                AKUtils.showToast("token过期了,需要重新认证，如果认证失败，请注销再登陆！");
+                NotifyUtils.showToast("token过期了,需要重新认证，如果认证失败，请注销再登陆！");
                 //oauth2(params);
                 mOauth2Handler.oauth2(params);
             } else {
                 WeiboLog.d(TAG, "web认证，但token有效。");
-                mCommonTask=new CommonTask();
+                mCommonTask = new CommonTask();
                 mCommonTask.execute(params);
             }
         }
@@ -127,14 +127,14 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
     protected void newTaskNoNet(Object[] params, String msg) {
         WeiboLog.d(TAG, "newTaskNoNet:");
 
-        if (mThreadStatus==THREAD_RUNNING||(mQueryTask!=null&&mQueryTask.getStatus()==AsyncTask.Status.RUNNING)) {
-            if (!TextUtils.isEmpty(msg)) {
-                AKUtils.showToast(msg, Toast.LENGTH_SHORT);
+        if (mThreadStatus == THREAD_RUNNING || (mQueryTask != null && mQueryTask.getStatus() == AsyncTask.Status.RUNNING)) {
+            if (! TextUtils.isEmpty(msg)) {
+                NotifyUtils.showToast(msg, Toast.LENGTH_SHORT);
             }
             return;
         }
 
-        mQueryTask=new QueryTask();
+        mQueryTask = new QueryTask();
         mQueryTask.execute(params);
     }
 
@@ -148,8 +148,8 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
 
     @Override
     public void postOauth(Object[] params) {
-        AKUtils.showToast(R.string.oauth_runtime_suc);
-        mCommonTask=new CommonTask();
+        NotifyUtils.showToast(R.string.oauth_runtime_suc);
+        mCommonTask = new CommonTask();
         mCommonTask.execute(params);
     }
 
@@ -159,7 +159,7 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mThreadStatus=THREAD_RUNNING;
+            mThreadStatus = THREAD_RUNNING;
             basePreOperation();
         }
 
@@ -169,12 +169,12 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
         }
 
         protected void onPostExecute(Object[] resultObj) {
-            if (mThreadStatus==THREAD_DEAD||isCancelled()||!isResumed()) {
+            if (mThreadStatus == THREAD_DEAD || isCancelled() || ! isResumed()) {
                 WeiboLog.i("程序退出，线程死亡。");
                 return;
             }
 
-            mThreadStatus=THREAD_FINISHED;
+            mThreadStatus = THREAD_FINISHED;
             basePostOperation(resultObj);
         }
     }
@@ -209,7 +209,7 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mThreadStatus=THREAD_RUNNING;
+            mThreadStatus = THREAD_RUNNING;
             baseQueryPreOperation();
         }
 
@@ -224,12 +224,12 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
         }
 
         protected void onPostExecute(Object[] resultObj) {
-            if (mThreadStatus==THREAD_DEAD||isCancelled()||!isResumed()) {
+            if (mThreadStatus == THREAD_DEAD || isCancelled() || ! isResumed()) {
                 WeiboLog.i("程序退出，线程死亡。");
                 return;
             }
 
-            mThreadStatus=THREAD_FINISHED;
+            mThreadStatus = THREAD_FINISHED;
             basePostOperation(resultObj);
         }
     }
@@ -270,8 +270,8 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
      */
     protected void newOperationTask(Object[] params, String msg) {
         WeiboLog.d(TAG, "newTask:");
-        if (!App.hasInternetConnection(getActivity())) {
-            AKUtils.showToast(R.string.network_error, Toast.LENGTH_LONG);
+        if (! App.hasInternetConnection(getActivity())) {
+            NotifyUtils.showToast(R.string.network_error, Toast.LENGTH_LONG);
             /*if (mRefreshListener!=null) {
                 mRefreshListener.onRefreshFailed();
             }*/
@@ -284,17 +284,17 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
             return;
         }*/
 
-        App app=(App) App.getAppContext();
-        if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB) {
-            mOperationTask=new OperationTask();
+        App app = (App) App.getAppContext();
+        if (app.getOauthBean().oauthType == Oauth2.OAUTH_TYPE_WEB) {
+            mOperationTask = new OperationTask();
             mOperationTask.execute(params);
         } else {
-            if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
+            if (System.currentTimeMillis() >= app.getOauthBean().expireTime && app.getOauthBean().expireTime != 0) {
                 WeiboLog.i(TAG, "web认证，token过期了.");
                 //mOauth2Handler.oauth2(params);
             } else {
                 WeiboLog.d(TAG, "web认证，但token有效。");
-                mOperationTask=new OperationTask();
+                mOperationTask = new OperationTask();
                 mOperationTask.execute(params);
             }
         }
@@ -314,7 +314,7 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
         }
 
         protected void onPostExecute(Object[] resultObj) {
-            if (isCancelled()||!isResumed()) {
+            if (isCancelled() || ! isResumed()) {
                 WeiboLog.i("程序退出，线程死亡。");
                 return;
             }
@@ -355,7 +355,7 @@ public abstract class AbstractBaseFragment extends BaseFragment implements Popup
      * @param anchorView 菜单显示的锚点View。
      */
     public void prepareMenu(View anchorView) {
-        PopupMenu popupMenu=new PopupMenu(getActivity(), anchorView);
+        PopupMenu popupMenu = new PopupMenu(getActivity(), anchorView);
 
         onCreateCustomMenu(popupMenu);
         onPrepareCustomMenu(popupMenu);

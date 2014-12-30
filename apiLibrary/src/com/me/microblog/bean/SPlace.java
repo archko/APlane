@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class SPlace implements Serializable {
 
-    public static final long serialVersionUID=3894560643019408212L;
+    public static final long serialVersionUID = 3894560643019408212L;
 
     public String poiid;//"123456", //位置微博，可能没有这个。但它有url，geo信息是url中的
     public String title;//"Wall Street",
@@ -20,15 +20,15 @@ public class SPlace implements Serializable {
 
     @Override
     public String toString() {
-        return "SPlace{"+
-            "poiid='"+poiid+'\''+
-            ", title='"+title+'\''+
-            ", type='"+type+'\''+
-            ", source='"+source+'\''+
-            ", ppublic="+ppublic+
-            ", lat="+lat+
-            ", lon="+lon+
-            ", placeUrl='"+placeUrl+'\''+
+        return "SPlace{" +
+            "poiid='" + poiid + '\'' +
+            ", title='" + title + '\'' +
+            ", type='" + type + '\'' +
+            ", source='" + source + '\'' +
+            ", ppublic=" + ppublic +
+            ", lat=" + lat +
+            ", lon=" + lon +
+            ", placeUrl='" + placeUrl + '\'' +
             '}';
     }
 }

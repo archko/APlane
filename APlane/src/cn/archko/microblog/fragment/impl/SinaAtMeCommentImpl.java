@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class SinaAtMeCommentImpl extends AbsStatusImpl<Comment> {
 
-    public static final String TAG="SinaAtMeCommentImpl";
+    public static final String TAG = "SinaAtMeCommentImpl";
 
     public SinaAtMeCommentImpl() {
         /*AbsApiImpl absApi=new SinaCommentApi();
@@ -36,20 +36,20 @@ public class SinaAtMeCommentImpl extends AbsStatusImpl<Comment> {
 
     @Override
     public SStatusData<Comment> loadData(Object... params) throws WeiboException {
-        SStatusData<Comment> sStatusData=null;
+        SStatusData<Comment> sStatusData = null;
         //SWeiboApi2 sWeiboApi2=((SWeiboApi2) App.getMicroBlog(App.getAppContext()));
-        SinaCommentApi sWeiboApi2=(SinaCommentApi) mAbsApi;
-        if (null==sWeiboApi2) {
-            sStatusData=new SStatusData<Comment>();
-            sStatusData.errorCode=WeiboException.API_ERROR;
-            sStatusData.errorMsg=App.getAppContext().getString(R.string.err_api_error);
+        SinaCommentApi sWeiboApi2 = (SinaCommentApi) mAbsApi;
+        if (null == sWeiboApi2) {
+            sStatusData = new SStatusData<Comment>();
+            sStatusData.errorCode = WeiboException.API_ERROR;
+            sStatusData.errorMsg = App.getAppContext().getString(R.string.err_api_error);
         } else {
-            Long sinceId=(Long) params[1];
-            Long maxId=(Long) params[2];
-            Integer c=(Integer) params[3];
-            Integer p=(Integer) params[4];
-            WeiboLog.d(TAG, "更新@我的评论："+c);
-            sStatusData=sWeiboApi2.getAtMeComments(sinceId, maxId, c, p, 0, 0);
+            Long sinceId = (Long) params[ 1 ];
+            Long maxId = (Long) params[ 2 ];
+            Integer c = (Integer) params[ 3 ];
+            Integer p = (Integer) params[ 4 ];
+            WeiboLog.d(TAG, "更新@我的评论：" + c);
+            sStatusData = sWeiboApi2.getAtMeComments(sinceId, maxId, c, p, 0, 0);
         }
 
         return sStatusData;
@@ -57,71 +57,71 @@ public class SinaAtMeCommentImpl extends AbsStatusImpl<Comment> {
 
     @Override
     public Object[] queryData(Object... params) throws WeiboException {
-        Long currentUserId=(Long) params[1];
-        ContentResolver resolver=App.getAppContext().getContentResolver();
-        ArrayList<Comment> datas=SqliteWrapper.queryAtComments(resolver, currentUserId, TwitterTable.SStatusCommentTbl.TYPE_AT_COMMENT);
-        SStatusData<Comment> sStatusData=new SStatusData<Comment>();
-        sStatusData.mStatusData=datas;
+        Long currentUserId = (Long) params[ 1 ];
+        ContentResolver resolver = App.getAppContext().getContentResolver();
+        ArrayList<Comment> datas = SqliteWrapper.queryAtComments(resolver, currentUserId, TwitterTable.SStatusCommentTbl.TYPE_AT_COMMENT);
+        SStatusData<Comment> sStatusData = new SStatusData<Comment>();
+        sStatusData.mStatusData = datas;
         return new Object[]{sStatusData, params};
     }
 
     @Override
     public void saveData(SStatusData<Comment> statusData) {
         try {
-            int weibo_count=25;
-            ArrayList<Comment> newList=statusData.mStatusData;
-            if (null==newList||newList.size()<1) {
+            int weibo_count = 25;
+            ArrayList<Comment> newList = statusData.mStatusData;
+            if (null == newList || newList.size() < 1) {
                 WeiboLog.w(TAG, "no datas");
                 return;
             }
-            SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
-            long currentUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
-            ContentResolver mResolver=App.getAppContext().getContentResolver();
-            int len=0;
+            SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+            long currentUserId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
+            ContentResolver mResolver = App.getAppContext().getContentResolver();
+            int len = 0;
             List<Comment> oldList;
-            if (newList.size()<weibo_count) {
-                oldList=SqliteWrapper.queryAtComments(mResolver, currentUserId, TwitterTable.SStatusCommentTbl.TYPE_AT_COMMENT);
-                if (null==oldList) {
-                    oldList=new ArrayList<Comment>();
+            if (newList.size() < weibo_count) {
+                oldList = SqliteWrapper.queryAtComments(mResolver, currentUserId, TwitterTable.SStatusCommentTbl.TYPE_AT_COMMENT);
+                if (null == oldList) {
+                    oldList = new ArrayList<Comment>();
                 }
 
-                len=newList.size();
-                int oldSize=oldList.size();
-                int delta=50-len;
-                WeiboLog.d(TAG, "新数据长度："+len+" oldSize:"+oldSize+" delta:"+delta);
-                if (delta>0) {
-                    delta=oldSize-delta;
-                    if (delta>0) {
-                        oldList=oldList.subList(delta, oldSize);
+                len = newList.size();
+                int oldSize = oldList.size();
+                int delta = 50 - len;
+                WeiboLog.d(TAG, "新数据长度：" + len + " oldSize:" + oldSize + " delta:" + delta);
+                if (delta > 0) {
+                    delta = oldSize - delta;
+                    if (delta > 0) {
+                        oldList = oldList.subList(delta, oldSize);
                     }
-                    WeiboLog.d(TAG, "去除旧数据中多余的："+oldList.size()+" delta:"+delta);
+                    WeiboLog.d(TAG, "去除旧数据中多余的：" + oldList.size() + " delta:" + delta);
                 }
 
                 oldList.addAll(newList);
-                len=mResolver.delete(TwitterTable.SStatusCommentTbl.CONTENT_URI,
-                    TwitterTable.SStatusCommentTbl.UID+"="+currentUserId+" and "+
-                        TwitterTable.SStatusCommentTbl.TYPE+"="+TwitterTable.SStatusCommentTbl.TYPE_AT_COMMENT, null);
-                WeiboLog.i(TAG, "删除微博记录:"+len);
+                len = mResolver.delete(TwitterTable.SStatusCommentTbl.CONTENT_URI,
+                    TwitterTable.SStatusCommentTbl.UID + "=" + currentUserId + " and " +
+                        TwitterTable.SStatusCommentTbl.TYPE + "=" + TwitterTable.SStatusCommentTbl.TYPE_AT_COMMENT, null);
+                WeiboLog.i(TAG, "删除微博记录:" + len);
             } else {
                 mResolver.delete(TwitterTable.SStatusCommentTbl.CONTENT_URI,
-                    TwitterTable.SStatusCommentTbl.UID+"="+currentUserId+" and "+
-                        TwitterTable.SStatusCommentTbl.TYPE+"="+TwitterTable.SStatusCommentTbl.TYPE_AT_COMMENT, null);
-                WeiboLog.d(TAG, "新数据足够多，删除微博记录:"+len);
-                oldList=newList;
+                    TwitterTable.SStatusCommentTbl.UID + "=" + currentUserId + " and " +
+                        TwitterTable.SStatusCommentTbl.TYPE + "=" + TwitterTable.SStatusCommentTbl.TYPE_AT_COMMENT, null);
+                WeiboLog.d(TAG, "新数据足够多，删除微博记录:" + len);
+                oldList = newList;
             }
 
-            len=oldList.size();
-            WeiboLog.d(TAG, "当前所有数据长度："+len);
+            len = oldList.size();
+            WeiboLog.d(TAG, "当前所有数据长度：" + len);
 
-            ContentValues[] contentValueses=new ContentValues[len];
+            ContentValues[] contentValueses = new ContentValues[ len ];
             ContentValues cv;
             Comment comment;
             Comment replyComment;
             Status status;
             User user;
-            for (int i=len-1; i>=0; i--) {
-                comment=oldList.get(i);
-                cv=new ContentValues();
+            for (int i = len - 1; i >= 0; i--) {
+                comment = oldList.get(i);
+                cv = new ContentValues();
                 cv.put(TwitterTable.SStatusCommentTbl.STATUS_ID, comment.id);
                 cv.put(TwitterTable.SStatusCommentTbl.CREATED_AT, comment.createdAt.getTime());
                 cv.put(TwitterTable.SStatusCommentTbl.TEXT, comment.text);
@@ -133,11 +133,11 @@ public class SinaAtMeCommentImpl extends AbsStatusImpl<Comment> {
                 cv.put(TwitterTable.SStatusCommentTbl.USER_SCREEN_NAME, comment.user.screenName);
                 cv.put(TwitterTable.SStatusCommentTbl.PORTRAIT, comment.user.profileImageUrl);
 
-                status=comment.status;
-                if (status!=null) {
+                status = comment.status;
+                if (status != null) {
                     cv.put(TwitterTable.SStatusCommentTbl.R_STATUS_ID, status.id);
 
-                    if (!TextUtils.isEmpty(status.thumbnailPic)) {
+                    if (! TextUtils.isEmpty(status.thumbnailPic)) {
                         cv.put(TwitterTable.SStatusCommentTbl.PIC_THUMB, status.thumbnailPic);
                         cv.put(TwitterTable.SStatusCommentTbl.PIC_MID, status.bmiddlePic);
                         cv.put(TwitterTable.SStatusCommentTbl.PIC_ORIG, status.originalPic);
@@ -145,8 +145,8 @@ public class SinaAtMeCommentImpl extends AbsStatusImpl<Comment> {
                     cv.put(TwitterTable.SStatusCommentTbl.R_NUM, status.r_num);
                     cv.put(TwitterTable.SStatusCommentTbl.C_NUM, status.c_num);
 
-                    user=status.user;
-                    if (null!=user) {
+                    user = status.user;
+                    if (null != user) {
                         try {
                             cv.put(TwitterTable.SStatusCommentTbl.R_STATUS_USERID, status.user.id);
                             cv.put(TwitterTable.SStatusCommentTbl.R_STATUS_NAME, status.user.screenName);
@@ -154,23 +154,23 @@ public class SinaAtMeCommentImpl extends AbsStatusImpl<Comment> {
                             e.printStackTrace();
                         }
                     }
-                    String[] thumbs=status.thumbs;
-                    if (null!=thumbs&&thumbs.length>0) {
-                        StringBuilder sb=new StringBuilder();
+                    String[] thumbs = status.thumbs;
+                    if (null != thumbs && thumbs.length > 0) {
+                        StringBuilder sb = new StringBuilder();
                         for (String s : thumbs) {
                             sb.append(s).append(",");
                         }
-                        sb.setLength(sb.length()-1);
+                        sb.setLength(sb.length() - 1);
                         cv.put(TwitterTable.SStatusTbl.PIC_URLS, sb.toString());
                     }
                     cv.put(TwitterTable.SStatusCommentTbl.R_STATUS, status.text);
                 }
 
-                replyComment=comment.replyComment;
-                if (null!=replyComment) {
+                replyComment = comment.replyComment;
+                if (null != replyComment) {
                     cv.put(TwitterTable.SStatusCommentTbl.R_PIC_THUMB, replyComment.text);
-                    user=replyComment.user;
-                    if (null!=user) {
+                    user = replyComment.user;
+                    if (null != user) {
                         try {
                             cv.put(TwitterTable.SStatusCommentTbl.R_PIC_MID, user.id);
                             cv.put(TwitterTable.SStatusCommentTbl.R_PIC_ORIG, user.screenName);
@@ -179,11 +179,11 @@ public class SinaAtMeCommentImpl extends AbsStatusImpl<Comment> {
                         }
                     }
                 }
-                contentValueses[i]=cv;
+                contentValueses[ i ] = cv;
             }
 
-            len=mResolver.bulkInsert(TwitterTable.SStatusCommentTbl.CONTENT_URI, contentValueses);
-            WeiboLog.i(TAG, "保存@我的评论记录:"+len);
+            len = mResolver.bulkInsert(TwitterTable.SStatusCommentTbl.CONTENT_URI, contentValueses);
+            WeiboLog.i(TAG, "保存@我的评论记录:" + len);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -12,10 +12,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import cn.archko.microblog.R;
+import cn.archko.microblog.ui.ImageViewerActivity;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
-import cn.archko.microblog.ui.ImageViewerActivity;
 import com.me.microblog.util.DisplayUtils;
 /*import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -27,7 +27,7 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
  */
 public class ImageAdapter extends BaseAdapter {
 
-    public static final String TAG="ImageAdapter";
+    public static final String TAG = "ImageAdapter";
     private LayoutInflater mInflater;
     private final Context mContext;
     private final float mDensity;
@@ -36,26 +36,26 @@ public class ImageAdapter extends BaseAdapter {
      */
     String[] imageUrls;
     String mCacheDir;
-    boolean updateFlag=true;
-    boolean isShowLargeBitmap=false;
-    boolean cache=true;
+    boolean updateFlag = true;
+    boolean isShowLargeBitmap = false;
+    boolean cache = true;
     int mResId;
     //DisplayImageOptions options;
 
     public ImageAdapter(Context c, String cacheDir, String[] thumbs) {
-        mContext=c;
-        mDensity=c.getResources().getDisplayMetrics().density;
-        mInflater=LayoutInflater.from(c);
-        mCacheDir=cacheDir;
-        imageUrls=thumbs;
+        mContext = c;
+        mDensity = c.getResources().getDisplayMetrics().density;
+        mInflater = LayoutInflater.from(c);
+        mCacheDir = cacheDir;
+        imageUrls = thumbs;
 
-        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         if ("1".equals(themeId)) {
-            mResId=R.drawable.image_loading_dark;
+            mResId = R.drawable.image_loading_dark;
         } else if ("2".equals(themeId)) {
-            mResId=R.drawable.image_loading_light;
+            mResId = R.drawable.image_loading_light;
         } else if ("0".equals(themeId)) {
-            mResId=R.drawable.image_loading_dark;
+            mResId = R.drawable.image_loading_dark;
         }
         /*options = new DisplayImageOptions.Builder()
             .cacheInMemory(true)
@@ -67,24 +67,24 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public void setImageUrls(String[] imageUrls) {
-        this.imageUrls=imageUrls;
+        this.imageUrls = imageUrls;
     }
 
     public void setUpdateFlag(boolean updateFlag) {
-        this.updateFlag=updateFlag;
+        this.updateFlag = updateFlag;
     }
 
     public void setShowLargeBitmap(boolean showLargeBitmap) {
-        isShowLargeBitmap=showLargeBitmap;
+        isShowLargeBitmap = showLargeBitmap;
     }
 
     public void setCache(boolean cache) {
-        this.cache=cache;
+        this.cache = cache;
     }
 
     @Override
     public int getCount() {
-        if (null==imageUrls) {
+        if (null == imageUrls) {
             return 0;
         }
         return imageUrls.length;
@@ -92,7 +92,7 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return imageUrls[position];
+        return imageUrls[ position ];
     }
 
     @Override
@@ -109,26 +109,26 @@ public class ImageAdapter extends BaseAdapter {
         // When convertView is not null, we can reuse it directly, there is no need
         // to reinflate it. We only inflate a new View when the convertView supplied
         // by ListView is null.
-        if (convertView==null) {
-            convertView=mInflater.inflate(R.layout.home_time_line_item_img, null);
+        if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.home_time_line_item_img, null);
 
             // Creates a ViewHolder and store references to the two children views
             // we want to bind data to.
-            holder=new ViewHolder();
-            holder.picture=(ImageView) convertView.findViewById(R.id.status_picture);
-            holder.pictureLay=(ImageView) convertView.findViewById(R.id.status_picture_lay);
+            holder = new ViewHolder();
+            holder.picture = (ImageView) convertView.findViewById(R.id.status_picture);
+            holder.pictureLay = (ImageView) convertView.findViewById(R.id.status_picture_lay);
 
             convertView.setTag(holder);
         } else {
             // Get the ViewHolder back to get fast access to the TextView
             // and the ImageView.
-            holder=(ViewHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
 
         //WeiboLog.d(TAG, "getView:"+imageUrls[position]);
-        if (null!=imageUrls&&imageUrls.length>0) {
-            final int pos=position;
-            String thumb=imageUrls[pos];
+        if (null != imageUrls && imageUrls.length > 0) {
+            final int pos = position;
+            String thumb = imageUrls[ pos ];
 
             // Bind the data efficiently with the holder.
             if (thumb.endsWith("gif")) {
@@ -144,7 +144,7 @@ public class ImageAdapter extends BaseAdapter {
                 }
             });
 
-            if (null!=thumb&&!"".equals(thumb)) {
+            if (null != thumb && ! "".equals(thumb)) {
                 if (thumb.startsWith("http")) {
                     loadPicture(holder.picture, thumb, pos);
                 }
@@ -175,7 +175,7 @@ public class ImageAdapter extends BaseAdapter {
                 }
             });
         }*/
-        Intent intent=new Intent(mContext, ImageViewerActivity.class);
+        Intent intent = new Intent(mContext, ImageViewerActivity.class);
         intent.putExtra("thumbs", imageUrls);
         intent.putExtra("pos", pos);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -189,50 +189,50 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     private void loadPicture(ImageView picture, String mPictureUrl, int pos) {
-        Bitmap tmp=null;
+        Bitmap tmp = null;
 
-        if (!isShowLargeBitmap) {
+        if (! isShowLargeBitmap) {
             //tmp=ImageCache2.getInstance().getBitmapFromMemCache(mPictureUrl);
-            if (picture.getScaleType()!=ImageView.ScaleType.FIT_XY){
-                RelativeLayout.LayoutParams lp=(RelativeLayout.LayoutParams) picture.getLayoutParams();
-                if (null==lp) {
-                    lp=new RelativeLayout.LayoutParams(DisplayUtils.convertDpToPx(62), DisplayUtils.convertDpToPx(80));
-                }else {
-                    lp.width=DisplayUtils.convertDpToPx(62);
-                    lp.height=DisplayUtils.convertDpToPx(80);
+            if (picture.getScaleType() != ImageView.ScaleType.FIT_XY) {
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) picture.getLayoutParams();
+                if (null == lp) {
+                    lp = new RelativeLayout.LayoutParams(DisplayUtils.convertDpToPx(62), DisplayUtils.convertDpToPx(80));
+                } else {
+                    lp.width = DisplayUtils.convertDpToPx(62);
+                    lp.height = DisplayUtils.convertDpToPx(80);
                 }
                 picture.setLayoutParams(lp);
                 picture.setScaleType(ImageView.ScaleType.FIT_XY);
             }
         } else {
-            if (picture.getScaleType()!=ImageView.ScaleType.CENTER_CROP){
-                RelativeLayout.LayoutParams lp=(RelativeLayout.LayoutParams) picture.getLayoutParams();
-                if (null==lp) {
-                    lp=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            if (picture.getScaleType() != ImageView.ScaleType.CENTER_CROP) {
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) picture.getLayoutParams();
+                if (null == lp) {
+                    lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 } else {
-                    lp.width=ViewGroup.LayoutParams.WRAP_CONTENT;
-                    lp.height=ViewGroup.LayoutParams.WRAP_CONTENT;
+                    lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                 }
                 picture.setScaleType(ImageView.ScaleType.CENTER_CROP);
             }
-            if (!mPictureUrl.endsWith("gif")) {
-                mPictureUrl=mPictureUrl.replace("thumbnail", "bmiddle");
+            if (! mPictureUrl.endsWith("gif")) {
+                mPictureUrl = mPictureUrl.replace("thumbnail", "bmiddle");
             }
             /*LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
             tmp=lruCache.get(mPictureUrl);*/
         }
 
         //WeiboLog.v(TAG, "cached.tmp:"+tmp+" mPictureUrl:"+mPictureUrl);
-        if (null!=tmp&&!tmp.isRecycled()) {
+        if (null != tmp && ! tmp.isRecycled()) {
             picture.setImageBitmap(tmp);
         } else {
-            if (!updateFlag) {
+            if (! updateFlag) {
                 picture.setImageResource(mResId);
                 return;
             }
 
             if (isShowLargeBitmap) {
-                cache=true; //大图要缓存sdcard中，不然每次都下载，太慢了。
+                cache = true; //大图要缓存sdcard中，不然每次都下载，太慢了。
             }
             picture.setImageResource(mResId);
             /*ImageLoader imageLoader = ImageLoader.getInstance();
@@ -241,7 +241,7 @@ public class ImageAdapter extends BaseAdapter {
         }
     }
 
-    Handler mHandler=new Handler() {
+    Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);

@@ -20,20 +20,20 @@ import java.util.ArrayList;
  */
 public class SFavAction implements Action {
 
-    public static final String TAG="SFavAction";
+    public static final String TAG = "SFavAction";
 
     @Override
     public ActionResult doAction(Context context, Object... params) {
-        Integer mode=(Integer) params[0];
-        ActionResult actionResult=new ActionResult();
+        Integer mode = (Integer) params[ 0 ];
+        ActionResult actionResult = new ActionResult();
         try {
-            SinaStatusApi statusApi=new SinaStatusApi();
+            SinaStatusApi statusApi = new SinaStatusApi();
             statusApi.updateToken();
-            if (mode==0) {
-                Long id=(Long) params[1];
+            if (mode == 0) {
+                Long id = (Long) params[ 1 ];
                 deleteFavorite(actionResult, id, context, statusApi);
             } else {
-                ArrayList<Long> ids=(ArrayList<Long>) params[1];
+                ArrayList<Long> ids = (ArrayList<Long>) params[ 1 ];
                 batchDeleteFavorite(actionResult, ids, statusApi);
             }
         } catch (Exception e) {
@@ -52,24 +52,24 @@ public class SFavAction implements Action {
     void deleteFavorite(ActionResult actionResult, Long id, Context context, SinaStatusApi sWeiboApi2) {
         try {
             //SWeiboApi2 sWeiboApi2=(SWeiboApi2) App.getMicroBlog(App.getAppContext());
-            if (null==sWeiboApi2) {
-                actionResult.resoultCode=ActionResult.ACTION_FALL;
-                actionResult.reslutMsg=context.getString(R.string.err_api_error);
+            if (null == sWeiboApi2) {
+                actionResult.resoultCode = ActionResult.ACTION_FALL;
+                actionResult.reslutMsg = context.getString(R.string.err_api_error);
             } else {
-                WeiboLog.d(TAG, "destroy status:"+id);
-                Favorite favorite=sWeiboApi2.destroyFavorite(id);
-                if (null!=favorite) {
-                    actionResult.resoultCode=ActionResult.ACTION_SUCESS;
-                    actionResult.obj=favorite;
+                WeiboLog.d(TAG, "destroy status:" + id);
+                Favorite favorite = sWeiboApi2.destroyFavorite(id);
+                if (null != favorite) {
+                    actionResult.resoultCode = ActionResult.ACTION_SUCESS;
+                    actionResult.obj = favorite;
                 }
             }
         } catch (WeiboException e) {
-            int code=e.getStatusCode();
-            if (code==200) {
-                actionResult.resoultCode=ActionResult.ACTION_SUCESS;
+            int code = e.getStatusCode();
+            if (code == 200) {
+                actionResult.resoultCode = ActionResult.ACTION_SUCESS;
             }
             e.printStackTrace();
-            actionResult.reslutMsg=e.toString();
+            actionResult.reslutMsg = e.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,15 +82,15 @@ public class SFavAction implements Action {
      * @param status
      */
     void batchDeleteFavorite(ActionResult actionResult, ArrayList<Long> ids, SinaStatusApi sWeiboApi2) {
-        String deleteIds=TextUtils.join(",", ids);
-        WeiboLog.v(TAG, "ids:"+deleteIds);
+        String deleteIds = TextUtils.join(",", ids);
+        WeiboLog.v(TAG, "ids:" + deleteIds);
         try {
-            boolean flag=sWeiboApi2.destroyFavorites(deleteIds);
+            boolean flag = sWeiboApi2.destroyFavorites(deleteIds);
             if (flag) {
-                actionResult.resoultCode=ActionResult.ACTION_SUCESS;
-                actionResult.obj=ids;
+                actionResult.resoultCode = ActionResult.ACTION_SUCESS;
+                actionResult.obj = ids;
             } else {
-                actionResult.resoultCode=ActionResult.ACTION_FALL;
+                actionResult.resoultCode = ActionResult.ACTION_FALL;
             }
         } catch (WeiboException e) {
             e.printStackTrace();

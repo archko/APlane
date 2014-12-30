@@ -4,7 +4,6 @@ import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.http.PostParameter;
 import com.me.microblog.oauth.OauthBean;
-import com.me.microblog.util.WeiboLog;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -26,18 +25,18 @@ import java.util.List;
  */
 public abstract class AbsApiImpl {
 
-    public final String OAUTH2_BASEURL="https://api.weibo.com/2/";
-    public String mAccessToken="";
-    public static final String USERAGENT="Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.4) Gecko/20091111 Gentoo Firefox/3.5.4";
-    protected static final String ACCEPTENCODING="gzip,deflate";
+    public final String OAUTH2_BASEURL = "https://api.weibo.com/2/";
+    public String mAccessToken = "";
+    public static final String USERAGENT = "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.4) Gecko/20091111 Gentoo Firefox/3.5.4";
+    protected static final String ACCEPTENCODING = "gzip,deflate";
 
     //设置http参数
-    public static final int CONNECT_TIMEOUT=6000;
-    public static final int READ_TIMEOUT=10000;
+    public static final int CONNECT_TIMEOUT = 6000;
+    public static final int READ_TIMEOUT = 10000;
     public static HttpParams httpParameters;
 
     {
-        httpParameters=new BasicHttpParams();
+        httpParameters = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParameters, CONNECT_TIMEOUT);// Set the default socket timeout (SO_TIMEOUT) // in milliseconds which is the timeout for waiting for data.
         HttpConnectionParams.setSoTimeout(httpParameters, READ_TIMEOUT);
     }
@@ -47,16 +46,16 @@ public abstract class AbsApiImpl {
     }
 
     public void setAccessToken(String mAccessToken) {
-        this.mAccessToken=mAccessToken;
+        this.mAccessToken = mAccessToken;
     }
 
     public void updateToken() {
-        App app=((App) App.getAppContext());
-        OauthBean oauthBean=app.getOauthBean();
-        if (null==oauthBean) {
+        App app = ((App) App.getAppContext());
+        OauthBean oauthBean = app.getOauthBean();
+        if (null == oauthBean) {
             return;
         }
-        mAccessToken=oauthBean.accessToken;
+        mAccessToken = oauthBean.accessToken;
     }
 
     public String getBaseUrl() {
@@ -64,15 +63,15 @@ public abstract class AbsApiImpl {
     }
 
     public String get(String urlString, boolean gzip) {
-        if (urlString.indexOf("?")==-1) {
-            urlString+="?access_token="+mAccessToken;
+        if (urlString.indexOf("?") == - 1) {
+            urlString += "?access_token=" + mAccessToken;
         } else {
-            urlString+="&access_token="+mAccessToken;
+            urlString += "&access_token=" + mAccessToken;
         }
-        HttpGet httpGet=new HttpGet(urlString);
-        String rs=null;
+        HttpGet httpGet = new HttpGet(urlString);
+        String rs = null;
         try {
-            rs=TwitterOAuth2.execute(httpGet, gzip);
+            rs = TwitterOAuth2.execute(httpGet, gzip);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,28 +79,28 @@ public abstract class AbsApiImpl {
     }
 
     public String get(String urlString, boolean gzip, List<BasicNameValuePair> nvps) throws WeiboException {
-        if (urlString.indexOf("?")==-1) {
-            urlString+="?access_token="+mAccessToken;
+        if (urlString.indexOf("?") == - 1) {
+            urlString += "?access_token=" + mAccessToken;
         } else {
-            urlString+="&access_token="+mAccessToken;
+            urlString += "&access_token=" + mAccessToken;
         }
 
         for (NameValuePair nvp : nvps) {
             try {
-                urlString+="&"+nvp.getName()+"="+URLEncoder.encode(nvp.getValue().trim(), "UTF-8");
+                urlString += "&" + nvp.getName() + "=" + URLEncoder.encode(nvp.getValue().trim(), "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
-        HttpGet httpGet=new HttpGet(urlString);
-        String rs=null;
-        rs=TwitterOAuth2.execute(httpGet, gzip);
+        HttpGet httpGet = new HttpGet(urlString);
+        String rs = null;
+        rs = TwitterOAuth2.execute(httpGet, gzip);
         return rs;
     }
 
     public String post(String urlString, boolean gzip) throws WeiboException {
-        HttpPost httpPost=new HttpPost(urlString);
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        HttpPost httpPost = new HttpPost(urlString);
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         nvps.add(new BasicNameValuePair("access_token", mAccessToken));
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
@@ -109,14 +108,14 @@ public abstract class AbsApiImpl {
             ex.printStackTrace();
         }
 
-        String rs=null;
-        rs=TwitterOAuth2.execute(httpPost, gzip);
+        String rs = null;
+        rs = TwitterOAuth2.execute(httpPost, gzip);
 
         return rs;
     }
 
     public String post(String urlString, boolean gzip, List<BasicNameValuePair> nvps) throws WeiboException {
-        HttpPost httpPost=new HttpPost(urlString);
+        HttpPost httpPost = new HttpPost(urlString);
         nvps.add(new BasicNameValuePair("access_token", mAccessToken));
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
@@ -124,8 +123,8 @@ public abstract class AbsApiImpl {
             ex.printStackTrace();
         }
 
-        String rs=null;
-        rs=TwitterOAuth2.execute(httpPost, gzip);
+        String rs = null;
+        rs = TwitterOAuth2.execute(httpPost, gzip);
 
         return rs;
     }
@@ -138,9 +137,9 @@ public abstract class AbsApiImpl {
      * @return
      */
     public String post(String urlString, PostParameter[] parameters) throws WeiboException {
-        HttpPost post=new HttpPost(urlString);
-        if (null!=parameters) {
-            List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        HttpPost post = new HttpPost(urlString);
+        if (null != parameters) {
+            List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
             nvps.add(new BasicNameValuePair("access_token", mAccessToken));
             for (PostParameter parameter : parameters) {
                 nvps.add(new BasicNameValuePair(parameter.getName(), parameter.getValue()));
@@ -153,7 +152,7 @@ public abstract class AbsApiImpl {
             }
         }
 
-        String rs=TwitterOAuth2.execute(post, false);
+        String rs = TwitterOAuth2.execute(post, false);
 
         return rs;
     }

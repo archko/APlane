@@ -10,7 +10,7 @@ import cn.archko.microblog.ui.PrefsActivity;
 /**
  * A collection of helpers designed to get and set various preferences across
  * Apollo.
- * 
+ *
  * @author Andrew Neal (andrewdneal@gmail.com)
  */
 public final class PreferenceUtils {
@@ -40,9 +40,9 @@ public final class PreferenceUtils {
     public static final String DEFAULT_THEME_COLOR = "default_theme_color";
 
     //--------------------- 这三个配置不能在apicore中引用 ---------------------
-    public final static String PREF_TITLE_FONT_SIZE="pref_title_font_size"; //微博标题字体
-    public final static String PREF_CONTENT_FONT_SIZE="pref_content_font_size"; //微博内容字体
-    public final static String PREF_RET_CONTENT_FONT_SIZE="pref_ret_content_font_size"; //转发内容字体
+    public final static String PREF_TITLE_FONT_SIZE = "pref_title_font_size"; //微博标题字体
+    public final static String PREF_CONTENT_FONT_SIZE = "pref_content_font_size"; //微博内容字体
+    public final static String PREF_RET_CONTENT_FONT_SIZE = "pref_ret_content_font_size"; //转发内容字体
 
     // Key used to set the overall theme color
     public static final String DEFAULT_STATUS_THEME_COLOR = "default_status_theme_color";
@@ -60,8 +60,8 @@ public final class PreferenceUtils {
     public static final String PREF_SIDEBAR_DM = "pref_sidebar_dm";
 
     //load url
-    public static final String PREF_WEBVIEW="pref_webview";
-    public String PREF_DEFAULT_THEME="2";
+    public static final String PREF_WEBVIEW = "pref_webview";
+    public String PREF_DEFAULT_THEME = "2";
 
     private static PreferenceUtils sInstance;
 
@@ -69,12 +69,12 @@ public final class PreferenceUtils {
 
     /**
      * Constructor for <code>PreferenceUtils</code>
-     * 
+     *
      * @param context The {@link android.content.Context} to use.
      */
     public PreferenceUtils(final Context context) {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        PREF_DEFAULT_THEME=context.getString(R.string.default_theme);
+        PREF_DEFAULT_THEME = context.getString(R.string.default_theme);
     }
 
     /**
@@ -104,7 +104,7 @@ public final class PreferenceUtils {
      * @return The default theme.
      */
     public final String getDefaultTheme() {
-        String themeId=mPreferences.getString(PrefsActivity.PREF_THEME, PREF_DEFAULT_THEME);
+        String themeId = mPreferences.getString(PrefsActivity.PREF_THEME, PREF_DEFAULT_THEME);
         return themeId;
     }
 
@@ -123,7 +123,7 @@ public final class PreferenceUtils {
 
                 return null;
             }
-        }, (Void[])null);
+        }, (Void[]) null);
     }
 
     /**
@@ -133,13 +133,13 @@ public final class PreferenceUtils {
      * @return The default theme color.
      */
     public final int getDefaultThemeColor(final Context context) {
-        SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(context);
-        String themeId=options.getString(PrefsActivity.PREF_THEME, "0");
-        int colorId=R.color.holo_light_item_title;
+        SharedPreferences options = PreferenceManager.getDefaultSharedPreferences(context);
+        String themeId = options.getString(PrefsActivity.PREF_THEME, "0");
+        int colorId = R.color.holo_light_item_title;
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
         } else if ("2".equals(themeId)) {
-            colorId=R.color.holo_light_item_title;
+            colorId = R.color.holo_light_item_title;
         } else if ("3".equals(themeId)) {
         }
 
@@ -155,7 +155,7 @@ public final class PreferenceUtils {
         ApolloUtils.execute(false, new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(final Void... unused) {
-                final SharedPreferences.Editor editor=mPreferences.edit();
+                final SharedPreferences.Editor editor = mPreferences.edit();
                 editor.putInt(key, value);
                 SharedPreferencesCompat.apply(editor);
 
@@ -173,7 +173,7 @@ public final class PreferenceUtils {
         ApolloUtils.execute(false, new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(final Void... unused) {
-                final SharedPreferences.Editor editor=mPreferences.edit();
+                final SharedPreferences.Editor editor = mPreferences.edit();
                 editor.putInt(DEFAULT_STATUS_THEME_COLOR, value);
                 SharedPreferencesCompat.apply(editor);
 
@@ -189,13 +189,13 @@ public final class PreferenceUtils {
      * @return The default theme color.
      */
     public final int getDefaultStatusThemeColor(final Context context) {
-        SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(context);
-        String themeId=options.getString(PrefsActivity.PREF_THEME, "0");
-        int colorId=R.color.holo_light_item_status;
+        SharedPreferences options = PreferenceManager.getDefaultSharedPreferences(context);
+        String themeId = options.getString(PrefsActivity.PREF_THEME, "0");
+        int colorId = R.color.holo_light_item_status;
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
         } else if ("2".equals(themeId)) {
-            colorId=R.color.holo_light_item_status;
+            colorId = R.color.holo_light_item_status;
         } else if ("3".equals(themeId)) {
         }
 
@@ -211,7 +211,7 @@ public final class PreferenceUtils {
         ApolloUtils.execute(false, new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(final Void... unused) {
-                final SharedPreferences.Editor editor=mPreferences.edit();
+                final SharedPreferences.Editor editor = mPreferences.edit();
                 editor.putInt(DEFAULT_RET_STATUS_THEME_COLOR, value);
                 SharedPreferencesCompat.apply(editor);
 
@@ -227,13 +227,13 @@ public final class PreferenceUtils {
      * @return The default theme color.
      */
     public final int getDefaultRetContentThemeColor(final Context context) {
-        SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(context);
-        String themeId=options.getString(PrefsActivity.PREF_THEME, "0");
-        int colorId=R.color.holo_light_item_ret_status;
+        SharedPreferences options = PreferenceManager.getDefaultSharedPreferences(context);
+        String themeId = options.getString(PrefsActivity.PREF_THEME, "0");
+        int colorId = R.color.holo_light_item_ret_status;
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
         } else if ("2".equals(themeId)) {
-            colorId=R.color.holo_light_item_ret_status;
+            colorId = R.color.holo_light_item_ret_status;
         } else if ("3".equals(themeId)) {
         }
 
@@ -247,13 +247,13 @@ public final class PreferenceUtils {
      * @return The default theme color.
      */
     public final int getDefaultSidebarThemeColor(final Context context) {
-        SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(context);
-        String themeId=options.getString(PrefsActivity.PREF_THEME, "0");
-        int colorId=R.color.holo_light_item_sidebar;
+        SharedPreferences options = PreferenceManager.getDefaultSharedPreferences(context);
+        String themeId = options.getString(PrefsActivity.PREF_THEME, "0");
+        int colorId = R.color.holo_light_item_sidebar;
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
         } else if ("2".equals(themeId)) {
-            colorId=R.color.holo_light_item_sidebar;
+            colorId = R.color.holo_light_item_sidebar;
         } else if ("3".equals(themeId)) {
         }
 
@@ -262,7 +262,7 @@ public final class PreferenceUtils {
 
     /**
      * @return True if the user has checked to only download images on Wi-Fi,
-     *         false otherwise
+     * false otherwise
      */
     public final boolean onlyOnWifi() {
         return mPreferences.getBoolean(ONLY_ON_WIFI, true);
@@ -270,7 +270,7 @@ public final class PreferenceUtils {
 
     /**
      * @param value True if the user only wants to download images on Wi-Fi,
-     *            false otherwise
+     *              false otherwise
      */
     public void setOnlyOnWifi(final boolean value) {
         ApolloUtils.execute(false, new AsyncTask<Void, Void, Void>() {
@@ -282,12 +282,12 @@ public final class PreferenceUtils {
 
                 return null;
             }
-        }, (Void[])null);
+        }, (Void[]) null);
     }
 
     /**
      * @return True if the user has checked to use lockscreen controls, false
-     *         otherwise.
+     * otherwise.
      */
     public final boolean enableLockscreenControls() {
         return mPreferences.getBoolean(USE_LOCKSREEN_CONTROLS, true);
@@ -295,7 +295,7 @@ public final class PreferenceUtils {
 
     /**
      * @param value True if the user has checked to use lockscreen controls,
-     *            false otherwise.
+     *              false otherwise.
      */
     public void setLockscreenControls(final boolean value) {
         ApolloUtils.execute(false, new AsyncTask<Void, Void, Void>() {
@@ -307,13 +307,13 @@ public final class PreferenceUtils {
 
                 return null;
             }
-        }, (Void[])null);
+        }, (Void[]) null);
     }
 
     /**
      * Saves the layout type for a list
      *
-     * @param key Which layout to change
+     * @param key   Which layout to change
      * @param value The new layout type
      */
     private void setLayoutType(final String key, final String value) {
@@ -326,7 +326,7 @@ public final class PreferenceUtils {
 
                 return null;
             }
-        }, (Void[])null);
+        }, (Void[]) null);
     }
 
     /**
@@ -358,7 +358,7 @@ public final class PreferenceUtils {
 
     /**
      * @param context The {@link android.content.Context} to use.
-     * @param which Which list to check.
+     * @param which   Which list to check.
      * @return True if the layout type is the simple layout, false otherwise.
      */
     public boolean isSimpleLayout(final String which, final Context context) {
@@ -369,7 +369,7 @@ public final class PreferenceUtils {
 
     /**
      * @param context The {@link android.content.Context} to use.
-     * @param which Which list to check.
+     * @param which   Which list to check.
      * @return True if the layout type is the simple layout, false otherwise.
      */
     public boolean isDetailedLayout(final String which, final Context context) {
@@ -380,7 +380,7 @@ public final class PreferenceUtils {
 
     /**
      * @param context The {@link android.content.Context} to use.
-     * @param which Which list to check.
+     * @param which   Which list to check.
      * @return True if the layout type is the simple layout, false otherwise.
      */
     public boolean isGridLayout(final String which, final Context context) {

@@ -29,9 +29,9 @@ public class PinYin {
             }
         }*/
 
-        ArrayList<Token> tokens=HanziToPinyin.getInstance().get(input.trim());
-        StringBuilder sb=new StringBuilder();
-        if (tokens!=null&&tokens.size()>0) {
+        ArrayList<Token> tokens = HanziToPinyin.getInstance().get(input.trim());
+        StringBuilder sb = new StringBuilder();
+        if (tokens != null && tokens.size() > 0) {
             for (Token token : tokens) {
                 /*//System.out.println("token:"+token.target+" -- "+token.source+" - "+token.type);
                 if (Token.PINYIN==token.type) {
@@ -41,7 +41,7 @@ public class PinYin {
                     //System.out.println("source");
                     sb.append(token.source+" ");
                 }*/
-                if (!token.target.equals(token.source)) {
+                if (! token.target.equals(token.source)) {
                     //sb.append(token.target+" "+token.source+" ");
                     sb.append(token.target);
                 } else {
@@ -50,27 +50,27 @@ public class PinYin {
             }
         }
 
-        String rs=sb.toString();
+        String rs = sb.toString();
         //System.out.println("rs:"+rs);
         return rs.toLowerCase();
     }
 
     public String getSortKey(String displayName) {
-        ArrayList<Token> tokens=HanziToPinyin.getInstance().get(displayName);
-        if (tokens!=null&&tokens.size()>0) {
-            StringBuilder sb=new StringBuilder();
+        ArrayList<Token> tokens = HanziToPinyin.getInstance().get(displayName);
+        if (tokens != null && tokens.size() > 0) {
+            StringBuilder sb = new StringBuilder();
             for (Token token : tokens) {
                 // Put Chinese character's pinyin, then proceed with the
                 // character itself.
-                if (Token.PINYIN==token.type) {
-                    if (sb.length()>0) {
+                if (Token.PINYIN == token.type) {
+                    if (sb.length() > 0) {
                         sb.append(' ');
                     }
                     sb.append(token.target);
                     sb.append(' ');
                     sb.append(token.source);
                 } else {
-                    if (sb.length()>0) {
+                    if (sb.length() > 0) {
                         sb.append(' ');
                     }
                     sb.append(token.source);

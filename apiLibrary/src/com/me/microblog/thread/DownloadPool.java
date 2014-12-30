@@ -2,16 +2,10 @@ package com.me.microblog.thread;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.*;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
-
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.ImageView;
 import com.me.microblog.App;
 import com.me.microblog.cache.ImageCache2;
@@ -26,13 +20,16 @@ import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.scheme.SocketFactory;
-import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 图片下载线程池,暂时可允许最多三个线程同时下载。
@@ -42,21 +39,21 @@ import org.apache.http.params.HttpProtocolParams;
 @Deprecated
 public class DownloadPool extends Thread {
 
-    public static final String TAG="DownloadPool";
-    public static int MAX_THREAD_COUNT=2;
+    public static final String TAG = "DownloadPool";
+    public static int MAX_THREAD_COUNT = 2;
     //private DefaultHttpClient httpClient;
-    private int mActiveThread=0;
+    private int mActiveThread = 0;
     private App mApp;
     private List<DownloadPiece> mQuery;
     private HttpParams params;
     ClientConnectionManager connectionManager;
-    private boolean isStop=false;
-    public static final int READ_TIMEOUT=24000;
-    public static final int CONNECT_TIMEOUT=12000;
+    private boolean isStop = false;
+    public static final int READ_TIMEOUT = 24000;
+    public static final int CONNECT_TIMEOUT = 12000;
     //public static Map<String, WeakReference<View>> downloading=new Hashtable<String, WeakReference<View>>();
 
     {
-        params=new BasicHttpParams();
+        params = new BasicHttpParams();
         HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
         HttpProtocolParams.setContentCharset(params, "UTF-8");
         HttpProtocolParams.setUseExpectContinue(params, true);
@@ -77,10 +74,10 @@ public class DownloadPool extends Thread {
     }
 
     private final static SchemeRegistry createRegitry() {
-        SchemeRegistry schemeRegistry=new SchemeRegistry();
+        SchemeRegistry schemeRegistry = new SchemeRegistry();
         // Register the "http" and "https" protocol schemes, they are
         // required by the default operator to look up socket factories.
-        SocketFactory sf=PlainSocketFactory.getSocketFactory();
+        SocketFactory sf = PlainSocketFactory.getSocketFactory();
         schemeRegistry.register(new Scheme("http", sf, 80));
 
         /*SSLSocketFactory ssf=SSLSocketFactory.getSocketFactory();
@@ -90,15 +87,15 @@ public class DownloadPool extends Thread {
     }
 
     public void setThreadCount(int threadCount) {
-        MAX_THREAD_COUNT=threadCount;
+        MAX_THREAD_COUNT = threadCount;
     }
 
     public DownloadPool(App app) {
-        this.mQuery=new ArrayList<DownloadPiece>();
+        this.mQuery = new ArrayList<DownloadPiece>();
         //this.httpClient=new DefaultHttpClient(params);
-        this.mApp=app;
+        this.mApp = app;
 
-        connectionManager=new ThreadSafeClientConnManager(params, createRegitry());
+        connectionManager = new ThreadSafeClientConnManager(params, createRegitry());
         init();
     }
 
@@ -106,7 +103,7 @@ public class DownloadPool extends Thread {
         synchronized (this) {
             notifyAll();
         }
-        isStop=stop;
+        isStop = stop;
         if (stop) {
             release();
         }
@@ -166,8 +163,8 @@ public class DownloadPool extends Thread {
     }*/
     public void ActiveThread_Pop() {
         synchronized (this) {
-            int i=this.mActiveThread-1;
-            this.mActiveThread=i;
+            int i = this.mActiveThread - 1;
+            this.mActiveThread = i;
             notifyAll();
         }
     }
@@ -180,8 +177,8 @@ public class DownloadPool extends Thread {
 
     public DownloadPiece Get(int paramInt) {
         synchronized (this) {
-            int size=this.mQuery.size();
-            if (paramInt<=size) {
+            int size = this.mQuery.size();
+            if (paramInt <= size) {
                 return mQuery.get(paramInt);
             }
         }
@@ -202,7 +199,7 @@ public class DownloadPool extends Thread {
 
     public DownloadPiece Pop() {
         synchronized (this) {
-            DownloadPiece downloadPiece=(DownloadPiece) this.mQuery.get(0);
+            DownloadPiece downloadPiece = (DownloadPiece) this.mQuery.get(0);
             this.mQuery.remove(0);
             return downloadPiece;
         }
@@ -213,8 +210,8 @@ public class DownloadPool extends Thread {
      */
     public void PopPiece() {
         synchronized (this) {
-            int size=mQuery.size();
-            mQuery=mQuery.subList(size-8, size);
+            int size = mQuery.size();
+            mQuery = mQuery.subList(size - 8, size);
         }
     }
 
@@ -256,9 +253,9 @@ public class DownloadPool extends Thread {
 
             notifyAll();
         }*/
-        Message msg=Message.obtain();
-        msg.obj=mpiece;
-        msg.what=0;
+        Message msg = Message.obtain();
+        msg.obj = mpiece;
+        msg.what = 0;
         mHandler.sendMessage(msg);
     }
 
@@ -287,10 +284,10 @@ public class DownloadPool extends Thread {
 
             notifyAll();
         }*/
-        Message msg=Message.obtain();
-        DownloadPiece piece=new DownloadPiece(handler, uri, type, cache, dir, false, imageView);
-        msg.obj=piece;
-        msg.what=0;
+        Message msg = Message.obtain();
+        DownloadPiece piece = new DownloadPiece(handler, uri, type, cache, dir, false, imageView);
+        msg.obj = piece;
+        msg.what = 0;
         mHandler.sendMessage(msg);
     }
 
@@ -305,8 +302,8 @@ public class DownloadPool extends Thread {
                 }
 
                 notifyAll();
-                if ((GetCount()!=0)&&(GetThreadCount()<=MAX_THREAD_COUNT)) {
-                    DownloadPiece piece=Pop();
+                if ((GetCount() != 0) && (GetThreadCount() <= MAX_THREAD_COUNT)) {
+                    DownloadPiece piece = Pop();
                     FrechImg_Impl(piece);
                 } else {
                     //WeiboLog.d(TAG, "wait."+GetThreadCount());
@@ -322,58 +319,58 @@ public class DownloadPool extends Thread {
     }
 
     private void FrechImg_Impl(DownloadPiece piece) {
-        final String uri=piece.uri;
+        final String uri = piece.uri;
         //WeiboLog.v(TAG, "FrechImg_Impl:"+uri);
-        if (uri==null||piece.dir==null) {
+        if (uri == null || piece.dir == null) {
             WeiboLog.w(TAG, "名字不存在。");
             return;
         }
 
         if (cancelWork(piece)) {
-            WeiboLog.i(TAG, "viewWeakRef is null."+uri);
+            WeiboLog.i(TAG, "viewWeakRef is null." + uri);
             //downloading.remove(uri);
             return;
         }
 
-        final Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(uri);
-        if (null!=bitmap) {
-            if (!cancelWork(piece)&&null!=piece.handler) {
-                final WeakReference<ImageView> viewWeakReference=piece.mImageReference;
+        final Bitmap bitmap = ImageCache2.getInstance().getBitmapFromMemCache(uri);
+        if (null != bitmap) {
+            if (! cancelWork(piece) && null != piece.handler) {
+                final WeakReference<ImageView> viewWeakReference = piece.mImageReference;
                 piece.handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        ImageView view=(ImageView) viewWeakReference.get();
-                        if (null!=view) {
+                        ImageView view = (ImageView) viewWeakReference.get();
+                        if (null != view) {
                             view.setImageBitmap(bitmap);
                         } else {
-                            WeiboLog.v(TAG, "view is null;"+uri);
+                            WeiboLog.v(TAG, "view is null;" + uri);
                         }
                     }
                 });
             } else {
-                WeiboLog.v(TAG, "null==viewWeakReference:"+uri);
+                WeiboLog.v(TAG, "null==viewWeakReference:" + uri);
             }
             return;
         }
 
         //synchronized (this) {
         mApp.mDownloadPool.ActiveThread_Push();
-        String str3=Uri.encode(uri, ":/");
-        HttpGet httpGet=new HttpGet(str3);
+        String str3 = Uri.encode(uri, ":/");
+        HttpGet httpGet = new HttpGet(str3);
         httpGet.setHeader("User-Agent", BaseApi.USERAGENT);
-        DefaultHttpClient httpClient=new DefaultHttpClient(connectionManager, params);
-        FetchImage fetchImage=new FetchImage(mApp, httpClient, httpGet, piece);
+        DefaultHttpClient httpClient = new DefaultHttpClient(connectionManager, params);
+        FetchImage fetchImage = new FetchImage(mApp, httpClient, httpGet, piece);
         fetchImage.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
         fetchImage.start();
         //}
     }
 
     public static boolean cancelWork(DownloadPiece piece) {
-        if (null==piece){
+        if (null == piece) {
             return false;
         }
-        WeakReference<ImageView> viewWeakReference=piece.mImageReference;//DownloadPool.downloading.get(uri);
-        if (null==viewWeakReference||viewWeakReference.get()==null) {
+        WeakReference<ImageView> viewWeakReference = piece.mImageReference;//DownloadPool.downloading.get(uri);
+        if (null == viewWeakReference || viewWeakReference.get() == null) {
             return true;
         }
         return false;
@@ -382,7 +379,7 @@ public class DownloadPool extends Thread {
     //=======================================
 
     Handler mHandler;
-    int count=10;
+    int count = 10;
 
     private void init() {
         initDecodeThread();
@@ -396,11 +393,11 @@ public class DownloadPool extends Thread {
 
         WeiboLog.d(TAG, "initDecodeThread:");
         synchronized (this) {
-            final Thread previewThread=new Thread() {
+            final Thread previewThread = new Thread() {
                 @Override
                 public void run() {
                     Looper.prepare();
-                    mHandler=new Handler() {
+                    mHandler = new Handler() {
                         @Override
                         public void handleMessage(Message msg) {
                             internalhandleMessage(msg);
@@ -455,7 +452,7 @@ public class DownloadPool extends Thread {
 
     private void internalStart(Message msg) {
         //Log.d(TAG, "internalStart:");
-        DownloadPiece mpiece=(DownloadPiece) msg.obj;
+        DownloadPiece mpiece = (DownloadPiece) msg.obj;
         if (TextUtils.isEmpty(mpiece.uri)) {
             WeiboLog.d(TAG, "internalStart uri is null.");
             return;
@@ -464,14 +461,14 @@ public class DownloadPool extends Thread {
         synchronized (DownloadPool.this) {   //这里的同步造成了ui缓慢。
             for (DownloadPiece piece : mQuery) {    //在这里先排除总比在FrechImg_Impl()中查找文件要快.
                 if (piece.uri.equals(mpiece.uri)) {
-                    WeiboLog.d(TAG, "已经存在url:"+mpiece.uri);
+                    WeiboLog.d(TAG, "已经存在url:" + mpiece.uri);
                     mQuery.remove(piece);
                     break;
                 }
             }
-            int size=mQuery.size();
-            if (mQuery.size()>=count) {
-                mQuery=mQuery.subList(size-count, size);
+            int size = mQuery.size();
+            if (mQuery.size() >= count) {
+                mQuery = mQuery.subList(size - count, size);
             }
             mQuery.add(mpiece);
 
@@ -483,13 +480,13 @@ public class DownloadPool extends Thread {
      * 资源释放
      */
     public void release() {
-        if (null!=mHandler) {
+        if (null != mHandler) {
             mHandler.sendEmptyMessage(2);
         }
     }
 
     public void internalRelease() {
-        if (this.mHandler!=null) {
+        if (this.mHandler != null) {
             this.mHandler.removeCallbacksAndMessages(null);
         }
         quitLooper();

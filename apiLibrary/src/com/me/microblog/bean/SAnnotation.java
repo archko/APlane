@@ -7,14 +7,14 @@ import java.io.Serializable;
  */
 public class SAnnotation implements Serializable {
 
-    public static final long serialVersionUID=3894560643019408214L;
+    public static final long serialVersionUID = 3894560643019408214L;
 
     public SPlace place;
 
     @Override
     public String toString() {
-        return "SAnnotation{"+
-            "place="+place+
+        return "SAnnotation{" +
+            "place=" + place +
             '}';
     }
 }

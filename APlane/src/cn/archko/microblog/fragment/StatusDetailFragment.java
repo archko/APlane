@@ -25,11 +25,14 @@ import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
 import cn.archko.microblog.service.SendTaskService;
+import cn.archko.microblog.smiley.AKSmileyParser;
 import cn.archko.microblog.ui.PrefsActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
+import cn.archko.microblog.utils.AKUtils;
+import cn.archko.microblog.utils.WeiboOperation;
+import cn.archko.microblog.view.TagsViewGroup;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
-import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.AKSpannableStringBuilder;
@@ -40,16 +43,11 @@ import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.BaseApi;
 import com.me.microblog.core.sina.SinaStatusApi;
 import com.me.microblog.db.TwitterTable;
-import cn.archko.microblog.smiley.AKSmileyParser;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import cn.archko.microblog.utils.AKUtils;
 import com.me.microblog.view.ImageViewerDialog;
-import cn.archko.microblog.view.TagsViewGroup;
-/*import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -60,6 +58,10 @@ import java.net.URL;
 import java.util.Date;
 import java.util.regex.Matcher;
 
+/*import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
+
 /**
  * 显示一条微博完整的信息.不包含它的评论列表.
  *
@@ -67,11 +69,11 @@ import java.util.regex.Matcher;
  */
 public class StatusDetailFragment extends AbstractBaseFragment {
 
-    public static final String TAG="StatusDetailFragment";
+    public static final String TAG = "StatusDetailFragment";
     /**
      * 当前登录用户的id
      */
-    public long currentUserId=-1l;
+    public long currentUserId = - 1l;
     private ImageView mPortrait;
     private TextView mName;
     TextView mRepostNum, mCommentNum, mCreateAt, mSourceFrom;
@@ -88,17 +90,17 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     protected LinearLayout mContentSecondLayout;
     //private ImageView mStatusPicture;
 
-    private Status mStatus=null;
+    private Status mStatus = null;
     /**
      * 显示的是微博内容
      */
     private RelativeLayout mHeaderLayout;
-    Handler mHandler=new Handler() {
+    Handler mHandler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
-            int what=msg.what;
-            Integer progress=(Integer) msg.obj;
+            int what = msg.what;
+            Integer progress = (Integer) msg.obj;
             switch (what) {
                 case 1:
                     //mProgressBar.setProgress(progress);
@@ -118,9 +120,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
      * 下载进度
      */
     //private ProgressBar mProgressBar;
-    int lastItem=0;   //ListView中最后一项位置
-    boolean autoLoading=true;   //暂时无用
-    int page=1;//当前页序号,需要靠它识别已经加载的页.
+    int lastItem = 0;   //ListView中最后一项位置
+    boolean autoLoading = true;   //暂时无用
+    int page = 1;//当前页序号,需要靠它识别已经加载的页.
     String mCacheDir;
     //ImageView mStatusPictureLay;
     String mBmiddlePic; //中等图片url。
@@ -129,42 +131,42 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     /**
      * 是否需要下载
      */
-    boolean downloadImage=true;
+    boolean downloadImage = true;
     /**
      * 是否正在下载原图，如果正在下载就不会再下载了。
      */
-    boolean isDownloadingOri=false;
+    boolean isDownloadingOri = false;
     /**
      * 是否正在刷新微博
      */
-    boolean isRefreshing=false;
+    boolean isRefreshing = false;
     /**
      * 是否显示大图片
      */
-    protected boolean showBitmap=true;
+    protected boolean showBitmap = true;
     /**
      * 是否在列表中显示大的位图，只有在下面的显示列表图片时，才有效。
      */
-    protected boolean showLargeBitmap=false;
+    protected boolean showLargeBitmap = false;
     //RelativeLayout mTitleBar;
     LinearLayout mViewComment;
     //protected DisplayImageOptions options;
 
     //TODO 需要更新主页的存储数据。
     private void refreshStatus() {
-        if (!isRefreshing) {
+        if (! isRefreshing) {
             new Thread(new Runnable() {
 
                 @Override
                 public void run() {
-                    isRefreshing=true;
+                    isRefreshing = true;
                     try {
                         //SWeiboApi2 weiboApi2=(SWeiboApi2) App.getMicroBlog(getActivity());
-                        SinaStatusApi weiboApi2=new SinaStatusApi();
+                        SinaStatusApi weiboApi2 = new SinaStatusApi();
                         weiboApi2.updateToken();
-                        Status status=weiboApi2.getStatusShow(mStatus.id);
-                        if (null!=status) {
-                            mStatus=status;
+                        Status status = weiboApi2.getStatusShow(mStatus.id);
+                        if (null != status) {
+                            mStatus = status;
                             if (isResumed()) {
                                 mHandler.postDelayed(new Runnable() {
                                     @Override
@@ -175,14 +177,19 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                             }
                         }
                     } catch (Exception e) {
-                        showUIToast("刷新失败！");
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                NotifyUtils.showToast("刷新失败！");
+                            }
+                        });
                     } finally {
-                        isRefreshing=false;
+                        isRefreshing = false;
                     }
                 }
             }).start();
         } else {
-            AKUtils.showToast("刷新未完成，请稍候！");
+            NotifyUtils.showToast("刷新未完成，请稍候！");
             WeiboLog.d(TAG, "刷新未完成，请稍候！");
         }
     }
@@ -198,14 +205,14 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             @Override
             public void run() {
                 try {
-                    Intent intent=new Intent();
+                    Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setDataAndType(Uri.fromFile(file), "image/png");
                     startActivity(intent);
                 } catch (ActivityNotFoundException e) {
                     e.printStackTrace();
-                    AKUtils.showToast(R.string.image_activity_not_found);
+                    NotifyUtils.showToast(R.string.image_activity_not_found);
                     showBitmapLocal(file);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -238,18 +245,18 @@ public class StatusDetailFragment extends AbstractBaseFragment {
      * 用图库显示大图
      */
     private void viewLargeBitmap() {
-        String dir=mCacheDir;
-        String name=mBmiddlePic;
+        String dir = mCacheDir;
+        String name = mBmiddlePic;
         if (name.endsWith("gif")) {
-            dir+=Constants.GIF;
+            dir += Constants.GIF;
         } else {
-            dir+=Constants.PICTURE_DIR;
+            dir += Constants.PICTURE_DIR;
         }
 
-        String path=dir+ WeiboUtils.getWeiboUtil().getMd5(name)+ WeiboUtils.getExt(name);
-        WeiboLog.d(TAG, "viewLargeBitmap:"+path);
+        String path = dir + WeiboUtils.getWeiboUtil().getMd5(name) + WeiboUtils.getExt(name);
+        WeiboLog.d(TAG, "viewLargeBitmap:" + path);
 
-        File file=new File(path);
+        File file = new File(path);
         showBitmapBySys(file);
     }
 
@@ -262,13 +269,13 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             return;
         }
 
-        String dir=mCacheDir+Constants.PICTURE_DIR;
-        String originalPic=mStatus.originalPic;
+        String dir = mCacheDir + Constants.PICTURE_DIR;
+        String originalPic = mStatus.originalPic;
 
         if (TextUtils.isEmpty(originalPic)) {  //认为如果原创内容没有图片，就用转发的。
-            Status rStatus=mStatus.retweetedStatus;
-            if (null!=rStatus) {
-                originalPic=rStatus.originalPic;
+            Status rStatus = mStatus.retweetedStatus;
+            if (null != rStatus) {
+                originalPic = rStatus.originalPic;
             }
         }
 
@@ -282,15 +289,15 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             //return;
         }
 
-        String path=dir+ WeiboUtils.getWeiboUtil().getMd5(originalPic)+ WeiboUtils.getExt(originalPic);
-        WeiboLog.d(TAG, "原图.path:"+path);
-        final File file=new File(path);
+        String path = dir + WeiboUtils.getWeiboUtil().getMd5(originalPic) + WeiboUtils.getExt(originalPic);
+        WeiboLog.d(TAG, "原图.path:" + path);
+        final File file = new File(path);
         if (file.exists()) {
             showBitmapBySys(file);
             return;
         }
 
-        isDownloadingOri=true;
+        isDownloadingOri = true;
         //mProgressBar.setVisibility(View.VISIBLE);
         //mProgressBar.setProgress(0);
         doDownloadOrig(originalPic, file);
@@ -300,8 +307,8 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                boolean result=downloadFile(url, file);
-                isDownloadingOri=false;
+                boolean result = downloadFile(url, file);
+                isDownloadingOri = false;
                 if (result) {
                     showBitmapBySys(file);
                 } else {
@@ -310,7 +317,12 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    showUIToast("下载图片失败。");
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            NotifyUtils.showToast("下载图片失败。");
+                        }
+                    });
                 }
             }
         }).start();
@@ -320,18 +332,18 @@ public class StatusDetailFragment extends AbstractBaseFragment {
      * 创建收藏.
      */
     protected void createFavorite() {
-        Status status=mStatus;
-        Intent taskService=new Intent(getActivity(), SendTaskService.class);
-        SendTask task=new SendTask();
-        task.uid=currentUserId;
-        task.userId=currentUserId;
-        task.content=status.text;
-        task.source=String.valueOf(status.id);
-        task.type=TwitterTable.SendQueueTbl.SEND_TYPE_ADD_FAV;
-        task.createAt=new Date().getTime();
+        Status status = mStatus;
+        Intent taskService = new Intent(getActivity(), SendTaskService.class);
+        SendTask task = new SendTask();
+        task.uid = currentUserId;
+        task.userId = currentUserId;
+        task.content = status.text;
+        task.source = String.valueOf(status.id);
+        task.type = TwitterTable.SendQueueTbl.SEND_TYPE_ADD_FAV;
+        task.createAt = new Date().getTime();
         taskService.putExtra("send_task", task);
         getActivity().startService(taskService);
-        AKUtils.showToast("新收藏任务添加到队列服务中了。");
+        NotifyUtils.showToast("新收藏任务添加到队列服务中了。");
     }
 
     /**
@@ -352,18 +364,18 @@ public class StatusDetailFragment extends AbstractBaseFragment {
      * 快速转发
      */
     protected void quickRepostStatus() {
-        Intent taskService=new Intent(getActivity(), SendTaskService.class);
-        SendTask task=new SendTask();
-        task.uid=currentUserId;
-        task.userId=currentUserId;
-        task.content="";
-        task.source=String.valueOf(mStatus.id);
-        task.data="0";
-        task.type=TwitterTable.SendQueueTbl.SEND_TYPE_REPOST_STATUS;
-        task.createAt=new Date().getTime();
+        Intent taskService = new Intent(getActivity(), SendTaskService.class);
+        SendTask task = new SendTask();
+        task.uid = currentUserId;
+        task.userId = currentUserId;
+        task.content = "";
+        task.source = String.valueOf(mStatus.id);
+        task.data = "0";
+        task.type = TwitterTable.SendQueueTbl.SEND_TYPE_REPOST_STATUS;
+        task.createAt = new Date().getTime();
         taskService.putExtra("send_task", task);
         getActivity().startService(taskService);
-        AKUtils.showToast("转发任务添加到队列服务中了。");
+        NotifyUtils.showToast("转发任务添加到队列服务中了。");
         //WeiboOperation.quickRepostStatus(mStatus.id);
     }
 
@@ -371,22 +383,22 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        long aUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
-        this.currentUserId=aUserId;
+        long aUserId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
+        this.currentUserId = aUserId;
 
-        Intent intent=getActivity().getIntent();
-        Serializable status=intent.getSerializableExtra("status");
-        if (status==null) {
+        Intent intent = getActivity().getIntent();
+        Serializable status = intent.getSerializableExtra("status");
+        if (status == null) {
             WeiboLog.e(TAG, "没有传来微博.");
-            AKUtils.showToast("没有微博");
+            NotifyUtils.showToast("没有微博");
             //this.finish();
             return;
         }
-        mStatus=(Status) status;
-        showBitmap=mPrefs.getBoolean(PrefsActivity.PREF_COMMENT_STATUS_BM, true);
-        showLargeBitmap=mPrefs.getBoolean(PrefsActivity.PREF_COMMENT_STATUS_BM, false);
+        mStatus = (Status) status;
+        showBitmap = mPrefs.getBoolean(PrefsActivity.PREF_COMMENT_STATUS_BM, true);
+        showLargeBitmap = mPrefs.getBoolean(PrefsActivity.PREF_COMMENT_STATUS_BM, false);
 
-        mCacheDir=((App) App.getAppContext()).mCacheDir;
+        mCacheDir = ((App) App.getAppContext()).mCacheDir;
 
         /*options = new DisplayImageOptions.Builder()
 
@@ -398,34 +410,34 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             .build();*/
     }
 
-    View.OnClickListener clickListener=new View.OnClickListener() {
+    View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             clickMethod(view);
         }
 
         private void clickMethod(View view) {
-            WeiboLog.d(TAG, "click view:"+view);
-            int id=view.getId();
-            if (id==R.id.status_picture) {
-                String dir=mCacheDir;
-                String name=mBmiddlePic;
+            WeiboLog.d(TAG, "click view:" + view);
+            int id = view.getId();
+            if (id == R.id.status_picture) {
+                String dir = mCacheDir;
+                String name = mBmiddlePic;
                 if (name.endsWith("gif")) {
-                    dir+=Constants.GIF;
+                    dir += Constants.GIF;
 
-                    String path=dir+ WeiboUtils.getWeiboUtil().getMd5(name)+ WeiboUtils.getExt(name);
-                    WeiboLog.d(TAG, "viewLargeBitmap:"+path);
-                    File gif=new File(path);
+                    String path = dir + WeiboUtils.getWeiboUtil().getMd5(name) + WeiboUtils.getExt(name);
+                    WeiboLog.d(TAG, "viewLargeBitmap:" + path);
+                    File gif = new File(path);
                     if (gif.exists()) {
                         //TODO 重复计算了文件的路径。
-                        ImageViewerDialog imageViewerDialog=new ImageViewerDialog(getActivity(), mBmiddlePic, mCacheDir, null, null);
+                        ImageViewerDialog imageViewerDialog = new ImageViewerDialog(getActivity(), mBmiddlePic, mCacheDir, null, null);
                         imageViewerDialog.setCanceledOnTouchOutside(true);
                         imageViewerDialog.show();
                     } else {
-                        AKUtils.showToast("请等待图片下载完成才可查看gif动画。");
+                        NotifyUtils.showToast("请等待图片下载完成才可查看gif动画。");
                     }
                 } else {
-                    if (!showBitmap) {
+                    if (! showBitmap) {
                         //showToast("开始下载中等图片！");
                         //mProgressBar.setVisibility(View.VISIBLE);
                         new Thread(pictureRunnable).start();
@@ -443,7 +455,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root=inflater.inflate(R.layout.status_detail, container, false);
+        View root = inflater.inflate(R.layout.status_detail, container, false);
         initViews(root);
 
         return root;
@@ -454,7 +466,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
         setStatusContent();
-        boolean shouldRefresh=getActivity().getIntent().getBooleanExtra("refresh", false);
+        boolean shouldRefresh = getActivity().getIntent().getBooleanExtra("refresh", false);
         if (shouldRefresh) {
             refreshStatus();
         }
@@ -469,13 +481,13 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     }
 
     private void initViews(View view) {
-        mName=(TextView) view.findViewById(R.id.tv_name);
-        mRepostNum=(TextView) view.findViewById(R.id.repost_num);
-        mCommentNum=(TextView) view.findViewById(R.id.comment_num);
-        mCreateAt=(TextView) view.findViewById(R.id.txt_send_time);
+        mName = (TextView) view.findViewById(R.id.tv_name);
+        mRepostNum = (TextView) view.findViewById(R.id.repost_num);
+        mCommentNum = (TextView) view.findViewById(R.id.comment_num);
+        mCreateAt = (TextView) view.findViewById(R.id.txt_send_time);
         mCreateAt.setVisibility(View.VISIBLE);
-        mSourceFrom=(TextView) view.findViewById(R.id.source_from);
-        mPortrait=(ImageView) view.findViewById(R.id.iv_portrait);
+        mSourceFrom = (TextView) view.findViewById(R.id.source_from);
+        mPortrait = (ImageView) view.findViewById(R.id.iv_portrait);
         //mProgressBar=(ProgressBar) view.findViewById(R.id.progress_bar);
 
         /*mRepostLabel=(TextView) view.findViewById(R.id.repost_label);
@@ -486,21 +498,21 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         view.findViewById(R.id.lay_from).setVisibility(View.GONE);
 
         // content
-        mHeaderLayout=(RelativeLayout) view.findViewById(R.id.header_layout);
-        mContentFirst=(TextView) view.findViewById(R.id.tv_content_first);
-        mContentSencond=(TextView) view.findViewById(R.id.tv_content_sencond);
-        mContentSecondLayout=(LinearLayout) view.findViewById(R.id.tv_content_sencond_layout);
+        mHeaderLayout = (RelativeLayout) view.findViewById(R.id.header_layout);
+        mContentFirst = (TextView) view.findViewById(R.id.tv_content_first);
+        mContentSencond = (TextView) view.findViewById(R.id.tv_content_sencond);
+        mContentSecondLayout = (LinearLayout) view.findViewById(R.id.tv_content_sencond_layout);
         /*mStatusPicture=(ImageView) view.findViewById(R.id.status_picture);
         mStatusPictureLay=(ImageView) view.findViewById(R.id.status_picture_lay);*/
-        mRetRepostNum=(TextView) view.findViewById(R.id.ret_repost_num);
-        mRetCommentNum=(TextView) view.findViewById(R.id.ret_comment_num);
-        mLayRetNum=view.findViewById(R.id.lay_ret_num);
+        mRetRepostNum = (TextView) view.findViewById(R.id.ret_repost_num);
+        mRetCommentNum = (TextView) view.findViewById(R.id.ret_comment_num);
+        mLayRetNum = view.findViewById(R.id.lay_ret_num);
 
         //mTitleBar=(RelativeLayout) view.findViewById(R.id.title_bar);
-        mViewComment=(LinearLayout) view.findViewById(R.id.ly_view_comment);
+        mViewComment = (LinearLayout) view.findViewById(R.id.ly_view_comment);
         mViewComment.setOnClickListener(clickListener);
-        mTagsViewGroup=(TagsViewGroup) view.findViewById(R.id.tags);
-        mLeftSlider=(TextView) view.findViewById(R.id.left_slider);
+        mTagsViewGroup = (TagsViewGroup) view.findViewById(R.id.tags);
+        mLeftSlider = (TextView) view.findViewById(R.id.left_slider);
 
         //mHeaderLayout.setOnClickListener(clickListener);
         //mStatusPicture.setOnClickListener(clickListener);
@@ -511,17 +523,17 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             }
         });
 
-        SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
-        float pref_content_font_size=options.getInt(PreferenceUtils.PREF_CONTENT_FONT_SIZE, 16);
-        float pref_ret_content_font_size=options.getInt(PreferenceUtils.PREF_RET_CONTENT_FONT_SIZE, 16);
+        SharedPreferences options = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+        float pref_content_font_size = options.getInt(PreferenceUtils.PREF_CONTENT_FONT_SIZE, 16);
+        float pref_ret_content_font_size = options.getInt(PreferenceUtils.PREF_RET_CONTENT_FONT_SIZE, 16);
 
-        int pref_content_color=PreferenceUtils.getInstace(App.getAppContext()).getDefaultStatusThemeColor(App.getAppContext());
-        int pref_ret_content_color=PreferenceUtils.getInstace(App.getAppContext()).getDefaultRetContentThemeColor(App.getAppContext());
+        int pref_content_color = PreferenceUtils.getInstace(App.getAppContext()).getDefaultStatusThemeColor(App.getAppContext());
+        int pref_ret_content_color = PreferenceUtils.getInstace(App.getAppContext()).getDefaultRetContentThemeColor(App.getAppContext());
 
-        if (mContentFirst.getTextSize()!=pref_content_font_size) {
+        if (mContentFirst.getTextSize() != pref_content_font_size) {
             mContentFirst.setTextSize(pref_content_font_size);
         }
-        if (mContentSencond.getTextSize()!=pref_ret_content_font_size) {
+        if (mContentSencond.getTextSize() != pref_ret_content_font_size) {
             mContentSencond.setTextSize(pref_ret_content_font_size);
         }
         mContentFirst.setTextColor(pref_content_color);
@@ -537,19 +549,19 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        downloadImage=false;
+        downloadImage = false;
     }
 
     /**
      * 设置微博的内容
      */
     private void setStatusContent() {
-        if (null==mStatus) {
+        if (null == mStatus) {
             WeiboLog.d(TAG, "Fragment结束了,或者微博内容为空.不更新内容");
             return;
         }
 
-        User user=mStatus.user;
+        User user = mStatus.user;
         try {
             mName.setText(user.screenName);
         } catch (Exception e) {
@@ -558,68 +570,68 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         mRepostNum.setText(getResources().getString(R.string.text_repost_num, mStatus.r_num));
         mCommentNum.setText(getResources().getString(R.string.text_comment_num, mStatus.c_num));
 
-        WeiboLog.v(TAG, "createAt:"+mStatus.createdAt);
+        WeiboLog.v(TAG, "createAt:" + mStatus.createdAt);
         mCreateAt.setText(DateUtils.getDateString(mStatus.createdAt));
 
-        String source=mStatus.source;
-        if (!TextUtils.isEmpty(source)) {
-            Matcher atMatcher= WeiboUtils.comeFrom.matcher(source);
+        String source = mStatus.source;
+        if (! TextUtils.isEmpty(source)) {
+            Matcher atMatcher = WeiboUtils.comeFrom.matcher(source);
             if (atMatcher.find()) {
-                int start=atMatcher.start();
-                int end=atMatcher.end();
-                String cfString=source.substring(end, source.length()-4);
+                int start = atMatcher.start();
+                int end = atMatcher.end();
+                String cfString = source.substring(end, source.length() - 4);
                 mSourceFrom.setText(cfString);
             }
         }
-        WeiboLog.v(TAG, "source:"+source+" showBitmap:"+showBitmap);
+        WeiboLog.v(TAG, "source:" + source + " showBitmap:" + showBitmap);
 
-        String title=mStatus.text;
-        WeiboLog.v(TAG, "title:"+title);
+        String title = mStatus.text;
+        WeiboLog.v(TAG, "title:" + title);
 
-        AKSpannableStringBuilder spannableString=(AKSpannableStringBuilder) mStatus.mStatusSpannable;
-        if (null==spannableString) {
-            spannableString=new AKSpannableStringBuilder(buildSmile(title));
+        AKSpannableStringBuilder spannableString = (AKSpannableStringBuilder) mStatus.mStatusSpannable;
+        if (null == spannableString) {
+            spannableString = new AKSpannableStringBuilder(buildSmile(title));
             AKUtils.highlightAtClickable(getActivity(), spannableString, WeiboUtils.ATPATTERN);
             AKUtils.highlightUrlClickable(getActivity(), spannableString, WeiboUtils.getWebPattern());
-            mStatus.mStatusSpannable=spannableString;
+            mStatus.mStatusSpannable = spannableString;
         }
         mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
         mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
-        String imgUrl=null;
+        String imgUrl = null;
 
-        if (!TextUtils.isEmpty(imgUrl)) {
-            mBmiddlePic=imgUrl;
+        if (! TextUtils.isEmpty(imgUrl)) {
+            mBmiddlePic = imgUrl;
         }
 
-        if (null!=user) {
-            imgUrl=user.profileImageUrl;
+        if (null != user) {
+            imgUrl = user.profileImageUrl;
         }
 
-        WeiboLog.v(TAG, "imgUrl:"+imgUrl);
-        if (!TextUtils.isEmpty(imgUrl)) {
-            portraitUrl=imgUrl;
+        WeiboLog.v(TAG, "imgUrl:" + imgUrl);
+        if (! TextUtils.isEmpty(imgUrl)) {
+            portraitUrl = imgUrl;
             //new Thread(portraitRunnable).start();
             /*ImageLoader imageLoader=ImageLoader.getInstance();
             imageLoader.displayImage(portraitUrl, mPortrait, options);*/
             ApolloUtils.getImageFetcher(getActivity()).startLoadImage(portraitUrl, mPortrait);
         }
 
-        Status retweetStatus=mStatus.retweetedStatus;
-        if (null!=retweetStatus) {
-            user=retweetStatus.user;
-            if (null==user) {
-                title=retweetStatus.text;
+        Status retweetStatus = mStatus.retweetedStatus;
+        if (null != retweetStatus) {
+            user = retweetStatus.user;
+            if (null == user) {
+                title = retweetStatus.text;
             } else {
-                title="@"+retweetStatus.user.screenName+":"+retweetStatus.text;
+                title = "@" + retweetStatus.user.screenName + ":" + retweetStatus.text;
             }
             //WeiboLog.i(TAG, "retweetTitle:"+title);
-            spannableString=(AKSpannableStringBuilder) mStatus.mRetweetedSpannable;
-            if (null==spannableString) {
-                spannableString=new AKSpannableStringBuilder(title);
+            spannableString = (AKSpannableStringBuilder) mStatus.mRetweetedSpannable;
+            if (null == spannableString) {
+                spannableString = new AKSpannableStringBuilder(title);
                 AKUtils.highlightAtClickable(getActivity(), spannableString, WeiboUtils.ATPATTERN);
                 AKUtils.highlightUrlClickable(getActivity(), spannableString, WeiboUtils.getWebPattern());
-                mStatus.mRetweetedSpannable=spannableString;
+                mStatus.mRetweetedSpannable = spannableString;
             }
             mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
             mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
@@ -628,7 +640,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             try {
                 mRetRepostNum.setText(getString(R.string.text_repost_num, retweetStatus.r_num));
                 mRetCommentNum.setText(getString(R.string.text_comment_num, retweetStatus.c_num));
-                WeiboLog.d(TAG, "r_num:"+retweetStatus.r_num+" c_num:"+retweetStatus.c_num);
+                WeiboLog.d(TAG, "r_num:" + retweetStatus.r_num + " c_num:" + retweetStatus.c_num);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -649,8 +661,8 @@ public class StatusDetailFragment extends AbstractBaseFragment {
      * @return
      */
     private CharSequence buildSmile(String charToBuild) {
-        AKSmileyParser parser=AKSmileyParser.getInstance(getActivity());
-        CharSequence newChar=parser.addSmileySpans(charToBuild);
+        AKSmileyParser parser = AKSmileyParser.getInstance(getActivity());
+        CharSequence newChar = parser.addSmileySpans(charToBuild);
         return newChar;
     }
 
@@ -669,17 +681,17 @@ public class StatusDetailFragment extends AbstractBaseFragment {
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        int menuId=item.getItemId();
-        if (menuId==Constants.OP_ID_VIEW_USER) {
-            Status status=mStatus;
+        int menuId = item.getItemId();
+        if (menuId == Constants.OP_ID_VIEW_USER) {
+            Status status = mStatus;
             WeiboOperation.toViewStatusUser(getActivity(), status.user, UserFragmentActivity.TYPE_USER_INFO);
-        } else if (menuId==Constants.OP_ID_STATUS) {
-            Status status=mStatus;
+        } else if (menuId == Constants.OP_ID_STATUS) {
+            Status status = mStatus;
             WeiboOperation.toViewStatusUser(getActivity(), status.user, UserFragmentActivity.TYPE_USER_TIMELINE);
-        } else if (menuId==Constants.OP_ID_AT) {
+        } else if (menuId == Constants.OP_ID_AT) {
             try {
-                Status status=mStatus;
-                User user=status.user;
+                Status status = mStatus;
+                User user = status.user;
                 WeiboOperation.toAtUser(getActivity(), user.screenName);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -690,17 +702,17 @@ public class StatusDetailFragment extends AbstractBaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (null!=mStatus) {
-            boolean hasImage=false;
-            String thumbUrl=mStatus.thumbnailPic;
-            if (!TextUtils.isEmpty(thumbUrl)) {
-                hasImage=true;
+        if (null != mStatus) {
+            boolean hasImage = false;
+            String thumbUrl = mStatus.thumbnailPic;
+            if (! TextUtils.isEmpty(thumbUrl)) {
+                hasImage = true;
             } else {
-                Status retStatus=mStatus.retweetedStatus;
-                if (null!=retStatus) {
-                    thumbUrl=retStatus.thumbnailPic;
-                    if (!TextUtils.isEmpty(thumbUrl)) {
-                        hasImage=true;
+                Status retStatus = mStatus.retweetedStatus;
+                if (null != retStatus) {
+                    thumbUrl = retStatus.thumbnailPic;
+                    if (! TextUtils.isEmpty(thumbUrl)) {
+                        hasImage = true;
                     }
                 }
             }
@@ -720,8 +732,8 @@ public class StatusDetailFragment extends AbstractBaseFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId=item.getItemId();
-        WeiboLog.d(TAG, "item:"+item);
+        int itemId = item.getItemId();
+        WeiboLog.d(TAG, "item:" + item);
         processMenuItemSelected(itemId);
 
         return super.onOptionsItemSelected(item);
@@ -734,24 +746,24 @@ public class StatusDetailFragment extends AbstractBaseFragment {
      * @param itemId
      */
     private void processMenuItemSelected(int itemId) {
-        if (itemId==R.id.menu_refresh) {
+        if (itemId == R.id.menu_refresh) {
             refreshStatus();
-        } else if (itemId==R.id.menu_quick_comment) {
-        } else if (itemId==R.id.menu_quick_repost) {
+        } else if (itemId == R.id.menu_quick_comment) {
+        } else if (itemId == R.id.menu_quick_repost) {
             //quickRepostStatus();  //activity中已经有了.
-        } else if (itemId==R.id.menu_comment) {
+        } else if (itemId == R.id.menu_comment) {
             //commentStatus();
-        } else if (itemId==R.id.menu_repost) {
+        } else if (itemId == R.id.menu_repost) {
             repostStatus();
-        } else if (itemId==R.id.menu_favorite) {
+        } else if (itemId == R.id.menu_favorite) {
             createFavorite();
-        } else if (itemId==R.id.menu_download_ori_img) {
+        } else if (itemId == R.id.menu_download_ori_img) {
             downOriImage();
-        } else if (itemId==R.id.menu_show_in_gallery) {
+        } else if (itemId == R.id.menu_show_in_gallery) {
             viewLargeBitmap();
-        } else if (itemId==R.id.menu_steal) {
-            Status retStatus=mStatus.retweetedStatus;
-        } else if (itemId==R.id.menu_more) {
+        } else if (itemId == R.id.menu_steal) {
+            Status retStatus = mStatus.retweetedStatus;
+        } else if (itemId == R.id.menu_more) {
             //moreAction();
         }
     }
@@ -761,7 +773,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     /**
      * 下载头像线程
      */
-    Runnable portraitRunnable=new Runnable() {
+    Runnable portraitRunnable = new Runnable() {
 
         @Override
         public void run() {
@@ -769,17 +781,17 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         }
 
         private void loadPortrait() {
-            Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(portraitUrl);
-            if (null!=bitmap) {
+            Bitmap bitmap = ImageCache2.getInstance().getBitmapFromMemCache(portraitUrl);
+            if (null != bitmap) {
                 udpatePortrait(bitmap);
                 return;
             }
-            String dir=mCacheDir;
-            dir+=Constants.ICON_DIR;
+            String dir = mCacheDir;
+            dir += Constants.ICON_DIR;
 
             if (showBitmap) {
-                bitmap=ImageCache2.getInstance().getImageManager().getBitmapFromDiskOrNet(portraitUrl, dir, true);
-                if (null!=bitmap) {
+                bitmap = ImageCache2.getInstance().getImageManager().getBitmapFromDiskOrNet(portraitUrl, dir, true);
+                if (null != bitmap) {
                     udpatePortrait(bitmap);
                     return;
                 }
@@ -787,7 +799,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         }
     };
 
-    Runnable pictureRunnable=new Runnable() {
+    Runnable pictureRunnable = new Runnable() {
 
         @Override
         public void run() {
@@ -795,23 +807,28 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         }
 
         private void loadPicture() {
-            String dir=mCacheDir+Constants.PICTURE_DIR;
+            String dir = mCacheDir + Constants.PICTURE_DIR;
             if (mBmiddlePic.endsWith("gif")) {
-                dir=mCacheDir+Constants.GIF;
+                dir = mCacheDir + Constants.GIF;
             }
 
-            String path=dir+ WeiboUtils.getWeiboUtil().getMd5(mBmiddlePic)+ WeiboUtils.getExt(mBmiddlePic);
-            WeiboLog.d(TAG, "DownloadThread.path:"+path);
-            final File file=new File(path);
+            String path = dir + WeiboUtils.getWeiboUtil().getMd5(mBmiddlePic) + WeiboUtils.getExt(mBmiddlePic);
+            WeiboLog.d(TAG, "DownloadThread.path:" + path);
+            final File file = new File(path);
             if (file.exists()) {
                 showImage(file);
                 return;
             }
             WeiboLog.d(TAG, "需要下载图片！");
-            showUIToast("开始下载中等图片！");
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    NotifyUtils.showToast("开始下载中等图片！");
+                }
+            });
 
-            boolean result=downloadFile(mBmiddlePic, file);
-            if (!isResumed()) {
+            boolean result = downloadFile(mBmiddlePic, file);
+            if (! isResumed()) {
                 WeiboLog.d(TAG, "Fragment结束了,图片下载失败.");
                 return;
             }
@@ -824,13 +841,18 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                showUIToast("下载图片失败。");
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        NotifyUtils.showToast("下载图片失败。");
+                    }
+                });
             }
         }
     };
 
     private void udpatePortrait(final Bitmap bitmap) {
-        if (!isResumed()) {
+        if (! isResumed()) {
             return;
         }
         mHandler.post(new Runnable() {
@@ -862,15 +884,15 @@ public class StatusDetailFragment extends AbstractBaseFragment {
      * @return
      */
     public boolean downloadFile(String downloadUrl, File saveFilePath) {
-        int fileSize=-1;
-        int downFileSize=0;
-        boolean result=false;
-        int progress=0;
+        int fileSize = - 1;
+        int downFileSize = 0;
+        boolean result = false;
+        int progress = 0;
 
         try {
-            URL url=new URL(downloadUrl);
-            HttpURLConnection conn=(HttpURLConnection) url.openConnection();
-            if (null==conn) {
+            URL url = new URL(downloadUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            if (null == conn) {
                 try {
                     saveFilePath.delete();
                 } catch (Exception e) {
@@ -887,20 +909,20 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             conn.setRequestProperty("User-Agent", BaseApi.USERAGENT);
             conn.setDoInput(true);
             conn.connect();
-            if (conn.getResponseCode()==HttpURLConnection.HTTP_OK) {
-                fileSize=conn.getContentLength();
-                InputStream is=conn.getInputStream();
-                FileOutputStream fos=new FileOutputStream(saveFilePath);
-                byte[] buffer=new byte[2048];
-                int i=0;
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                fileSize = conn.getContentLength();
+                InputStream is = conn.getInputStream();
+                FileOutputStream fos = new FileOutputStream(saveFilePath);
+                byte[] buffer = new byte[ 2048 ];
+                int i = 0;
                 Message msg;
 
-                msg=Message.obtain();
-                msg.what=2;
-                msg.obj=fileSize;
+                msg = Message.obtain();
+                msg.what = 2;
+                msg.obj = fileSize;
 
-                while ((i=is.read(buffer))!=-1) {
-                    if (!downloadImage) {
+                while ((i = is.read(buffer)) != - 1) {
+                    if (! downloadImage) {
                         try {
                             saveFilePath.delete();
                         } catch (Exception e) {
@@ -909,14 +931,14 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                         return false;
                     }
 
-                    downFileSize=downFileSize+i;
+                    downFileSize = downFileSize + i;
                     // 下载进度
-                    progress=(int) (downFileSize*100.0/fileSize);
+                    progress = (int) (downFileSize * 100.0 / fileSize);
                     fos.write(buffer, 0, i);
 
-                    msg=Message.obtain();
-                    msg.what=1;
-                    msg.obj=progress;
+                    msg = Message.obtain();
+                    msg.what = 1;
+                    msg.obj = progress;
                     mHandler.sendMessage(msg);
                 }
                 fos.flush();
@@ -926,13 +948,13 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                 /*msg=Message.obtain();
                 msg.what=3;
                 mHandler.sendMessage(msg);*/
-                result=true;
+                result = true;
             } else {
-                WeiboLog.d(TAG, "code:"+conn.getResponseCode()+" message:"+conn.getResponseMessage());
-                result=false;
+                WeiboLog.d(TAG, "code:" + conn.getResponseCode() + " message:" + conn.getResponseMessage());
+                result = false;
             }
         } catch (Exception e) {
-            result=false;
+            result = false;
             WeiboLog.e(TAG, "downloadFile catch Exception:", e);
         }
         return result;
@@ -947,20 +969,20 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                 //mProgressBar.setProgress(100);
                 //StatusDetailFragment.this.mProgressBar.setVisibility(View.GONE);
                 if (mBmiddlePic.endsWith("gif")) {
-                    Bitmap bitmap=null;
-                    bitmap=ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(file.getAbsolutePath(), -1);
-                    if (null!=bitmap) {
-                        WeiboLog.d(TAG, "width："+bitmap.getWidth()+" height:"+bitmap.getHeight());
+                    Bitmap bitmap = null;
+                    bitmap = ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(file.getAbsolutePath(), - 1);
+                    if (null != bitmap) {
+                        WeiboLog.d(TAG, "width：" + bitmap.getWidth() + " height:" + bitmap.getHeight());
                         /*mStatusPicture.setImageBitmap(bitmap);
                         mStatusPicture.setVisibility(View.VISIBLE);*/
                     } else {
                         deleteFileIfNeeded(file);
                     }
                 } else {
-                    Bitmap bitmap=null;
-                    bitmap=ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(file.getAbsolutePath(), -1);
-                    if (null!=bitmap) {
-                        WeiboLog.d(TAG, "width："+bitmap.getWidth()+" height:"+bitmap.getHeight());
+                    Bitmap bitmap = null;
+                    bitmap = ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(file.getAbsolutePath(), - 1);
+                    if (null != bitmap) {
+                        WeiboLog.d(TAG, "width：" + bitmap.getWidth() + " height:" + bitmap.getHeight());
                         /*mStatusPicture.setImageBitmap(bitmap);
                         mStatusPicture.setVisibility(View.VISIBLE);*/
                     } else {
@@ -978,8 +1000,8 @@ public class StatusDetailFragment extends AbstractBaseFragment {
      */
     private void deleteFileIfNeeded(File file) {
         try {
-            boolean slb="1".equals(mPrefs.getString(PrefsActivity.PREF_RESOLUTION, getString(R.string.default_resolution)));
-            if (!slb) {
+            boolean slb = "1".equals(mPrefs.getString(PrefsActivity.PREF_RESOLUTION, getString(R.string.default_resolution)));
+            if (! slb) {
                 file.delete();
             }
         } catch (Exception e) {
@@ -992,21 +1014,21 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     protected TextView mLeftSlider; //转发内容的左侧
 
     void loadPicture(boolean updateFlag, boolean cache) {
-        String[] thumbs=mStatus.thumbs; //不重复检查,在解析完成后处理.
+        String[] thumbs = mStatus.thumbs; //不重复检查,在解析完成后处理.
         /*if (null==thumbs||thumbs.length==0) {
             if (null!=mStatus.retweetedStatus) {
                 thumbs=mStatus.retweetedStatus.thumbs;
             }
         }*/
-        if (null==thumbs) {
-            thumbs=new String[]{};
+        if (null == thumbs) {
+            thumbs = new String[]{};
         }
 
-        ImageAdapter adapter=(ImageAdapter) mTagsViewGroup.getAdapter();
+        ImageAdapter adapter = (ImageAdapter) mTagsViewGroup.getAdapter();
         //WeiboLog.d(TAG, "update adapter:"+mAdapter+" tvg:"+adapter+" mTagsViewGroup:"+mTagsViewGroup);
-        mAdapter=adapter;
-        if (null==mAdapter) {
-            mAdapter=new ImageAdapter(getActivity(), mCacheDir, thumbs);
+        mAdapter = adapter;
+        if (null == mAdapter) {
+            mAdapter = new ImageAdapter(getActivity(), mCacheDir, thumbs);
             mTagsViewGroup.setAdapter(mAdapter);
         } else {
         }
@@ -1016,14 +1038,14 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         mAdapter.setImageUrls(thumbs);
         mAdapter.notifyDataSetChanged();
 
-        if (null==thumbs||thumbs.length==0) {
+        if (null == thumbs || thumbs.length == 0) {
             //mTagsViewGroup.setAdapter(null);
             mTagsViewGroup.setVisibility(View.GONE);
             //WeiboLog.v(TAG, "setAdapter.没有图片需要显示。"+mStatus.text);
             return;
         }
 
-        if (mTagsViewGroup.getVisibility()==View.GONE) {
+        if (mTagsViewGroup.getVisibility() == View.GONE) {
             mTagsViewGroup.setVisibility(View.VISIBLE);
         }
     }

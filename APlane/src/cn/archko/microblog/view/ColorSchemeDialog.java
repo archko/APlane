@@ -21,11 +21,12 @@ import java.util.Locale;
  * @author Andrew Neal (andrewdneal@gmail.com)
  */
 public class ColorSchemeDialog extends AlertDialog implements
-        ColorPickerView.OnColorChangedListener {
+    ColorPickerView.OnColorChangedListener {
 
     private final int mCurrentColor;
 
-    private final ColorPickerView.OnColorChangedListener mListener = this;;
+    private final ColorPickerView.OnColorChangedListener mListener = this;
+    ;
 
     private LayoutInflater mInflater;
 
@@ -72,7 +73,7 @@ public class ColorSchemeDialog extends AlertDialog implements
     public void onColorChanged(final int color) {
         if (mHexValue != null) {
             mHexValue.setText(padLeft(Integer.toHexString(color).toUpperCase(Locale.getDefault()),
-                    '0', 8));
+                '0', 8));
         }
         mNewColor.setBackgroundColor(color);
     }
@@ -95,13 +96,13 @@ public class ColorSchemeDialog extends AlertDialog implements
      * @param color The color to use.
      */
     private void setUp(final int color) {
-        mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mRootView = mInflater.inflate(R.layout.color_scheme_dialog, null);
 
-        mColorPicker = (ColorPickerView)mRootView.findViewById(R.id.color_picker_view);
-        mOldColor = (Button)mRootView.findViewById(R.id.color_scheme_dialog_old_color);
+        mColorPicker = (ColorPickerView) mRootView.findViewById(R.id.color_picker_view);
+        mOldColor = (Button) mRootView.findViewById(R.id.color_scheme_dialog_old_color);
         mOldColor.setOnClickListener(mPresetListener);
-        mNewColor = (Button)mRootView.findViewById(R.id.color_scheme_dialog_new_color);
+        mNewColor = (Button) mRootView.findViewById(R.id.color_scheme_dialog_new_color);
         setUpPresets(R.id.color_scheme_dialog_preset_one);
         setUpPresets(R.id.color_scheme_dialog_preset_two);
         setUpPresets(R.id.color_scheme_dialog_preset_three);
@@ -110,24 +111,24 @@ public class ColorSchemeDialog extends AlertDialog implements
         setUpPresets(R.id.color_scheme_dialog_preset_six);
         setUpPresets(R.id.color_scheme_dialog_preset_seven);
         setUpPresets(R.id.color_scheme_dialog_preset_eight);
-        mHexValue = (EditText)mRootView.findViewById(R.id.color_scheme_dialog_hex_value);
+        mHexValue = (EditText) mRootView.findViewById(R.id.color_scheme_dialog_hex_value);
         mHexValue.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(final CharSequence s, final int start, final int before,
-                    final int count) {
+                final int count) {
                 try {
                     mColorPicker.setColor(Color.parseColor("#"
-                            + mHexValue.getText().toString().toUpperCase(Locale.getDefault())));
+                        + mHexValue.getText().toString().toUpperCase(Locale.getDefault())));
                     mNewColor.setBackgroundColor(Color.parseColor("#"
-                            + mHexValue.getText().toString().toUpperCase(Locale.getDefault())));
+                        + mHexValue.getText().toString().toUpperCase(Locale.getDefault())));
                 } catch (final Exception ignored) {
                 }
             }
 
             @Override
             public void beforeTextChanged(final CharSequence s, final int start, final int count,
-                    final int after) {
+                final int after) {
                 /* Nothing to do */
             }
 
@@ -164,7 +165,7 @@ public class ColorSchemeDialog extends AlertDialog implements
      * @param which The Id of the preset color
      */
     private void setUpPresets(final int which) {
-        final Button preset = (Button)mRootView.findViewById(which);
+        final Button preset = (Button) mRootView.findViewById(which);
         if (preset != null) {
             preset.setOnClickListener(mPresetListener);
         }

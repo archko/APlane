@@ -32,16 +32,16 @@ import java.util.List;
 @Deprecated
 public class TrendsFragment extends AbsBaseListFragment<Trend> {
 
-    public static final String TAG="TrendsFragment";
-    String[] types={"hourly", "daily", "weekly"};
-    String[] from={"name", "query"};
+    public static final String TAG = "TrendsFragment";
+    String[] types = {"hourly", "daily", "weekly"};
+    String[] from = {"name", "query"};
 
-    int[] to={android.R.id.text1, android.R.id.text2};
-    int nextCursor=-1;//下一页索引，第一页为-1，不是0
+    int[] to = {android.R.id.text1, android.R.id.text2};
+    int nextCursor = - 1;//下一页索引，第一页为-1，不是0
     long userId;//要查询的关注列表的用户id
     protected PullToRefreshListView mPullRefreshListView;
     protected ListView mListView;
-    String mType=types[1];
+    String mType = types[ 1 ];
 
     @Override
     public void initApi() {
@@ -52,15 +52,15 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        WeiboLog.d(TAG, "onCreate:"+this);
+        WeiboLog.d(TAG, "onCreate:" + this);
     }
 
     @Override
     public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RelativeLayout root=(RelativeLayout) inflater.inflate(R.layout.friend_list, null);
-        mEmptyTxt=(TextView) root.findViewById(R.id.empty_txt);
-        mPullRefreshListView=(PullToRefreshListView) root.findViewById(R.id.statusList);
-        mListView=mPullRefreshListView.getRefreshableView();
+        RelativeLayout root = (RelativeLayout) inflater.inflate(R.layout.friend_list, null);
+        mEmptyTxt = (TextView) root.findViewById(R.id.empty_txt);
+        mPullRefreshListView = (PullToRefreshListView) root.findViewById(R.id.statusList);
+        mListView = mPullRefreshListView.getRefreshableView();
         mPullRefreshListView.setMode(PullToRefreshBase.Mode.DISABLED);
         mListView.setRecyclerListener(new RecycleHolder());
         mListView.setOnScrollListener(this);
@@ -72,7 +72,7 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
      * 查看用户发布的微博信息。
      */
     void viewUserStatuses() {
-        if (selectedPos>=mAdapter.getCount()) {
+        if (selectedPos >= mAdapter.getCount()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;
         }
@@ -86,16 +86,16 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
      */
     @Override
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        if (!App.hasInternetConnection(getActivity())) {
+        if (! App.hasInternetConnection(getActivity())) {
             Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_LONG).show();
-            if (mRefreshListener!=null) {
+            if (mRefreshListener != null) {
                 mRefreshListener.onRefreshFinished();
             }
             refreshAdapter(false, false);
             return;
         }
 
-        if (!isLoading) {
+        if (! isLoading) {
             newTask(new Object[]{mType}, null);
         }
     }
@@ -112,11 +112,11 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
     @Override
     public Object[] baseBackgroundOperation(Object... objects) {
         try {
-            WeiboLog.d(TAG, "baseBackgroundOperation:"+objects);
-            Object[] params=objects;
-            SinaTrendApi sinaTrendApi=new SinaTrendApi();
+            WeiboLog.d(TAG, "baseBackgroundOperation:" + objects);
+            Object[] params = objects;
+            SinaTrendApi sinaTrendApi = new SinaTrendApi();
             sinaTrendApi.updateToken();
-            Trends tmp=sinaTrendApi.getTrends((String) params[0]);
+            Trends tmp = sinaTrendApi.getTrends((String) params[ 0 ]);
 
             return new Object[]{false, tmp, false};
         } catch (WeiboException ex) {
@@ -132,15 +132,15 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
      */
     public void basePostOperation(Object[] result) {
         WeiboLog.d(TAG, "basePostOperation");
-        if (mRefreshListener!=null) {
+        if (mRefreshListener != null) {
             mRefreshListener.onRefreshFinished();
         }
 
-        isLoading=false;
+        isLoading = false;
 
-        if (null==result) {
+        if (null == result) {
             WeiboLog.d(TAG, "加载数据异常。");
-            if (null!=mMoreTxt&&null!=mMoreProgressBar) {
+            if (null != mMoreTxt && null != mMoreProgressBar) {
                 mMoreTxt.setText(R.string.more_loaded_failed);
                 mMoreProgressBar.setVisibility(View.GONE);
             }
@@ -148,10 +148,10 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
             return;
         }
 
-        Trends sStatusData=(Trends) result[1];
-        if (null==sStatusData||null==sStatusData.trends) {
+        Trends sStatusData = (Trends) result[ 1 ];
+        if (null == sStatusData || null == sStatusData.trends) {
             WeiboLog.d(TAG, "加载数据为空。");
-            if (null!=mMoreTxt&&null!=mMoreProgressBar) {
+            if (null != mMoreTxt && null != mMoreProgressBar) {
                 mMoreTxt.setText(R.string.more_loaded_failed);
                 mMoreProgressBar.setVisibility(View.GONE);
             }
@@ -162,19 +162,19 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
         //only remove footerView when load succefully
         footerView.removeAllViews();
 
-        List<Trend> list=addValue(sStatusData);
+        List<Trend> list = addValue(sStatusData);
 
         mListView.clearChoices();
         mDataList.clear();
         mDataList.addAll(list);
-        WeiboLog.i(TAG, "notify data changed."+mDataList.size()+" isRefresh:");
+        WeiboLog.i(TAG, "notify data changed." + mDataList.size() + " isRefresh:");
 
         refreshAdapter(true, false);
     }
 
     private List<Trend> addValue(Trends trends) {
-        WeiboLog.d("addValue:"+trends);
-        List<Trend> trendList=Arrays.asList(trends.trends);
+        WeiboLog.d("addValue:" + trends);
+        List<Trend> trendList = Arrays.asList(trends.trends);
         return trendList;
     }
 
@@ -186,7 +186,7 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
      */
     //@Override
     public SStatusData<Trend> getStatuses(Long sinceId, Long maxId, int c, int p) {
-        WeiboLog.d(TAG, " TrendsFragment.getStatuses."+sinceId+" maxId:"+maxId+" count:"+c+" page:"+p);
+        WeiboLog.d(TAG, " TrendsFragment.getStatuses." + sinceId + " maxId:" + maxId + " count:" + c + " page:" + p);
         //Trends tmp=((SWeiboApi2) App.getMicroBlog(getActivity())).getTrends((String) params[0]);
         return null;
     }
@@ -202,22 +202,22 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        if (convertView==null) {
-            convertView=((LayoutInflater) getActivity().getSystemService("layout_inflater")).
+        if (convertView == null) {
+            convertView = ((LayoutInflater) getActivity().getSystemService("layout_inflater")).
                 inflate(android.R.layout.simple_list_item_2, null);
 
             // Creates a ViewHolder and store references to the two children views
             // we want to bind data to.
-            holder=new ViewHolder();
-            holder.text1=(TextView) convertView.findViewById(android.R.id.text1);
-            holder.text2=(TextView) convertView.findViewById(android.R.id.text2);
+            holder = new ViewHolder();
+            holder.text1 = (TextView) convertView.findViewById(android.R.id.text1);
+            holder.text2 = (TextView) convertView.findViewById(android.R.id.text2);
             convertView.setTag(holder);
         } else {
             // Get the ViewHolder back to get fast access to the TextView and the ImageView.
-            holder=(ViewHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        Trend trend=mDataList.get(position);
+        Trend trend = mDataList.get(position);
         holder.text1.setText(trend.name);
         holder.text2.setText(trend.query);
 

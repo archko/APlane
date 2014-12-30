@@ -14,7 +14,7 @@ public class PostParameter implements java.io.Serializable, Comparable {
     String name;
     String value;
     private File file = null;
-    private static final long serialVersionUID = -8708108746980739212L;
+    private static final long serialVersionUID = - 8708108746980739212L;
 
     public PostParameter(String name, String value) {
         this.name = name;
@@ -61,13 +61,13 @@ public class PostParameter implements java.io.Serializable, Comparable {
      * @return content-type
      */
     public String getContentType() {
-        if (!isFile()) {
+        if (! isFile()) {
             throw new IllegalStateException("not a file");
         }
         String contentType;
         String extensions = file.getName();
         int index = extensions.lastIndexOf(".");
-        if (-1 == index) {
+        if (- 1 == index) {
             // no extension
             contentType = OCTET;
         } else {
@@ -156,7 +156,7 @@ public class PostParameter implements java.io.Serializable, Comparable {
         if (obj instanceof PostParameter) {
             PostParameter that = (PostParameter) obj;
 
-            if (file != null ? !file.equals(that.file) : that.file != null) {
+            if (file != null ? ! file.equals(that.file) : that.file != null) {
                 return false;
             }
 
@@ -191,14 +191,14 @@ public class PostParameter implements java.io.Serializable, Comparable {
         }
         StringBuffer buf = new StringBuffer();
         for (int j = 0; j < httpParams.length; j++) {
-            if (httpParams[j].isFile()) {
-                throw new IllegalArgumentException("parameter [" + httpParams[j].name + "]should be text");
+            if (httpParams[ j ].isFile()) {
+                throw new IllegalArgumentException("parameter [" + httpParams[ j ].name + "]should be text");
             }
             if (j != 0) {
                 buf.append("&");
             }
             try {
-                buf.append(URLEncoder.encode(httpParams[j].name, "UTF-8")).append("=").append(URLEncoder.encode(httpParams[j].value, "UTF-8"));
+                buf.append(URLEncoder.encode(httpParams[ j ].name, "UTF-8")).append("=").append(URLEncoder.encode(httpParams[ j ].value, "UTF-8"));
             } catch (java.io.UnsupportedEncodingException neverHappen) {
             }
         }

@@ -32,17 +32,17 @@ import java.net.URL;
  */
 public class ImageManager {
 
-    private static final String TAG="ImageManager";
-    public static int IMAGE_MAX_WIDTH=480;
-    public static int IMAGE_MAX_HEIGHT=800;
-    public static final int BITMAP_SIZE=1000*1000*6;
+    private static final String TAG = "ImageManager";
+    public static int IMAGE_MAX_WIDTH = 480;
+    public static int IMAGE_MAX_HEIGHT = 800;
+    public static final int BITMAP_SIZE = 1000 * 1000 * 6;
 
     public static Bitmap drawableToBitmap(Drawable drawable) {
-        Bitmap bitmap=Bitmap.createBitmap(
+        Bitmap bitmap = Bitmap.createBitmap(
             drawable.getIntrinsicWidth(),
             drawable.getIntrinsicHeight(),
-            drawable.getOpacity()!=PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
-        Canvas canvas=new Canvas(bitmap);
+            drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         drawable.draw(canvas);
         return bitmap;
@@ -70,22 +70,22 @@ public class ImageManager {
      * @return
      */
     public synchronized Bitmap downloadImage(String url, String dir) {
-        InputStream is=null;
+        InputStream is = null;
         try {
-            is=ImageManager.getImageStream(url);
-            if (null==is||is.available()==0) {
+            is = ImageManager.getImageStream(url);
+            if (null == is || is.available() == 0) {
                 return null;
             }
-            int len=is.available();
-            WeiboUtils weiboUtil= WeiboUtils.getWeiboUtil();
-            String filepath=dir+weiboUtil.getMd5(url)+ WeiboUtils.getExt(url);
+            int len = is.available();
+            WeiboUtils weiboUtil = WeiboUtils.getWeiboUtil();
+            String filepath = dir + weiboUtil.getMd5(url) + WeiboUtils.getExt(url);
             //writeStreamToFile(is, filepath);
             saveStreamAsFile(is, filepath);
 
-            Bitmap bitmap=BitmapFactory.decodeFile(filepath);
+            Bitmap bitmap = BitmapFactory.decodeFile(filepath);
             //writeBitmapToFile(bitmap, file);
             //WeiboLog.d(TAG,"download image:"+url);
-            if (len<300*1000) {
+            if (len < 300 * 1000) {
                 ImageCache2.getInstance().addBitmapToMemCache(url, bitmap);
             }
 
@@ -94,9 +94,9 @@ public class ImageManager {
             ex.printStackTrace();
         } finally {
             try {
-                if (null!=is) {
+                if (null != is) {
                     is.close();
-                    is=null;
+                    is = null;
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -115,19 +115,19 @@ public class ImageManager {
      * @return
      */
     public Bitmap downloadImage2(String url, String dir, boolean cache) {
-        InputStream is=null;
+        InputStream is = null;
         try {
-            is=ImageManager.getImageStream(url);
-            if (null==is||is.available()==0) {
+            is = ImageManager.getImageStream(url);
+            if (null == is || is.available() == 0) {
                 return null;
             }
-            int len=is.available();
-            WeiboUtils weiboUtil= WeiboUtils.getWeiboUtil();
-            String filepath=dir+weiboUtil.getMd5(url)+ WeiboUtils.getExt(url);
+            int len = is.available();
+            WeiboUtils weiboUtil = WeiboUtils.getWeiboUtil();
+            String filepath = dir + weiboUtil.getMd5(url) + WeiboUtils.getExt(url);
 
             //saveStreamAsFile(is, filepath);
 
-            Bitmap bitmap=decodeBitmap(is, 1);
+            Bitmap bitmap = decodeBitmap(is, 1);
             if (cache) {
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(filepath));
             }
@@ -137,9 +137,9 @@ public class ImageManager {
             ex.printStackTrace();
         } finally {
             try {
-                if (null!=is) {
+                if (null != is) {
                     is.close();
-                    is=null;
+                    is = null;
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -157,13 +157,13 @@ public class ImageManager {
      * @return
      */
     public Bitmap getBitmapFromDiskOrNet(String url, String dir, boolean cache) {
-        Bitmap bitmap=loadBitmapFromSysByUrl(url, dir, -1);
-        if (null!=bitmap) {
+        Bitmap bitmap = loadBitmapFromSysByUrl(url, dir, - 1);
+        if (null != bitmap) {
             ImageCache2.getInstance().addBitmapToMemCache(url, bitmap);
             return bitmap;
         }
 
-        WeiboLog.d(TAG, "download image:"+url);
+        WeiboLog.d(TAG, "download image:" + url);
         /*String filePath=downloadImages(url, dir);
         if (!TextUtils.isEmpty(filePath)) {
             bitmap=loadBitmapFromSysByPath(filePath, -1);
@@ -172,8 +172,8 @@ public class ImageManager {
                 return bitmap;
             }
         }*/
-        bitmap=downloadImage2(url, dir, cache);
-        if (null!=bitmap) {
+        bitmap = downloadImage2(url, dir, cache);
+        if (null != bitmap) {
             ImageCache2.getInstance().addBitmapToMemCache(url, bitmap);
         }
         return bitmap;
@@ -187,16 +187,16 @@ public class ImageManager {
      * @return
      */
     public static String downloadImages(String url, String dir) {
-        byte[] is=null;
+        byte[] is = null;
         try {
-            is=ImageManager.getImageByte(url);
-            if (null==is||is.length==0) {
+            is = ImageManager.getImageByte(url);
+            if (null == is || is.length == 0) {
                 return null;
             }
 
-            WeiboUtils weiboUtil= WeiboUtils.getWeiboUtil();
-            String filePath=dir+weiboUtil.getMd5(url)+ WeiboUtils.getExt(url);
-            boolean res=saveBytesAsFile(is, filePath);
+            WeiboUtils weiboUtil = WeiboUtils.getWeiboUtil();
+            String filePath = dir + weiboUtil.getMd5(url) + WeiboUtils.getExt(url);
+            boolean res = saveBytesAsFile(is, filePath);
 
             if (res) {
                 return filePath;
@@ -217,14 +217,14 @@ public class ImageManager {
      * @return
      */
     public static InputStream downloadGif(String url, String filePath) {
-        byte[] is=null;
+        byte[] is = null;
         try {
-            is=ImageManager.getImageByte(url);
-            if (null==is) {
+            is = ImageManager.getImageByte(url);
+            if (null == is) {
                 return null;
             }
 
-            boolean res=saveBytesAsFile(is, filePath);
+            boolean res = saveBytesAsFile(is, filePath);
 
             if (res) {
                 return new FileInputStream(new File(filePath));
@@ -241,17 +241,17 @@ public class ImageManager {
 
     public static byte[] getImageByte(String urlString) throws IOException {
         try {
-            HttpParams httpParameters=new BasicHttpParams();
+            HttpParams httpParameters = new BasicHttpParams();
             HttpConnectionParams.setConnectionTimeout(httpParameters, BaseApi.CONNECT_TIMEOUT);
             HttpConnectionParams.setSoTimeout(httpParameters, BaseApi.READ_TIMEOUT);
-            DefaultHttpClient httpClient=new DefaultHttpClient(httpParameters);
-            HttpGet httpGet=new HttpGet(urlString);
-            HttpResponse localHttpResponse=httpClient.execute(httpGet);
-            int code=localHttpResponse.getStatusLine().getStatusCode();
-            if (code!=200) {
-                throw new WeiboException(""+localHttpResponse.getStatusLine().getReasonPhrase());
+            DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
+            HttpGet httpGet = new HttpGet(urlString);
+            HttpResponse localHttpResponse = httpClient.execute(httpGet);
+            int code = localHttpResponse.getStatusLine().getStatusCode();
+            if (code != 200) {
+                throw new WeiboException("" + localHttpResponse.getStatusLine().getReasonPhrase());
             }
-            byte[] arrayOfByte=EntityUtils.toByteArray(localHttpResponse.getEntity());
+            byte[] arrayOfByte = EntityUtils.toByteArray(localHttpResponse.getEntity());
             return arrayOfByte;
         } catch (Exception e) {
         }
@@ -291,18 +291,18 @@ public class ImageManager {
      * @throws IOException
      */
     public static InputStream getImageStream(String urlString) throws IOException {
-        URL url=null;
-        HttpURLConnection conn=null;
-        InputStream inputStrem=null;
+        URL url = null;
+        HttpURLConnection conn = null;
+        InputStream inputStrem = null;
 
-        url=new URL(urlString);
-        conn=(HttpURLConnection) url.openConnection();
+        url = new URL(urlString);
+        conn = (HttpURLConnection) url.openConnection();
         conn.setConnectTimeout(BaseApi.CONNECT_TIMEOUT);
         conn.setReadTimeout(BaseApi.READ_TIMEOUT);
         conn.setRequestMethod("GET");
         conn.setRequestProperty("User-Agent", BaseApi.USERAGENT);
         conn.connect();
-        inputStrem=conn.getInputStream();
+        inputStrem = conn.getInputStream();
 
         return inputStrem;
     }
@@ -318,37 +318,37 @@ public class ImageManager {
      */
     public Bitmap resizeBitmap(Bitmap bitmap, int maxWidth, int maxHeight) {
 
-        int originWidth=bitmap.getWidth();
-        int originHeight=bitmap.getHeight();
+        int originWidth = bitmap.getWidth();
+        int originHeight = bitmap.getHeight();
 
         // no need to resize
-        if (originWidth<maxWidth&&originHeight<maxHeight) {
+        if (originWidth < maxWidth && originHeight < maxHeight) {
             return bitmap;
         }
 
-        int newWidth=originWidth;
-        int newHeight=originHeight;
+        int newWidth = originWidth;
+        int newHeight = originHeight;
 
         // 若图片过宽, 则保持长宽比缩放图片
-        if (originWidth>maxWidth) {
-            newWidth=maxWidth;
+        if (originWidth > maxWidth) {
+            newWidth = maxWidth;
 
-            double i=originWidth*1.0/maxWidth;
-            newHeight=(int) Math.floor(originHeight/i);
+            double i = originWidth * 1.0 / maxWidth;
+            newHeight = (int) Math.floor(originHeight / i);
 
-            bitmap=Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
+            bitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
         }
 
         // 若图片过长, 则从中部截取
-        if (newHeight>maxHeight) {
-            newHeight=maxHeight;
+        if (newHeight > maxHeight) {
+            newHeight = maxHeight;
 
-            int half_diff=(int) ((originHeight-maxHeight)/2.0);
-            bitmap=Bitmap.createBitmap(bitmap, 0, half_diff, newWidth, newHeight);
+            int half_diff = (int) ((originHeight - maxHeight) / 2.0);
+            bitmap = Bitmap.createBitmap(bitmap, 0, half_diff, newWidth, newHeight);
         }
 
-        WeiboLog.d(TAG, newWidth+" width");
-        WeiboLog.d(TAG, newHeight+" height");
+        WeiboLog.d(TAG, newWidth + " width");
+        WeiboLog.d(TAG, newHeight + " height");
 
         return bitmap;
     }
@@ -363,8 +363,8 @@ public class ImageManager {
      * @return 图片
      */
     public Bitmap loadBitmapFromSysByUrl(String url, String dir) {
-        String path=dir+ WeiboUtils.getWeiboUtil().getMd5(url)+ WeiboUtils.getExt(url);
-        WeiboLog.d(TAG, "loadBitmapFromSysByUrl.path:"+path);
+        String path = dir + WeiboUtils.getWeiboUtil().getMd5(url) + WeiboUtils.getExt(url);
+        WeiboLog.d(TAG, "loadBitmapFromSysByUrl.path:" + path);
         return loadBitmapFromSysByPath(path);
     }
 
@@ -377,8 +377,8 @@ public class ImageManager {
      * @return 图片
      */
     public Bitmap loadBitmapFromSysByUrl(String url, String dir, int ratio) {
-        String path=dir+ WeiboUtils.getWeiboUtil().getMd5(url)+ WeiboUtils.getExt(url);
-        WeiboLog.d(TAG, "loadBitmapFromSysByUrl.path:"+path+" ratio:"+ratio);
+        String path = dir + WeiboUtils.getWeiboUtil().getMd5(url) + WeiboUtils.getExt(url);
+        WeiboLog.d(TAG, "loadBitmapFromSysByUrl.path:" + path + " ratio:" + ratio);
         return loadBitmapFromSysByPath(path, ratio);
     }
 
@@ -389,7 +389,7 @@ public class ImageManager {
      * @return 图片
      */
     public Bitmap loadBitmapFromSysByPath(String filename) {
-        return loadBitmapFromSysByPath(filename, -1);
+        return loadBitmapFromSysByPath(filename, - 1);
     }
 
     /**
@@ -401,53 +401,53 @@ public class ImageManager {
      * @return 图片
      */
     public Bitmap loadBitmapFromSysByPath(String filename, int ratio) {
-        Bitmap bitmap=null;
-        File file=new File(filename);
+        Bitmap bitmap = null;
+        File file = new File(filename);
         if (file.exists()) {
             //TODO 
-            int dw=IMAGE_MAX_WIDTH;
-            int dh=IMAGE_MAX_HEIGHT;
+            int dw = IMAGE_MAX_WIDTH;
+            int dh = IMAGE_MAX_HEIGHT;
 
             // Load up the image's dimensions not the image itself 
-            BitmapFactory.Options options=new BitmapFactory.Options();
-            if (ratio==-1) {
-                options.inJustDecodeBounds=true;
-                bitmap=BitmapFactory.decodeFile(filename, options);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            if (ratio == - 1) {
+                options.inJustDecodeBounds = true;
+                bitmap = BitmapFactory.decodeFile(filename, options);
 
-                int heightRatio=(int) Math.ceil(options.outHeight/((float) dh));
-                int widthRatio=(int) Math.ceil(options.outWidth/(float) dw);
+                int heightRatio = (int) Math.ceil(options.outHeight / ((float) dh));
+                int widthRatio = (int) Math.ceil(options.outWidth / (float) dw);
 
                 /*WeiboLog.d(TAG, "widthRatio:"+widthRatio+" width:"+options.outWidth+
                     " height:"+options.outHeight+" dw:"+dw+" dh:"+dh+" heightRatio:"+heightRatio);*/
 
                 // If both of the ratios are greater than 1,  
                 // one of the sides of the image is greater than the screen 
-                if (widthRatio>1) {
-                    options.inSampleSize=widthRatio;
-                    if (heightRatio>1) {
-                        if (heightRatio>widthRatio) {
+                if (widthRatio > 1) {
+                    options.inSampleSize = widthRatio;
+                    if (heightRatio > 1) {
+                        if (heightRatio > widthRatio) {
                             // Height ratio is larger, scale according to it 
-                            options.inSampleSize=heightRatio;
+                            options.inSampleSize = heightRatio;
                         }
                     }
-                } else if (heightRatio>1) {
-                    options.inSampleSize=heightRatio;
-                    if (widthRatio>1) {
-                        if (widthRatio>heightRatio) {
+                } else if (heightRatio > 1) {
+                    options.inSampleSize = heightRatio;
+                    if (widthRatio > 1) {
+                        if (widthRatio > heightRatio) {
                             // Height ratio is larger, scale according to it
-                            options.inSampleSize=widthRatio;
+                            options.inSampleSize = widthRatio;
                         }
                     }
                 }
             } else {
-                options.inSampleSize=ratio;
+                options.inSampleSize = ratio;
             }
 
             //WeiboLog.d(TAG, "inSampleSize:"+options.inSampleSize+" w:"+dw+" h:"+dh);
 
             // Decode it for real
-            options.inJustDecodeBounds=false;
-            bitmap=BitmapFactory.decodeFile(filename, options);
+            options.inJustDecodeBounds = false;
+            bitmap = BitmapFactory.decodeFile(filename, options);
         }
 
         return bitmap;
@@ -462,49 +462,49 @@ public class ImageManager {
      * @return 图片
      */
     public Bitmap loadBitmapFromSysByPathPortrait(String filename, int ratio) {
-        Bitmap bitmap=null;
-        File file=new File(filename);
+        Bitmap bitmap = null;
+        File file = new File(filename);
         if (file.exists()) {
-            int dw=IMAGE_MAX_WIDTH;
-            int dh=IMAGE_MAX_HEIGHT*2;
+            int dw = IMAGE_MAX_WIDTH;
+            int dh = IMAGE_MAX_HEIGHT * 2;
 
             // Load up the image's dimensions not the image itself 
-            BitmapFactory.Options options=new BitmapFactory.Options();
-            if (ratio==-1) {
-                options.inJustDecodeBounds=true;
-                bitmap=BitmapFactory.decodeFile(filename, options);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            if (ratio == - 1) {
+                options.inJustDecodeBounds = true;
+                bitmap = BitmapFactory.decodeFile(filename, options);
 
-                int heightRatio=(int) Math.ceil(options.outHeight/(float) dh);
-                int widthRatio=(int) Math.ceil(options.outWidth/(float) dw);
+                int heightRatio = (int) Math.ceil(options.outHeight / (float) dh);
+                int widthRatio = (int) Math.ceil(options.outWidth / (float) dw);
 
                 /*WeiboLog.d(TAG, "Portrait widthRatio:"+widthRatio+" width:"+options.outWidth+
                     " height:"+options.outHeight+" dw:"+dw+" dh:"+dh+" heightRatio:"+heightRatio);*/
 
-                if (widthRatio>1||heightRatio>1) {
-                    if (heightRatio>widthRatio) {
+                if (widthRatio > 1 || heightRatio > 1) {
+                    if (heightRatio > widthRatio) {
                         // Height ratio is larger, scale according to it 
-                        options.inSampleSize=heightRatio;
+                        options.inSampleSize = heightRatio;
                     }
-                } else if (heightRatio>1) {
-                    options.inSampleSize=heightRatio;
-                    if (widthRatio>1) {
-                        if (widthRatio>heightRatio) {
+                } else if (heightRatio > 1) {
+                    options.inSampleSize = heightRatio;
+                    if (widthRatio > 1) {
+                        if (widthRatio > heightRatio) {
                             // Wdith ratio is larger, scale according to it
-                            options.inSampleSize=widthRatio;
+                            options.inSampleSize = widthRatio;
                         }
                     }
                 }
             } else {
-                options.inSampleSize=ratio;
+                options.inSampleSize = ratio;
             }
 
             /*WeiboLog.d(TAG, "Portrait inSampleSize:"+options.inSampleSize+" w:"+dw+" h:"+dh+
                 " width:"+options.outWidth+" height:"+options.outHeight);*/
 
             // Decode it for real
-            options.inPreferredConfig=Bitmap.Config.RGB_565;
-            options.inJustDecodeBounds=false;
-            bitmap=BitmapFactory.decodeFile(filename, options);
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+            options.inJustDecodeBounds = false;
+            bitmap = BitmapFactory.decodeFile(filename, options);
         }
 
         return bitmap;
@@ -518,48 +518,48 @@ public class ImageManager {
      * @return
      */
     public Bitmap loadBitmapFromSysByPathLandscape(String filename, int ratio) {
-        Bitmap bitmap=null;
-        File file=new File(filename);
+        Bitmap bitmap = null;
+        File file = new File(filename);
         if (file.exists()) {
-            int dw=IMAGE_MAX_WIDTH;
-            int dh=IMAGE_MAX_HEIGHT;
+            int dw = IMAGE_MAX_WIDTH;
+            int dh = IMAGE_MAX_HEIGHT;
 
             // Load up the image's dimensions not the image itself
-            BitmapFactory.Options options=new BitmapFactory.Options();
-            if (ratio==-1) {
-                options.inJustDecodeBounds=true;
-                bitmap=BitmapFactory.decodeFile(filename, options);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            if (ratio == - 1) {
+                options.inJustDecodeBounds = true;
+                bitmap = BitmapFactory.decodeFile(filename, options);
 
-                int heightRatio=(int) Math.ceil(options.outHeight/(float) dh);
-                int widthRatio=(int) Math.ceil(options.outWidth/(float) dw);
+                int heightRatio = (int) Math.ceil(options.outHeight / (float) dh);
+                int widthRatio = (int) Math.ceil(options.outWidth / (float) dw);
 
-                WeiboLog.d(TAG, "widthRatio:"+widthRatio+" width:"+options.outWidth+
-                    " height:"+options.outHeight+" dw:"+dw+" dh:"+dh+" heightRatio:"+heightRatio);
+                WeiboLog.d(TAG, "widthRatio:" + widthRatio + " width:" + options.outWidth +
+                    " height:" + options.outHeight + " dw:" + dw + " dh:" + dh + " heightRatio:" + heightRatio);
 
-                if (widthRatio>1||heightRatio>1) {
-                    if (heightRatio>widthRatio) {
+                if (widthRatio > 1 || heightRatio > 1) {
+                    if (heightRatio > widthRatio) {
                         // Height ratio is larger, scale according to it
-                        options.inSampleSize=heightRatio;
+                        options.inSampleSize = heightRatio;
                     }
-                } else if (heightRatio>1) {
-                    options.inSampleSize=heightRatio;
-                    if (widthRatio>1) {
-                        if (widthRatio>heightRatio) {
+                } else if (heightRatio > 1) {
+                    options.inSampleSize = heightRatio;
+                    if (widthRatio > 1) {
+                        if (widthRatio > heightRatio) {
                             // Wdith ratio is larger, scale according to it
-                            options.inSampleSize=widthRatio;
+                            options.inSampleSize = widthRatio;
                         }
                     }
                 }
             } else {
-                options.inSampleSize=ratio;
+                options.inSampleSize = ratio;
             }
 
-            WeiboLog.d(TAG, "inSampleSize:"+options.inSampleSize+" w:"+dw+" h:"+dh);
+            WeiboLog.d(TAG, "inSampleSize:" + options.inSampleSize + " w:" + dw + " h:" + dh);
 
             // Decode it for real
-            options.inPreferredConfig=Bitmap.Config.RGB_565;
-            options.inJustDecodeBounds=false;
-            bitmap=BitmapFactory.decodeFile(filename, options);
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+            options.inJustDecodeBounds = false;
+            bitmap = BitmapFactory.decodeFile(filename, options);
         }
 
         return bitmap;
@@ -572,34 +572,34 @@ public class ImageManager {
      * @return
      */
     public Bitmap loadFullBitmapFromSys(String filename, int ratio) {
-        Bitmap bitmap=null;
-        File file=new File(filename);
+        Bitmap bitmap = null;
+        File file = new File(filename);
         if (file.exists()) {
-            int dw=IMAGE_MAX_WIDTH;
-            int dh=IMAGE_MAX_HEIGHT;
+            int dw = IMAGE_MAX_WIDTH;
+            int dh = IMAGE_MAX_HEIGHT;
 
             // Load up the image's dimensions not the image itself
-            BitmapFactory.Options options=new BitmapFactory.Options();
-            if (ratio==-1) {
-                options.inJustDecodeBounds=true;
-                bitmap=BitmapFactory.decodeFile(filename, options);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            if (ratio == - 1) {
+                options.inJustDecodeBounds = true;
+                bitmap = BitmapFactory.decodeFile(filename, options);
 
-                int heightRatio=(int) Math.ceil(options.outHeight/(float) dh);
-                int widthRatio=(int) Math.ceil(options.outWidth/(float) dw);
+                int heightRatio = (int) Math.ceil(options.outHeight / (float) dh);
+                int widthRatio = (int) Math.ceil(options.outWidth / (float) dw);
 
                 /*WeiboLog.d(TAG, "widthRatio:"+widthRatio+" width:"+options.outWidth+
                     " height:"+options.outHeight+" dw:"+dw+" dh:"+dh+" heightRatio:"+heightRatio);*/
-                int fullSize=options.outHeight*options.outWidth;
-                if (fullSize>BITMAP_SIZE) {
-                    if (fullSize>=BITMAP_SIZE*2) {
-                        options.inSampleSize=4;
+                int fullSize = options.outHeight * options.outWidth;
+                if (fullSize > BITMAP_SIZE) {
+                    if (fullSize >= BITMAP_SIZE * 2) {
+                        options.inSampleSize = 4;
                     } else {
-                        options.inSampleSize=2;
+                        options.inSampleSize = 2;
                     }
                 }
 
-                if (options.inSampleSize<2&&widthRatio>2) {
-                    options.inSampleSize=widthRatio;
+                if (options.inSampleSize < 2 && widthRatio > 2) {
+                    options.inSampleSize = widthRatio;
                 }
 
                 /*if (widthRatio>1||heightRatio>1) {
@@ -617,53 +617,53 @@ public class ImageManager {
                     }
                 }*/
             } else {
-                options.inSampleSize=ratio;
+                options.inSampleSize = ratio;
             }
 
             // Decode it for real
-            options.inPreferredConfig=Bitmap.Config.RGB_565;
-            options.inJustDecodeBounds=false;
-            bitmap=BitmapFactory.decodeFile(filename, options);
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+            options.inJustDecodeBounds = false;
+            bitmap = BitmapFactory.decodeFile(filename, options);
         }
 
         return bitmap;
     }
 
     public Bitmap loadFullBitmapFromSys(String filename) {
-        Bitmap bitmap=null;
-        File file=new File(filename);
+        Bitmap bitmap = null;
+        File file = new File(filename);
         if (file.exists()) {
-            int dw=IMAGE_MAX_WIDTH;
-            int dh=IMAGE_MAX_HEIGHT;
+            int dw = IMAGE_MAX_WIDTH;
+            int dh = IMAGE_MAX_HEIGHT;
 
             // Load up the image's dimensions not the image itself
-            BitmapFactory.Options options=new BitmapFactory.Options();
-            options.inJustDecodeBounds=true;
-            bitmap=BitmapFactory.decodeFile(filename, options);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            bitmap = BitmapFactory.decodeFile(filename, options);
 
-            int heightRatio=(int) Math.ceil(options.outHeight/(float) dh);
-            int widthRatio=(int) Math.ceil(options.outWidth/(float) dw);
+            int heightRatio = (int) Math.ceil(options.outHeight / (float) dh);
+            int widthRatio = (int) Math.ceil(options.outWidth / (float) dw);
 
-            WeiboLog.d(TAG, "widthRatio:"+widthRatio+" width:"+options.outWidth+
-                " height:"+options.outHeight+" dw:"+dw+" dh:"+dh+" heightRatio:"+heightRatio);
-            int fullSize=options.outHeight*options.outWidth;
-            if (fullSize>BITMAP_SIZE) {
-                if (fullSize>=BITMAP_SIZE*4) {
-                    options.inSampleSize=2;
+            WeiboLog.d(TAG, "widthRatio:" + widthRatio + " width:" + options.outWidth +
+                " height:" + options.outHeight + " dw:" + dw + " dh:" + dh + " heightRatio:" + heightRatio);
+            int fullSize = options.outHeight * options.outWidth;
+            if (fullSize > BITMAP_SIZE) {
+                if (fullSize >= BITMAP_SIZE * 4) {
+                    options.inSampleSize = 2;
                 } else {
-                    options.inSampleSize=1;
+                    options.inSampleSize = 1;
                 }
             }
 
-            if (options.inSampleSize<2&&widthRatio>2) {
-                options.inSampleSize=widthRatio;
+            if (options.inSampleSize < 2 && widthRatio > 2) {
+                options.inSampleSize = widthRatio;
             }
 
             // Decode it for real
-            options.inPreferredConfig=Bitmap.Config.RGB_565;
-            options.inJustDecodeBounds=false;
-            bitmap=BitmapFactory.decodeFile(filename, options);
-            WeiboLog.d(TAG, "size:"+options.inSampleSize+" bmsize:"+bitmap.getWidth()+" h:"+bitmap.getHeight());
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+            options.inJustDecodeBounds = false;
+            bitmap = BitmapFactory.decodeFile(filename, options);
+            WeiboLog.d(TAG, "size:" + options.inSampleSize + " bmsize:" + bitmap.getWidth() + " h:" + bitmap.getHeight());
         }
 
         return bitmap;
@@ -701,46 +701,46 @@ public class ImageManager {
      * @param format   保存的格式
      */
     public static boolean saveBitmap(InputStream is, String filePath, int quality, Bitmap.CompressFormat format) {
-        FileOutputStream fos=null;
-        Bitmap bitmap=null;
+        FileOutputStream fos = null;
+        Bitmap bitmap = null;
         try {
-            fos=new FileOutputStream(filePath);
-            BitmapFactory.Options options=new BitmapFactory.Options();
-            options.inJustDecodeBounds=true;
+            fos = new FileOutputStream(filePath);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
             BitmapFactory.decodeStream(is, null, options);
-            int heightRatio=(int) Math.ceil(options.outHeight/(float) IMAGE_MAX_HEIGHT);
-            int widthRatio=(int) Math.ceil(options.outWidth/(float) IMAGE_MAX_WIDTH);
-            int m=1;
-            if (heightRatio>1&&widthRatio>1) {
-                if (heightRatio>widthRatio) {
+            int heightRatio = (int) Math.ceil(options.outHeight / (float) IMAGE_MAX_HEIGHT);
+            int widthRatio = (int) Math.ceil(options.outWidth / (float) IMAGE_MAX_WIDTH);
+            int m = 1;
+            if (heightRatio > 1 && widthRatio > 1) {
+                if (heightRatio > widthRatio) {
                     // Height ratio is larger, scale according to it
-                    m=heightRatio;
+                    m = heightRatio;
                 } else {
                     // Width ratio is larger, scale according to it
-                    m=widthRatio;
+                    m = widthRatio;
                 }
                 WeiboLog.d(TAG, "高宽都超过了高分辨率..");
             }
 
-            options.inDither=true;
-            options.inSampleSize=m;
-            options.inJustDecodeBounds=false;
-            options.inPreferredConfig=Bitmap.Config.RGB_565;
+            options.inDither = true;
+            options.inSampleSize = m;
+            options.inJustDecodeBounds = false;
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
 
-            bitmap=BitmapFactory.decodeStream(is, null, options);
+            bitmap = BitmapFactory.decodeStream(is, null, options);
             bitmap.compress(format, quality, fos);
             return true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
-            if (null!=fos) {
+            if (null != fos) {
                 try {
                     fos.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if (null!=bitmap) {
+            if (null != bitmap) {
                 bitmap.recycle();
             }
         }
@@ -781,11 +781,11 @@ public class ImageManager {
      * @return
      */
     public static boolean saveBitmap(byte[] bytes, String filePath, int quality, Bitmap.CompressFormat format) {
-        FileOutputStream fos=null;
-        Bitmap bitmap=null;
+        FileOutputStream fos = null;
+        Bitmap bitmap = null;
         try {
-            fos=new FileOutputStream(filePath);
-            BitmapFactory.Options options=new BitmapFactory.Options();
+            fos = new FileOutputStream(filePath);
+            BitmapFactory.Options options = new BitmapFactory.Options();
             //没有这样处理的，一旦取消注释，就无法解码。
             /*options.inJustDecodeBounds=true;
             BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
@@ -804,9 +804,9 @@ public class ImageManager {
             }
 
             options.inSampleSize=m;*/
-            options.inDither=true;
-            options.inJustDecodeBounds=false;
-            options.inPreferredConfig=Bitmap.Config.RGB_565;
+            options.inDither = true;
+            options.inJustDecodeBounds = false;
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
 
             BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
             bitmap.compress(format, quality, fos);
@@ -814,14 +814,14 @@ public class ImageManager {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (null!=fos) {
+            if (null != fos) {
                 try {
                     fos.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if (null!=bitmap) {
+            if (null != bitmap) {
                 bitmap.recycle();
             }
         }
@@ -838,13 +838,13 @@ public class ImageManager {
      * @return 是否保存成功.
      */
     public static boolean saveStreamAsFile(InputStream is, String filePath) throws IOException {
-        FileOutputStream fos=null;
+        FileOutputStream fos = null;
         try {
-            fos=new FileOutputStream(filePath);
-            byte[] buffer=new byte[1024];
-            int i=0;
+            fos = new FileOutputStream(filePath);
+            byte[] buffer = new byte[ 1024 ];
+            int i = 0;
 
-            while ((i=is.read(buffer))!=-1) {
+            while ((i = is.read(buffer)) != - 1) {
                 fos.write(buffer, 0, i);
             }
             fos.flush();
@@ -852,10 +852,10 @@ public class ImageManager {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
-            if (fos!=null) {
+            if (fos != null) {
                 fos.close();
             }
-            if (is!=null) {
+            if (is != null) {
                 is.close();
             }
         }
@@ -872,9 +872,9 @@ public class ImageManager {
      * @return 是否保存成功.
      */
     public static boolean saveBytesAsFile(byte[] bytes, String filePath) throws IOException {
-        BufferedOutputStream fos=null;
+        BufferedOutputStream fos = null;
         try {
-            fos=new BufferedOutputStream(new FileOutputStream(filePath), 512);
+            fos = new BufferedOutputStream(new FileOutputStream(filePath), 512);
 
             fos.write(bytes);
             fos.flush();
@@ -882,7 +882,7 @@ public class ImageManager {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
-            if (fos!=null) {
+            if (fos != null) {
                 fos.close();
             }
         }
@@ -898,14 +898,14 @@ public class ImageManager {
      * @return 是否复制成功
      */
     public boolean copyFileToFile(String target, String source) {
-        FileInputStream input=null;
-        FileOutputStream output=null;
+        FileInputStream input = null;
+        FileOutputStream output = null;
         try {
-            input=new FileInputStream(source);
-            output=new FileOutputStream(target);
-            byte[] b=new byte[1024*5];
+            input = new FileInputStream(source);
+            output = new FileOutputStream(target);
+            byte[] b = new byte[ 1024 * 5 ];
             int len;
-            while ((len=input.read(b))!=-1) {
+            while ((len = input.read(b)) != - 1) {
                 output.write(b, 0, len);
             }
             output.flush();
@@ -913,7 +913,7 @@ public class ImageManager {
             input.close();
             return true;
         } catch (Exception e) {
-            System.out.println("files copy error."+e);
+            System.out.println("files copy error." + e);
         }
         return false;
     }
@@ -921,13 +921,13 @@ public class ImageManager {
     //////////---------
     //以下两个方法只适合小图的，没有缩放处理。
     public static Bitmap decodeBitmap(byte[] bytes, int ratio) {
-        Bitmap bitmap=null;
+        Bitmap bitmap = null;
 
-        int dw=IMAGE_MAX_WIDTH;
-        int dh=IMAGE_MAX_HEIGHT;
+        int dw = IMAGE_MAX_WIDTH;
+        int dh = IMAGE_MAX_HEIGHT;
 
         // Load up the image's dimensions not the image itself 
-        BitmapFactory.Options options=new BitmapFactory.Options();
+        BitmapFactory.Options options = new BitmapFactory.Options();
         /*if (ratio==-1) {
             options.inJustDecodeBounds=true;
             bitmap=BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
@@ -956,21 +956,21 @@ public class ImageManager {
             options.inSampleSize=ratio;
         }*/
 
-        options.inDither=true;
-        options.inJustDecodeBounds=false;
-        options.inPreferredConfig=Bitmap.Config.RGB_565;
+        options.inDither = true;
+        options.inJustDecodeBounds = false;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
 
-        bitmap=BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+        bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
         return bitmap;
     }
 
     public static Bitmap decodeBitmap(InputStream is, int ratio) {
-        Bitmap bitmap=null;
+        Bitmap bitmap = null;
 
-        int dw=IMAGE_MAX_WIDTH;
-        int dh=IMAGE_MAX_HEIGHT;
+        int dw = IMAGE_MAX_WIDTH;
+        int dh = IMAGE_MAX_HEIGHT;
 
-        BitmapFactory.Options options=new BitmapFactory.Options();
+        BitmapFactory.Options options = new BitmapFactory.Options();
         /*options.inJustDecodeBounds=true;
         BitmapFactory.decodeStream(is, null, options);
         if (ratio==-1) {
@@ -1001,11 +1001,11 @@ public class ImageManager {
             options.inSampleSize=ratio;
         }*/
 
-        options.inDither=true;
-        options.inJustDecodeBounds=false;
-        options.inPreferredConfig=Bitmap.Config.RGB_565;
+        options.inDither = true;
+        options.inJustDecodeBounds = false;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
 
-        bitmap=BitmapFactory.decodeStream(is, null, options);
+        bitmap = BitmapFactory.decodeStream(is, null, options);
 
         return bitmap;
     }

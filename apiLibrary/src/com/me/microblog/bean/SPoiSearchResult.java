@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class SPoiSearchResult implements Serializable {
 
-    public static final long serialVersionUID=3894560643019408210L;
+    public static final long serialVersionUID = 3894560643019408210L;
 
     /**
      * 未知

@@ -39,10 +39,10 @@ import java.util.ArrayList;
  */
 public class UserFriendListFragment extends DialogFragment implements AdapterView.OnItemClickListener {
 
-    public static final String TAG="UserFriendListFragment";
+    public static final String TAG = "UserFriendListFragment";
 
     public SharedPreferences mPrefs;
-    public long currentUserId=-1l;
+    public long currentUserId = - 1l;
     SimpleAdapter mSimpleAdapter;
     ListView mListView;
     TextView mTitle;
@@ -51,7 +51,7 @@ public class UserFriendListFragment extends DialogFragment implements AdapterVie
     /**
      * 是否在搜索的标志位。
      */
-    boolean isSearching=false;
+    boolean isSearching = false;
 
     LinearLayout mLoadingLayout;
     RelativeLayout mFooterLayout;
@@ -70,39 +70,39 @@ public class UserFriendListFragment extends DialogFragment implements AdapterVie
     /**
      * 0表示搜索当前的数据库,1表示搜索用户的好友
      */
-    int mSearchMode=0;
-    private final int MODE_LOCALE=0;
-    private final int MODE_NET=1;
-    protected int nextCursor=0;//下一页索引，第一页为 0
+    int mSearchMode = 0;
+    private final int MODE_LOCALE = 0;
+    private final int MODE_NET = 1;
+    protected int nextCursor = 0;//下一页索引，第一页为 0
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_NoTitleBar);
-        mPrefs=PreferenceManager.getDefaultSharedPreferences(getActivity());
-        long aUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
-        this.currentUserId=aUserId;
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        long aUserId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
+        this.currentUserId = aUserId;
 
-        mSinaUserApi=new SinaUserApi();
+        mSinaUserApi = new SinaUserApi();
         mSinaUserApi.updateToken();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root=inflater.inflate(R.layout.search_dialog, container, false);
-        ListView listView=(ListView) root.findViewById(R.id.statusList);
-        mListView=listView;
+        View root = inflater.inflate(R.layout.search_dialog, container, false);
+        ListView listView = (ListView) root.findViewById(R.id.statusList);
+        mListView = listView;
 
-        mTitle=(TextView) root.findViewById(R.id.tv_title);
-        mDownload=(ImageButton) root.findViewById(R.id.profile_download);
-        mRefresh=(ImageButton) root.findViewById(R.id.profile_refresh);
+        mTitle = (TextView) root.findViewById(R.id.tv_title);
+        mDownload = (ImageButton) root.findViewById(R.id.profile_download);
+        mRefresh = (ImageButton) root.findViewById(R.id.profile_refresh);
         root.findViewById(R.id.profile_layout).setVisibility(View.VISIBLE);
         root.findViewById(R.id.content_layout).setVisibility(View.GONE);
         root.findViewById(R.id.button_bar).setVisibility(View.GONE);
 
-        mLoadingLayout=(LinearLayout) root.findViewById(R.id.loading);
+        mLoadingLayout = (LinearLayout) root.findViewById(R.id.loading);
 
-        mFooterLayout=new RelativeLayout(getActivity());
+        mFooterLayout = new RelativeLayout(getActivity());
         listView.addFooterView(mFooterLayout);
         showMoreView();
 
@@ -115,20 +115,20 @@ public class UserFriendListFragment extends DialogFragment implements AdapterVie
      */
     protected void showMoreView() {
         WeiboLog.d("showMoreView");
-        if (null==mRelativeLoadingLayout) {
+        if (null == mRelativeLoadingLayout) {
             WeiboLog.d("null==mLoadingLayout.");
-            mRelativeLoadingLayout=(RelativeLayout) LayoutInflater.from(getActivity().getApplicationContext())
+            mRelativeLoadingLayout = (RelativeLayout) LayoutInflater.from(getActivity().getApplicationContext())
                 .inflate(R.layout.ak_more_progressbar, null);
-            mMoreProgressBar=(ProgressBar) mRelativeLoadingLayout.findViewById(R.id.progress_bar);
-            mMoreTxt=(TextView) mRelativeLoadingLayout.findViewById(R.id.more_txt);
+            mMoreProgressBar = (ProgressBar) mRelativeLoadingLayout.findViewById(R.id.progress_bar);
+            mMoreTxt = (TextView) mRelativeLoadingLayout.findViewById(R.id.more_txt);
         }
 
         //mMoreTxt.setText(R.string.search_user_friends);
 
-        WeiboLog.v("mListView.getFooterViewsCount():"+mListView.getFooterViewsCount());
+        WeiboLog.v("mListView.getFooterViewsCount():" + mListView.getFooterViewsCount());
 
         mFooterLayout.removeAllViews();
-        RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
         );
         mFooterLayout.addView(mRelativeLoadingLayout, layoutParams);
@@ -142,8 +142,8 @@ public class UserFriendListFragment extends DialogFragment implements AdapterVie
         mDownload.setOnClickListener(clickListener);
         mRefresh.setOnClickListener(clickListener);
 
-        if (null==mSimpleAdapter) {
-            mSimpleAdapter=new SimpleAdapter(getActivity());
+        if (null == mSimpleAdapter) {
+            mSimpleAdapter = new SimpleAdapter(getActivity());
         }
 
         mListView.setOnItemClickListener(this);
@@ -154,7 +154,7 @@ public class UserFriendListFragment extends DialogFragment implements AdapterVie
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (view==mFooterLayout) {   //if (mAdapter.getCount()>0&&position>=mAdapter.getCount()) {
+        if (view == mFooterLayout) {   //if (mAdapter.getCount()>0&&position>=mAdapter.getCount()) {
             //mMoreProgressBar.setVisibility(View.VISIBLE);
             fetchMore();
             return;
@@ -167,32 +167,32 @@ public class UserFriendListFragment extends DialogFragment implements AdapterVie
      * @param searchMode
      */
     private void doLocalSearch(int searchMode) {
-        if (!isSearching) {
-            if (null!=mQueryTask) {
+        if (! isSearching) {
+            if (null != mQueryTask) {
                 mQueryTask.cancel(true);
             }
 
-            mQueryTask=new QueryTask();
+            mQueryTask = new QueryTask();
             mQueryTask.execute(new Object[]{searchMode});
         }
     }
 
-    View.OnClickListener clickListener=new View.OnClickListener() {
+    View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             clickMethod(view);
         }
 
         private void clickMethod(View view) {
-            int id=view.getId();
-            if (id==R.id.profile_download) {
+            int id = view.getId();
+            if (id == R.id.profile_download) {
                 clearAdapter();
-                nextCursor=0;
-                mSearchMode=MODE_NET;
+                nextCursor = 0;
+                mSearchMode = MODE_NET;
                 doLocalSearch(mSearchMode);
-            } else if (id==R.id.profile_refresh) {
+            } else if (id == R.id.profile_refresh) {
                 clearAdapter();
-                mSearchMode=MODE_LOCALE;
+                mSearchMode = MODE_LOCALE;
                 doLocalSearch(mSearchMode);
             }
         }
@@ -202,12 +202,12 @@ public class UserFriendListFragment extends DialogFragment implements AdapterVie
      * 获取网络的关注列表。
      */
     private void fetchMore() {
-        if (!isSearching) {
-            if (null!=mQueryTask) {
+        if (! isSearching) {
+            if (null != mQueryTask) {
                 mQueryTask.cancel(true);
             }
 
-            mQueryTask=new QueryTask();
+            mQueryTask = new QueryTask();
             mQueryTask.execute(new Object[]{mSearchMode});
         }
     }
@@ -221,23 +221,23 @@ public class UserFriendListFragment extends DialogFragment implements AdapterVie
      * @param searchMode 0表示搜索本地数据，4表示搜索关注列表
      */
     private Object[] searchFriends(int searchMode) {
-        ArrayList<AtUser> atUsers=null;
-        if (searchMode==MODE_LOCALE) {
-            atUsers=SqliteWrapper.queryAtUsers(App.getAppContext(), currentUserId, TwitterTable.UserTbl.TYPE_FRIEND, "");
-        } else if (searchMode==MODE_NET) {
+        ArrayList<AtUser> atUsers = null;
+        if (searchMode == MODE_LOCALE) {
+            atUsers = SqliteWrapper.queryAtUsers(App.getAppContext(), currentUserId, TwitterTable.UserTbl.TYPE_FRIEND, "");
+        } else if (searchMode == MODE_NET) {
             try {
                 //SWeiboApi2 sWeiboApi2=(SWeiboApi2) App.getMicroBlog(App.getAppContext());
-                int c=40;
-                final SStatusData<User> data=mSinaUserApi.getFriends(currentUserId, nextCursor, c, 1);
-                if (data.mStatusData!=null&&data.mStatusData.size()>0) {
+                int c = 40;
+                final SStatusData<User> data = mSinaUserApi.getFriends(currentUserId, nextCursor, c, 1);
+                if (data.mStatusData != null && data.mStatusData.size() > 0) {
                     nextCursor++;
-                    atUsers=new ArrayList<AtUser>();
+                    atUsers = new ArrayList<AtUser>();
                     AtUser atUser;
-                    ArrayList<User> users=data.mStatusData;
+                    ArrayList<User> users = data.mStatusData;
                     for (User user : users) {
-                        atUser=new AtUser();
-                        atUser.uid=user.id;
-                        atUser.name=user.screenName;
+                        atUser = new AtUser();
+                        atUser.uid = user.id;
+                        atUser.name = user.screenName;
                         atUsers.add(atUser);
                     }
 
@@ -274,35 +274,35 @@ public class UserFriendListFragment extends DialogFragment implements AdapterVie
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            isSearching=true;
+            isSearching = true;
             mLoadingLayout.setVisibility(View.VISIBLE);
         }
 
         @Override
         protected Object doInBackground(Object... params) {
-            Integer searchMode=(Integer) params[0];
+            Integer searchMode = (Integer) params[ 0 ];
             return searchFriends(searchMode);
         }
 
         @Override
         protected void onPostExecute(Object result) {
-            isSearching=false;
-            if (!isResumed()) {
+            isSearching = false;
+            if (! isResumed()) {
                 return;
             }
 
             mLoadingLayout.setVisibility(View.GONE);
 
-            if (null==result) {
+            if (null == result) {
                 Toast.makeText(App.getAppContext(), "no result!", Toast.LENGTH_LONG).show();
                 return;
             }
 
-            Integer searchMode=(Integer) ((Object[]) result)[0];
-            ArrayList<AtUser> list=(ArrayList<AtUser>) ((Object[]) result)[1];
-            if (null==list||list.size()<1) {
-                if (searchMode==2) {
-                    if (mSimpleAdapter.getCount()<1) {
+            Integer searchMode = (Integer) ((Object[]) result)[ 0 ];
+            ArrayList<AtUser> list = (ArrayList<AtUser>) ((Object[]) result)[ 1 ];
+            if (null == list || list.size() < 1) {
+                if (searchMode == 2) {
+                    if (mSimpleAdapter.getCount() < 1) {
                         Toast.makeText(App.getAppContext(), "no result!", Toast.LENGTH_LONG).show();
                     }
                 } else {
@@ -311,7 +311,7 @@ public class UserFriendListFragment extends DialogFragment implements AdapterVie
                 return;
             }
 
-            WeiboLog.d("list.size:"+list.size());
+            WeiboLog.d("list.size:" + list.size());
 
             mSimpleAdapter.setAtUserList(list);
             mSimpleAdapter.notifyDataSetChanged();
@@ -331,12 +331,12 @@ public class UserFriendListFragment extends DialogFragment implements AdapterVie
         ArrayList<AtUser> mAtUserList;
 
         SimpleAdapter(Context ctx) {
-            this.mContext=ctx;
-            mAtUserList=new ArrayList<AtUser>();
+            this.mContext = ctx;
+            mAtUserList = new ArrayList<AtUser>();
         }
 
         public void setAtUserList(ArrayList<AtUser> mAtUserList) {
-            this.mAtUserList=mAtUserList;
+            this.mAtUserList = mAtUserList;
         }
 
         public void clearAtUserList() {
@@ -360,12 +360,12 @@ public class UserFriendListFragment extends DialogFragment implements AdapterVie
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            AtUser atUser=mAtUserList.get(position);
-            UserItemView itemView=null;
-            if (null==convertView) {
-                itemView=new UserItemView(mContext);
+            AtUser atUser = mAtUserList.get(position);
+            UserItemView itemView = null;
+            if (null == convertView) {
+                itemView = new UserItemView(mContext);
             } else {
-                itemView=(UserItemView) convertView;
+                itemView = (UserItemView) convertView;
             }
 
             itemView.update(atUser);
@@ -383,8 +383,8 @@ public class UserFriendListFragment extends DialogFragment implements AdapterVie
             super(context);
             ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
                 R.layout.at_user_item, this);
-            mName=(TextView) findViewById(R.id.tv_name);
-            mPortrait=(ImageView) findViewById(R.id.iv_portrait);
+            mName = (TextView) findViewById(R.id.tv_name);
+            mPortrait = (ImageView) findViewById(R.id.iv_portrait);
         }
 
         public void update(final AtUser atUser) {

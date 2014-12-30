@@ -5,7 +5,7 @@ package com.me.microblog.bean;
  */
 public class AtUser {
 
-    public static final long serialVersionUID=3894560643019408232L;
+    public static final long serialVersionUID = 3894560643019408232L;
 
     /**
      * 数据库主键id
@@ -25,31 +25,31 @@ public class AtUser {
 
     @Override
     public boolean equals(Object o) {
-        if (this==o) return true;
-        if (o==null||getClass()!=o.getClass()) return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        AtUser atUser=(AtUser) o;
+        AtUser atUser = (AtUser) o;
 
-        if (userId!=atUser.userId) return false;
-        if (name!=null ? !name.equals(atUser.name) : atUser.name!=null) return false;
+        if (userId != atUser.userId) return false;
+        if (name != null ? ! name.equals(atUser.name) : atUser.name != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result=(int) (userId^(userId>>>32));
-        result=31*result+(name!=null ? name.hashCode() : 0);
+        int result = (int) (userId ^ (userId >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "AtUser{"+
-            "id="+id+
-            "userId="+userId+
-            ", name='"+name+'\''+
-            ", pinyin='"+pinyin+'\''+
+        return "AtUser{" +
+            "id=" + id +
+            "userId=" + userId +
+            ", name='" + name + '\'' +
+            ", pinyin='" + pinyin + '\'' +
             '}';
     }
 }

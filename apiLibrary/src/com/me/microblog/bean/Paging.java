@@ -7,11 +7,11 @@ package com.me.microblog.bean;
  */
 public class Paging implements java.io.Serializable {
 
-    private int page = -1;
-    private int count = -1;
-    private long sinceId = -1;
-    private long maxId = -1;
-    private static final long serialVersionUID = -3285857427993796670L;
+    private int page = - 1;
+    private int count = - 1;
+    private long sinceId = - 1;
+    private long maxId = - 1;
+    private static final long serialVersionUID = - 3285857427993796670L;
 
     public Paging() {
     }

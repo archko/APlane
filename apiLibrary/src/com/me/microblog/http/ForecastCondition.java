@@ -16,12 +16,12 @@ public class ForecastCondition {
 
     @Override
     public String toString() {
-        return "ForecastCondition{"+
-            "day_of_week='"+day_of_week+'\''+
-            ", low='"+low+'\''+
-            ", high='"+high+'\''+
-            ", icon='"+icon+'\''+
-            ", condition='"+condition+'\''+
+        return "ForecastCondition{" +
+            "day_of_week='" + day_of_week + '\'' +
+            ", low='" + low + '\'' +
+            ", high='" + high + '\'' +
+            ", icon='" + icon + '\'' +
+            ", condition='" + condition + '\'' +
             '}';
     }
 }

@@ -7,7 +7,7 @@ package com.me.microblog.bean;
  */
 public class City {
 
-    public static final long serialVersionUID=3894560643019408231L;
+    public static final long serialVersionUID = 3894560643019408231L;
 
     /**
      * 城市id
@@ -24,10 +24,10 @@ public class City {
 
     @Override
     public String toString() {
-        return "City{"+
-            "id='"+id+'\''+
-            ", name='"+name+'\''+
-            ", pinyin='"+pinyin+'\''+
+        return "City{" +
+            "id='" + id + '\'' +
+            ", name='" + name + '\'' +
+            ", pinyin='" + pinyin + '\'' +
             '}';
     }
 }

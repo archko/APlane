@@ -18,7 +18,7 @@ import com.me.microblog.App;
  */
 public class DisplayUtils {
 
-    private static String TAG="DisplayUtil";
+    private static String TAG = "DisplayUtil";
 
     /**
      * 获取屏幕宽度
@@ -27,9 +27,9 @@ public class DisplayUtils {
      * @return
      */
     public static int getScreenWidth(Activity activity) {
-        DisplayMetrics dm=new DisplayMetrics();
+        DisplayMetrics dm = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int screenWidth=dm.widthPixels;
+        int screenWidth = dm.widthPixels;
         return screenWidth;
     }
 
@@ -40,8 +40,8 @@ public class DisplayUtils {
      * @return
      */
     public static int getScreenWidth(Context context) {
-        WindowManager wm=(WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        int screenWidth=wm.getDefaultDisplay().getWidth();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        int screenWidth = wm.getDefaultDisplay().getWidth();
         return screenWidth;
     }
 
@@ -61,9 +61,9 @@ public class DisplayUtils {
      * @return
      */
     public static int getScreenHeight(Activity activity) {
-        DisplayMetrics dm=new DisplayMetrics();
+        DisplayMetrics dm = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int screenHeight=dm.heightPixels;
+        int screenHeight = dm.heightPixels;
         return screenHeight;
     }
 
@@ -74,8 +74,8 @@ public class DisplayUtils {
      * @return
      */
     public static int getScreenHeight(Context context) {
-        WindowManager wm=(WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        int screenHeight=wm.getDefaultDisplay().getHeight();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        int screenHeight = wm.getDefaultDisplay().getHeight();
         return screenHeight;
     }
 
@@ -95,7 +95,7 @@ public class DisplayUtils {
      * @return 屏幕显示像素密度比例
      */
     public static float getDisplayDensity(Context context) {
-        DisplayMetrics displayMetrics=context.getResources().getDisplayMetrics();
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         return displayMetrics.density;
     }
 
@@ -109,12 +109,12 @@ public class DisplayUtils {
     }
 
     public static int convertPxToDp(int px) {
-        WindowManager wm=(WindowManager) App.getAppContext().getSystemService(Context.WINDOW_SERVICE);
-        Display display=wm.getDefaultDisplay();
-        DisplayMetrics metrics=new DisplayMetrics();
+        WindowManager wm = (WindowManager) App.getAppContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
         display.getMetrics(metrics);
-        float logicalDensity=metrics.density;
-        int dp=Math.round(px/logicalDensity);
+        float logicalDensity = metrics.density;
+        int dp = Math.round(px / logicalDensity);
         return dp;
     }
 
@@ -126,48 +126,48 @@ public class DisplayUtils {
     }
 
     public static void setFullscreen(Window win, boolean on) {
-        WindowManager.LayoutParams winParams=win.getAttributes();
-        final int bits=WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_FULLSCREEN;
         if (on) {
-            winParams.flags|=bits;
+            winParams.flags |= bits;
         } else {
-            winParams.flags&=~bits;
+            winParams.flags &= ~ bits;
         }
         win.setAttributes(winParams);
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void setOverscan(Window win, boolean on) {
-        WindowManager.LayoutParams winParams=win.getAttributes();
-        final int bits=WindowManager.LayoutParams.FLAG_LAYOUT_IN_OVERSCAN;
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_LAYOUT_IN_OVERSCAN;
         if (on) {
-            winParams.flags|=bits;
+            winParams.flags |= bits;
         } else {
-            winParams.flags&=~bits;
+            winParams.flags &= ~ bits;
         }
         win.setAttributes(winParams);
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void setTranslucentStatus(Window win, boolean on) {
-        WindowManager.LayoutParams winParams=win.getAttributes();
-        final int bits=WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
         if (on) {
-            winParams.flags|=bits;
+            winParams.flags |= bits;
         } else {
-            winParams.flags&=~bits;
+            winParams.flags &= ~ bits;
         }
         win.setAttributes(winParams);
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void setTranslucentNavigation(Window win, boolean on) {
-        WindowManager.LayoutParams winParams=win.getAttributes();
-        final int bits=WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
         if (on) {
-            winParams.flags|=bits;
+            winParams.flags |= bits;
         } else {
-            winParams.flags&=~bits;
+            winParams.flags &= ~ bits;
         }
         win.setAttributes(winParams);
     }

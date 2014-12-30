@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import cn.archko.microblog.fragment.impl.SinaPublucStatusImpl;
-import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.view.ThreadBeanItemView;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
@@ -13,6 +12,7 @@ import com.me.microblog.bean.Status;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.factory.AbsApiFactory;
 import com.me.microblog.core.factory.ApiConfigFactory;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
 
 /**
@@ -22,7 +22,7 @@ import com.me.microblog.util.WeiboLog;
  */
 public class PublicFragment extends StatusListFragment {
 
-    public static final String TAG="PublicFragment";
+    public static final String TAG = "PublicFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,15 +32,15 @@ public class PublicFragment extends StatusListFragment {
 
     @Override
     public void initApi() {
-        mStatusImpl=new SinaPublucStatusImpl();
+        mStatusImpl = new SinaPublucStatusImpl();
 
-        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
         try {
-            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
-            AKUtils.showToast("初始化api异常.");
+            NotifyUtils.showToast("初始化api异常.");
             //getActivity().finish();
         }
     }
@@ -59,20 +59,20 @@ public class PublicFragment extends StatusListFragment {
     @Override
     public void fetchMore() {
         super.fetchMore();
-        WeiboLog.v(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
-        int count=mAdapter.getCount();
-        if (count<1) {
+        WeiboLog.v(TAG, "fetchMore.lastItem:" + lastItem + " selectedPos:" + selectedPos);
+        int count = mAdapter.getCount();
+        if (count < 1) {
             WeiboLog.w(TAG, "no other data.");
             return;
         }
 
-        boolean isRefresh=false;
-        if (count>=weibo_count*3) {   //refresh list
-            isRefresh=true;
+        boolean isRefresh = false;
+        if (count >= weibo_count * 3) {   //refresh list
+            isRefresh = true;
         }
         Status st;
-        st=(Status) mAdapter.getItem(mAdapter.getCount()-1);
-        fetchData(-1, st.id, isRefresh, false);
+        st = (Status) mAdapter.getItem(mAdapter.getCount() - 1);
+        fetchData(- 1, st.id, isRefresh, false);
     }
 
     /**
@@ -87,18 +87,18 @@ public class PublicFragment extends StatusListFragment {
     public View getView(int position, View convertView, ViewGroup parent) {
         //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
 
-        ThreadBeanItemView itemView=null;
-        Status status=mDataList.get(position);
+        ThreadBeanItemView itemView = null;
+        Status status = mDataList.get(position);
 
-        boolean updateFlag=true;
-        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag=false;
+        boolean updateFlag = true;
+        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            updateFlag = false;
         }
 
-        if (convertView==null) {
-            itemView=new ThreadBeanItemView(getActivity(), mListView, mCacheDir, status, updateFlag, false, showLargeBitmap, showBitmap);
+        if (convertView == null) {
+            itemView = new ThreadBeanItemView(getActivity(), mListView, mCacheDir, status, updateFlag, false, showLargeBitmap, showBitmap);
         } else {
-            itemView=(ThreadBeanItemView) convertView;
+            itemView = (ThreadBeanItemView) convertView;
         }
         itemView.update(status, updateFlag, false, showLargeBitmap, showBitmap);
 

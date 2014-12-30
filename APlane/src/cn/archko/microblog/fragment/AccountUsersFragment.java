@@ -32,8 +32,8 @@ import com.me.microblog.db.MyHelper;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.oauth.OauthBean;
 import com.me.microblog.util.Constants;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00
@@ -47,9 +47,9 @@ import cn.archko.microblog.utils.AKUtils;
  */
 public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> implements AddAccountDialogFragment.AccountOauthListener {
 
-    public static final String TAG="AccountUsersFragment";
+    public static final String TAG = "AccountUsersFragment";
     ProgressDialog mProgressDialog;
-    private static final int MENU_ADD=Menu.FIRST;
+    private static final int MENU_ADD = Menu.FIRST;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuItem actionItem=menu.add(0, MENU_ADD, 0, "Add");
+        MenuItem actionItem = menu.add(0, MENU_ADD, 0, "Add");
 
         // Items that show as actions should favor the "if room" setting, which will
         // prevent too many buttons from crowding the bar. Extra items will show in the
@@ -72,8 +72,8 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
         // These icons are shown without a text description, and therefore should
         // be sufficiently descriptive on their own.
 
-        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        int resId=R.drawable.content_new_dark;
+        String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        int resId = R.drawable.content_new_dark;
         if ("2".equals(themeId)) {
             //resId=R.drawable.content_new_dark;
         }
@@ -82,14 +82,14 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId()==MENU_ADD) {
+        if (item.getItemId() == MENU_ADD) {
             addNewData();
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void initApi() {
-        mStatusImpl=new SinaAccountImpl();
+        mStatusImpl = new SinaAccountImpl();
     }
 
     /**
@@ -108,15 +108,15 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
     public void addNewData() {
         WeiboLog.d(TAG, "add new account.");
         mPullRefreshListView.onRefreshComplete();
-        FragmentTransaction ft=getActivity().getFragmentManager().beginTransaction();
-        Fragment prev=getActivity().getFragmentManager().findFragmentByTag("dialog");
-        if (prev!=null) {
+        FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+        Fragment prev = getActivity().getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
             ft.remove(prev);
         }
         ft.addToBackStack(null);
 
         // Create and show the dialog.
-        AddAccountDialogFragment addAccountDialogFragment=new AddAccountDialogFragment(this);
+        AddAccountDialogFragment addAccountDialogFragment = new AddAccountDialogFragment(this);
         addAccountDialogFragment.show(ft, "dialog");
     }
 
@@ -132,13 +132,13 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
     public View getView(int position, View convertView, ViewGroup parent) {
         //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
 
-        AUItemView itemView=null;
-        OauthBean oauthBean=mDataList.get(position);
+        AUItemView itemView = null;
+        OauthBean oauthBean = mDataList.get(position);
 
-        if (convertView==null) {
-            itemView=new AUItemView(getActivity());
+        if (convertView == null) {
+            itemView = new AUItemView(getActivity());
         } else {
-            itemView=(AUItemView) convertView;
+            itemView = (AUItemView) convertView;
         }
         itemView.update(oauthBean);
 
@@ -153,7 +153,7 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
 
     @Override
     public void oauthed() {
-        newTaskNoNet(new Object[]{true, -1l, -1l, 1, page, false}, null);
+        newTaskNoNet(new Object[]{true, - 1l, - 1l, 1, page, false}, null);
     }
 
     private class AUItemView extends LinearLayout {
@@ -166,26 +166,26 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
             super(context);
             ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.sidebar_item, this);
             setMinimumHeight(48);
-            mTitle=(TextView) findViewById(R.id.title);
-            mMsg=(TextView) findViewById(R.id.msg);
-            icon=(ImageView) findViewById(R.id.image);
+            mTitle = (TextView) findViewById(R.id.title);
+            mMsg = (TextView) findViewById(R.id.msg);
+            icon = (ImageView) findViewById(R.id.image);
             mMsg.setVisibility(VISIBLE);
         }
 
         public void update(String text1, String text2) {
             mTitle.setText(text1);
-            mMsg.setText("粉丝："+text2);
+            mMsg.setText("粉丝：" + text2);
         }
 
         public void update(OauthBean oauthBean) {
             mTitle.setText(oauthBean.name);
-            mMsg.setText(oauthBean.isDefault==1 ? "默认帐户" : "");
+            mMsg.setText(oauthBean.isDefault == 1 ? "默认帐户" : "");
         }
     }
 
     //--------------------- 操作 ---------------------
     public void onCreateCustomMenu(PopupMenu menuBuilder) {
-        int index=0;
+        int index = 0;
         menuBuilder.getMenu().clear();
         menuBuilder.getMenu().add(0, Constants.OP_ID_QUICK_REPOST, index++, R.string.opb_account_set_default);
         menuBuilder.getMenu().add(0, Constants.OP_ID_COMMENT, index++, R.string.opb_account_delete);
@@ -197,7 +197,7 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        int menuId=item.getItemId();
+        int menuId = item.getItemId();
         switch (menuId) {
             case Constants.OP_ID_QUICK_REPOST: {
                 quickRepostStatus();
@@ -225,14 +225,14 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
      * 快速转发，在这里是设置默认帐户
      */
     protected void quickRepostStatus() {
-        if (selectedPos>=mDataList.size()) {
+        if (selectedPos >= mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;
         }
 
         try {
-            OauthBean oauthBean=mDataList.get(selectedPos);
-            WeiboLog.d(TAG, "changeAccount:"+oauthBean);
+            OauthBean oauthBean = mDataList.get(selectedPos);
+            WeiboLog.d(TAG, "changeAccount:" + oauthBean);
             changeAccount(oauthBean);
         } catch (Exception e) {
             e.printStackTrace();
@@ -243,15 +243,15 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
      * 跳转到到评论界面，在这里是删除帐户，默认帐户不能删除。
      */
     protected void commentStatus() {
-        if (selectedPos>=mDataList.size()) {
+        if (selectedPos >= mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;
         }
 
         try {
-            OauthBean oauthBean=mDataList.get(selectedPos);
-            if (oauthBean.isDefault==1) {
-                AKUtils.showToast("默认帐户不能删除，您需要先设置一个默认帐户！");
+            OauthBean oauthBean = mDataList.get(selectedPos);
+            if (oauthBean.isDefault == 1) {
+                NotifyUtils.showToast("默认帐户不能删除，您需要先设置一个默认帐户！");
                 return;
             }
 
@@ -263,7 +263,7 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
     }
 
     private void closeProgressDialog() {
-        if (null!=mProgressDialog&&mProgressDialog.isShowing()) {
+        if (null != mProgressDialog && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
     }
@@ -274,8 +274,8 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
      * @param oauthBean 要成为默认帐户的帐户，只有id与用户名有用
      */
     private void changeAccount(final OauthBean oauthBean) {
-        if (null==mProgressDialog) {
-            mProgressDialog=new ProgressDialog(getActivity());
+        if (null == mProgressDialog) {
+            mProgressDialog = new ProgressDialog(getActivity());
         }
         mProgressDialog.setCancelable(false);
         mProgressDialog.setTitle(R.string.account_change_dialog_title);
@@ -303,31 +303,31 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
     }
 
     private void doExChange(OauthBean oauthBean) {
-        Intent intent=new Intent(getActivity(), SendTaskService.class);
+        Intent intent = new Intent(getActivity(), SendTaskService.class);
         getActivity().stopService(intent);
 
-        long newUserId=Long.valueOf(oauthBean.openId);
-        boolean dbFlag=false;
+        long newUserId = Long.valueOf(oauthBean.openId);
+        boolean dbFlag = false;
 
-        MyHelper databaseHelper=MyHelper.getMyHelper(App.getAppContext());
-        SQLiteDatabase db=null;
+        MyHelper databaseHelper = MyHelper.getMyHelper(App.getAppContext());
+        SQLiteDatabase db = null;
         try {
-            db=databaseHelper.getReadableDatabase();
+            db = databaseHelper.getReadableDatabase();
             db.beginTransaction();
-            String where=TwitterTable.AUTbl.ACCOUNT_USERID+"="+currentUserId+" and "+
-                TwitterTable.AUTbl.ACCOUNT_TYPE+"="+TwitterTable.AUTbl.WEIBO_SINA;
-            ContentValues cv=new ContentValues();
+            String where = TwitterTable.AUTbl.ACCOUNT_USERID + "=" + currentUserId + " and " +
+                TwitterTable.AUTbl.ACCOUNT_TYPE + "=" + TwitterTable.AUTbl.WEIBO_SINA;
+            ContentValues cv = new ContentValues();
             cv.put(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT, TwitterTable.AUTbl.ACCOUNT_IS_NOT_DEFAULT);
-            WeiboLog.d(TAG, "unset default account sql:"+where);
+            WeiboLog.d(TAG, "unset default account sql:" + where);
             db.update(TwitterTable.AUTbl.ACCOUNT_TBNAME, cv, where, null);
 
-            where=TwitterTable.AUTbl.ACCOUNT_USERID+"="+newUserId+" and "+
-                TwitterTable.AUTbl.ACCOUNT_TYPE+"="+TwitterTable.AUTbl.WEIBO_SINA;
-            cv=new ContentValues();
+            where = TwitterTable.AUTbl.ACCOUNT_USERID + "=" + newUserId + " and " +
+                TwitterTable.AUTbl.ACCOUNT_TYPE + "=" + TwitterTable.AUTbl.WEIBO_SINA;
+            cv = new ContentValues();
             cv.put(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT, TwitterTable.AUTbl.ACCOUNT_IS_DEFAULT);
-            WeiboLog.d(TAG, "set new default account sql:"+where);
+            WeiboLog.d(TAG, "set new default account sql:" + where);
             db.update(TwitterTable.AUTbl.ACCOUNT_TBNAME, cv, where, null);
-            dbFlag=true;
+            dbFlag = true;
             db.setTransactionSuccessful();
         } catch (Exception e) {
             e.printStackTrace();
@@ -336,13 +336,13 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
             db.close();
         }
 
-        if (!dbFlag) {
+        if (! dbFlag) {
             WeiboLog.i(TAG, "切换数据库帐户失败。");
             return;
         }
 
         //在这里，认为可以查询到的用户都是已经通过认证的。
-        SharedPreferences.Editor editor=mPrefs.edit();
+        SharedPreferences.Editor editor = mPrefs.edit();
         editor.remove(Constants.PREF_USERNAME_KEY);
         // add 存储当前用户的id
         editor.remove(Constants.PREF_CURRENT_USER_ID);
@@ -378,15 +378,15 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
 
         ((App) App.getAppContext()).logout();
 
-        currentUserId=newUserId;
+        currentUserId = newUserId;
 
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                AKUtils.showToast(R.string.account_change_suc);
+                NotifyUtils.showToast(R.string.account_change_suc);
                 if (! WeiboUtils.isHoneycombOrLater()) {
                     Intent intent;
-                    intent=new Intent(Constants.EXIT_APP);
+                    intent = new Intent(Constants.EXIT_APP);
                     getActivity().sendBroadcast(intent);
                 }
                 WeiboOperation.startNewHome(getActivity());
@@ -400,8 +400,8 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
      * @param oauthBean 要删除的帐户实体，只有id与用户名有用
      */
     private void deleteAccount(final OauthBean oauthBean) {
-        if (null==mProgressDialog) {
-            mProgressDialog=new ProgressDialog(getActivity());
+        if (null == mProgressDialog) {
+            mProgressDialog = new ProgressDialog(getActivity());
         }
         mProgressDialog.setCancelable(false);
         mProgressDialog.setTitle(R.string.account_delete_dialog_title);
@@ -413,12 +413,12 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
             @Override
             public void run() {
                 try {
-                    int res=doDeleteAccount(oauthBean);
-                    if (res>0) {
-                        AKUtils.showToast(R.string.account_delete_suc);
-                        newTaskNoNet(new Object[]{true, -1l, -1l, 1, page, false}, null);
+                    int res = doDeleteAccount(oauthBean);
+                    if (res > 0) {
+                        NotifyUtils.showToast(R.string.account_delete_suc);
+                        newTaskNoNet(new Object[]{true, - 1l, - 1l, 1, page, false}, null);
                     } else {
-                        AKUtils.showToast(R.string.account_delete_failed);
+                        NotifyUtils.showToast(R.string.account_delete_failed);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -436,18 +436,18 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
 
     private int doDeleteAccount(OauthBean oauthBean) {
         try {
-            String uid=oauthBean.openId;
-            ContentResolver resolver=getActivity().getContentResolver();
+            String uid = oauthBean.openId;
+            ContentResolver resolver = getActivity().getContentResolver();
             //清除当前用户的主页数据
-            resolver.delete(TwitterTable.SStatusTbl.CONTENT_URI, TwitterTable.SStatusTbl.UID+"='"+uid+"'", null);
+            resolver.delete(TwitterTable.SStatusTbl.CONTENT_URI, TwitterTable.SStatusTbl.UID + "='" + uid + "'", null);
             //清除当前用户的认证数据
-            resolver.delete(TwitterTable.AUTbl.CONTENT_URI, TwitterTable.AUTbl.ACCOUNT_USERID+"='"+uid+"'", null);
+            resolver.delete(TwitterTable.AUTbl.CONTENT_URI, TwitterTable.AUTbl.ACCOUNT_USERID + "='" + uid + "'", null);
             //清除当前用户的@用户数据
-            resolver.delete(TwitterTable.UserTbl.CONTENT_URI, TwitterTable.UserTbl.UID+"='"+uid+"'", null);
+            resolver.delete(TwitterTable.UserTbl.CONTENT_URI, TwitterTable.UserTbl.UID + "='" + uid + "'", null);
             //清除当前用户的草稿数据
-            resolver.delete(TwitterTable.DraftTbl.CONTENT_URI, TwitterTable.DraftTbl.UID+"='"+uid+"'", null);
+            resolver.delete(TwitterTable.DraftTbl.CONTENT_URI, TwitterTable.DraftTbl.UID + "='" + uid + "'", null);
             //清除当前用户的队列数据
-            resolver.delete(TwitterTable.SendQueueTbl.CONTENT_URI, TwitterTable.SendQueueTbl.USER_ID+"='"+currentUserId+"'", null);
+            resolver.delete(TwitterTable.SendQueueTbl.CONTENT_URI, TwitterTable.SendQueueTbl.USER_ID + "='" + currentUserId + "'", null);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();

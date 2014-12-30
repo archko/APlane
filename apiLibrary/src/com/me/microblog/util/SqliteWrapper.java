@@ -1,8 +1,5 @@
 package com.me.microblog.util;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,6 +17,9 @@ import com.me.microblog.bean.User;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.oauth.OauthBean;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 /**
  * 数据库处理帮助类
  *
@@ -27,7 +27,7 @@ import com.me.microblog.oauth.OauthBean;
  */
 public final class SqliteWrapper {
 
-    private static final String TAG="SqliteWrapper";
+    private static final String TAG = "SqliteWrapper";
 
     private SqliteWrapper() {
         // Forbidden being instantiated.
@@ -38,78 +38,77 @@ public final class SqliteWrapper {
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public static ArrayList<Status> queryStatuses(ContentResolver resolver, long currentUserId) {
-        WeiboLog.d(TAG, TAG+" queryStatuses."+resolver);
-        ArrayList<Status> list=null;
+        WeiboLog.d(TAG, TAG + " queryStatuses." + resolver);
+        ArrayList<Status> list = null;
 
-        Cursor cursor=null;
+        Cursor cursor = null;
         try {
-            cursor=resolver.query(TwitterTable.SStatusTbl.CONTENT_URI, null, TwitterTable.SStatusTbl.UID+"='"+currentUserId+"'",
-                null, TwitterTable.SStatusTbl.CREATED_AT+" desc");
-            if (null==cursor||cursor.getCount()<1) {
+            cursor = resolver.query(TwitterTable.SStatusTbl.CONTENT_URI, null, TwitterTable.SStatusTbl.UID + "='" + currentUserId + "'",
+                null, TwitterTable.SStatusTbl.CREATED_AT + " desc");
+            if (null == cursor || cursor.getCount() < 1) {
                 WeiboLog.w(TAG, "查询数据为空.");
                 return null;
             }
 
-            list=new ArrayList<Status>(36);
+            list = new ArrayList<Status>(36);
             Status status;
-            Status r_status=null;
+            Status r_status = null;
             User user;
             cursor.moveToFirst();
             do {
-                long _id=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusTbl._ID));
-                long sid=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusTbl.STATUS_ID));
-                long user_id=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusTbl.USER_ID));
-                String screen_name=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.USER_SCREEN_NAME));
-                String portrait=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.PORTRAIT));
-                long created_at=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusTbl.CREATED_AT));
-                String text=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.TEXT));
-                String source=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.SOURCE));
-                String pic_thumb=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.PIC_THUMB));
-                String pic_mid=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.PIC_MID));
-                String pic_orig=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.PIC_ORIG));
-                int r_num=cursor.getInt(cursor.getColumnIndex(TwitterTable.SStatusTbl.R_NUM));
-                int c_num=cursor.getInt(cursor.getColumnIndex(TwitterTable.SStatusTbl.C_NUM));
+                long _id = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusTbl._ID));
+                long sid = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusTbl.STATUS_ID));
+                long user_id = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusTbl.USER_ID));
+                String screen_name = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.USER_SCREEN_NAME));
+                String portrait = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.PORTRAIT));
+                long created_at = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusTbl.CREATED_AT));
+                String text = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.TEXT));
+                String source = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.SOURCE));
+                String pic_thumb = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.PIC_THUMB));
+                String pic_mid = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.PIC_MID));
+                String pic_orig = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.PIC_ORIG));
+                int r_num = cursor.getInt(cursor.getColumnIndex(TwitterTable.SStatusTbl.R_NUM));
+                int c_num = cursor.getInt(cursor.getColumnIndex(TwitterTable.SStatusTbl.C_NUM));
 
-                String r_status_name=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.R_STATUS_NAME));
-                String r_status_content=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.R_STATUS));
-                if (!TextUtils.isEmpty(r_status_name)&&!TextUtils.isEmpty(r_status_content)) {
-                    r_status=new Status();
-                    r_status.user=new User(r_status_name);
-                    r_status.text=r_status_content;
+                String r_status_name = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.R_STATUS_NAME));
+                String r_status_content = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.R_STATUS));
+                if (! TextUtils.isEmpty(r_status_name) && ! TextUtils.isEmpty(r_status_content)) {
+                    r_status = new Status();
+                    r_status.user = new User(r_status_name);
+                    r_status.text = r_status_content;
 
-                    long r_status_id=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusTbl.R_STATUS_ID));
-                    long r_status_userid=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusTbl.R_STATUS_USERID));
-                    String r_pic_thumb=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.R_PIC_THUMB));
-                    String r_pic_mid=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.R_PIC_MID));
-                    String r_pic_orig=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.R_PIC_ORIG));
-                    r_status.id=r_status_id;
-                    r_status.user.id=r_status_userid;
-                    r_status.thumbnailPic=r_pic_thumb;
-                    r_status.bmiddlePic=r_pic_mid;
-                    r_status.originalPic=r_pic_orig;
+                    long r_status_id = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusTbl.R_STATUS_ID));
+                    long r_status_userid = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusTbl.R_STATUS_USERID));
+                    String r_pic_thumb = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.R_PIC_THUMB));
+                    String r_pic_mid = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.R_PIC_MID));
+                    String r_pic_orig = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.R_PIC_ORIG));
+                    r_status.id = r_status_id;
+                    r_status.user.id = r_status_userid;
+                    r_status.thumbnailPic = r_pic_thumb;
+                    r_status.bmiddlePic = r_pic_mid;
+                    r_status.originalPic = r_pic_orig;
                 } else {
-                    r_status=null;
+                    r_status = null;
                 }
-                user=new User(screen_name);
-                user.id=user_id;
-                user.profileImageUrl=portrait;
-                status=new Status(_id, sid, new Date(created_at), text, source, pic_thumb, pic_mid, pic_orig, r_status, user, r_num, c_num);
+                user = new User(screen_name);
+                user.id = user_id;
+                user.profileImageUrl = portrait;
+                status = new Status(_id, sid, new Date(created_at), text, source, pic_thumb, pic_mid, pic_orig, r_status, user, r_num, c_num);
 
-                String pic_urls=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.PIC_URLS));
-                if (!TextUtils.isEmpty(pic_urls)) {
-                    String[] picUrls=pic_urls.split(",");
-                    status.thumbs=picUrls;
+                String pic_urls = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.PIC_URLS));
+                if (! TextUtils.isEmpty(pic_urls)) {
+                    String[] picUrls = pic_urls.split(",");
+                    status.thumbs = picUrls;
                 }
 
                 list.add(status);
             } while (cursor.moveToNext());
         } catch (Exception e) {
-            WeiboLog.e(TAG, "查询出错:"+e);
+            WeiboLog.e(TAG, "查询出错:" + e);
         } finally {
-            if (cursor!=null) {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -126,23 +125,23 @@ public final class SqliteWrapper {
      */
     @Deprecated
     public static ArrayList<String> queryAtNames(Context context, long currentUserId) {
-        Cursor cursor=null;
-        ArrayList<String> usernames=new ArrayList<String>();
+        Cursor cursor = null;
+        ArrayList<String> usernames = new ArrayList<String>();
         try {
             //cursor=db.rawQuery(sql, null);
-            cursor=context.getContentResolver().query(TwitterTable.UserTbl.CONTENT_URI, null,
-                TwitterTable.UserTbl.UID+"='"+currentUserId+"'", null, null);
-            if (null!=cursor&&cursor.getCount()>0) {
+            cursor = context.getContentResolver().query(TwitterTable.UserTbl.CONTENT_URI, null,
+                TwitterTable.UserTbl.UID + "='" + currentUserId + "'", null, null);
+            if (null != cursor && cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 do {
-                    String displayName=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl.USER_SCREEN_NAME));
+                    String displayName = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl.USER_SCREEN_NAME));
                     usernames.add(displayName);
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (null!=cursor) {
+            if (null != cursor) {
                 cursor.close();
             }
         }
@@ -163,66 +162,70 @@ public final class SqliteWrapper {
      * @return
      */
     public static OauthBean queryAccount(Context context, int account_type, int au_default, long userId) {
-        Cursor cursor=null;
+        Cursor cursor = null;
         try {
-            StringBuilder sb=new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.append(TwitterTable.AUTbl.ACCOUNT_TYPE).
                 append("=").
                 append(account_type);
-            if (au_default!=0) {    //当不是0时，表示不过滤默认帐户类型。
+            if (au_default != 0) {    //当不是0时，表示不过滤默认帐户类型。
                 sb.append(" and ").
                     append(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT).
                     append("=").
                     append(au_default);
             }
-            if (userId>-1) {
+            if (userId > - 1) {
                 sb.append(" and ").
                     append(TwitterTable.AUTbl.ACCOUNT_USERID).
                     append("=").
                     append(userId);
             }
 
-            ContentResolver resolver=context.getContentResolver();
-            cursor=resolver.query(TwitterTable.AUTbl.CONTENT_URI, null, sb.toString(), null, null);
-            if (null!=cursor&&cursor.getCount()>0) {
+            ContentResolver resolver = context.getContentResolver();
+            cursor = resolver.query(TwitterTable.AUTbl.CONTENT_URI, null, sb.toString(), null, null);
+            if (null != cursor && cursor.getCount() > 0) {
                 cursor.moveToFirst();
-                long id=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl._ID));
-                String name=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_NAME));
-                String pass=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_PASS));
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl._ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_NAME));
+                String pass = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_PASS));
 
-                String accessToken=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TOKEN));
-                long time=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TIME));
-                String openId=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_USERID));
-                int type=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TYPE));
-                int isDefault=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT));
-                int oauthType=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE));;
-                String customKey=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY));;
-                String customSecret=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET));;
-                String callbackUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CALLBACK_URL));;
-                String authenticationUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AUTHENTICATION_URL));
+                String accessToken = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TOKEN));
+                long time = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TIME));
+                String openId = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_USERID));
+                int type = cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TYPE));
+                int isDefault = cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT));
+                int oauthType = cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE));
+                ;
+                String customKey = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY));
+                ;
+                String customSecret = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET));
+                ;
+                String callbackUrl = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CALLBACK_URL));
+                ;
+                String authenticationUrl = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AUTHENTICATION_URL));
 
-                OauthBean bean=new OauthBean();
-                bean.id=id;
-                bean.accessToken=accessToken;
-                bean.expireTime=time;
-                bean.time=time;
-                bean.openId=bean.userId=openId;
-                bean.name=name;
-                bean.pass=pass;
-                bean.type=type;
-                bean.isDefault=isDefault;
-                bean.oauthType=oauthType;
+                OauthBean bean = new OauthBean();
+                bean.id = id;
+                bean.accessToken = accessToken;
+                bean.expireTime = time;
+                bean.time = time;
+                bean.openId = bean.userId = openId;
+                bean.name = name;
+                bean.pass = pass;
+                bean.type = type;
+                bean.isDefault = isDefault;
+                bean.oauthType = oauthType;
                 bean.setServiceProvider(oauthType);
-                bean.customKey=customKey;
-                bean.customSecret=customSecret;
-                bean.callbackUrl=callbackUrl;
-                bean.authenticationUrl=authenticationUrl;
+                bean.customKey = customKey;
+                bean.customSecret = customSecret;
+                bean.callbackUrl = callbackUrl;
+                bean.authenticationUrl = authenticationUrl;
                 return bean;
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (null!=cursor) {
+            if (null != cursor) {
                 cursor.close();
             }
         }
@@ -231,60 +234,64 @@ public final class SqliteWrapper {
     }
 
     public static OauthBean queryAccount(Context context, int account_type, String uname) {
-        Cursor cursor=null;
+        Cursor cursor = null;
         try {
-            StringBuilder sb=new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.append(TwitterTable.AUTbl.ACCOUNT_TYPE).
                 append("=").
                 append(account_type);
-            String username=RC4.RunRC4(uname, App.KEY);
+            String username = RC4.RunRC4(uname, App.KEY);
             sb.append(" and ").
                 append(TwitterTable.AUTbl.ACCOUNT_NAME).
                 append("='").
                 append(username).
                 append("'");
 
-            ContentResolver resolver=context.getContentResolver();
-            cursor=resolver.query(TwitterTable.AUTbl.CONTENT_URI, null, sb.toString(), null, null);
-            if (null!=cursor&&cursor.getCount()>0) {
+            ContentResolver resolver = context.getContentResolver();
+            cursor = resolver.query(TwitterTable.AUTbl.CONTENT_URI, null, sb.toString(), null, null);
+            if (null != cursor && cursor.getCount() > 0) {
                 cursor.moveToFirst();
-                long id=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl._ID));
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl._ID));
                 //String name=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_NAME));
-                String pass=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_PASS));
+                String pass = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_PASS));
 
-                String accessToken=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TOKEN));
-                long time=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TIME));
-                String openId=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_USERID));
-                int type=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TYPE));
-                int isDefault=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT));
-                int oauthType=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE));;
-                String customKey=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY));;
-                String customSecret=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET));;
-                String callbackUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CALLBACK_URL));;
-                String authenticationUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AUTHENTICATION_URL));
+                String accessToken = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TOKEN));
+                long time = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TIME));
+                String openId = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_USERID));
+                int type = cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TYPE));
+                int isDefault = cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT));
+                int oauthType = cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE));
+                ;
+                String customKey = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY));
+                ;
+                String customSecret = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET));
+                ;
+                String callbackUrl = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CALLBACK_URL));
+                ;
+                String authenticationUrl = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AUTHENTICATION_URL));
 
-                OauthBean bean=new OauthBean();
-                bean.id=id;
-                bean.accessToken=accessToken;
-                bean.expireTime=time;
-                bean.time=time;
-                bean.openId=bean.userId=openId;
-                bean.name=uname;
-                bean.pass=pass;
-                bean.type=type;
-                bean.isDefault=isDefault;
-                bean.oauthType=oauthType;
+                OauthBean bean = new OauthBean();
+                bean.id = id;
+                bean.accessToken = accessToken;
+                bean.expireTime = time;
+                bean.time = time;
+                bean.openId = bean.userId = openId;
+                bean.name = uname;
+                bean.pass = pass;
+                bean.type = type;
+                bean.isDefault = isDefault;
+                bean.oauthType = oauthType;
                 bean.setServiceProvider(oauthType);
-                bean.customKey=customKey;
-                bean.customSecret=customSecret;
-                bean.callbackUrl=callbackUrl;
-                bean.authenticationUrl=authenticationUrl;
+                bean.customKey = customKey;
+                bean.customSecret = customSecret;
+                bean.callbackUrl = callbackUrl;
+                bean.authenticationUrl = authenticationUrl;
                 return bean;
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (null!=cursor) {
+            if (null != cursor) {
                 cursor.close();
             }
         }
@@ -301,56 +308,60 @@ public final class SqliteWrapper {
      * @return
      */
     public static ArrayList<OauthBean> queryAccounts(Context context, int account_type) {
-        ArrayList<OauthBean> oauthBeanList=new ArrayList<OauthBean>();
+        ArrayList<OauthBean> oauthBeanList = new ArrayList<OauthBean>();
         OauthBean tmp;
-        Cursor cursor=null;
+        Cursor cursor = null;
         try {
-            ContentResolver resolver=context.getContentResolver();
-            cursor=resolver.query(TwitterTable.AUTbl.CONTENT_URI, null,
-                TwitterTable.AUTbl.ACCOUNT_TYPE+"='"+account_type+"'", null, null);
-            if (null!=cursor&&cursor.getCount()>0) {
+            ContentResolver resolver = context.getContentResolver();
+            cursor = resolver.query(TwitterTable.AUTbl.CONTENT_URI, null,
+                TwitterTable.AUTbl.ACCOUNT_TYPE + "='" + account_type + "'", null, null);
+            if (null != cursor && cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 do {
-                    long id=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl._ID));
-                    String name=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_NAME));
-                    String pass=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_PASS));
+                    long id = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl._ID));
+                    String name = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_NAME));
+                    String pass = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_PASS));
 
-                    String accessToken=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TOKEN));
-                    long time=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TIME));
-                    String openId=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_USERID));
-                    int type=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TYPE));
-                    int isDefault=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT));
-                    int oauthType=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE));;
-                    String customKey=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY));;
-                    String customSecret=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET));;
-                    String callbackUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CALLBACK_URL));;
-                    String authenticationUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AUTHENTICATION_URL));
+                    String accessToken = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TOKEN));
+                    long time = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TIME));
+                    String openId = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_USERID));
+                    int type = cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TYPE));
+                    int isDefault = cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT));
+                    int oauthType = cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE));
+                    ;
+                    String customKey = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY));
+                    ;
+                    String customSecret = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET));
+                    ;
+                    String callbackUrl = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CALLBACK_URL));
+                    ;
+                    String authenticationUrl = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AUTHENTICATION_URL));
 
-                    tmp=new OauthBean();
-                    tmp.id=id;
-                    tmp.accessToken=accessToken;
-                    tmp.expireTime=time;
-                    tmp.time=time;
-                    tmp.openId=tmp.userId=openId;
-                    if (!TextUtils.isEmpty(name)) {
-                        tmp.name=RC4.RunRC4(name, App.KEY);
+                    tmp = new OauthBean();
+                    tmp.id = id;
+                    tmp.accessToken = accessToken;
+                    tmp.expireTime = time;
+                    tmp.time = time;
+                    tmp.openId = tmp.userId = openId;
+                    if (! TextUtils.isEmpty(name)) {
+                        tmp.name = RC4.RunRC4(name, App.KEY);
                     }
-                    tmp.pass=pass;
-                    tmp.type=type;
-                    tmp.isDefault=isDefault;
-                    tmp.oauthType=oauthType;
+                    tmp.pass = pass;
+                    tmp.type = type;
+                    tmp.isDefault = isDefault;
+                    tmp.oauthType = oauthType;
                     tmp.setServiceProvider(oauthType);
-                    tmp.customKey=customKey;
-                    tmp.customSecret=customSecret;
-                    tmp.callbackUrl=callbackUrl;
-                    tmp.authenticationUrl=authenticationUrl;
+                    tmp.customKey = customKey;
+                    tmp.customSecret = customSecret;
+                    tmp.callbackUrl = callbackUrl;
+                    tmp.authenticationUrl = authenticationUrl;
                     oauthBeanList.add(tmp);
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (null!=cursor) {
+            if (null != cursor) {
                 cursor.close();
             }
         }
@@ -365,53 +376,57 @@ public final class SqliteWrapper {
      * @return
      */
     public static ArrayList<OauthBean> queryAllAccount(Context context) {
-        ArrayList<OauthBean> oauthBeanList=new ArrayList<OauthBean>();
+        ArrayList<OauthBean> oauthBeanList = new ArrayList<OauthBean>();
         OauthBean tmp;
-        Cursor cursor=null;
+        Cursor cursor = null;
         try {
-            ContentResolver resolver=context.getContentResolver();
-            cursor=resolver.query(TwitterTable.AUTbl.CONTENT_URI, null, null, null, null);
-            if (null!=cursor&&cursor.getCount()>0) {
+            ContentResolver resolver = context.getContentResolver();
+            cursor = resolver.query(TwitterTable.AUTbl.CONTENT_URI, null, null, null, null);
+            if (null != cursor && cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 do {
-                    long id=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl._ID));
-                    String name=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_NAME));
-                    String pass=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_PASS));
+                    long id = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl._ID));
+                    String name = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_NAME));
+                    String pass = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_PASS));
 
-                    String accessToken=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TOKEN));
-                    long time=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TIME));
-                    String openId=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_USERID));
-                    int type=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TYPE));
-                    int isDefault=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT));
-                    int oauthType=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE));;
-                    String customKey=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY));;
-                    String customSecret=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET));;
-                    String callbackUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CALLBACK_URL));;
-                    String authenticationUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AUTHENTICATION_URL));
+                    String accessToken = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TOKEN));
+                    long time = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TIME));
+                    String openId = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_USERID));
+                    int type = cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_TYPE));
+                    int isDefault = cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT));
+                    int oauthType = cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_OAUTH_TYPE));
+                    ;
+                    String customKey = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_KEY));
+                    ;
+                    String customSecret = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CUSTOM_SECRET));
+                    ;
+                    String callbackUrl = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_CALLBACK_URL));
+                    ;
+                    String authenticationUrl = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.AUTbl.ACCOUNT_AUTHENTICATION_URL));
 
-                    tmp=new OauthBean();
-                    tmp.id=id;
-                    tmp.accessToken=accessToken;
-                    tmp.expireTime=time;
-                    tmp.time=time;
-                    tmp.openId=tmp.userId=openId;
-                    tmp.name=RC4.RunRC4(name, App.KEY);
-                    tmp.pass=pass;
-                    tmp.type=type;
-                    tmp.isDefault=isDefault;
-                    tmp.oauthType=oauthType;
+                    tmp = new OauthBean();
+                    tmp.id = id;
+                    tmp.accessToken = accessToken;
+                    tmp.expireTime = time;
+                    tmp.time = time;
+                    tmp.openId = tmp.userId = openId;
+                    tmp.name = RC4.RunRC4(name, App.KEY);
+                    tmp.pass = pass;
+                    tmp.type = type;
+                    tmp.isDefault = isDefault;
+                    tmp.oauthType = oauthType;
                     tmp.setServiceProvider(oauthType);
-                    tmp.customKey=customKey;
-                    tmp.customSecret=customSecret;
-                    tmp.callbackUrl=callbackUrl;
-                    tmp.authenticationUrl=authenticationUrl;
+                    tmp.customKey = customKey;
+                    tmp.customSecret = customSecret;
+                    tmp.callbackUrl = callbackUrl;
+                    tmp.authenticationUrl = authenticationUrl;
                     oauthBeanList.add(tmp);
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (null!=cursor) {
+            if (null != cursor) {
                 cursor.close();
             }
         }
@@ -430,8 +445,8 @@ public final class SqliteWrapper {
      */
     public static int deleteAccount(Context context, int account_type, int au_default, long userId) {
         try {
-            ContentResolver resolver=context.getContentResolver();
-            StringBuilder sb=new StringBuilder();
+            ContentResolver resolver = context.getContentResolver();
+            StringBuilder sb = new StringBuilder();
             sb.append(TwitterTable.AUTbl.ACCOUNT_TYPE).
                 append("=").
                 append(account_type);
@@ -439,7 +454,7 @@ public final class SqliteWrapper {
                 append(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT).
                 append("=").
                 append(au_default);
-            if (userId>-1) {
+            if (userId > - 1) {
                 sb.append(" and ").
                     append(TwitterTable.AUTbl.ACCOUNT_USERID).
                     append("=").
@@ -463,8 +478,8 @@ public final class SqliteWrapper {
      */
     public static int deleteAccount(Context context, String userId) {
         try {
-            ContentResolver resolver=context.getContentResolver();
-            return resolver.delete(TwitterTable.AUTbl.CONTENT_URI, TwitterTable.AUTbl.ACCOUNT_USERID+" ='"+userId+"'", null);
+            ContentResolver resolver = context.getContentResolver();
+            return resolver.delete(TwitterTable.AUTbl.CONTENT_URI, TwitterTable.AUTbl.ACCOUNT_USERID + " ='" + userId + "'", null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -476,18 +491,18 @@ public final class SqliteWrapper {
      * 添加帐户
      *
      * @param context
-     * @param bean 认证的结果,包含token,key,secret,callback_url,等信息.
+     * @param bean     认证的结果,包含token,key,secret,callback_url,等信息.
      * @param username
      * @param password
-     * @param sType 是否是默认帐户,-1表示非默认帐户,
+     * @param sType    是否是默认帐户,-1表示非默认帐户,
      * @return
      */
     public static Uri addAccount(Context context, OauthBean bean, String sType) {
         try {
-            bean.time=bean.expireTime*1000+System.currentTimeMillis()-100l; //re caculate expireTime
-            ContentResolver resolver=context.getContentResolver();
-            ContentValues cv=new ContentValues();
-            if (!TextUtils.isEmpty(bean.name)&&!TextUtils.isEmpty(bean.pass)) {
+            bean.time = bean.expireTime * 1000 + System.currentTimeMillis() - 100l; //re caculate expireTime
+            ContentResolver resolver = context.getContentResolver();
+            ContentValues cv = new ContentValues();
+            if (! TextUtils.isEmpty(bean.name) && ! TextUtils.isEmpty(bean.pass)) {
                 cv.put(TwitterTable.AUTbl.ACCOUNT_NAME, RC4.RunRC4(bean.name, App.KEY));
                 cv.put(TwitterTable.AUTbl.ACCOUNT_PASS, RC4.RunRC4(bean.pass, App.KEY));
             }
@@ -524,10 +539,10 @@ public final class SqliteWrapper {
     public static Uri addAccount(Context context, OauthBean bean, String username, String password,
         int type, String sType) {
         try {
-            bean.time=bean.expireTime*1000+System.currentTimeMillis()-100l; //re caculate expireTime
-            ContentResolver resolver=context.getContentResolver();
-            ContentValues cv=new ContentValues();
-            if (!TextUtils.isEmpty(username)&&!TextUtils.isEmpty(password)) {
+            bean.time = bean.expireTime * 1000 + System.currentTimeMillis() - 100l; //re caculate expireTime
+            ContentResolver resolver = context.getContentResolver();
+            ContentValues cv = new ContentValues();
+            if (! TextUtils.isEmpty(username) && ! TextUtils.isEmpty(password)) {
                 cv.put(TwitterTable.AUTbl.ACCOUNT_NAME, RC4.RunRC4(username, App.KEY));
                 cv.put(TwitterTable.AUTbl.ACCOUNT_PASS, RC4.RunRC4(password, App.KEY));
             }
@@ -554,45 +569,45 @@ public final class SqliteWrapper {
      * @return
      */
     public static ArrayList<Draft> queryAllDraft(Context context, String currentUserId) {
-        ArrayList<Draft> draftList=new ArrayList<Draft>();
+        ArrayList<Draft> draftList = new ArrayList<Draft>();
         Draft tmp;
-        Cursor cursor=null;
+        Cursor cursor = null;
         try {
-            ContentResolver resolver=context.getContentResolver();
-            cursor=resolver.query(TwitterTable.DraftTbl.CONTENT_URI, null,
-                TwitterTable.DraftTbl.UID+"="+currentUserId, null, null);
-            if (null!=cursor&&cursor.getCount()>0) {
+            ContentResolver resolver = context.getContentResolver();
+            cursor = resolver.query(TwitterTable.DraftTbl.CONTENT_URI, null,
+                TwitterTable.DraftTbl.UID + "=" + currentUserId, null, null);
+            if (null != cursor && cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 do {
-                    long id=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl._ID));
-                    long userId=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.USER_ID));
-                    String content=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.CONTENT));
-                    String imgUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.IMG_URL));
-                    long createdAt=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.CREATED_AT));
-                    String text=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.TEXT));
-                    String source=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.SOURCE));
-                    String data=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.DATA));
-                    long uid=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.UID));
-                    int type=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.TYPE));
+                    long id = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl._ID));
+                    long userId = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.USER_ID));
+                    String content = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.CONTENT));
+                    String imgUrl = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.IMG_URL));
+                    long createdAt = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.CREATED_AT));
+                    String text = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.TEXT));
+                    String source = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.SOURCE));
+                    String data = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.DATA));
+                    long uid = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.UID));
+                    int type = cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.DraftTbl.TYPE));
 
-                    tmp=new Draft();
-                    tmp.id=id;
-                    tmp.userId=userId;
-                    tmp.content=content;
-                    tmp.imgUrl=imgUrl;
-                    tmp.createdAt=createdAt;
-                    tmp.text=text;
-                    tmp.source=source;
-                    tmp.data=data;
-                    tmp.uid=uid;
-                    tmp.type=type;
+                    tmp = new Draft();
+                    tmp.id = id;
+                    tmp.userId = userId;
+                    tmp.content = content;
+                    tmp.imgUrl = imgUrl;
+                    tmp.createdAt = createdAt;
+                    tmp.text = text;
+                    tmp.source = source;
+                    tmp.data = data;
+                    tmp.uid = uid;
+                    tmp.type = type;
                     draftList.add(tmp);
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (null!=cursor) {
+            if (null != cursor) {
                 cursor.close();
             }
         }
@@ -609,7 +624,7 @@ public final class SqliteWrapper {
      */
     public static int deleteDraft(Context context, Draft draft) {
         try {
-            ContentResolver resolver=context.getContentResolver();
+            ContentResolver resolver = context.getContentResolver();
             return resolver.delete(Uri.withAppendedPath(TwitterTable.DraftTbl.CONTENT_URI, String.valueOf(draft.id)), null, null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -625,55 +640,55 @@ public final class SqliteWrapper {
      * @return
      */
     public static ArrayList<SendTask> queryAllTasks(Context context, String currentUserId, int rc) {
-        ArrayList<SendTask> sendTasks=new ArrayList<SendTask>();
+        ArrayList<SendTask> sendTasks = new ArrayList<SendTask>();
         SendTask tmp;
-        Cursor cursor=null;
+        Cursor cursor = null;
         try {
-            ContentResolver resolver=context.getContentResolver();
-            String where=TwitterTable.SendQueueTbl.USER_ID+"="+currentUserId;
-            if (rc>-1) {
-                where=where+" and "+TwitterTable.SendQueueTbl.SEND_RESULT_CODE+"="+rc;
+            ContentResolver resolver = context.getContentResolver();
+            String where = TwitterTable.SendQueueTbl.USER_ID + "=" + currentUserId;
+            if (rc > - 1) {
+                where = where + " and " + TwitterTable.SendQueueTbl.SEND_RESULT_CODE + "=" + rc;
             }
             //WeiboLog.v(TAG, "sql:"+where);
-            cursor=resolver.query(TwitterTable.SendQueueTbl.CONTENT_URI, null,
-                where, null, TwitterTable.SendQueueTbl.CREATED_AT+" desc");
-            if (null!=cursor&&cursor.getCount()>0) {
+            cursor = resolver.query(TwitterTable.SendQueueTbl.CONTENT_URI, null,
+                where, null, TwitterTable.SendQueueTbl.CREATED_AT + " desc");
+            if (null != cursor && cursor.getCount() > 0) {
                 cursor.moveToFirst();
 
                 do {
-                    long id=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl._ID));
-                    long userId=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.USER_ID));
-                    String content=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.CONTENT));
-                    String imgUrl=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.IMG_URL));
-                    long createdAt=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.CREATED_AT));
-                    String text=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.TEXT));
-                    String source=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.SOURCE));
-                    String data=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.DATA));
+                    long id = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl._ID));
+                    long userId = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.USER_ID));
+                    String content = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.CONTENT));
+                    String imgUrl = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.IMG_URL));
+                    long createdAt = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.CREATED_AT));
+                    String text = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.TEXT));
+                    String source = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.SOURCE));
+                    String data = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.DATA));
                     //long uid=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.UID));
-                    int sendType=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.TYPE));
-                    int resultCode=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.SEND_RESULT_CODE));
-                    String resultMsg=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.SEND_RESULT_MSG));
+                    int sendType = cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.TYPE));
+                    int resultCode = cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.SEND_RESULT_CODE));
+                    String resultMsg = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.SendQueueTbl.SEND_RESULT_MSG));
 
-                    tmp=new SendTask();
-                    tmp.id=id;
-                    tmp.userId=userId;
-                    tmp.content=content;
-                    tmp.imgUrl=imgUrl;
-                    tmp.createAt=createdAt;
-                    tmp.text=text;
-                    tmp.source=source;
-                    tmp.data=data;
+                    tmp = new SendTask();
+                    tmp.id = id;
+                    tmp.userId = userId;
+                    tmp.content = content;
+                    tmp.imgUrl = imgUrl;
+                    tmp.createAt = createdAt;
+                    tmp.text = text;
+                    tmp.source = source;
+                    tmp.data = data;
                     //tmp.uid=uid;
-                    tmp.type=sendType;
-                    tmp.resultCode=resultCode;
-                    tmp.resultMsg=resultMsg;
+                    tmp.type = sendType;
+                    tmp.resultCode = resultCode;
+                    tmp.resultMsg = resultMsg;
                     sendTasks.add(tmp);
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (null!=cursor) {
+            if (null != cursor) {
                 cursor.close();
             }
         }
@@ -692,11 +707,11 @@ public final class SqliteWrapper {
      */
     public static int updateSendTask(Context context, int code, String msg, SendTask task) {
         try {
-            ContentResolver resolver=context.getContentResolver();
-            ContentValues cv=new ContentValues();
+            ContentResolver resolver = context.getContentResolver();
+            ContentValues cv = new ContentValues();
             cv.put(TwitterTable.SendQueueTbl.SEND_RESULT_MSG, msg);
             cv.put(TwitterTable.SendQueueTbl.SEND_RESULT_CODE, code);
-            return resolver.update(TwitterTable.SendQueueTbl.CONTENT_URI, cv, " _id='"+task.id+"'", null);
+            return resolver.update(TwitterTable.SendQueueTbl.CONTENT_URI, cv, " _id='" + task.id + "'", null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -713,8 +728,8 @@ public final class SqliteWrapper {
      */
     public static int deleteSendTask(Context context, SendTask task) {
         try {
-            ContentResolver resolver=context.getContentResolver();
-            return resolver.delete(TwitterTable.SendQueueTbl.CONTENT_URI, " _id='"+task.id+"'", null);
+            ContentResolver resolver = context.getContentResolver();
+            return resolver.delete(TwitterTable.SendQueueTbl.CONTENT_URI, " _id='" + task.id + "'", null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -731,9 +746,9 @@ public final class SqliteWrapper {
      */
     public static int deleteAllSendTask(Context context, long currentUserId) {
         try {
-            ContentResolver resolver=context.getContentResolver();
+            ContentResolver resolver = context.getContentResolver();
             return resolver.delete(TwitterTable.SendQueueTbl.CONTENT_URI,
-                TwitterTable.SendQueueTbl.USER_ID+"='"+currentUserId+"'", null);
+                TwitterTable.SendQueueTbl.USER_ID + "='" + currentUserId + "'", null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -752,16 +767,16 @@ public final class SqliteWrapper {
      * @param type          类型.具体参考TwitterTable.UserTbl
      */
     public static void saveAtUser(Context context, AtUser user, long currentUserId, int type) {
-        Cursor cursor=null;
+        Cursor cursor = null;
         ContentValues cv;
         String name;
-        ContentResolver resolver=context.getContentResolver();
+        ContentResolver resolver = context.getContentResolver();
         try {
-            cursor=resolver.query(TwitterTable.UserTbl.CONTENT_URI, null,
-                TwitterTable.UserTbl.USER_ID+"="+user.userId+" and "+TwitterTable.UserTbl.UID+"="+currentUserId, null, null);
+            cursor = resolver.query(TwitterTable.UserTbl.CONTENT_URI, null,
+                TwitterTable.UserTbl.USER_ID + "=" + user.userId + " and " + TwitterTable.UserTbl.UID + "=" + currentUserId, null, null);
 
-            if (null==cursor||cursor.getCount()<1) {
-                cv=new ContentValues();
+            if (null == cursor || cursor.getCount() < 1) {
+                cv = new ContentValues();
                 cv.put(TwitterTable.UserTbl.USER_ID, user.userId);
                 cv.put(TwitterTable.UserTbl.USER_SCREEN_NAME, user.name);
                 cv.put(TwitterTable.UserTbl.UID, currentUserId);
@@ -771,22 +786,22 @@ public final class SqliteWrapper {
                 resolver.insert(TwitterTable.UserTbl.CONTENT_URI, cv);
             } else {
                 cursor.moveToFirst();
-                name=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl.USER_SCREEN_NAME));
-                if (!name.equals(user.name)) {
-                    cv=new ContentValues();
+                name = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl.USER_SCREEN_NAME));
+                if (! name.equals(user.name)) {
+                    cv = new ContentValues();
                     cv.put(TwitterTable.UserTbl.USER_SCREEN_NAME, user.name);
                     cv.put(TwitterTable.UserTbl.PINYIN, user.pinyin);
                     cv.put(TwitterTable.UserTbl.UID, currentUserId);
                     cv.put(TwitterTable.UserTbl.TYPE, type);
 
-                    int count=resolver.update(Uri.withAppendedPath(TwitterTable.UserTbl.CONTENT_URI, String.valueOf(user.userId)), cv, null, null);
-                    WeiboLog.d(TAG, "更新的用户："+user+" count:"+count);
+                    int count = resolver.update(Uri.withAppendedPath(TwitterTable.UserTbl.CONTENT_URI, String.valueOf(user.userId)), cv, null, null);
+                    WeiboLog.d(TAG, "更新的用户：" + user + " count:" + count);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (null!=cursor) {
+            if (null != cursor) {
                 cursor.close();
             }
         }
@@ -801,21 +816,21 @@ public final class SqliteWrapper {
      * @param type          类型,0表示主页的关注用户.1为选定
      */
     public static void saveFriendUser(Context context, ArrayList<Status> list, long currentUserId, int type) {
-        ArrayList<AtUser> atUsers=new ArrayList<AtUser>();
+        ArrayList<AtUser> atUsers = new ArrayList<AtUser>();
         User tmp;
         AtUser atUser;
         for (Status status : list) {
-            tmp=status.user;
-            atUser=new AtUser();
-            atUser.userId=tmp.id;
-            atUser.name=tmp.screenName;
-            if (!atUsers.contains(atUser)) {
+            tmp = status.user;
+            atUser = new AtUser();
+            atUser.userId = tmp.id;
+            atUser.name = tmp.screenName;
+            if (! atUsers.contains(atUser)) {
                 atUsers.add(atUser);
             }
         }
-        WeiboLog.d(TAG, "待处理的用户数为："+atUsers.size());
+        WeiboLog.d(TAG, "待处理的用户数为：" + atUsers.size());
 
-        if (atUsers.size()>0) {
+        if (atUsers.size() > 0) {
             saveFriendUsers(context, atUsers, currentUserId, type);
         }
     }
@@ -829,60 +844,60 @@ public final class SqliteWrapper {
      * @param type          类型,0表示主页的关注用户.1为选定
      */
     public static void saveFriendUsers(Context context, ArrayList<AtUser> atUsers, long currentUserId, int type) {
-        ArrayList<AtUser> newUsers=new ArrayList<AtUser>();
-        Cursor cursor=null;
+        ArrayList<AtUser> newUsers = new ArrayList<AtUser>();
+        Cursor cursor = null;
         ContentValues cv;
         String name;
-        ContentResolver resolver=context.getContentResolver();
+        ContentResolver resolver = context.getContentResolver();
         for (AtUser user : atUsers) {
             try {
-                cursor=resolver.query(TwitterTable.UserTbl.CONTENT_URI, null,
-                    TwitterTable.UserTbl.USER_ID+"="+user.userId+
-                        " and "+TwitterTable.UserTbl.UID+"="+currentUserId+
-                        " and "+TwitterTable.UserTbl.TYPE+"="+type, null, null);
+                cursor = resolver.query(TwitterTable.UserTbl.CONTENT_URI, null,
+                    TwitterTable.UserTbl.USER_ID + "=" + user.userId +
+                        " and " + TwitterTable.UserTbl.UID + "=" + currentUserId +
+                        " and " + TwitterTable.UserTbl.TYPE + "=" + type, null, null);
 
-                if (null==cursor||cursor.getCount()<1) {
+                if (null == cursor || cursor.getCount() < 1) {
                     newUsers.add(user);
                 } else {
                     cursor.moveToFirst();
-                    name=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl.USER_SCREEN_NAME));
-                    if (!name.equals(user.name)) {
-                        cv=new ContentValues();
+                    name = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl.USER_SCREEN_NAME));
+                    if (! name.equals(user.name)) {
+                        cv = new ContentValues();
                         cv.put(TwitterTable.UserTbl.USER_SCREEN_NAME, user.name);
-                        String pinyin=PinYin.getPinYin(user.name);
+                        String pinyin = PinYin.getPinYin(user.name);
                         cv.put(TwitterTable.UserTbl.PINYIN, pinyin);
                         //cv.put(TwitterTable.UserTbl.UID, currentUserId);
 
-                        int count=resolver.update(Uri.withAppendedPath(TwitterTable.UserTbl.CONTENT_URI, String.valueOf(user.userId)), cv, null, null);
-                        WeiboLog.d(TAG, "更新的用户："+user+" count:"+count);
+                        int count = resolver.update(Uri.withAppendedPath(TwitterTable.UserTbl.CONTENT_URI, String.valueOf(user.userId)), cv, null, null);
+                        WeiboLog.d(TAG, "更新的用户：" + user + " count:" + count);
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if (null!=cursor) {
+                if (null != cursor) {
                     cursor.close();
                 }
             }
         }
 
-        int len=newUsers.size();
-        WeiboLog.d(TAG, "需要新插入的用户："+len);
-        int i=0;
+        int len = newUsers.size();
+        WeiboLog.d(TAG, "需要新插入的用户：" + len);
+        int i = 0;
 
-        if (len>0) {
-            ContentValues[] contentValueses=new ContentValues[len];
+        if (len > 0) {
+            ContentValues[] contentValueses = new ContentValues[ len ];
             for (AtUser user : newUsers) {
-                cv=new ContentValues();
+                cv = new ContentValues();
                 cv.put(TwitterTable.UserTbl.USER_ID, user.userId);
                 cv.put(TwitterTable.UserTbl.USER_SCREEN_NAME, user.name);
                 cv.put(TwitterTable.UserTbl.UID, currentUserId);
                 cv.put(TwitterTable.UserTbl.PINYIN, user.pinyin);
                 cv.put(TwitterTable.UserTbl.TYPE, type);
-                contentValueses[i++]=cv;
+                contentValueses[ i++ ] = cv;
             }
-            len=resolver.bulkInsert(TwitterTable.UserTbl.CONTENT_URI, contentValueses);
-            WeiboLog.i(TAG, "保存用户记录:"+len);
+            len = resolver.bulkInsert(TwitterTable.UserTbl.CONTENT_URI, contentValueses);
+            WeiboLog.i(TAG, "保存用户记录:" + len);
         }
     }
 
@@ -898,13 +913,13 @@ public final class SqliteWrapper {
      */
     public static ArrayList<AtUser> queryAtUsers(Context context, long currentUserId, int type,
         String where) {
-        ArrayList<AtUser> atUsers=new ArrayList<AtUser>();
+        ArrayList<AtUser> atUsers = new ArrayList<AtUser>();
         AtUser tmp;
-        Cursor cursor=null;
+        Cursor cursor = null;
         try {
-            ContentResolver resolver=context.getContentResolver();
+            ContentResolver resolver = context.getContentResolver();
 
-            StringBuilder sb=new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.append(TwitterTable.UserTbl.UID).
                 append("=").
                 append(currentUserId);
@@ -912,7 +927,7 @@ public final class SqliteWrapper {
                 append(TwitterTable.UserTbl.TYPE).
                 append("=").
                 append(type);
-            if (!TextUtils.isEmpty(where)) {
+            if (! TextUtils.isEmpty(where)) {
                 sb.append(" and (").
                     append(TwitterTable.UserTbl.USER_SCREEN_NAME).
                     append(" like '%").
@@ -925,35 +940,35 @@ public final class SqliteWrapper {
                     append("%')");
             }
 
-            WeiboLog.d(TAG, "at user.:"+sb.toString());
-            cursor=resolver.query(TwitterTable.UserTbl.CONTENT_URI, null, sb.toString(), null, null);
-            WeiboLog.d(TAG, "cursor:"+cursor);
-            if (null!=cursor&&cursor.getCount()>0) {
-                WeiboLog.d(TAG, "cursor:"+cursor.getCount());
+            WeiboLog.d(TAG, "at user.:" + sb.toString());
+            cursor = resolver.query(TwitterTable.UserTbl.CONTENT_URI, null, sb.toString(), null, null);
+            WeiboLog.d(TAG, "cursor:" + cursor);
+            if (null != cursor && cursor.getCount() > 0) {
+                WeiboLog.d(TAG, "cursor:" + cursor.getCount());
                 cursor.moveToFirst();
 
                 do {
-                    long id=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl._ID));
-                    long userId=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl.USER_ID));
-                    String name=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl.USER_SCREEN_NAME));
-                    String pinyin=cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl.PINYIN));
+                    long id = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl._ID));
+                    long userId = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl.USER_ID));
+                    String name = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl.USER_SCREEN_NAME));
+                    String pinyin = cursor.getString(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl.PINYIN));
                     //int type=cursor.getInt(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl.TYPE));
-                    long uid=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl.UID));
+                    long uid = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.UserTbl.UID));
 
-                    tmp=new AtUser();
-                    tmp.id=id;
-                    tmp.userId=userId;
-                    tmp.name=name;
-                    tmp.pinyin=pinyin;
-                    tmp.type=type;
-                    tmp.uid=uid;
+                    tmp = new AtUser();
+                    tmp.id = id;
+                    tmp.userId = userId;
+                    tmp.name = name;
+                    tmp.pinyin = pinyin;
+                    tmp.type = type;
+                    tmp.uid = uid;
                     atUsers.add(tmp);
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (null!=cursor) {
+            if (null != cursor) {
                 cursor.close();
             }
         }
@@ -968,80 +983,79 @@ public final class SqliteWrapper {
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public static ArrayList<Status> queryAtStatuses(ContentResolver resolver, long currentUserId) {
-        WeiboLog.d(TAG, TAG+" queryAtStatuses.");
-        ArrayList<Status> list=null;
+        WeiboLog.d(TAG, TAG + " queryAtStatuses.");
+        ArrayList<Status> list = null;
 
-        Cursor cursor=null;
+        Cursor cursor = null;
         try {
-            cursor=resolver.query(TwitterTable.SStatusCommentTbl.CONTENT_URI, null,
-                TwitterTable.SStatusCommentTbl.UID+"='"+currentUserId+"' and "+
-                    TwitterTable.SStatusCommentTbl.TYPE+"="+TwitterTable.SStatusCommentTbl.TYPE_STATUT,
-                null, TwitterTable.SStatusCommentTbl.CREATED_AT+" desc");
-            if (null==cursor||cursor.getCount()<1) {
+            cursor = resolver.query(TwitterTable.SStatusCommentTbl.CONTENT_URI, null,
+                TwitterTable.SStatusCommentTbl.UID + "='" + currentUserId + "' and " +
+                    TwitterTable.SStatusCommentTbl.TYPE + "=" + TwitterTable.SStatusCommentTbl.TYPE_STATUT,
+                null, TwitterTable.SStatusCommentTbl.CREATED_AT + " desc");
+            if (null == cursor || cursor.getCount() < 1) {
                 WeiboLog.w(TAG, "查询数据为空.");
                 return null;
             }
 
-            list=new ArrayList<Status>(36);
+            list = new ArrayList<Status>(36);
             Status status;
-            Status r_status=null;
+            Status r_status = null;
             User user;
             cursor.moveToFirst();
             do {
-                long _id=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl._ID));
-                long sid=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.STATUS_ID));
-                long user_id=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.USER_ID));
-                String screen_name=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.USER_SCREEN_NAME));
-                String portrait=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PORTRAIT));
-                long created_at=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.CREATED_AT));
-                String text=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.TEXT));
-                String source=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.SOURCE));
-                String pic_thumb=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PIC_THUMB));
-                String pic_mid=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PIC_MID));
-                String pic_orig=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PIC_ORIG));
-                int r_num=cursor.getInt(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_NUM));
-                int c_num=cursor.getInt(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.C_NUM));
+                long _id = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl._ID));
+                long sid = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.STATUS_ID));
+                long user_id = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.USER_ID));
+                String screen_name = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.USER_SCREEN_NAME));
+                String portrait = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PORTRAIT));
+                long created_at = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.CREATED_AT));
+                String text = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.TEXT));
+                String source = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.SOURCE));
+                String pic_thumb = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PIC_THUMB));
+                String pic_mid = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PIC_MID));
+                String pic_orig = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PIC_ORIG));
+                int r_num = cursor.getInt(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_NUM));
+                int c_num = cursor.getInt(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.C_NUM));
 
-                String r_status_name=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_STATUS_NAME));
-                String r_status_content=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_STATUS));
-                if (!TextUtils.isEmpty(r_status_name)&&!TextUtils.isEmpty(r_status_content)) {
-                    r_status=new Status();
-                    r_status.user=new User(r_status_name);
-                    r_status.text=r_status_content;
+                String r_status_name = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_STATUS_NAME));
+                String r_status_content = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_STATUS));
+                if (! TextUtils.isEmpty(r_status_name) && ! TextUtils.isEmpty(r_status_content)) {
+                    r_status = new Status();
+                    r_status.user = new User(r_status_name);
+                    r_status.text = r_status_content;
 
-                    long r_status_id=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_STATUS_ID));
-                    long r_status_userid=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_STATUS_USERID));
-                    String r_pic_thumb=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_PIC_THUMB));
-                    String r_pic_mid=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_PIC_MID));
-                    String r_pic_orig=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_PIC_ORIG));
-                    r_status.id=r_status_id;
-                    r_status.user.id=r_status_userid;
-                    r_status.thumbnailPic=r_pic_thumb;
-                    r_status.bmiddlePic=r_pic_mid;
-                    r_status.originalPic=r_pic_orig;
+                    long r_status_id = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_STATUS_ID));
+                    long r_status_userid = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_STATUS_USERID));
+                    String r_pic_thumb = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_PIC_THUMB));
+                    String r_pic_mid = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_PIC_MID));
+                    String r_pic_orig = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_PIC_ORIG));
+                    r_status.id = r_status_id;
+                    r_status.user.id = r_status_userid;
+                    r_status.thumbnailPic = r_pic_thumb;
+                    r_status.bmiddlePic = r_pic_mid;
+                    r_status.originalPic = r_pic_orig;
                 } else {
-                    r_status=null;
+                    r_status = null;
                 }
-                user=new User(screen_name);
-                user.id=user_id;
-                user.profileImageUrl=portrait;
-                status=new Status(_id, sid, new Date(created_at), text, source, pic_thumb, pic_mid, pic_orig, r_status, user, r_num, c_num);
+                user = new User(screen_name);
+                user.id = user_id;
+                user.profileImageUrl = portrait;
+                status = new Status(_id, sid, new Date(created_at), text, source, pic_thumb, pic_mid, pic_orig, r_status, user, r_num, c_num);
 
-                String pic_urls=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.PIC_URLS));
-                if (!TextUtils.isEmpty(pic_urls)) {
-                    String[] picUrls=pic_urls.split(",");
-                    status.thumbs=picUrls;
+                String pic_urls = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusTbl.PIC_URLS));
+                if (! TextUtils.isEmpty(pic_urls)) {
+                    String[] picUrls = pic_urls.split(",");
+                    status.thumbs = picUrls;
                 }
 
                 list.add(status);
             } while (cursor.moveToNext());
         } catch (Exception e) {
-            WeiboLog.e(TAG, "查询出错:"+e);
+            WeiboLog.e(TAG, "查询出错:" + e);
         } finally {
-            if (cursor!=null) {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -1059,12 +1073,12 @@ public final class SqliteWrapper {
      */
     @Deprecated
     public static void saveAtStatus(Context context, ArrayList<Status> list, long currentUserId) {
-        Cursor cursor=null;
-        ContentResolver resolver=context.getContentResolver();
-        ArrayList<Status> dataList=new ArrayList<Status>();
+        Cursor cursor = null;
+        ContentResolver resolver = context.getContentResolver();
+        ArrayList<Status> dataList = new ArrayList<Status>();
         for (Status status : list) {
             try {
-                StringBuilder sb=new StringBuilder();
+                StringBuilder sb = new StringBuilder();
                 sb.append(TwitterTable.SStatusCommentTbl.UID).
                     append("='").
                     append(currentUserId).
@@ -1079,35 +1093,35 @@ public final class SqliteWrapper {
                     append(status.id).
                     append("'");
 
-                cursor=resolver.query(TwitterTable.SStatusCommentTbl.CONTENT_URI, null,
+                cursor = resolver.query(TwitterTable.SStatusCommentTbl.CONTENT_URI, null,
                     sb.toString(), null, null);
-                if (null!=cursor&&cursor.getCount()>0) {
+                if (null != cursor && cursor.getCount() > 0) {
                 } else {
                     dataList.add(status);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if (null!=cursor) {
+                if (null != cursor) {
                     cursor.close();
                 }
             }
         }
 
-        int len=dataList.size();
-        if (len>0) {
-            ContentValues[] contentValueses=new ContentValues[len];
+        int len = dataList.size();
+        if (len > 0) {
+            ContentValues[] contentValueses = new ContentValues[ len ];
             ContentValues cv;
             Status status;
             Status retStatus;
-            for (int i=len-1; i>=0; i--) {
-                status=dataList.get(i);
-                cv=new ContentValues();
+            for (int i = len - 1; i >= 0; i--) {
+                status = dataList.get(i);
+                cv = new ContentValues();
                 cv.put(TwitterTable.SStatusTbl.STATUS_ID, status.id);
                 cv.put(TwitterTable.SStatusTbl.CREATED_AT, status.createdAt.getTime());
                 cv.put(TwitterTable.SStatusTbl.TEXT, status.text);
                 cv.put(TwitterTable.SStatusTbl.SOURCE, status.source);
-                if (!TextUtils.isEmpty(status.thumbnailPic)) {
+                if (! TextUtils.isEmpty(status.thumbnailPic)) {
                     cv.put(TwitterTable.SStatusTbl.PIC_THUMB, status.thumbnailPic);
                     cv.put(TwitterTable.SStatusTbl.PIC_MID, status.bmiddlePic);
                     cv.put(TwitterTable.SStatusTbl.PIC_ORIG, status.originalPic);
@@ -1117,11 +1131,11 @@ public final class SqliteWrapper {
                 cv.put(TwitterTable.SStatusTbl.UID, currentUserId);
                 cv.put(TwitterTable.SStatusCommentTbl.TYPE, TwitterTable.SStatusCommentTbl.TYPE_STATUT);
 
-                retStatus=status.retweetedStatus;
-                if (retStatus!=null) {
+                retStatus = status.retweetedStatus;
+                if (retStatus != null) {
                     cv.put(TwitterTable.SStatusTbl.R_STATUS_ID, retStatus.id);
-                    User user=retStatus.user;
-                    if (null!=user) {
+                    User user = retStatus.user;
+                    if (null != user) {
                         try {
                             cv.put(TwitterTable.SStatusTbl.R_STATUS_USERID, retStatus.user.id);
                             cv.put(TwitterTable.SStatusTbl.R_STATUS_NAME, retStatus.user.screenName);
@@ -1130,7 +1144,7 @@ public final class SqliteWrapper {
                         }
                     }
                     cv.put(TwitterTable.SStatusTbl.R_STATUS, retStatus.text);
-                    if (!TextUtils.isEmpty(retStatus.thumbnailPic)) {
+                    if (! TextUtils.isEmpty(retStatus.thumbnailPic)) {
                         cv.put(TwitterTable.SStatusTbl.R_PIC_THUMB, retStatus.thumbnailPic);
                         cv.put(TwitterTable.SStatusTbl.R_PIC_MID, retStatus.bmiddlePic);
                         cv.put(TwitterTable.SStatusTbl.R_PIC_ORIG, retStatus.originalPic);
@@ -1140,11 +1154,11 @@ public final class SqliteWrapper {
                 cv.put(TwitterTable.SStatusTbl.USER_SCREEN_NAME, status.user.screenName);
                 cv.put(TwitterTable.SStatusTbl.PORTRAIT, status.user.profileImageUrl);
 
-                contentValueses[i]=cv;
+                contentValueses[ i ] = cv;
             }
 
-            len=resolver.bulkInsert(TwitterTable.SStatusTbl.CONTENT_URI, contentValueses);
-            WeiboLog.d(TAG, "insert at status."+len);
+            len = resolver.bulkInsert(TwitterTable.SStatusTbl.CONTENT_URI, contentValueses);
+            WeiboLog.d(TAG, "insert at status." + len);
         }
     }
 
@@ -1153,95 +1167,94 @@ public final class SqliteWrapper {
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public static ArrayList<Comment> queryAtComments(ContentResolver resolver, long currentUserId, int type) {
-        WeiboLog.d(TAG, TAG+" queryAtComments.");
-        ArrayList<Comment> list=null;
+        WeiboLog.d(TAG, TAG + " queryAtComments.");
+        ArrayList<Comment> list = null;
 
-        Cursor cursor=null;
+        Cursor cursor = null;
         try {
-            cursor=resolver.query(TwitterTable.SStatusCommentTbl.CONTENT_URI, null,
-                TwitterTable.SStatusCommentTbl.UID+"='"+currentUserId+"' and "+
-                    TwitterTable.SStatusCommentTbl.TYPE+"="+type,
-                null, TwitterTable.SStatusCommentTbl.CREATED_AT+" desc");
-            if (null==cursor||cursor.getCount()<1) {
+            cursor = resolver.query(TwitterTable.SStatusCommentTbl.CONTENT_URI, null,
+                TwitterTable.SStatusCommentTbl.UID + "='" + currentUserId + "' and " +
+                    TwitterTable.SStatusCommentTbl.TYPE + "=" + type,
+                null, TwitterTable.SStatusCommentTbl.CREATED_AT + " desc");
+            if (null == cursor || cursor.getCount() < 1) {
                 WeiboLog.w(TAG, "查询数据为空.");
                 return null;
             }
 
-            list=new ArrayList<Comment>(36);
+            list = new ArrayList<Comment>(36);
             Comment comment;
             Comment replyComment;
-            Status status=null;
+            Status status = null;
             User user;
             cursor.moveToFirst();
             do {
                 //long _id=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl._ID));
-                long sid=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.STATUS_ID));
-                long user_id=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.USER_ID));
-                String screen_name=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.USER_SCREEN_NAME));
-                String portrait=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PORTRAIT));
-                long created_at=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.CREATED_AT));
-                String text=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.TEXT));
-                String source=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.SOURCE));
+                long sid = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.STATUS_ID));
+                long user_id = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.USER_ID));
+                String screen_name = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.USER_SCREEN_NAME));
+                String portrait = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PORTRAIT));
+                long created_at = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.CREATED_AT));
+                String text = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.TEXT));
+                String source = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.SOURCE));
 
-                user=new User(screen_name);
-                user.id=user_id;
-                user.profileImageUrl=portrait;
-                comment=new Comment();
-                comment.id=sid;
-                comment.createdAt=new Date(created_at);
-                comment.text=text;
-                comment.source=source;
-                comment.user=user;
+                user = new User(screen_name);
+                user.id = user_id;
+                user.profileImageUrl = portrait;
+                comment = new Comment();
+                comment.id = sid;
+                comment.createdAt = new Date(created_at);
+                comment.text = text;
+                comment.source = source;
+                comment.user = user;
 
-                long r_status_id=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_STATUS_ID));
-                if (r_status_id>0) {
-                    status=new Status();
+                long r_status_id = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_STATUS_ID));
+                if (r_status_id > 0) {
+                    status = new Status();
 
-                    String pic_thumb=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PIC_THUMB));
-                    String pic_mid=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PIC_MID));
-                    String pic_orig=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PIC_ORIG));
-                    int r_num=cursor.getInt(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_NUM));
-                    int c_num=cursor.getInt(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.C_NUM));
+                    String pic_thumb = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PIC_THUMB));
+                    String pic_mid = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PIC_MID));
+                    String pic_orig = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PIC_ORIG));
+                    int r_num = cursor.getInt(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_NUM));
+                    int c_num = cursor.getInt(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.C_NUM));
 
-                    String r_status_content=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_STATUS));
-                    status.text=r_status_content;
-                    status.id=r_status_id;
-                    status.thumbnailPic=pic_thumb;
-                    status.bmiddlePic=pic_mid;
-                    status.originalPic=pic_orig;
-                    status.r_num=r_num;
-                    status.c_num=c_num;
+                    String r_status_content = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_STATUS));
+                    status.text = r_status_content;
+                    status.id = r_status_id;
+                    status.thumbnailPic = pic_thumb;
+                    status.bmiddlePic = pic_mid;
+                    status.originalPic = pic_orig;
+                    status.r_num = r_num;
+                    status.c_num = c_num;
 
-                    long r_status_userid=cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_STATUS_USERID));
-                    if (r_status_userid>0) {
-                        String r_status_name=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_STATUS_NAME));
+                    long r_status_userid = cursor.getLong(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_STATUS_USERID));
+                    if (r_status_userid > 0) {
+                        String r_status_name = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_STATUS_NAME));
 
-                        status.user=new User(r_status_name);
-                        status.user.id=r_status_userid;
+                        status.user = new User(r_status_name);
+                        status.user.id = r_status_userid;
                     }
 
-                    String pic_urls=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PIC_URLS));
-                    if (!TextUtils.isEmpty(pic_urls)) {
-                        String[] picUrls=pic_urls.split(",");
-                        status.thumbs=picUrls;
+                    String pic_urls = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.PIC_URLS));
+                    if (! TextUtils.isEmpty(pic_urls)) {
+                        String[] picUrls = pic_urls.split(",");
+                        status.thumbs = picUrls;
                     }
 
-                    comment.status=status;
+                    comment.status = status;
                 }
 
-                String r_pic_thumb=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_PIC_THUMB));
-                if (!TextUtils.isEmpty(r_pic_thumb)) {    //replyComment
+                String r_pic_thumb = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_PIC_THUMB));
+                if (! TextUtils.isEmpty(r_pic_thumb)) {    //replyComment
                     try {
-                        String r_pic_mid=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_PIC_MID));
-                        String r_pic_orig=cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_PIC_ORIG));
-                        replyComment=new Comment();
-                        comment.replyComment=replyComment;
-                        replyComment.text=r_pic_thumb;
-                        user=new User(r_pic_orig);
-                        user.id=Long.valueOf(r_pic_mid);
+                        String r_pic_mid = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_PIC_MID));
+                        String r_pic_orig = cursor.getString(cursor.getColumnIndex(TwitterTable.SStatusCommentTbl.R_PIC_ORIG));
+                        replyComment = new Comment();
+                        comment.replyComment = replyComment;
+                        replyComment.text = r_pic_thumb;
+                        user = new User(r_pic_orig);
+                        user.id = Long.valueOf(r_pic_mid);
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                     }
@@ -1250,9 +1263,9 @@ public final class SqliteWrapper {
                 list.add(comment);
             } while (cursor.moveToNext());
         } catch (Exception e) {
-            WeiboLog.e(TAG, "查询出错:"+e);
+            WeiboLog.e(TAG, "查询出错:" + e);
         } finally {
-            if (cursor!=null) {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -1269,28 +1282,27 @@ public final class SqliteWrapper {
      * @param receiverId 接收者id
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public static ArrayList<DirectMessage> queryDirectMsgsByRecipient(ContentResolver resolver,
         long senderId, long receiverId) {
-        WeiboLog.d(TAG, TAG+" queryDirectMsgsByRecipient.");
-        ArrayList<DirectMessage> list=null;
+        WeiboLog.d(TAG, TAG + " queryDirectMsgsByRecipient.");
+        ArrayList<DirectMessage> list = null;
 
-        Cursor cursor=null;
+        Cursor cursor = null;
         try {
-            cursor=resolver.query(TwitterTable.DirectMsgTbl.CONTENT_URI, null, TwitterTable.DirectMsgTbl.SENDER_ID+"='"+senderId+"'"+
-                " and "+TwitterTable.DirectMsgTbl.RECIPIENT_ID+"='"+receiverId+"'",
-                null, TwitterTable.DirectMsgTbl.CREATED_AT+" desc");
-            if (null==cursor||cursor.getCount()<1) {
+            cursor = resolver.query(TwitterTable.DirectMsgTbl.CONTENT_URI, null, TwitterTable.DirectMsgTbl.SENDER_ID + "='" + senderId + "'" +
+                    " and " + TwitterTable.DirectMsgTbl.RECIPIENT_ID + "='" + receiverId + "'",
+                null, TwitterTable.DirectMsgTbl.CREATED_AT + " desc");
+            if (null == cursor || cursor.getCount() < 1) {
                 WeiboLog.w(TAG, "查询数据为空.");
                 return null;
             }
 
-            list=prepareDirectMsgs(cursor);
+            list = prepareDirectMsgs(cursor);
         } catch (Exception e) {
-            WeiboLog.e(TAG, "查询出错:"+e);
+            WeiboLog.e(TAG, "查询出错:" + e);
         } finally {
-            if (cursor!=null) {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -1304,27 +1316,26 @@ public final class SqliteWrapper {
      * @param currentUserId 登录用户的id
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public static ArrayList<DirectMessage> queryDirectMsgs(ContentResolver resolver, long currentUserId) {
-        WeiboLog.d(TAG, TAG+" queryDirectMsgsByRecipient.");
-        ArrayList<DirectMessage> list=null;
+        WeiboLog.d(TAG, TAG + " queryDirectMsgsByRecipient.");
+        ArrayList<DirectMessage> list = null;
 
-        Cursor cursor=null;
+        Cursor cursor = null;
         try {
-            cursor=resolver.query(TwitterTable.DirectMsgTbl.CONTENT_URI, null,
-                TwitterTable.DirectMsgTbl.UID+"='"+currentUserId+"'",
-                null, TwitterTable.DirectMsgTbl.CREATED_AT+" desc");
-            if (null==cursor||cursor.getCount()<1) {
+            cursor = resolver.query(TwitterTable.DirectMsgTbl.CONTENT_URI, null,
+                TwitterTable.DirectMsgTbl.UID + "='" + currentUserId + "'",
+                null, TwitterTable.DirectMsgTbl.CREATED_AT + " desc");
+            if (null == cursor || cursor.getCount() < 1) {
                 WeiboLog.w(TAG, "查询数据为空.");
                 return null;
             }
 
-            list=prepareDirectMsgs(cursor);
+            list = prepareDirectMsgs(cursor);
         } catch (Exception e) {
-            WeiboLog.e(TAG, "查询出错:"+e);
+            WeiboLog.e(TAG, "查询出错:" + e);
         } finally {
-            if (cursor!=null) {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -1339,46 +1350,46 @@ public final class SqliteWrapper {
      * @return
      */
     static ArrayList<DirectMessage> prepareDirectMsgs(Cursor cursor) {
-        ArrayList<DirectMessage> list=new ArrayList<DirectMessage>(36);
+        ArrayList<DirectMessage> list = new ArrayList<DirectMessage>(36);
         DirectMessage directMessage;
         User recipient;
         User sender;
         cursor.moveToFirst();
         do {
-            long _id=cursor.getLong(cursor.getColumnIndex(TwitterTable.DirectMsgTbl._ID));
-            long dmId=cursor.getLong(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.DM_ID));
-            String idstr=cursor.getString(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.IDSTR));
-            long recipient_id=cursor.getLong(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.RECIPIENT_ID));
-            String recipient_screenname=cursor.getString(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.RECIPIENT_SCREENNAME));
-            String recipient_profile_url=cursor.getString(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.RECIPIENT_PROFILE_URL));
-            long created_at=cursor.getLong(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.CREATED_AT));
-            long sender_id=cursor.getLong(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.SENDER_ID));
-            String sender_screenname=cursor.getString(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.SENDER_SCREENNAME));
-            String sender_profile_url=cursor.getString(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.SENDER_PROFILE_URL));
-            String text=cursor.getString(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.TEXT));
-            String source=cursor.getString(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.SOURCE));
-            String data=cursor.getString(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.DATA));
-            long uid=cursor.getLong(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.UID));
+            long _id = cursor.getLong(cursor.getColumnIndex(TwitterTable.DirectMsgTbl._ID));
+            long dmId = cursor.getLong(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.DM_ID));
+            String idstr = cursor.getString(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.IDSTR));
+            long recipient_id = cursor.getLong(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.RECIPIENT_ID));
+            String recipient_screenname = cursor.getString(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.RECIPIENT_SCREENNAME));
+            String recipient_profile_url = cursor.getString(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.RECIPIENT_PROFILE_URL));
+            long created_at = cursor.getLong(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.CREATED_AT));
+            long sender_id = cursor.getLong(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.SENDER_ID));
+            String sender_screenname = cursor.getString(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.SENDER_SCREENNAME));
+            String sender_profile_url = cursor.getString(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.SENDER_PROFILE_URL));
+            String text = cursor.getString(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.TEXT));
+            String source = cursor.getString(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.SOURCE));
+            String data = cursor.getString(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.DATA));
+            long uid = cursor.getLong(cursor.getColumnIndex(TwitterTable.DirectMsgTbl.UID));
 
-            recipient=new User(recipient_screenname);
-            recipient.id=recipient_id;
-            recipient.profileImageUrl=recipient_profile_url;
+            recipient = new User(recipient_screenname);
+            recipient.id = recipient_id;
+            recipient.profileImageUrl = recipient_profile_url;
 
-            sender=new User(sender_screenname);
-            sender.id=sender_id;
-            sender.profileImageUrl=sender_profile_url;
+            sender = new User(sender_screenname);
+            sender.id = sender_id;
+            sender.profileImageUrl = sender_profile_url;
 
-            directMessage=new DirectMessage();
-            directMessage.id=dmId;
-            directMessage._id=_id;
-            directMessage.idstr=idstr;
-            directMessage.recipient=recipient;
-            directMessage.sender=sender;
-            directMessage.createdAt=new Date(created_at);
-            directMessage.text=text;
-            directMessage.source=source;
-            directMessage.data=data;
-            directMessage.uid=uid;
+            directMessage = new DirectMessage();
+            directMessage.id = dmId;
+            directMessage._id = _id;
+            directMessage.idstr = idstr;
+            directMessage.recipient = recipient;
+            directMessage.sender = sender;
+            directMessage.createdAt = new Date(created_at);
+            directMessage.text = text;
+            directMessage.source = source;
+            directMessage.data = data;
+            directMessage.uid = uid;
 
             list.add(directMessage);
         } while (cursor.moveToNext());
@@ -1406,8 +1417,8 @@ public final class SqliteWrapper {
      */
     public static int deleteDirectMsg(Context context, long dmId) {
         try {
-            ContentResolver resolver=context.getContentResolver();
-            return resolver.delete(TwitterTable.DirectMsgTbl.CONTENT_URI, TwitterTable.DirectMsgTbl.DM_ID+"='"+dmId+"'", null);
+            ContentResolver resolver = context.getContentResolver();
+            return resolver.delete(TwitterTable.DirectMsgTbl.CONTENT_URI, TwitterTable.DirectMsgTbl.DM_ID + "='" + dmId + "'", null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1423,37 +1434,37 @@ public final class SqliteWrapper {
      * @param currentUserId 当前登录用户的id
      */
     public static void saveDirectMsgs(Context context, ArrayList<DirectMessage> list, long currentUserId) {
-        ArrayList<DirectMessage> newDirectMsgs=new ArrayList<DirectMessage>();
+        ArrayList<DirectMessage> newDirectMsgs = new ArrayList<DirectMessage>();
 
-        Cursor cursor=null;
-        ContentResolver resolver=context.getContentResolver();
+        Cursor cursor = null;
+        ContentResolver resolver = context.getContentResolver();
         for (DirectMessage message : list) {
             try {
-                cursor=resolver.query(TwitterTable.DirectMsgTbl.CONTENT_URI, null,
-                    TwitterTable.DirectMsgTbl.DM_ID+"="+message.id+
-                        " and "+TwitterTable.DirectMsgTbl.UID+"="+currentUserId, null, null);
+                cursor = resolver.query(TwitterTable.DirectMsgTbl.CONTENT_URI, null,
+                    TwitterTable.DirectMsgTbl.DM_ID + "=" + message.id +
+                        " and " + TwitterTable.DirectMsgTbl.UID + "=" + currentUserId, null, null);
 
-                if (null==cursor||cursor.getCount()<1) {
+                if (null == cursor || cursor.getCount() < 1) {
                     newDirectMsgs.add(message);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if (null!=cursor) {
+                if (null != cursor) {
                     cursor.close();
                 }
             }
         }
 
-        int len=newDirectMsgs.size();
-        WeiboLog.d(TAG, "需要新插入的私信："+len);
-        int i=0;
+        int len = newDirectMsgs.size();
+        WeiboLog.d(TAG, "需要新插入的私信：" + len);
+        int i = 0;
 
-        if (len>0) {
-            ContentValues[] contentValueses=new ContentValues[len];
+        if (len > 0) {
+            ContentValues[] contentValueses = new ContentValues[ len ];
             ContentValues cv;
             for (DirectMessage message : newDirectMsgs) {
-                cv=new ContentValues();
+                cv = new ContentValues();
                 cv.put(TwitterTable.DirectMsgTbl.DM_ID, message.id);
                 cv.put(TwitterTable.DirectMsgTbl.IDSTR, message.idstr);
                 cv.put(TwitterTable.DirectMsgTbl.RECIPIENT_ID, message.recipientId);
@@ -1466,10 +1477,10 @@ public final class SqliteWrapper {
                 cv.put(TwitterTable.DirectMsgTbl.TEXT, message.text);
                 cv.put(TwitterTable.DirectMsgTbl.SOURCE, message.source);
                 cv.put(TwitterTable.DirectMsgTbl.UID, currentUserId);
-                contentValueses[i++]=cv;
+                contentValueses[ i++ ] = cv;
             }
-            len=resolver.bulkInsert(TwitterTable.DirectMsgTbl.CONTENT_URI, contentValueses);
-            WeiboLog.i(TAG, "保存用户记录:"+len);
+            len = resolver.bulkInsert(TwitterTable.DirectMsgTbl.CONTENT_URI, contentValueses);
+            WeiboLog.i(TAG, "保存用户记录:" + len);
         }
     }
 
@@ -1481,15 +1492,15 @@ public final class SqliteWrapper {
      * @param currentUserId 当前登录用户的id
      */
     public static void saveDirectMsg(Context context, DirectMessage message, long currentUserId) {
-        Cursor cursor=null;
+        Cursor cursor = null;
         try {
-            ContentResolver resolver=context.getContentResolver();
-            cursor=resolver.query(TwitterTable.DirectMsgTbl.CONTENT_URI, null,
-                TwitterTable.DirectMsgTbl.DM_ID+"="+message.id+
-                    " and "+TwitterTable.DirectMsgTbl.UID+"="+currentUserId, null, null);
+            ContentResolver resolver = context.getContentResolver();
+            cursor = resolver.query(TwitterTable.DirectMsgTbl.CONTENT_URI, null,
+                TwitterTable.DirectMsgTbl.DM_ID + "=" + message.id +
+                    " and " + TwitterTable.DirectMsgTbl.UID + "=" + currentUserId, null, null);
 
-            if (null==cursor||cursor.getCount()<1) {
-                ContentValues cv=new ContentValues();
+            if (null == cursor || cursor.getCount() < 1) {
+                ContentValues cv = new ContentValues();
                 cv.put(TwitterTable.DirectMsgTbl.DM_ID, message.id);
                 cv.put(TwitterTable.DirectMsgTbl.IDSTR, message.idstr);
                 cv.put(TwitterTable.DirectMsgTbl.RECIPIENT_ID, message.recipientId);
@@ -1502,25 +1513,25 @@ public final class SqliteWrapper {
                 cv.put(TwitterTable.DirectMsgTbl.TEXT, message.text);
                 cv.put(TwitterTable.DirectMsgTbl.SOURCE, message.source);
                 cv.put(TwitterTable.DirectMsgTbl.UID, currentUserId);
-                Uri uri=resolver.insert(TwitterTable.DirectMsgTbl.CONTENT_URI, cv);
-                WeiboLog.d(TAG, "保存一条私信:"+uri);
+                Uri uri = resolver.insert(TwitterTable.DirectMsgTbl.CONTENT_URI, cv);
+                WeiboLog.d(TAG, "保存一条私信:" + uri);
             } else {
                 cursor.moveToFirst();
-                long _id=cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.DirectMsgTbl._ID));
-                ContentValues cv=new ContentValues();
+                long _id = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.DirectMsgTbl._ID));
+                ContentValues cv = new ContentValues();
                 cv.put(TwitterTable.DirectMsgTbl.DM_ID, message.id);
                 cv.put(TwitterTable.DirectMsgTbl.IDSTR, message.idstr);
                 cv.put(TwitterTable.DirectMsgTbl.RECIPIENT_SCREENNAME, message.recipientScreenName);
                 cv.put(TwitterTable.DirectMsgTbl.RECIPIENT_PROFILE_URL, message.recipient.profileImageUrl);
                 cv.put(TwitterTable.DirectMsgTbl.SENDER_SCREENNAME, message.senderScreenName);
                 cv.put(TwitterTable.DirectMsgTbl.SENDER_PROFILE_URL, message.sender.profileImageUrl);
-                int res=resolver.update(Uri.withAppendedPath(TwitterTable.DirectMsgTbl.CONTENT_URI, String.valueOf(_id)), cv, null, null);
-                WeiboLog.i(TAG, "新的私信已经存在了."+res);
+                int res = resolver.update(Uri.withAppendedPath(TwitterTable.DirectMsgTbl.CONTENT_URI, String.valueOf(_id)), cv, null, null);
+                WeiboLog.i(TAG, "新的私信已经存在了." + res);
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (null!=cursor) {
+            if (null != cursor) {
                 cursor.close();
             }
         }

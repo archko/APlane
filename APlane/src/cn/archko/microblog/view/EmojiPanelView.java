@@ -25,15 +25,15 @@ import cn.archko.microblog.smiley.AKTxtSmileyParser;
  */
 public class EmojiPanelView extends LinearLayout {
 
-    private static final String TAG="EmojiPanelView";
+    private static final String TAG = "EmojiPanelView";
 
     TagsViewGroup mEmotionGridview;
     private GridAdapter mEmotionAdapter;
     Button btn_emoji_picture, btn_emoji_love, btn_emoji_pig, btn_emoji_wakeup, btn_emoji_kiss,
         btn_emoji_happy, btn_emoji_embarrased, btn_emoji_cry, btn_emoji_angry, btn_emoji_animal;
-    private static final int MODE_PICTURE=0;
-    private static final int MODE_TEXT=1;
-    int mode=MODE_PICTURE;
+    private static final int MODE_PICTURE = 0;
+    private static final int MODE_TEXT = 1;
+    int mode = MODE_PICTURE;
     EditText mContent;
 
     public EmojiPanelView(Context context) {
@@ -48,16 +48,16 @@ public class EmojiPanelView extends LinearLayout {
 
     private void init(Context context) {
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.emoji_panel, this);
-        btn_emoji_picture=(Button) findViewById(R.id.btn_emoji_picture);
-        btn_emoji_love=(Button) findViewById(R.id.btn_emoji_love);
-        btn_emoji_pig=(Button) findViewById(R.id.btn_emoji_pig);
-        btn_emoji_wakeup=(Button) findViewById(R.id.btn_emoji_wakeup);
-        btn_emoji_kiss=(Button) findViewById(R.id.btn_emoji_kiss);
-        btn_emoji_happy=(Button) findViewById(R.id.btn_emoji_happy);
-        btn_emoji_embarrased=(Button) findViewById(R.id.btn_emoji_embarrased);
-        btn_emoji_cry=(Button) findViewById(R.id.btn_emoji_cry);
-        btn_emoji_angry=(Button) findViewById(R.id.btn_emoji_angry);
-        btn_emoji_animal=(Button) findViewById(R.id.btn_emoji_animal);
+        btn_emoji_picture = (Button) findViewById(R.id.btn_emoji_picture);
+        btn_emoji_love = (Button) findViewById(R.id.btn_emoji_love);
+        btn_emoji_pig = (Button) findViewById(R.id.btn_emoji_pig);
+        btn_emoji_wakeup = (Button) findViewById(R.id.btn_emoji_wakeup);
+        btn_emoji_kiss = (Button) findViewById(R.id.btn_emoji_kiss);
+        btn_emoji_happy = (Button) findViewById(R.id.btn_emoji_happy);
+        btn_emoji_embarrased = (Button) findViewById(R.id.btn_emoji_embarrased);
+        btn_emoji_cry = (Button) findViewById(R.id.btn_emoji_cry);
+        btn_emoji_angry = (Button) findViewById(R.id.btn_emoji_angry);
+        btn_emoji_animal = (Button) findViewById(R.id.btn_emoji_animal);
 
         btn_emoji_picture.setOnClickListener(clickListener);
         btn_emoji_love.setOnClickListener(clickListener);
@@ -70,39 +70,39 @@ public class EmojiPanelView extends LinearLayout {
         btn_emoji_angry.setOnClickListener(clickListener);
         btn_emoji_animal.setOnClickListener(clickListener);
 
-        mEmotionGridview=(TagsViewGroup) findViewById(R.id.tags);
-        mEmotionAdapter=new GridAdapter(getContext());
+        mEmotionGridview = (TagsViewGroup) findViewById(R.id.tags);
+        mEmotionAdapter = new GridAdapter(getContext());
 
         getPictureEmoji();
     }
 
-    OnClickListener clickListener=new OnClickListener() {
+    OnClickListener clickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            int id=view.getId();
-            if (id==R.id.btn_emoji_picture) {
-                mode=MODE_PICTURE;
+            int id = view.getId();
+            if (id == R.id.btn_emoji_picture) {
+                mode = MODE_PICTURE;
                 getPictureEmoji();
             } else {
-                mode=MODE_TEXT;
-                int resId=R.raw.emoji_angry;
-                if (id==R.id.btn_emoji_angry) {
-                } else if (id==R.id.btn_emoji_love) {
-                    resId=R.raw.emoji_love;
-                } else if (id==R.id.btn_emoji_pig) {
-                    resId=R.raw.emoji_pig;
-                } else if (id==R.id.btn_emoji_wakeup) {
-                    resId=R.raw.emoji_wakeup;
-                } else if (id==R.id.btn_emoji_kiss) {
-                    resId=R.raw.emoji_kiss;
-                } else if (id==R.id.btn_emoji_happy) {
-                    resId=R.raw.emoji_happy;
-                } else if (id==R.id.btn_emoji_embarrased) {
-                    resId=R.raw.emoji_embarrassed;
-                } else if (id==R.id.btn_emoji_cry) {
-                    resId=R.raw.emoji_cry;
-                } else if (id==R.id.btn_emoji_animal) {
-                    resId=R.raw.emoji_animal;
+                mode = MODE_TEXT;
+                int resId = R.raw.emoji_angry;
+                if (id == R.id.btn_emoji_angry) {
+                } else if (id == R.id.btn_emoji_love) {
+                    resId = R.raw.emoji_love;
+                } else if (id == R.id.btn_emoji_pig) {
+                    resId = R.raw.emoji_pig;
+                } else if (id == R.id.btn_emoji_wakeup) {
+                    resId = R.raw.emoji_wakeup;
+                } else if (id == R.id.btn_emoji_kiss) {
+                    resId = R.raw.emoji_kiss;
+                } else if (id == R.id.btn_emoji_happy) {
+                    resId = R.raw.emoji_happy;
+                } else if (id == R.id.btn_emoji_embarrased) {
+                    resId = R.raw.emoji_embarrassed;
+                } else if (id == R.id.btn_emoji_cry) {
+                    resId = R.raw.emoji_cry;
+                } else if (id == R.id.btn_emoji_animal) {
+                    resId = R.raw.emoji_animal;
                 }
                 getTextEmoji(resId);
             }
@@ -115,8 +115,8 @@ public class EmojiPanelView extends LinearLayout {
     }
 
     private void getTextEmoji(int resId) {
-        String[] txts=AKTxtSmileyParser.getInstance().getSmileyTexts(getContext(), resId);
-        if (null==txts) {
+        String[] txts = AKTxtSmileyParser.getInstance().getSmileyTexts(getContext(), resId);
+        if (null == txts) {
             Toast.makeText(getContext(), "解析表情出错.", Toast.LENGTH_LONG).show();
             return;
         }
@@ -126,7 +126,7 @@ public class EmojiPanelView extends LinearLayout {
     }
 
     public void setContent(EditText content) {
-        this.mContent=content;
+        this.mContent = content;
     }
 
     public class GridAdapter extends BaseAdapter {
@@ -139,12 +139,12 @@ public class EmojiPanelView extends LinearLayout {
 
         public GridAdapter(Context c) {
             super();
-            this.context=c;
+            this.context = c;
         }
 
         public void setList(String[] list) {
-            this.list=list;
-            mInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            this.list = list;
+            mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
         public int getCount() {
@@ -153,7 +153,7 @@ public class EmojiPanelView extends LinearLayout {
 
         @Override
         public Object getItem(int index) {
-            return list[index];
+            return list[ index ];
         }
 
         @Override
@@ -164,29 +164,29 @@ public class EmojiPanelView extends LinearLayout {
         @Override
         public View getView(int index, View convertView, ViewGroup parent) {
             GridHolder holder;
-            if (convertView==null) {
-                convertView=mInflater.inflate(R.layout.emoji_item, null);
-                holder=new GridHolder();
-                holder.appImage=(ImageView) convertView.findViewById(R.id.itemImage);
-                holder.textView=(TextView) convertView.findViewById(R.id.itemTxt);
+            if (convertView == null) {
+                convertView = mInflater.inflate(R.layout.emoji_item, null);
+                holder = new GridHolder();
+                holder.appImage = (ImageView) convertView.findViewById(R.id.itemImage);
+                holder.textView = (TextView) convertView.findViewById(R.id.itemTxt);
                 convertView.setTag(holder);
             } else {
-                holder=(GridHolder) convertView.getTag();
+                holder = (GridHolder) convertView.getTag();
             }
 
-            if (mode==MODE_PICTURE) {
+            if (mode == MODE_PICTURE) {
                 holder.appImage.setVisibility(VISIBLE);
-                holder.appImage.setImageDrawable(context.getResources().getDrawable(AKSmiley.mSmileyMap.get(list[index])));
+                holder.appImage.setImageDrawable(context.getResources().getDrawable(AKSmiley.mSmileyMap.get(list[ index ])));
                 holder.textView.setText(null);
                 holder.textView.setVisibility(GONE);
             } else {
                 holder.appImage.setVisibility(GONE);
                 holder.appImage.setImageDrawable(null);
                 holder.textView.setVisibility(VISIBLE);
-                holder.textView.setText(list[index]);
+                holder.textView.setText(list[ index ]);
             }
 
-            final int pos=index;
+            final int pos = index;
             holder.appImage.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -210,12 +210,12 @@ public class EmojiPanelView extends LinearLayout {
         }
 
         private void onClickItem(View view, int pos) {
-            if (null==mContent) {
+            if (null == mContent) {
                 Log.e(VIEW_LOG_TAG, "没有编辑框,无法输入表情.");
                 return;
             }
 
-            String txt=list[pos];
+            String txt = list[ pos ];
             if (view instanceof ImageView) {
                 refreshText(txt);
             } else if (view instanceof TextView) {
@@ -227,21 +227,21 @@ public class EmojiPanelView extends LinearLayout {
 
     private void refreshText(String charToBuild) {
         //String charToBuild=(String) mEmotionAdapter.getItem(position);
-        String oldChar=mContent.getText().toString();
+        String oldChar = mContent.getText().toString();
         //WeiboLog.d(TAG, "oldChar:"+oldChar);
         //WeiboLog.d(TAG, "charToBuild:"+charToBuild);
 
-        int selection=mContent.getSelectionStart();
-        CharSequence start=oldChar.subSequence(0, selection);
-        CharSequence end=oldChar.subSequence(selection, oldChar.length());
+        int selection = mContent.getSelectionStart();
+        CharSequence start = oldChar.subSequence(0, selection);
+        CharSequence end = oldChar.subSequence(selection, oldChar.length());
         //WeiboLog.d(TAG, "start:"+start+"---end:"+end+" selection:"+selection);
 
-        StringBuilder builder=new StringBuilder(start);
+        StringBuilder builder = new StringBuilder(start);
         builder.append(charToBuild).append(end);
-        int newSel=selection+charToBuild.length();
+        int newSel = selection + charToBuild.length();
 
-        AKSmileyParser parser=AKSmileyParser.getInstance(getContext());
-        CharSequence newChar=parser.addSmileySpans(builder);
+        AKSmileyParser parser = AKSmileyParser.getInstance(getContext());
+        CharSequence newChar = parser.addSmileySpans(builder);
 
         //WeiboLog.d(TAG, "newChar:"+newChar+" newSel:"+newSel);
 
@@ -260,14 +260,14 @@ public class EmojiPanelView extends LinearLayout {
      * @param charToBuild
      */
     private void refreshText2(String charToBuild) {
-        String oldChar=mContent.getText().toString();
+        String oldChar = mContent.getText().toString();
 
-        int selection=mContent.getSelectionStart();
-        CharSequence start=oldChar.subSequence(0, selection);
-        CharSequence end=oldChar.subSequence(selection, oldChar.length());
+        int selection = mContent.getSelectionStart();
+        CharSequence start = oldChar.subSequence(0, selection);
+        CharSequence end = oldChar.subSequence(selection, oldChar.length());
 
-        StringBuilder builder=new StringBuilder(start);
-        int newSel=selection+charToBuild.length();
+        StringBuilder builder = new StringBuilder(start);
+        int newSel = selection + charToBuild.length();
         builder.append(charToBuild).append(end);
 
         mContent.setText(builder.toString());

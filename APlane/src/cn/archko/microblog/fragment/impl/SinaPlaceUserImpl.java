@@ -14,7 +14,7 @@ import com.me.microblog.util.WeiboLog;
  */
 public class SinaPlaceUserImpl extends AbsStatusImpl<User> {
 
-    public static final String TAG="SinaPlaceUserImpl";
+    public static final String TAG = "SinaPlaceUserImpl";
 
     public SinaPlaceUserImpl() {
         //mAbsApi=new SinaPlaceApi();
@@ -22,21 +22,21 @@ public class SinaPlaceUserImpl extends AbsStatusImpl<User> {
 
     @Override
     public SStatusData<User> loadData(Object... params) throws WeiboException {
-        SStatusData<User> sStatusData=null;
-        SinaPlaceApi sWeiboApi2=(SinaPlaceApi) mAbsApi;
-        if (null==sWeiboApi2) {
-            sStatusData=new SStatusData<User>();
-            sStatusData.errorCode=WeiboException.API_ERROR;
-            sStatusData.errorMsg=App.getAppContext().getString(R.string.err_api_error);
+        SStatusData<User> sStatusData = null;
+        SinaPlaceApi sWeiboApi2 = (SinaPlaceApi) mAbsApi;
+        if (null == sWeiboApi2) {
+            sStatusData = new SStatusData<User>();
+            sStatusData.errorCode = WeiboException.API_ERROR;
+            sStatusData.errorMsg = App.getAppContext().getString(R.string.err_api_error);
         } else {
             try {
-                Long sinceId=(Long) params[1];
-                Long maxId=(Long) params[2];
-                Integer c=(Integer) params[3];
-                Integer p=(Integer) params[4];
-                WeiboLog.d(TAG, "loadData."+c);
+                Long sinceId = (Long) params[ 1 ];
+                Long maxId = (Long) params[ 2 ];
+                Integer c = (Integer) params[ 3 ];
+                Integer p = (Integer) params[ 4 ];
+                WeiboLog.d(TAG, "loadData." + c);
 
-                sStatusData=sWeiboApi2.getPlacesNearbyUsers(((App) App.getAppContext()).latitude,
+                sStatusData = sWeiboApi2.getPlacesNearbyUsers(((App) App.getAppContext()).latitude,
                     ((App) App.getAppContext()).longitude, ((App) App.getAppContext()).range, c, p);
             } catch (WeiboException e) {
                 e.printStackTrace();

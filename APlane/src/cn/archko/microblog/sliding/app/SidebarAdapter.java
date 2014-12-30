@@ -1,15 +1,11 @@
 package cn.archko.microblog.sliding.app;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
-
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +22,6 @@ import cn.archko.microblog.fragment.AtmeFragment;
 import cn.archko.microblog.fragment.CommentsFragment;
 import cn.archko.microblog.fragment.DirectMessageFragment;
 import cn.archko.microblog.fragment.HomeFragment;
-import cn.archko.microblog.fragment.HomeGridFragment;
-import cn.archko.microblog.fragment.HotRepostFragment;
 import cn.archko.microblog.fragment.MyFavFragment;
 import cn.archko.microblog.fragment.MyPostFragment;
 import cn.archko.microblog.fragment.PrefsFragment;
@@ -38,19 +32,22 @@ import cn.archko.microblog.fragment.UserFollowersGridFragment;
 import cn.archko.microblog.fragment.UserFriendsGridFragment;
 import cn.archko.microblog.fragment.place.PlaceFriendsFragment;
 import cn.archko.microblog.fragment.place.PlaceNearbyPhotosFragment;
-import cn.archko.microblog.fragment.place.PlaceNearbyPhotosGridFragment;
 import cn.archko.microblog.fragment.place.PlaceNearbyUsersFragment;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author archko
  */
 public class SidebarAdapter extends BaseAdapter {
 
-    public final static String TAG="SidebarAdapter";
+    public final static String TAG = "SidebarAdapter";
 
     public static class SidebarEntry {
 
@@ -65,22 +62,22 @@ public class SidebarAdapter extends BaseAdapter {
          * Fragment导航类型为0
          * Intent导航类型为1
          */
-        public int navType=0;
-        public static final int NAV_TYPE_FRAGMENT=0;
-        public static final int NAV_TYPE_INTENT=1;
+        public int navType = 0;
+        public static final int NAV_TYPE_FRAGMENT = 0;
+        public static final int NAV_TYPE_INTENT = 1;
 
         public SidebarEntry(String _id, String _name, int _drawableID, Class<?> clazz, boolean isHome) {
-            this.id=_id;
-            this.name=_name;
-            this.drawableID=_drawableID;
-            this.clazz=clazz;
-            this.isHome=isHome;
-            msg="";
+            this.id = _id;
+            this.name = _name;
+            this.drawableID = _drawableID;
+            this.clazz = clazz;
+            this.isHome = isHome;
+            msg = "";
         }
 
         public SidebarEntry(String _id, String _name, int _drawableID, Class<?> clazz, boolean isHome, int type) {
             this(_id, _name, _drawableID, clazz, isHome);
-            this.navType=type;
+            this.navType = type;
         }
 
         public String getMsg() {
@@ -88,7 +85,7 @@ public class SidebarAdapter extends BaseAdapter {
         }
 
         public void setMsg(String msg) {
-            this.msg=msg;
+            this.msg = msg;
         }
     }
 
@@ -97,13 +94,13 @@ public class SidebarAdapter extends BaseAdapter {
     Context mContext;
     private List<SidebarEntry> entries;
     //private HashMap<String, Fragment> mFragments;
-    private final SparseArray<WeakReference<Fragment>> mFragmentArray=new SparseArray<WeakReference<Fragment>>();
+    private final SparseArray<WeakReference<Fragment>> mFragmentArray = new SparseArray<WeakReference<Fragment>>();
 
     public SidebarAdapter(FragmentManager fm, Context ctx) {
-        mInflater=LayoutInflater.from(App.getAppContext());
-        mFragmentManager=fm;
-        mContext=ctx;
-        entries=new ArrayList<SidebarEntry>();
+        mInflater = LayoutInflater.from(App.getAppContext());
+        mFragmentManager = fm;
+        mContext = ctx;
+        entries = new ArrayList<SidebarEntry>();
         //mFragments=new HashMap<String, Fragment>();
     }
 
@@ -134,13 +131,13 @@ public class SidebarAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        SidebarEntry sidebarEntry=entries.get(position);
+        SidebarEntry sidebarEntry = entries.get(position);
 
-        SidebarItemView itemView=null;
-        if (null==convertView) {
-            itemView=new SidebarItemView(mContext);
+        SidebarItemView itemView = null;
+        if (null == convertView) {
+            itemView = new SidebarItemView(mContext);
         } else {
-            itemView=(SidebarItemView) convertView;
+            itemView = (SidebarItemView) convertView;
         }
 
         itemView.update(sidebarEntry);
@@ -158,17 +155,17 @@ public class SidebarAdapter extends BaseAdapter {
         private SidebarItemView(Context context) {
             super(context);
             ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.sidebar_item, this);
-            mTitle=(TextView) findViewById(R.id.title);
-            mMsg=(TextView) findViewById(R.id.msg);
-            mIcon=(ImageView) findViewById(R.id.image);
-            int pref_sidebar_color=PreferenceUtils.getInstace(App.getAppContext()).getDefaultSidebarThemeColor(App.getAppContext());
+            mTitle = (TextView) findViewById(R.id.title);
+            mMsg = (TextView) findViewById(R.id.msg);
+            mIcon = (ImageView) findViewById(R.id.image);
+            int pref_sidebar_color = PreferenceUtils.getInstace(App.getAppContext()).getDefaultSidebarThemeColor(App.getAppContext());
             mTitle.setTextColor(pref_sidebar_color);
-            mLeftSlider=(TextView) findViewById(R.id.left_slider);
+            mLeftSlider = (TextView) findViewById(R.id.left_slider);
         }
 
         public void update(final SidebarEntry entry) {
             mTitle.setText(entry.name);
-            if ("0".equals(entry.msg)||"".equals(entry.msg)) {
+            if ("0".equals(entry.msg) || "".equals(entry.msg)) {
                 mMsg.setVisibility(GONE);
             } else {
                 mMsg.setVisibility(VISIBLE);
@@ -177,7 +174,7 @@ public class SidebarAdapter extends BaseAdapter {
             mIcon.setImageResource(entry.drawableID);
         }
 
-        private boolean checked=false;
+        private boolean checked = false;
 
         @Override
         public boolean isChecked() {
@@ -186,10 +183,10 @@ public class SidebarAdapter extends BaseAdapter {
 
         @Override
         public void setChecked(boolean aChecked) {
-            if (checked==aChecked) {
+            if (checked == aChecked) {
                 return;
             }
-            checked=aChecked;
+            checked = aChecked;
             setIndicatorVisible(checked);
         }
 
@@ -200,7 +197,7 @@ public class SidebarAdapter extends BaseAdapter {
 
         @Override
         public void toggle() {
-            setChecked(!checked);
+            setChecked(! checked);
         }
     }
 
@@ -211,22 +208,22 @@ public class SidebarAdapter extends BaseAdapter {
      * @return
      */
     public int getFragmentPos(String id) {
-        int index=0;
+        int index = 0;
         for (SidebarEntry entry : entries) {
             if (entry.id.equals(id)) {
                 break;
             }
             index++;
         }
-        WeiboLog.d(TAG, "index:"+index+" id:"+id);
+        WeiboLog.d(TAG, "index:" + index + " id:" + id);
         return index;
     }
 
     public Fragment getFragment(int position, FragmentTransaction ft) {
-        if (entries==null||entries.size()<1){
+        if (entries == null || entries.size() < 1) {
             return null;
         }
-        SidebarEntry entry=entries.get(position);
+        SidebarEntry entry = entries.get(position);
         return getFragment(entry, position, ft);
     }
 
@@ -237,19 +234,19 @@ public class SidebarAdapter extends BaseAdapter {
      * @return
      */
     public Fragment getFragment(SidebarEntry entry, int position, FragmentTransaction ft) {
-        final WeakReference<Fragment> mWeakFragment=mFragmentArray.get(position);
-        WeiboLog.d(TAG, "getFragment:"+position+" weakFragment:"+mWeakFragment);
-        if (mWeakFragment!=null&&mWeakFragment.get()!=null) {
+        final WeakReference<Fragment> mWeakFragment = mFragmentArray.get(position);
+        WeiboLog.d(TAG, "getFragment:" + position + " weakFragment:" + mWeakFragment);
+        if (mWeakFragment != null && mWeakFragment.get() != null) {
             ft.attach(mWeakFragment.get());
             return mWeakFragment.get();
         }
 
-        Fragment f=null;
+        Fragment f = null;
         try {
-            f= (Fragment) entry.clazz.newInstance();
+            f = (Fragment) entry.clazz.newInstance();
             //f.setRetainInstance(true);
             ft.add(R.id.fragment_placeholder, f, entry.id);
-                //.commit();
+            //.commit();
             mFragmentArray.put(position, new WeakReference<Fragment>(f));
         } catch (InstantiationException e) {
             e.printStackTrace();
@@ -267,23 +264,23 @@ public class SidebarAdapter extends BaseAdapter {
      */
     public int addFragment(boolean init) {
         entries.clear();
-        int theme=0;
-        SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(mContext);
-        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        int theme = 0;
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
         } else {//if ("2".equals(themeId)) {
-            theme=2;
+            theme = 2;
         }
 
         //主页
-        int home=0;
+        int home = 0;
         SidebarAdapter.SidebarEntry entry;
-        int drawableId=R.drawable.tab_home_light;
-        if (theme==2) {
-            drawableId=R.drawable.tab_home_light;
+        int drawableId = R.drawable.tab_home_light;
+        if (theme == 2) {
+            drawableId = R.drawable.tab_home_light;
         }
-        entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_HOME, mContext.getString(R.string.tab_label_home),
+        entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_HOME, mContext.getString(R.string.tab_label_home),
             drawableId, HomeFragment.class, true);
         addEntry(entry, init);
         /*entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_HOME, mContext.getString(R.string.tab_label_home),
@@ -304,121 +301,121 @@ public class SidebarAdapter extends BaseAdapter {
         mSidebarAdapter.addEntry(entry);*/
 
         //我发布的微博
-        boolean show=mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_MY_POST, true);
+        boolean show = mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_MY_POST, true);
         if (show) {
-            if (theme==0) {
-                drawableId=R.drawable.tab_expression_light;
-            } else if (theme==2) {
-                drawableId=R.drawable.tab_expression_light;
+            if (theme == 0) {
+                drawableId = R.drawable.tab_expression_light;
+            } else if (theme == 2) {
+                drawableId = R.drawable.tab_expression_light;
             }
-            entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_MY_POST, mContext.getString(R.string.tab_label_my_post),
+            entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_MY_POST, mContext.getString(R.string.tab_label_my_post),
                 drawableId, MyPostFragment.class, false);
             addEntry(entry, init);
         }
 
         //评论时间线，是我收到的评论
-        if (theme==0) {
-            drawableId=R.drawable.tab_other_light;
-        } else if (theme==2) {
-            drawableId=R.drawable.tab_other_light;
+        if (theme == 0) {
+            drawableId = R.drawable.tab_other_light;
+        } else if (theme == 2) {
+            drawableId = R.drawable.tab_other_light;
         }
-        entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_COMMENT, mContext.getString(R.string.tab_label_comment_timeline),
+        entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_COMMENT, mContext.getString(R.string.tab_label_comment_timeline),
             drawableId, CommentsFragment.class, false);
         addEntry(entry, init);
 
         //我的关注列表
-        if (theme==0) {
-            drawableId=R.drawable.tab_other_light;
-        } else if (theme==2) {
-            drawableId=R.drawable.tab_other_light;
+        if (theme == 0) {
+            drawableId = R.drawable.tab_other_light;
+        } else if (theme == 2) {
+            drawableId = R.drawable.tab_other_light;
         }
-        entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_FRIEND, mContext.getString(R.string.tab_label_friends),
+        entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_FRIEND, mContext.getString(R.string.tab_label_friends),
             drawableId, UserFriendsGridFragment.class, false);
         addEntry(entry, init);
 
         //我的粉丝
-        if (theme==0) {
-            drawableId=R.drawable.tab_other_light;
-        } else if (theme==2) {
-            drawableId=R.drawable.tab_other_light;
+        if (theme == 0) {
+            drawableId = R.drawable.tab_other_light;
+        } else if (theme == 2) {
+            drawableId = R.drawable.tab_other_light;
         }
-        entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_FOLLOWER, mContext.getString(R.string.tab_label_followers),
+        entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_FOLLOWER, mContext.getString(R.string.tab_label_followers),
             drawableId, UserFollowersGridFragment.class, false);
         addEntry(entry, init);
 
         //@我的微博
-        if (theme==0) {
-            drawableId=R.drawable.tab_at_light;
-        } else if (theme==2) {
-            drawableId=R.drawable.tab_at_light;
+        if (theme == 0) {
+            drawableId = R.drawable.tab_at_light;
+        } else if (theme == 2) {
+            drawableId = R.drawable.tab_at_light;
         }
-        entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_AT_STATUS, mContext.getString(R.string.tab_label_at_status),
+        entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_AT_STATUS, mContext.getString(R.string.tab_label_at_status),
             drawableId, AtmeFragment.class, false);
         addEntry(entry, init);
 
         //@我的评论
-        if (theme==0) {
-            drawableId=R.drawable.tab_at_light;
-        } else if (theme==2) {
-            drawableId=R.drawable.tab_at_light;
+        if (theme == 0) {
+            drawableId = R.drawable.tab_at_light;
+        } else if (theme == 2) {
+            drawableId = R.drawable.tab_at_light;
         }
-        entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_AT_COMMENT, mContext.getString(R.string.tab_label_at_comment),
+        entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_AT_COMMENT, mContext.getString(R.string.tab_label_at_comment),
             drawableId, AtMeCommentsFragment.class, false);
         addEntry(entry, init);
 
         //发送队列
-        if (theme==0) {
-            drawableId=R.drawable.tab_profile_light;
-        } else if (theme==2) {
-            drawableId=R.drawable.tab_profile_light;
+        if (theme == 0) {
+            drawableId = R.drawable.tab_profile_light;
+        } else if (theme == 2) {
+            drawableId = R.drawable.tab_profile_light;
         }
-        entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_SEND_TASK, mContext.getString(R.string.tab_label_send_task),
+        entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_SEND_TASK, mContext.getString(R.string.tab_label_send_task),
             drawableId, TaskListFragment.class, false);
         addEntry(entry, init);
 
         //随便看看
-        show=mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_PUBLIC, true);
+        show = mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_PUBLIC, true);
         if (show) {
-            if (theme==0) {
-                drawableId=R.drawable.tab_public_light;
-            } else if (theme==2) {
-                drawableId=R.drawable.tab_public_light;
+            if (theme == 0) {
+                drawableId = R.drawable.tab_public_light;
+            } else if (theme == 2) {
+                drawableId = R.drawable.tab_public_light;
             }
-            entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_PUBLIC, mContext.getString(R.string.tab_label_public),
+            entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_PUBLIC, mContext.getString(R.string.tab_label_public),
                 drawableId, PublicFragment.class, false);
             addEntry(entry, init);
         }
 
         //个人资料
-        show=mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_PROFILE, true);
+        show = mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_PROFILE, true);
         if (show) {
-            if (theme==0) {
-                drawableId=R.drawable.tab_profile_light;
-            } else if (theme==2) {
-                drawableId=R.drawable.tab_profile_light;
+            if (theme == 0) {
+                drawableId = R.drawable.tab_profile_light;
+            } else if (theme == 2) {
+                drawableId = R.drawable.tab_profile_light;
             }
-            entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_PROFILE, mContext.getString(R.string.tab_label_profile),
+            entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_PROFILE, mContext.getString(R.string.tab_label_profile),
                 drawableId, ProfileFragment.class, false);
             addEntry(entry, init);
         }
 
         //我的收藏列表
-        show=mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_MY_FAV, true);
+        show = mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_MY_FAV, true);
         if (show) {
-            if (theme==0) {
-                drawableId=R.drawable.tab_fav_light;
-            } else if (theme==2) {
-                drawableId=R.drawable.tab_fav_light;
+            if (theme == 0) {
+                drawableId = R.drawable.tab_fav_light;
+            } else if (theme == 2) {
+                drawableId = R.drawable.tab_fav_light;
             }
-            entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_MY_FAV, mContext.getString(R.string.tab_label_my_fav),
+            entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_MY_FAV, mContext.getString(R.string.tab_label_my_fav),
                 drawableId, MyFavFragment.class, false);
             addEntry(entry, init);
         }
 
         //附近的照片
-        show=mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_PLACE_NEARBY_PHOTOS, false);
+        show = mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_PLACE_NEARBY_PHOTOS, false);
         if (show) {
-            entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_PLACE_NEARBY_PHOTOS, mContext.getString(R.string.tab_label_place_nearby_photos),
+            entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_PLACE_NEARBY_PHOTOS, mContext.getString(R.string.tab_label_place_nearby_photos),
                 R.drawable.location, PlaceNearbyPhotosFragment.class, false);
             addEntry(entry, init);
 
@@ -428,50 +425,50 @@ public class SidebarAdapter extends BaseAdapter {
         }
 
         //附近的用户
-        show=mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_PLACE_NEARBY_USERS, false);
+        show = mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_PLACE_NEARBY_USERS, false);
         if (show) {
-            entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_PLACE_NEARBY_USERS, mContext.getString(R.string.tab_label_place_nearby_users),
+            entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_PLACE_NEARBY_USERS, mContext.getString(R.string.tab_label_place_nearby_users),
                 R.drawable.location, PlaceNearbyUsersFragment.class, false);
             addEntry(entry, init);
         }
 
         //位置时间线
-        show=mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_PLACE_FRIEND_TIMELINE, false);
+        show = mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_PLACE_FRIEND_TIMELINE, false);
         if (show) {
-            entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_PLACE_FRIEND_TIMELINE, mContext.getString(R.string.tab_label_place_friend_timeline),
+            entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_PLACE_FRIEND_TIMELINE, mContext.getString(R.string.tab_label_place_friend_timeline),
                 R.drawable.location, PlaceFriendsFragment.class, false);
             addEntry(entry, init);
         }
 
         //私信
-        show=mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_DM, false);
+        show = mPrefs.getBoolean(PreferenceUtils.PREF_SIDEBAR_DM, false);
         if (show) {
-            if (theme==0) {
-                drawableId=R.drawable.tab_profile_light;
-            } else if (theme==2) {
-                drawableId=R.drawable.tab_profile_light;
+            if (theme == 0) {
+                drawableId = R.drawable.tab_profile_light;
+            } else if (theme == 2) {
+                drawableId = R.drawable.tab_profile_light;
             }
-            entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_DIRECT_MSG, mContext.getString(R.string.tab_label_direct_msg),
+            entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_DIRECT_MSG, mContext.getString(R.string.tab_label_direct_msg),
                 drawableId, DirectMessageFragment.class, false);
             addEntry(entry, init);
         }
 
-        if (theme==0) {
-            drawableId=R.drawable.tab_profile_light;
-        } else if (theme==2) {
-            drawableId=R.drawable.tab_profile_light;
+        if (theme == 0) {
+            drawableId = R.drawable.tab_profile_light;
+        } else if (theme == 2) {
+            drawableId = R.drawable.tab_profile_light;
         }
-        entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_ABOUT, mContext.getString(R.string.tab_label_about),
+        entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_ABOUT, mContext.getString(R.string.tab_label_about),
             drawableId, AboutAppFragment.class, false);
         addEntry(entry, init);
 
         //设置
-        if (theme==0) {
-            drawableId=R.drawable.tab_setting_light;
-        } else if (theme==2) {
-            drawableId=R.drawable.tab_setting_light;
+        if (theme == 0) {
+            drawableId = R.drawable.tab_setting_light;
+        } else if (theme == 2) {
+            drawableId = R.drawable.tab_setting_light;
         }
-        entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_SETTINGS, mContext.getString(R.string.tab_label_settings),
+        entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_SETTINGS, mContext.getString(R.string.tab_label_settings),
             drawableId, PrefsFragment.class, false);
         addEntry(entry, init);
 

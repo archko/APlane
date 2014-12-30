@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class Status implements Serializable {
 
-    public static final long serialVersionUID=3894560643019408205L;
+    public static final long serialVersionUID = 3894560643019408205L;
 
     public long _id;
     /**
@@ -99,64 +99,64 @@ public class Status implements Serializable {
 
     public Status(long _id, long id, Date createdAt, String text, String source, String thumbnailPic, String bmiddlePic,
         String originalPic, Status retweetedStatus, User user, int r_num, int c_num) {
-        this._id=_id;
-        this.bmiddlePic=bmiddlePic;
-        this.retweetedStatus=retweetedStatus;
-        this.user=user;
-        this.id=id;
-        this.createdAt=createdAt;
-        this.originalPic=originalPic;
-        this.source=source;
-        this.text=text;
-        this.thumbnailPic=thumbnailPic;
-        this.r_num=r_num;
-        this.c_num=c_num;
+        this._id = _id;
+        this.bmiddlePic = bmiddlePic;
+        this.retweetedStatus = retweetedStatus;
+        this.user = user;
+        this.id = id;
+        this.createdAt = createdAt;
+        this.originalPic = originalPic;
+        this.source = source;
+        this.text = text;
+        this.thumbnailPic = thumbnailPic;
+        this.r_num = r_num;
+        this.c_num = c_num;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this==o) return true;
-        if (o==null||getClass()!=o.getClass()) return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        Status status=(Status) o;
+        Status status = (Status) o;
 
-        if (id!=status.id) return false;
-        if (text!=null ? !text.equals(status.text) : status.text!=null) return false;
+        if (id != status.id) return false;
+        if (text != null ? ! text.equals(status.text) : status.text != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result=(int) (id^(id>>>32));
-        result=31*result+(text!=null ? text.hashCode() : 0);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (text != null ? text.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "Status{"+
-            "bmiddlePic='"+bmiddlePic+'\''+
-            ", createdAt="+createdAt+
-            ", favorited="+favorited+
-            ", inReplyToScreenName='"+inReplyToScreenName+'\''+
-            ", inReplyToStatusId='"+inReplyToStatusId+'\''+
-            ", inReplyToUserId='"+inReplyToUserId+'\''+
-            ", originalPic='"+originalPic+'\''+
-            ", source='"+source+'\''+
-            ", text='"+text+'\''+
-            ", thumbnailPic='"+thumbnailPic+'\''+
-            ", user="+user+
-            ", retweetedStatus="+retweetedStatus+
-            ", thumbs="+Arrays.toString(thumbs)+
-            ", r_num="+r_num+
-            ", c_num="+c_num+
-            ", mid='"+mid+'\''+
-            ", geo="+geo+
-            ", distance="+distance+
-            ", attitudes_count="+attitudes_count+
-            ", id="+id+
-            ", annotations="+annotations+
+        return "Status{" +
+            "bmiddlePic='" + bmiddlePic + '\'' +
+            ", createdAt=" + createdAt +
+            ", favorited=" + favorited +
+            ", inReplyToScreenName='" + inReplyToScreenName + '\'' +
+            ", inReplyToStatusId='" + inReplyToStatusId + '\'' +
+            ", inReplyToUserId='" + inReplyToUserId + '\'' +
+            ", originalPic='" + originalPic + '\'' +
+            ", source='" + source + '\'' +
+            ", text='" + text + '\'' +
+            ", thumbnailPic='" + thumbnailPic + '\'' +
+            ", user=" + user +
+            ", retweetedStatus=" + retweetedStatus +
+            ", thumbs=" + Arrays.toString(thumbs) +
+            ", r_num=" + r_num +
+            ", c_num=" + c_num +
+            ", mid='" + mid + '\'' +
+            ", geo=" + geo +
+            ", distance=" + distance +
+            ", attitudes_count=" + attitudes_count +
+            ", id=" + id +
+            ", annotations=" + annotations +
             '}';
     }
 }

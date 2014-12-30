@@ -14,19 +14,19 @@ public class UpdateInfo {
     public String newVer;
 
     public UpdateInfo() {
-        hasNewVer="-1";
-        updateUrl="";
-        updateMode="0";
-        updateMsg="";
-        newVer="574";
+        hasNewVer = "-1";
+        updateUrl = "";
+        updateMode = "0";
+        updateMsg = "";
+        newVer = "574";
     }
 
     @Override
     public String toString() {
-        return "UpdateInfo{"+
-            "updateMode='"+updateMode+'\''+
-            ", updateMsg='"+updateMsg+'\''+
-            ", updateUrl='"+updateUrl+'\''+
+        return "UpdateInfo{" +
+            "updateMode='" + updateMode + '\'' +
+            ", updateMsg='" + updateMsg + '\'' +
+            ", updateUrl='" + updateUrl + '\'' +
             '}';
     }
 }

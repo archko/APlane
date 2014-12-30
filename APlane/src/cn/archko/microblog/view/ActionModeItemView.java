@@ -13,9 +13,9 @@ import com.me.microblog.bean.Status;
  */
 public class ActionModeItemView extends ThreadBeanItemView implements Checkable {
 
-    private static final String TAG="ActionModeItemView";
+    private static final String TAG = "ActionModeItemView";
 
-    private boolean checked=false;
+    private boolean checked = false;
 
     public ActionModeItemView(Context context, ListView view, String cacheDir, Status status, boolean updateFlag,
         boolean cache, boolean showLargeBitmap, boolean showBitmap) {
@@ -29,15 +29,15 @@ public class ActionModeItemView extends ThreadBeanItemView implements Checkable 
 
     @Override
     public void setChecked(boolean aChecked) {
-        if (checked==aChecked) {
+        if (checked == aChecked) {
             return;
         }
-        checked=aChecked;
+        checked = aChecked;
         setBackgroundResource(checked ? R.drawable.abs__list_longpressed_holo : android.R.color.transparent);
     }
 
     @Override
     public void toggle() {
-        setChecked(!checked);
+        setChecked(! checked);
     }
 }

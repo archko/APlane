@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class User implements Serializable {
 
-    public static final long serialVersionUID=3894560643019408206L;
+    public static final long serialVersionUID = 3894560643019408206L;
 
     public boolean allowAllActMsg;
     /**
@@ -111,30 +111,30 @@ public class User implements Serializable {
     }
 
     public User(String screenName) {
-        this.screenName=screenName;
+        this.screenName = screenName;
     }
 
     @Override
     public String toString() {
-        return "User{"+
-            "city='"+city+'\''+
-            ", favouritesCount="+favouritesCount+
-            ", followersCount="+followersCount+
-            ", following="+following+
-            ", friendsCount="+friendsCount+
-            ", gender='"+gender+'\''+
-            ", geoEnabled="+geoEnabled+
-            ", location='"+location+'\''+
-            ", name='"+name+'\''+
-            ", profileImageUrl='"+profileImageUrl+'\''+
-            ", province='"+province+'\''+
-            ", screenName='"+screenName+'\''+
-            ", avatar_large='"+avatar_large+'\''+
-            ", avatar_hd='"+avatar_hd+'\''+
-            ", status="+status+
-            ", statusesCount="+statusesCount+
-            ", url='"+url+'\''+
-            ", id="+id+
+        return "User{" +
+            "city='" + city + '\'' +
+            ", favouritesCount=" + favouritesCount +
+            ", followersCount=" + followersCount +
+            ", following=" + following +
+            ", friendsCount=" + friendsCount +
+            ", gender='" + gender + '\'' +
+            ", geoEnabled=" + geoEnabled +
+            ", location='" + location + '\'' +
+            ", name='" + name + '\'' +
+            ", profileImageUrl='" + profileImageUrl + '\'' +
+            ", province='" + province + '\'' +
+            ", screenName='" + screenName + '\'' +
+            ", avatar_large='" + avatar_large + '\'' +
+            ", avatar_hd='" + avatar_hd + '\'' +
+            ", status=" + status +
+            ", statusesCount=" + statusesCount +
+            ", url='" + url + '\'' +
+            ", id=" + id +
             '}';
     }
 }

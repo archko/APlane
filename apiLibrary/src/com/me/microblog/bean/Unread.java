@@ -19,7 +19,7 @@ public class Unread implements Serializable {
     @Deprecated
     public int mentions;
     @Deprecated
-    public int newStatus=0;
+    public int newStatus = 0;
     /**
      * 新微博数
      */
@@ -62,19 +62,19 @@ public class Unread implements Serializable {
 
     @Override
     public String toString() {
-        return "Unread{"+
-            "comments="+comments+
-            ", dm="+dm+
-            ", followers="+followers+
-            ", status="+status+
-            ", mention_status="+mention_status+
-            ", mention_cmt="+mention_cmt+
-            ", group="+group+
-            ", private_group="+private_group+
-            ", notice="+notice+
-            ", invite="+invite+
-            ", badge="+badge+
-            ", photo="+photo+
+        return "Unread{" +
+            "comments=" + comments +
+            ", dm=" + dm +
+            ", followers=" + followers +
+            ", status=" + status +
+            ", mention_status=" + mention_status +
+            ", mention_cmt=" + mention_cmt +
+            ", group=" + group +
+            ", private_group=" + private_group +
+            ", notice=" + notice +
+            ", invite=" + invite +
+            ", badge=" + badge +
+            ", photo=" + photo +
             '}';
     }
 }

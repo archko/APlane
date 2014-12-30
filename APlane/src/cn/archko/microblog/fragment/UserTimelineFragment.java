@@ -18,9 +18,8 @@ import com.me.microblog.bean.Status;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.factory.AbsApiFactory;
 import com.me.microblog.core.factory.ApiConfigFactory;
-import com.me.microblog.core.factory.SinaApiFactory;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00
@@ -29,15 +28,15 @@ import cn.archko.microblog.utils.AKUtils;
  */
 public class UserTimelineFragment extends StatusListFragment {
 
-    public static final String TAG="UserTimelineFragment";
-    long userId=-1;
+    public static final String TAG = "UserTimelineFragment";
+    long userId = - 1;
     String userScreenName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        WeiboLog.v(TAG, "onCreate:"+this);
+        WeiboLog.v(TAG, "onCreate:" + this);
         /*Intent intent=getActivity().getIntent();
         userId=intent.getLongExtra("user_id", -1);
         userScreenName=intent.getStringExtra("screen_name");
@@ -52,15 +51,15 @@ public class UserTimelineFragment extends StatusListFragment {
 
     @Override
     public void initApi() {
-        mStatusImpl=new SinaUserStatusImpl();
+        mStatusImpl = new SinaUserStatusImpl();
 
-        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
         try {
-            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
-            AKUtils.showToast("初始化api异常.");
+            NotifyUtils.showToast("初始化api异常.");
             //getActivity().finish();
         }
     }
@@ -84,19 +83,19 @@ public class UserTimelineFragment extends StatusListFragment {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                int position=pos;
-                if (mListView.getHeaderViewsCount()>0) {
-                    position-=mListView.getHeaderViewsCount();
+                int position = pos;
+                if (mListView.getHeaderViewsCount() > 0) {
+                    position -= mListView.getHeaderViewsCount();
                 }
-                if (position==-1) {
+                if (position == - 1) {
                     WeiboLog.v("选中的是头部，不可点击");
                     return;
                 }
 
-                selectedPos=position;
-                WeiboLog.v(TAG, "itemClick:"+pos+" selectedPos:"+selectedPos);
+                selectedPos = position;
+                WeiboLog.v(TAG, "itemClick:" + pos + " selectedPos:" + selectedPos);
 
-                if (view==footerView) {   //if (mAdapter.getCount()>0&&position>=mAdapter.getCount()) {
+                if (view == footerView) {   //if (mAdapter.getCount()>0&&position>=mAdapter.getCount()) {
                     mMoreProgressBar.setVisibility(View.VISIBLE);
                     fetchMore();
                     return;
@@ -108,19 +107,19 @@ public class UserTimelineFragment extends StatusListFragment {
 
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                WeiboLog.v(TAG, "itemLongClick:"+pos);
-                int position=pos;
-                if (mListView.getHeaderViewsCount()>0) {
-                    position-=mListView.getHeaderViewsCount();
+                WeiboLog.v(TAG, "itemLongClick:" + pos);
+                int position = pos;
+                if (mListView.getHeaderViewsCount() > 0) {
+                    position -= mListView.getHeaderViewsCount();
                 }
-                selectedPos=position;
+                selectedPos = position;
 
-                if (mAdapter.getCount()>0&&position>=mAdapter.getCount()) {
+                if (mAdapter.getCount() > 0 && position >= mAdapter.getCount()) {
                     WeiboLog.v(TAG, "footerView.click.");
                     return true;
                 }
 
-                if (view!=footerView) {
+                if (view != footerView) {
                     //showButtonBar(view);
                     return UserTimelineFragment.this.itemLongClick(view);
                 }
@@ -158,16 +157,16 @@ public class UserTimelineFragment extends StatusListFragment {
         mListView.addFooterView(footerView);
         //mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        if (mAdapter==null) {
-            mAdapter=new TimeLineAdapter();
+        if (mAdapter == null) {
+            mAdapter = new TimeLineAdapter();
         }
         mListView.setAdapter(mAdapter);
 
         //loadData();
-        if (!hasAttach) {   //不在onAttach中处理,因为refresh可能先调用,以保证数据初始化.
-            hasAttach=true;
-            int type=getActivity().getIntent().getIntExtra("type", UserFragmentActivity.TYPE_USER_INFO);
-            if (type==UserFragmentActivity.TYPE_USER_TIMELINE) {
+        if (! hasAttach) {   //不在onAttach中处理,因为refresh可能先调用,以保证数据初始化.
+            hasAttach = true;
+            int type = getActivity().getIntent().getIntExtra("type", UserFragmentActivity.TYPE_USER_INFO);
+            if (type == UserFragmentActivity.TYPE_USER_TIMELINE) {
                 refresh();
             }
         }
@@ -175,31 +174,31 @@ public class UserTimelineFragment extends StatusListFragment {
 
     @Override
     public void refresh() {
-        WeiboLog.v(TAG, "isLoading:"+isLoading+" status:"+(null==mDataList ? "null" : mDataList.size()));
+        WeiboLog.v(TAG, "isLoading:" + isLoading + " status:" + (null == mDataList ? "null" : mDataList.size()));
         loadData();
     }
 
     @Override
     protected void loadData() {
-        if (mAdapter==null) {
-            mAdapter=new TimeLineAdapter();
+        if (mAdapter == null) {
+            mAdapter = new TimeLineAdapter();
         }
-        if (mDataList!=null&&mDataList.size()>0) {
+        if (mDataList != null && mDataList.size() > 0) {
             mAdapter.notifyDataSetChanged();
         } else {
             if (hasAttach) {
-                Intent intent=getActivity().getIntent();
-                userId=intent.getLongExtra("user_id", -1);
-                userScreenName=intent.getStringExtra("screen_name");
-                if (userId==-1) {
+                Intent intent = getActivity().getIntent();
+                userId = intent.getLongExtra("user_id", - 1);
+                userScreenName = intent.getStringExtra("screen_name");
+                if (userId == - 1) {
                     WeiboLog.d(TAG, "用户的id错误，无法查看其微博信息。");
-                    AKUtils.showToast("用户的id错误，无法查看其微博信息。");
+                    NotifyUtils.showToast("用户的id错误，无法查看其微博信息。");
 
                     return;
                 }
 
-                if (!isLoading) {
-                    fetchData(-1, -1, true, false);
+                if (! isLoading) {
+                    fetchData(- 1, - 1, true, false);
                 } else {
                     mEmptyTxt.setText(R.string.list_pre_empty_txt);
                     mEmptyTxt.setVisibility(View.VISIBLE);
@@ -211,20 +210,20 @@ public class UserTimelineFragment extends StatusListFragment {
     @Override
     public void fetchMore() {
         super.fetchMore();
-        WeiboLog.v(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
-        int count=mAdapter.getCount();
-        if (count<1) {
+        WeiboLog.v(TAG, "fetchMore.lastItem:" + lastItem + " selectedPos:" + selectedPos);
+        int count = mAdapter.getCount();
+        if (count < 1) {
             WeiboLog.w(TAG, "no other data");
             return;
         }
 
-        boolean isRefresh=false;
-        if (count>=weibo_count*3) {   //refresh list
-            isRefresh=true;
+        boolean isRefresh = false;
+        if (count >= weibo_count * 3) {   //refresh list
+            isRefresh = true;
         }
         Status st;
-        st=(Status) mAdapter.getItem(mAdapter.getCount()-1);
-        fetchData(-1, st.id, isRefresh, false);
+        st = (Status) mAdapter.getItem(mAdapter.getCount() - 1);
+        fetchData(- 1, st.id, isRefresh, false);
     }
 
     /**
@@ -236,24 +235,24 @@ public class UserTimelineFragment extends StatusListFragment {
      * @param isHomeStore 是否是主页,只有主页有存储
      */
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        WeiboLog.i(TAG, "sinceId:"+sinceId+", maxId:"+maxId+", isRefresh:"+isRefresh+", isHomeStore:"+isHomeStore+" userId:"+userId);
-        if (!App.hasInternetConnection(getActivity())) {
-            AKUtils.showToast(R.string.network_error);
-            if (mRefreshListener!=null) {
+        WeiboLog.i(TAG, "sinceId:" + sinceId + ", maxId:" + maxId + ", isRefresh:" + isRefresh + ", isHomeStore:" + isHomeStore + " userId:" + userId);
+        if (! App.hasInternetConnection(getActivity())) {
+            NotifyUtils.showToast(R.string.network_error);
+            if (mRefreshListener != null) {
                 mRefreshListener.onRefreshFinished();
             }
             refreshAdapter(false, false);
             return;
         }
 
-        int count=weibo_count;
-        if (!isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
+        int count = weibo_count;
+        if (! isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
             //count++;
         } else {
             //page=1;
         }
 
-        if (!isLoading) {   //这里多了一个当前查询的用户id
+        if (! isLoading) {   //这里多了一个当前查询的用户id
             newTask(new Object[]{isRefresh, sinceId, maxId, count, page, userId, isHomeStore}, null);
         }
     }
@@ -270,18 +269,18 @@ public class UserTimelineFragment extends StatusListFragment {
     public View getView(int position, View convertView, ViewGroup parent) {
         //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
 
-        ThreadBeanItemView itemView=null;
-        Status status=mDataList.get(position);
+        ThreadBeanItemView itemView = null;
+        Status status = mDataList.get(position);
 
-        boolean updateFlag=true;
-        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag=false;
+        boolean updateFlag = true;
+        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            updateFlag = false;
         }
 
-        if (convertView==null) {
-            itemView=new ThreadBeanItemView(getActivity(), mListView, mCacheDir, status, updateFlag, false, showLargeBitmap, showBitmap);
+        if (convertView == null) {
+            itemView = new ThreadBeanItemView(getActivity(), mListView, mCacheDir, status, updateFlag, false, showLargeBitmap, showBitmap);
         } else {
-            itemView=(ThreadBeanItemView) convertView;
+            itemView = (ThreadBeanItemView) convertView;
         }
         itemView.update(status, updateFlag, false, showLargeBitmap, showBitmap);
 

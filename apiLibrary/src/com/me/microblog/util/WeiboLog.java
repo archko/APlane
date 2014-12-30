@@ -1,11 +1,10 @@
 package com.me.microblog.util;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import android.os.Environment;
 import android.text.TextUtils;
-import android.util.Log;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * @author archko

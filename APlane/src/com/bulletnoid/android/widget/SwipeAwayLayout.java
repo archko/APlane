@@ -7,7 +7,11 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewConfigurationCompat;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.*;
+import android.view.MotionEvent;
+import android.view.VelocityTracker;
+import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
@@ -33,7 +37,7 @@ public class SwipeAwayLayout extends RelativeLayout {
 
     private boolean mAllowImtercept = true;
     private boolean mIsClose = false;
-    private int mCloseOrientation=LEFT_ONLY;
+    private int mCloseOrientation = LEFT_ONLY;
 
     protected static final int MAX_MENU_OVERLAY_ALPHA = 235;
     private static final int MAX_SETTLE_DURATION = 600; // ms
@@ -59,7 +63,7 @@ public class SwipeAwayLayout extends RelativeLayout {
      * Sentinel value for no current active pointer.
      * Used by {@link #mActivePointerId}.
      */
-    private static final int INVALID_POINTER = -1;
+    private static final int INVALID_POINTER = - 1;
 
     /**
      * Indicate the orientation this ViewGroup can be scrolled to.
@@ -133,6 +137,7 @@ public class SwipeAwayLayout extends RelativeLayout {
     };
 
     public interface OnSwipeAwayListener {
+
         public void onSwipedAway(int mCloseOrientation);
     }
 
@@ -156,7 +161,7 @@ public class SwipeAwayLayout extends RelativeLayout {
          * scrolling there.
          */
 
-        if (!mAllowImtercept) {
+        if (! mAllowImtercept) {
             return false;
         }
 
@@ -210,7 +215,7 @@ public class SwipeAwayLayout extends RelativeLayout {
                 final float dx = x - mLastMotionX;
                 final float xDiff;
                 if (mSwipeOrientation == LEFT_ONLY) {
-                    xDiff = -dx;
+                    xDiff = - dx;
                 } else if (mSwipeOrientation == RIGHT_ONLY) {
                     xDiff = dx;
                 } else {
@@ -254,7 +259,7 @@ public class SwipeAwayLayout extends RelativeLayout {
                 mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
 
                 if (mScrollState == SCROLL_STATE_SETTLING &&
-                        Math.abs(mScroller.getFinalX() - mScroller.getCurrX()) > mCloseEnough) {
+                    Math.abs(mScroller.getFinalX() - mScroller.getCurrX()) > mCloseEnough) {
                     // Let the user 'catch' the pager as it animates.
                     mIsBeingDragged = true;
                     mIsUnableToDrag = false;
@@ -266,8 +271,8 @@ public class SwipeAwayLayout extends RelativeLayout {
                 }
 
                 if (DEBUG) Log.v(TAG, "Down at " + mLastMotionX + "," + mLastMotionY
-                        + " mIsBeingDragged=" + mIsBeingDragged
-                        + "mIsUnableToDrag=" + mIsUnableToDrag);
+                    + " mIsBeingDragged=" + mIsBeingDragged
+                    + "mIsUnableToDrag=" + mIsUnableToDrag);
                 break;
             }
 
@@ -276,7 +281,7 @@ public class SwipeAwayLayout extends RelativeLayout {
                 break;
         }
 
-        if (!mIsBeingDragged) {
+        if (! mIsBeingDragged) {
             // Track the velocity as long as we aren't dragging.
             // Once we start a real drag we will track in onTouchEvent.
             if (mVelocityTracker == null) {
@@ -323,7 +328,7 @@ public class SwipeAwayLayout extends RelativeLayout {
                 break;
             }
             case MotionEvent.ACTION_MOVE:
-                if (!mIsBeingDragged) {
+                if (! mIsBeingDragged) {
                     final int pointerIndex = MotionEventCompat.findPointerIndex(ev, mActivePointerId);
                     final float x = MotionEventCompat.getX(ev, pointerIndex);
                     final float xDiff = Math.abs(x - mLastMotionX);
@@ -340,7 +345,7 @@ public class SwipeAwayLayout extends RelativeLayout {
                 if (mIsBeingDragged) {
                     // Scroll to follow the motion event
                     final int activePointerIndex = MotionEventCompat.findPointerIndex(
-                            ev, mActivePointerId);
+                        ev, mActivePointerId);
                     final float x = MotionEventCompat.getX(ev, activePointerIndex);
                     final float deltaX = mLastMotionX - x;
                     mLastMotionX = x;
@@ -387,41 +392,41 @@ public class SwipeAwayLayout extends RelativeLayout {
                     final VelocityTracker velocityTracker = mVelocityTracker;
                     velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
                     int initialVelocity = (int) VelocityTrackerCompat.getXVelocity(
-                            velocityTracker, mActivePointerId);
+                        velocityTracker, mActivePointerId);
                     final int widthWithMargin = getWidth() + mPageMargin;
                     final int scrollX = getScrollX();
                     final float pageOffset = (float) (scrollX % widthWithMargin) / widthWithMargin;
                     final int activePointerIndex =
-                            MotionEventCompat.findPointerIndex(ev, mActivePointerId);
+                        MotionEventCompat.findPointerIndex(ev, mActivePointerId);
                     final float x = MotionEventCompat.getX(ev, activePointerIndex);
                     final int totalDelta = (int) (x - mInitialMotionX);
                     int destX = 0;
 
                     if (mSwipeOrientation == RIGHT_ONLY) {
                         if (totalDelta >= widthWithMargin / 2) {
-                            destX = -widthWithMargin;
+                            destX = - widthWithMargin;
                             mIsClose = true;
-                            mCloseOrientation=RIGHT_ONLY;
+                            mCloseOrientation = RIGHT_ONLY;
                         } else if (totalDelta >= widthWithMargin / 4) {
                             if (initialVelocity >= 1000) {
-                                destX = -widthWithMargin;
+                                destX = - widthWithMargin;
                                 mIsClose = true;
-                                mCloseOrientation=RIGHT_ONLY;
+                                mCloseOrientation = RIGHT_ONLY;
                             }
                         } else {
                             destX = 0;
                             mIsClose = false;
                         }
                     } else if (mSwipeOrientation == LEFT_ONLY) {
-                        if (totalDelta <= -widthWithMargin / 2) {
+                        if (totalDelta <= - widthWithMargin / 2) {
                             destX = widthWithMargin;
                             mIsClose = true;
-                            mCloseOrientation=LEFT_ONLY;
-                        } else if (totalDelta <= -widthWithMargin / 4) {
+                            mCloseOrientation = LEFT_ONLY;
+                        } else if (totalDelta <= - widthWithMargin / 4) {
                             if (initialVelocity >= 1000) {
                                 destX = widthWithMargin;
                                 mIsClose = true;
-                                mCloseOrientation=LEFT_ONLY;
+                                mCloseOrientation = LEFT_ONLY;
                             }
                         } else {
                             destX = 0;
@@ -430,21 +435,21 @@ public class SwipeAwayLayout extends RelativeLayout {
                     } else {
                         int totalAbs = Math.abs(totalDelta);
                         if (totalAbs >= widthWithMargin / 2) {
-                            destX = -widthWithMargin * totalAbs / totalDelta;
+                            destX = - widthWithMargin * totalAbs / totalDelta;
                             mIsClose = true;
-                            if (totalDelta>0) {
-                                mCloseOrientation=LEFT_ONLY;
+                            if (totalDelta > 0) {
+                                mCloseOrientation = LEFT_ONLY;
                             } else {
-                                mCloseOrientation=RIGHT_ONLY;
+                                mCloseOrientation = RIGHT_ONLY;
                             }
                         } else if (totalAbs >= widthWithMargin / 4) {
                             if (initialVelocity >= 1000) {
-                                destX = -widthWithMargin * totalAbs / totalDelta;
+                                destX = - widthWithMargin * totalAbs / totalDelta;
                                 mIsClose = true;
-                                if (totalDelta>0) {
-                                    mCloseOrientation=LEFT_ONLY;
+                                if (totalDelta > 0) {
+                                    mCloseOrientation = LEFT_ONLY;
                                 } else {
-                                    mCloseOrientation=RIGHT_ONLY;
+                                    mCloseOrientation = RIGHT_ONLY;
                                 }
                             }
                         } else {
@@ -478,7 +483,7 @@ public class SwipeAwayLayout extends RelativeLayout {
             case MotionEventCompat.ACTION_POINTER_UP:
                 onSecondaryPointerUp(ev);
                 mLastMotionX = MotionEventCompat.getX(ev,
-                        MotionEventCompat.findPointerIndex(ev, mActivePointerId));
+                    MotionEventCompat.findPointerIndex(ev, mActivePointerId));
                 break;
         }
         if (needsInvalidate) {
@@ -510,17 +515,16 @@ public class SwipeAwayLayout extends RelativeLayout {
                 // This will not work for transformed views in Honeycomb+
                 final View child = group.getChildAt(i);
                 if (x + scrollX >= child.getLeft() && x + scrollX < child.getRight() &&
-                        y + scrollY >= child.getTop() && y + scrollY < child.getBottom() &&
-                        canScroll(child, true, dx, x + scrollX - child.getLeft(),
-                                y + scrollY - child.getTop())) {
+                    y + scrollY >= child.getTop() && y + scrollY < child.getBottom() &&
+                    canScroll(child, true, dx, x + scrollX - child.getLeft(),
+                        y + scrollY - child.getTop())) {
                     return true;
                 }
             }
         }
 
-        return checkV && ViewCompat.canScrollHorizontally(v, -dx);
+        return checkV && ViewCompat.canScrollHorizontally(v, - dx);
     }
-
 
     private void setScrollState(int newState) {
         if (mScrollState == newState) {
@@ -598,7 +602,7 @@ public class SwipeAwayLayout extends RelativeLayout {
 
     @Override
     public void computeScroll() {
-        if (!mScroller.isFinished() && mScroller.computeScrollOffset()) {
+        if (! mScroller.isFinished() && mScroller.computeScrollOffset()) {
             int oldX = getScrollX();
             int oldY = getScrollY();
             int x = mScroller.getCurrX();
@@ -615,7 +619,7 @@ public class SwipeAwayLayout extends RelativeLayout {
             return;
         }
 
-        if (mIsClose&&mSwipeAwayListener!=null) {
+        if (mIsClose && mSwipeAwayListener != null) {
             mSwipeAwayListener.onSwipedAway(mCloseOrientation);
         }
 

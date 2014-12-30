@@ -30,7 +30,6 @@ import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
 import cn.archko.microblog.fragment.impl.AbsStatusImpl;
 import cn.archko.microblog.listeners.OnPickPhotoListener;
 import cn.archko.microblog.ui.ImageViewerActivity;
-import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.utils.BitmapThread;
 import cn.archko.microblog.utils.TakePictureUtil;
 import com.andrew.apollo.cache.LruCache;
@@ -40,6 +39,7 @@ import com.me.microblog.WeiboException;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.UploadImage;
 import com.me.microblog.util.Constants;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
 
 import java.io.File;
@@ -52,14 +52,14 @@ import java.util.ArrayList;
  */
 public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
-    private static final String TAG="PickImage";
-    private static final int MENU_ADD=Menu.FIRST+100;
-    private static final int MENU_SAVE=Menu.FIRST+101;
-    public static final String KEY_PHOTO="key_photo";
-    Handler mHandler=new Handler() {
+    private static final String TAG = "PickImage";
+    private static final int MENU_ADD = Menu.FIRST + 100;
+    private static final int MENU_SAVE = Menu.FIRST + 101;
+    public static final String KEY_PHOTO = "key_photo";
+    Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what==1) {
+            if (msg.what == 1) {
                 if (isResumed()) {
                     mAdapter.notifyDataSetChanged();
                 }
@@ -68,14 +68,14 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
     };
     BitmapThread mBitmapThread;
     protected GridView mGridView;
-    int width=120;
-    int height=120;
+    int width = 120;
+    int height = 120;
     TakePictureUtil takePictureUtil;
     public OnPickPhotoListener mPickPhotoListener;
-    public static LruCache<String, Bitmap> bitmapLruCache=new LruCache<String, Bitmap>(12);
+    public static LruCache<String, Bitmap> bitmapLruCache = new LruCache<String, Bitmap>(12);
 
     public PickImageFragment() {
-        mStatusImpl=new AbsStatusImpl<UploadImage>() {
+        mStatusImpl = new AbsStatusImpl<UploadImage>() {
             @Override
             public SStatusData<UploadImage> loadData(Object... params) throws WeiboException {
                 return null;
@@ -89,18 +89,19 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
     }
 
     public PickImageFragment(Handler handler) {
-        mHandler=handler;
+        super();
+        mHandler = handler;
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        WeiboLog.v(TAG, "onAttach:"+this);
+        WeiboLog.v(TAG, "onAttach:" + this);
         try {
-            mPickPhotoListener=(OnPickPhotoListener) activity;
+            mPickPhotoListener = (OnPickPhotoListener) activity;
         } catch (ClassCastException e) {
             //throw new ClassCastException(activity.toString()+" must implement OnRefreshListener");
-            mPickPhotoListener=null;
+            mPickPhotoListener = null;
         }
     }
 
@@ -109,14 +110,14 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         //WeiboLog.d(TAG, "args:"+getArguments());
-        if (null!=getArguments()&&null!=getArguments().getString(KEY_PHOTO)) {
-            String url=getArguments().getString(KEY_PHOTO);
-            WeiboLog.d(TAG, "url:"+url);
-            if (null==mDataList) {
-                mDataList=new ArrayList<UploadImage>();
+        if (null != getArguments() && null != getArguments().getString(KEY_PHOTO)) {
+            String url = getArguments().getString(KEY_PHOTO);
+            WeiboLog.d(TAG, "url:" + url);
+            if (null == mDataList) {
+                mDataList = new ArrayList<UploadImage>();
             }
-            UploadImage image=new UploadImage();
-            image.path=url;
+            UploadImage image = new UploadImage();
+            image.path = url;
             mDataList.add(image);
         }
     }
@@ -128,8 +129,8 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
     @Override
     public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root=inflater.inflate(R.layout.ak_pick_image, container, false);
-        mGridView=(GridView) root.findViewById(R.id.gridview);
+        View root = inflater.inflate(R.layout.ak_pick_image, container, false);
+        mGridView = (GridView) root.findViewById(R.id.gridview);
 
         return root;
     }
@@ -141,8 +142,8 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                WeiboLog.d(TAG, "itemClick:"+pos);
-                selectedPos=pos;
+                WeiboLog.d(TAG, "itemClick:" + pos);
+                selectedPos = pos;
 
                 itemClick(view);
             }
@@ -151,8 +152,8 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                WeiboLog.d(TAG, "itemLongClick:"+pos);
-                selectedPos=pos;
+                WeiboLog.d(TAG, "itemLongClick:" + pos);
+                selectedPos = pos;
                 //showButtonBar(view);
                 itemLongClick(view);
                 return true;
@@ -161,11 +162,11 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
         /*mDataList=new ArrayList<UploadImage>();
         loadTestData();*/
-        if (mAdapter==null) {
-            mAdapter=new AbsBaseListFragment.TimeLineAdapter();
+        if (mAdapter == null) {
+            mAdapter = new AbsBaseListFragment.TimeLineAdapter();
         }
-        if (null==mDataList||mDataList.size()<1) {
-            AKUtils.showToast("您可以开始添加图片了.");
+        if (null == mDataList || mDataList.size() < 1) {
+            NotifyUtils.showToast("您可以开始添加图片了.");
         }
 
         mGridView.setAdapter(mAdapter);
@@ -173,56 +174,56 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
     }
 
     private void loadBitmap(ArrayList<UploadImage> arrayList) {
-        if (null==mBitmapThread) {
-            mBitmapThread=new BitmapThread();
+        if (null == mBitmapThread) {
+            mBitmapThread = new BitmapThread();
         }
-        Message msg=Message.obtain();
-        msg.obj=new Object[]{arrayList, mHandler};
-        msg.what=0;
+        Message msg = Message.obtain();
+        msg.obj = new Object[]{arrayList, mHandler};
+        msg.what = 0;
         mBitmapThread.addMessage(msg);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (null!=mBitmapThread) {
+        if (null != mBitmapThread) {
             mBitmapThread.release();
         }
     }
 
     private void loadTestData() {
         UploadImage image;
-        image=new UploadImage();
-        image.path="/sdcard/.microblog/picture/027b3e60e001ade332fdf50089d752f4.jpg";
+        image = new UploadImage();
+        image.path = "/sdcard/.microblog/picture/027b3e60e001ade332fdf50089d752f4.jpg";
         mDataList.add(image);
 
-        image=new UploadImage();
-        image.path="/sdcard/.microblog/picture/030d3ce6bfe710ded1c6820f995bf61b.jpg";
+        image = new UploadImage();
+        image.path = "/sdcard/.microblog/picture/030d3ce6bfe710ded1c6820f995bf61b.jpg";
         mDataList.add(image);
 
-        image=new UploadImage();
-        image.path="/sdcard/.microblog/picture/0adaecb64f50c3cce0945de952d21bf2.jpg";
+        image = new UploadImage();
+        image.path = "/sdcard/.microblog/picture/0adaecb64f50c3cce0945de952d21bf2.jpg";
         mDataList.add(image);
 
-        image=new UploadImage();
-        image.path="/sdcard/.microblog/picture/19931e4f886ed292c6d4978848222153.jpg";
+        image = new UploadImage();
+        image.path = "/sdcard/.microblog/picture/19931e4f886ed292c6d4978848222153.jpg";
         mDataList.add(image);
 
-        image=new UploadImage();
-        image.path="/sdcard/.microblog/picture/f9c30698454c5b330896808215d39935.jpg";
+        image = new UploadImage();
+        image.path = "/sdcard/.microblog/picture/f9c30698454c5b330896808215d39935.jpg";
         mDataList.add(image);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ItemView itemView=null;
+        ItemView itemView = null;
 
-        if (convertView==null) {
-            itemView=new ItemView(getActivity());
+        if (convertView == null) {
+            itemView = new ItemView(getActivity());
         } else {
-            itemView=(ItemView) convertView;
+            itemView = (ItemView) convertView;
         }
-        UploadImage image=mDataList.get(position);
+        UploadImage image = mDataList.get(position);
         itemView.update(image);
 
         return itemView;
@@ -235,19 +236,19 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                int position=pos;
-                if (mListView.getHeaderViewsCount()>0) {
+                int position = pos;
+                if (mListView.getHeaderViewsCount() > 0) {
                     position--;
                 }
-                if (position==-1) {
+                if (position == - 1) {
                     WeiboLog.v("选中的是头部，不可点击");
                     return;
                 }
 
-                selectedPos=position;
-                WeiboLog.v(TAG, "itemClick:"+pos+" selectedPos:"+selectedPos);
+                selectedPos = position;
+                WeiboLog.v(TAG, "itemClick:" + pos + " selectedPos:" + selectedPos);
 
-                if (view==footerView) {
+                if (view == footerView) {
                     return;
                 }
                 itemClick(view);
@@ -257,19 +258,19 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                WeiboLog.v(TAG, "itemLongClick:"+pos);
-                int position=pos;
-                if (mListView.getHeaderViewsCount()>0) {
+                WeiboLog.v(TAG, "itemLongClick:" + pos);
+                int position = pos;
+                if (mListView.getHeaderViewsCount() > 0) {
                     position--;
                 }
-                selectedPos=position;
+                selectedPos = position;
 
-                if (mAdapter.getCount()>0&&position>=mAdapter.getCount()) {
+                if (mAdapter.getCount() > 0 && position >= mAdapter.getCount()) {
                     WeiboLog.v(TAG, "footerView.click.");
                     return true;
                 }
 
-                if (view!=footerView) {
+                if (view != footerView) {
                     return itemLongClick(view);
                 }
                 return true;
@@ -277,12 +278,12 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         });
         //mGridView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        if (mAdapter==null) {
-            mAdapter=new TimeLineAdapter();
+        if (mAdapter == null) {
+            mAdapter = new TimeLineAdapter();
         }
         mGridView.setAdapter(mAdapter);
 
-        WeiboLog.v(TAG, "isLoading:"+isLoading+" status:"+(null==mDataList ? "null" : mDataList.size()));
+        WeiboLog.v(TAG, "isLoading:" + isLoading + " status:" + (null == mDataList ? "null" : mDataList.size()));
         loadData();
     }
 
@@ -290,7 +291,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
-        MenuItem actionItem=menu.add(0, MENU_ADD, 0, "Add");
+        MenuItem actionItem = menu.add(0, MENU_ADD, 0, "Add");
 
         // Items that show as actions should favor the "if room" setting, which will
         // prevent too many buttons from crowding the bar. Extra items will show in the
@@ -301,14 +302,14 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         // These icons are shown without a text description, and therefore should
         // be sufficiently descriptive on their own.
 
-        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        int resId=R.drawable.content_new_dark;
+        String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        int resId = R.drawable.content_new_dark;
         if ("2".equals(themeId)) {
             //resId=R.drawable.content_new_dark;
         }
         actionItem.setIcon(resId);
 
-        actionItem=menu.add(0, MENU_SAVE, 0, "SAVE");
+        actionItem = menu.add(0, MENU_SAVE, 0, "SAVE");
 
         // Items that show as actions should favor the "if room" setting, which will
         // prevent too many buttons from crowding the bar. Extra items will show in the
@@ -319,33 +320,33 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         // These icons are shown without a text description, and therefore should
         // be sufficiently descriptive on their own.
 
-        resId=R.drawable.ic_cab_done_holo_light;
+        resId = R.drawable.ic_cab_done_holo_light;
         if ("2".equals(themeId)) {
-            resId=R.drawable.ic_cab_done_holo_light;
+            resId = R.drawable.ic_cab_done_holo_light;
         }
         actionItem.setIcon(resId);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId()==MENU_ADD) {
+        if (item.getItemId() == MENU_ADD) {
             addNewPicture();
-        } else if (item.getItemId()==MENU_SAVE) {
+        } else if (item.getItemId() == MENU_SAVE) {
             completePick();
         }
         return true;
     }
 
     private void addNewPicture() {
-        int count=mAdapter.getCount();
-        if (count>=9) {
-            AKUtils.showToast("最多只能添加9张图片.");
+        int count = mAdapter.getCount();
+        if (count >= 9) {
+            NotifyUtils.showToast("最多只能添加9张图片.");
             return;
         }
 
-        selectedPos=-1; //设置-1,则在选择照片后,进行添加,否则视为编辑.
-        if (null==takePictureUtil) {
-            takePictureUtil=new TakePictureUtil();
+        selectedPos = - 1; //设置-1,则在选择照片后,进行添加,否则视为编辑.
+        if (null == takePictureUtil) {
+            takePictureUtil = new TakePictureUtil();
             //takePictureUtil.setActivity(getActivity());
             takePictureUtil.setContext(getActivity());
             takePictureUtil.setFragment(this);
@@ -354,10 +355,10 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
     }
 
     private void completePick() {
-        if (null!=mPickPhotoListener) {
-            String path=null;
-            if (null!=mDataList&&mDataList.size()>0) {
-                path=mDataList.get(0).path;
+        if (null != mPickPhotoListener) {
+            String path = null;
+            if (null != mDataList && mDataList.size() > 0) {
+                path = mDataList.get(0).path;
             }
             //WeiboLog.v(TAG, "completePick:"+path);
             mPickPhotoListener.onPickOne(path);
@@ -381,7 +382,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
     //--------------------- popupMenu ---------------------
     public void onCreateCustomMenu(PopupMenu menuBuilder) {
-        int index=0;
+        int index = 0;
         menuBuilder.getMenu().add(0, Constants.OP_ID_QUICK_REPOST, index++, "修改");
         menuBuilder.getMenu().add(0, Constants.OP_ID_COMMENT, index++, "删除");
         menuBuilder.getMenu().add(0, Constants.OP_ID_ORITEXT, index++, "查看");
@@ -389,8 +390,8 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        int menuId=item.getItemId();
-        WeiboLog.d(TAG, "onMenuItemClick:"+menuId);
+        int menuId = item.getItemId();
+        WeiboLog.d(TAG, "onMenuItemClick:" + menuId);
         switch (menuId) {
             case Constants.OP_ID_QUICK_REPOST: {
                 quickRepostStatus();
@@ -413,10 +414,10 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
      */
     @Override
     protected void quickRepostStatus() {
-        UploadImage image=mDataList.get(selectedPos);
-        WeiboLog.d("修改:"+image);
-        if (null==takePictureUtil) {
-            takePictureUtil=new TakePictureUtil();
+        UploadImage image = mDataList.get(selectedPos);
+        WeiboLog.d("修改:" + image);
+        if (null == takePictureUtil) {
+            takePictureUtil = new TakePictureUtil();
             //takePictureUtil.setActivity(getActivity());
             takePictureUtil.setContext(getActivity());
             takePictureUtil.setFragment(this);
@@ -429,8 +430,8 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
      */
     @Override
     protected void commentStatus() {
-        UploadImage image=mDataList.get(selectedPos);
-        WeiboLog.d("删除:"+image);
+        UploadImage image = mDataList.get(selectedPos);
+        WeiboLog.d("删除:" + image);
         mDataList.remove(selectedPos);
         mAdapter.notifyDataSetChanged();
     }
@@ -442,10 +443,10 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
      */
     @Override
     protected void viewOriginalStatus(View achor) {
-        Intent intent=new Intent(getActivity(), ImageViewerActivity.class);
-        UploadImage image=mDataList.get(selectedPos);
-        String[] imageUrls=new String[]{image.path};
-        WeiboLog.d(TAG, "view :"+image);
+        Intent intent = new Intent(getActivity(), ImageViewerActivity.class);
+        UploadImage image = mDataList.get(selectedPos);
+        String[] imageUrls = new String[]{image.path};
+        WeiboLog.d(TAG, "view :" + image);
         intent.putExtra("thumbs", imageUrls);
         intent.putExtra("pos", 0);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -455,17 +456,17 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode==Activity.RESULT_OK) {    //TODO 需要处理返回的视频的情况.
-            if (requestCode==TakePictureUtil.CAMERA_WITH_DATA_TO_THUMB) {
+        if (resultCode == Activity.RESULT_OK) {    //TODO 需要处理返回的视频的情况.
+            if (requestCode == TakePictureUtil.CAMERA_WITH_DATA_TO_THUMB) {
                 processGalleryData(data.getData());
-            } else if (requestCode==TakePictureUtil.PHOTO_PICKED_WITH_DATA) {
+            } else if (requestCode == TakePictureUtil.PHOTO_PICKED_WITH_DATA) {
                 processGalleryData(data.getData());
-            } else if (requestCode==TakePictureUtil.CAMERA_WITH_DATA) {
+            } else if (requestCode == TakePictureUtil.CAMERA_WITH_DATA) {
                 // 照相机程序返回的,再次调用图 片剪辑程序去修剪图片
                 //doCropPhoto();
-                String path=takePictureUtil.getCurrentPhotoFile().getAbsolutePath();
-                WeiboLog.i(TAG, "path:"+path);
-                if (!TextUtils.isEmpty(path)) {
+                String path = takePictureUtil.getCurrentPhotoFile().getAbsolutePath();
+                WeiboLog.i(TAG, "path:" + path);
+                if (! TextUtils.isEmpty(path)) {
                     /*String imgUrl=path;
                     //showPhoto(imgUrl);
                     try {
@@ -481,7 +482,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
                     mDraft=draft;
                     initDraft(draft);
                 }
-            }*/ else if (requestCode==TakePictureUtil.EDIT_PHOTO_PICKED_WITH_DATA) {
+            }*/ else if (requestCode == TakePictureUtil.EDIT_PHOTO_PICKED_WITH_DATA) {
                 processGalleryData(data.getData());
             }
         } else {
@@ -490,21 +491,21 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
     }
 
     private void processGalleryData(Uri imageFileUri) {
-        String[] proj={MediaStore.Images.Media.DATA};
-        Cursor cur=null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cur = null;
 
         try {
-            WeiboLog.i(TAG, "imageFileUri:"+imageFileUri);
-            cur=getActivity().getContentResolver().query(imageFileUri, proj, null, null, null);
-            int imageIdx=cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            WeiboLog.i(TAG, "imageFileUri:" + imageFileUri);
+            cur = getActivity().getContentResolver().query(imageFileUri, proj, null, null, null);
+            int imageIdx = cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cur.moveToFirst();
-            String imagePath=cur.getString(imageIdx);
-            WeiboLog.i(TAG, "imagePath:"+imagePath);
+            String imagePath = cur.getString(imageIdx);
+            WeiboLog.i(TAG, "imagePath:" + imagePath);
 
-            File file=new File(imagePath);
+            File file = new File(imagePath);
             if (file.exists()) {
-                if (file.length()>TakePictureUtil.MAX_IMAGE_SIZE) {
-                    AKUtils.showToast("上传的图片超过了5m，新浪不支持！");
+                if (file.length() > TakePictureUtil.MAX_IMAGE_SIZE) {
+                    NotifyUtils.showToast("上传的图片超过了5m，新浪不支持！");
                     //clearImagePreview();
                     return;
                 }
@@ -516,20 +517,20 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         } catch (Exception e) {
             WeiboLog.e(e.toString());
         } finally {
-            if (null!=cur) {
+            if (null != cur) {
                 cur.close();
             }
         }
     }
 
     private void updateImageList(String imagePath) {
-        if (selectedPos>-1) {
-            UploadImage image=mDataList.get(selectedPos);
-            image.path=imagePath;
-            image.pic_id="";
+        if (selectedPos > - 1) {
+            UploadImage image = mDataList.get(selectedPos);
+            image.path = imagePath;
+            image.pic_id = "";
         } else {
-            UploadImage image=new UploadImage();
-            image.path=imagePath;
+            UploadImage image = new UploadImage();
+            image.path = imagePath;
             mDataList.add(image);
         }
         mAdapter.notifyDataSetChanged();
@@ -545,12 +546,12 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         private ItemView(Context context) {
             super(context);
             ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.ak_pick_image_item, this);
-            mIcon=(ImageView) findViewById(R.id.iv_portrait);
+            mIcon = (ImageView) findViewById(R.id.iv_portrait);
         }
 
         public void update(UploadImage image) {
-            Bitmap bitmap=bitmapLruCache.get(image.path);
-            if (null!=bitmap) {
+            Bitmap bitmap = bitmapLruCache.get(image.path);
+            if (null != bitmap) {
                 mIcon.setImageBitmap(bitmap);
             }/* else {
                 BitmapFactory.Options options=new BitmapFactory.Options();
@@ -564,7 +565,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
             }*/
         }
 
-        private boolean checked=false;
+        private boolean checked = false;
 
         @Override
         public boolean isChecked() {
@@ -573,10 +574,10 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
         @Override
         public void setChecked(boolean aChecked) {
-            if (checked==aChecked) {
+            if (checked == aChecked) {
                 return;
             }
-            checked=aChecked;
+            checked = aChecked;
             setIndicatorVisible(checked);
         }
 
@@ -586,7 +587,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
         @Override
         public void toggle() {
-            setChecked(!checked);
+            setChecked(! checked);
         }
     }
 }

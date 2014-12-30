@@ -1,11 +1,10 @@
 package com.me.microblog.bean;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class QStatus implements Serializable {
 
-    public static final long serialVersionUID=3894560643019408219L;
+    public static final long serialVersionUID = 3894560643019408219L;
 
     /**
      * 微博内容
@@ -126,38 +125,38 @@ public class QStatus implements Serializable {
 
     @Override
     public String toString() {
-        return "QStatus{"+
-            "text='"+text+'\''+
-            ", origtext='"+origtext+'\''+
-            ", count="+count+
-            ", mcount="+mcount+
-            ", from='"+from+'\''+
-            ", fromurl='"+fromurl+'\''+
-            ", id='"+id+'\''+
-            ", image='"+image+'\''+
-            ", qVideo="+qVideo+
-            ", qMusic="+qMusic+
-            ", name='"+name+'\''+
-            ", openId='"+openId+'\''+
-            ", nick='"+nick+'\''+
-            ", self="+self+
-            ", timestamp="+timestamp+
-            ", type="+type+
-            ", head='"+head+'\''+
-            ", location='"+location+'\''+
-            ", country_code='"+country_code+'\''+
-            ", province_code='"+province_code+'\''+
-            ", city_code='"+city_code+'\''+
-            ", isvip="+isvip+
-            ", geo='"+geo+'\''+
-            ", status="+status+
-            ", emotionurl='"+emotionurl+'\''+
-            ", emotiontype="+emotiontype+
-            ", retweetedStatus="+retweetedStatus+
-            ", storetime="+storetime+
-            ", latitude="+latitude+
-            ", longitude="+longitude+
-            ", isrealname="+isrealname+
+        return "QStatus{" +
+            "text='" + text + '\'' +
+            ", origtext='" + origtext + '\'' +
+            ", count=" + count +
+            ", mcount=" + mcount +
+            ", from='" + from + '\'' +
+            ", fromurl='" + fromurl + '\'' +
+            ", id='" + id + '\'' +
+            ", image='" + image + '\'' +
+            ", qVideo=" + qVideo +
+            ", qMusic=" + qMusic +
+            ", name='" + name + '\'' +
+            ", openId='" + openId + '\'' +
+            ", nick='" + nick + '\'' +
+            ", self=" + self +
+            ", timestamp=" + timestamp +
+            ", type=" + type +
+            ", head='" + head + '\'' +
+            ", location='" + location + '\'' +
+            ", country_code='" + country_code + '\'' +
+            ", province_code='" + province_code + '\'' +
+            ", city_code='" + city_code + '\'' +
+            ", isvip=" + isvip +
+            ", geo='" + geo + '\'' +
+            ", status=" + status +
+            ", emotionurl='" + emotionurl + '\'' +
+            ", emotiontype=" + emotiontype +
+            ", retweetedStatus=" + retweetedStatus +
+            ", storetime=" + storetime +
+            ", latitude=" + latitude +
+            ", longitude=" + longitude +
+            ", isrealname=" + isrealname +
             '}';
     }
 }

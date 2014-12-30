@@ -12,13 +12,13 @@ import com.me.microblog.util.WeiboLog;
  */
 public class AsyncActionTask extends ActionTask {
 
-    public static final String TAG="AsyncActionTask";
-    public Handler handler=null;
+    public static final String TAG = "AsyncActionTask";
+    public Handler handler = null;
     private Context mContext;
 
     public AsyncActionTask(Context context, Action action) {
         super(context, action);
-        mContext=context;
+        mContext = context;
     }
 
     @Override
@@ -28,17 +28,17 @@ public class AsyncActionTask extends ActionTask {
 
     @Override
     protected ActionResult doInBackground(Object... params) {
-        handler=(Handler) params[params.length-1];
+        handler = (Handler) params[ params.length - 1 ];
         return mAction.doAction(mContext, params);
     }
 
     @Override
     protected void onPostExecute(ActionResult result) {
         try {
-            int rescode=result.resoultCode;
-            WeiboLog.d(TAG, "onPostExecute.rescode:"+rescode);
+            int rescode = result.resoultCode;
+            WeiboLog.d(TAG, "onPostExecute.rescode:" + rescode);
 
-            Message msg=handler.obtainMessage(rescode, result);
+            Message msg = handler.obtainMessage(rescode, result);
 
             handler.sendMessage(msg);
         } catch (Exception e) {

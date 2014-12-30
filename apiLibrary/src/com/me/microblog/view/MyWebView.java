@@ -9,8 +9,8 @@ import android.webkit.WebView;
  */
 public class MyWebView extends WebView {
 
-    private int a=-1;
-    private int b=-1;
+    private int a = - 1;
+    private int b = - 1;
 
     public MyWebView(Context paramContext) {
         super(paramContext);
@@ -27,18 +27,18 @@ public class MyWebView extends WebView {
     @Override
     protected void onMeasure(int paramInt1, int paramInt2) {
         super.onMeasure(paramInt1, paramInt2);
-        if (this.a<=0)
+        if (this.a <= 0)
             return;
-        if (this.b<=0)
+        if (this.b <= 0)
             return;
-        int i=this.a;
-        int j=this.b;
+        int i = this.a;
+        int j = this.b;
         setMeasuredDimension(i, j);
     }
 
     public void setMeasureSpec(int paramInt1, int paramInt2) {
-        this.a=paramInt1;
-        this.b=paramInt2;
+        this.a = paramInt1;
+        this.b = paramInt2;
     }
 
 }

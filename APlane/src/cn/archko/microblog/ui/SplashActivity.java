@@ -44,10 +44,10 @@ import java.util.Locale;
  */
 public class SplashActivity extends NavModeActivity {
 
-    public static final String TAG="SplashActivity";
+    public static final String TAG = "SplashActivity";
     //-------------- update -------------------
-    private final String mUpdateUrl="http://archko.t8go.com/update.json";
-    Handler mHandler=new Handler();
+    private final String mUpdateUrl = "http://archko.t8go.com/update.json";
+    Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,23 +80,23 @@ public class SplashActivity extends NavModeActivity {
     }
 
     public void createShortCut() {
-        SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(this);
-        int hasShortcuts=preferences.getInt(Constants.SHORTCUTS, -1);
-        WeiboLog.d(TAG, "hasShortcuts:"+hasShortcuts);
-        if (hasShortcuts>0) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        int hasShortcuts = preferences.getInt(Constants.SHORTCUTS, - 1);
+        WeiboLog.d(TAG, "hasShortcuts:" + hasShortcuts);
+        if (hasShortcuts > 0) {
             return;
         }
 
         preferences.edit().putInt(Constants.SHORTCUTS, 1).commit();
 
         // 创建快捷方式的Intent
-        Intent shortcutintent=new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+        Intent shortcutintent = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
         // 不允许重复创建
         shortcutintent.putExtra("duplicate", false);
         // 需要现实的名称
         shortcutintent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.app_name));
         // 快捷图片
-        Parcelable icon=Intent.ShortcutIconResource.fromContext(
+        Parcelable icon = Intent.ShortcutIconResource.fromContext(
             getApplicationContext(), R.drawable.logo);
         shortcutintent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
         // 点击快捷图片，运行的程序主入口
@@ -112,7 +112,7 @@ public class SplashActivity extends NavModeActivity {
     private void checkUpdate() {
         WeiboLog.d("checkUpdate");
 
-        if (!App.hasInternetConnection(SplashActivity.this)) {
+        if (! App.hasInternetConnection(SplashActivity.this)) {
             WeiboLog.w(TAG, "没有网络，不检查更新。");
             Toast.makeText(SplashActivity.this, getResources().getString(R.string.network_error),
                 Toast.LENGTH_LONG).show();
@@ -120,38 +120,38 @@ public class SplashActivity extends NavModeActivity {
             return;
         }
 
-        SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(SplashActivity.this);
-        boolean autoChkUpdate=options.getBoolean(PrefsActivity.PREF_AUTO_CHK_UPDATE, true);
-        if (!autoChkUpdate) {
+        SharedPreferences options = PreferenceManager.getDefaultSharedPreferences(SplashActivity.this);
+        boolean autoChkUpdate = options.getBoolean(PrefsActivity.PREF_AUTO_CHK_UPDATE, true);
+        if (! autoChkUpdate) {
             WeiboLog.d("不自动检查更新。");
             init();
             return;
         }
 
-        PackageManager manager=SplashActivity.this.getPackageManager();
-        int currVersionCode=574;
+        PackageManager manager = SplashActivity.this.getPackageManager();
+        int currVersionCode = 574;
         try {
-            PackageInfo info=manager.getPackageInfo(SplashActivity.this.getPackageName(), 0);
-            String packageName=info.packageName;
-            currVersionCode=info.versionCode;
+            PackageInfo info = manager.getPackageInfo(SplashActivity.this.getPackageName(), 0);
+            String packageName = info.packageName;
+            currVersionCode = info.versionCode;
             //currVersionName=info.versionName;
         } catch (PackageManager.NameNotFoundException e) {
         }
-        final int cvd=currVersionCode;
+        final int cvd = currVersionCode;
         //mPrefs.getString(UPDTE_MODE,"0");
 
-        long time=mPreferences.getLong(Constants.UPDATE_TIMESTAMP, -1);
-        long now=System.currentTimeMillis();
-        long delta=now-time-Constants.UPDATE_DELTA;
-        WeiboLog.i("update.time:"+time+" now:"+now+" currVersionCode:"+currVersionCode);
+        long time = mPreferences.getLong(Constants.UPDATE_TIMESTAMP, - 1);
+        long now = System.currentTimeMillis();
+        long delta = now - time - Constants.UPDATE_DELTA;
+        WeiboLog.i("update.time:" + time + " now:" + now + " currVersionCode:" + currVersionCode);
 
-        if (delta<0&&time!=-1) {
-            WeiboLog.d(TAG, "不需要检查更新，近一天刚检查过，delta:"+delta+" time:"+time);
+        if (delta < 0 && time != - 1) {
+            WeiboLog.d(TAG, "不需要检查更新，近一天刚检查过，delta:" + delta + " time:" + time);
             init();
             return;
         }
 
-        SharedPreferences.Editor editor=mPreferences.edit();
+        SharedPreferences.Editor editor = mPreferences.edit();
         editor.putLong(Constants.UPDATE_TIMESTAMP, now);
         editor.commit();
 
@@ -159,27 +159,27 @@ public class SplashActivity extends NavModeActivity {
 
             @Override
             public void run() {
-                boolean updateFlag=false;
+                boolean updateFlag = false;
 
-                String xml=null;
+                String xml = null;
                 try {
-                    InputStream is=ImageManager.getImageStream(mUpdateUrl);
-                    xml= StreamUtils.parseInputStream(is);
-                    WeiboLog.v(TAG, "xml:"+xml);
+                    InputStream is = ImageManager.getImageStream(mUpdateUrl);
+                    xml = StreamUtils.parseInputStream(is);
+                    WeiboLog.v(TAG, "xml:" + xml);
 
                     final UpdateInfo updateInfo;
-                    updateInfo=WeiboParser.parseUpdateInfo(xml);
-                    String m="";
+                    updateInfo = WeiboParser.parseUpdateInfo(xml);
+                    String m = "";
                     if ("-1".equals(updateInfo.hasNewVer)) {
                         WeiboLog.d("没有新版本，或者检查更新出错，直接进入。");
                         init();
                     } else {
-                        if (Integer.valueOf(updateInfo.newVer)>cvd) {
+                        if (Integer.valueOf(updateInfo.newVer) > cvd) {
                             WeiboLog.d("有新版本.");
-                            updateFlag=true;
+                            updateFlag = true;
                         }
 
-                        WeiboLog.d(TAG, "updateInfo:"+updateInfo+" updateFlag:"+updateFlag);
+                        WeiboLog.d(TAG, "updateInfo:" + updateInfo + " updateFlag:" + updateFlag);
 
                         if (updateFlag) {   //show update dialog
                             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -230,9 +230,9 @@ public class SplashActivity extends NavModeActivity {
             return;
         }
         App.getAdvancedWeiboApi(SplashActivity.this);*/
-        App app=(App) App.getAppContext();
+        App app = (App) App.getAppContext();
         app.initOauth2(false);
-        if (null==app.getOauthBean()||TextUtils.isEmpty(app.getOauthBean().accessToken)) {
+        if (null == app.getOauthBean() || TextUtils.isEmpty(app.getOauthBean().accessToken)) {
             mHandler.post(new Runnable() {
 
                 @Override
@@ -266,18 +266,18 @@ public class SplashActivity extends NavModeActivity {
      * @param updateInfo 更新信息实体
      */
     void showUpdateDialog(final UpdateInfo updateInfo) {
-        LayoutInflater inflater=LayoutInflater.from(SplashActivity.this);
-        View view=inflater.inflate(R.layout.home_dialog_view, null);
-        Button cancelButton=(Button) view.findViewById(R.id.cancel);
-        Button updateButton=(Button) view.findViewById(R.id.ok);
-        TextView msgView=(TextView) view.findViewById(R.id.update_msg);
+        LayoutInflater inflater = LayoutInflater.from(SplashActivity.this);
+        View view = inflater.inflate(R.layout.home_dialog_view, null);
+        Button cancelButton = (Button) view.findViewById(R.id.cancel);
+        Button updateButton = (Button) view.findViewById(R.id.ok);
+        TextView msgView = (TextView) view.findViewById(R.id.update_msg);
 
         msgView.setText(Html.fromHtml(updateInfo.updateMsg));
-        AlertDialog.Builder builder=new AlertDialog.Builder(SplashActivity.this)
+        AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this)
             .setTitle(R.string.update_title)
             .setView(view);
 
-        final AlertDialog dialog=builder.create();
+        final AlertDialog dialog = builder.create();
         dialog.show();
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -285,7 +285,7 @@ public class SplashActivity extends NavModeActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                WeiboLog.i(TAG, "cancel:"+updateInfo);
+                WeiboLog.i(TAG, "cancel:" + updateInfo);
                 /*if ("2".equals(updateInfo.updateMode)) {
                     //FragmentTabActivity.this.finish();
                 } else if ("1".equals(updateInfo.updateMode)) {
@@ -299,12 +299,12 @@ public class SplashActivity extends NavModeActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                WeiboLog.i(TAG, "udpate:"+updateInfo);
+                WeiboLog.i(TAG, "udpate:" + updateInfo);
                 //downloadUpdate(updateInfo);
                 try {
                     Intent intent;
-                    Uri uri=Uri.parse(updateInfo.updateUrl);
-                    intent=new Intent(Intent.ACTION_VIEW, uri);
+                    Uri uri = Uri.parse(updateInfo.updateUrl);
+                    intent = new Intent(Intent.ACTION_VIEW, uri);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     SplashActivity.this.startActivity(intent);
 
@@ -319,7 +319,7 @@ public class SplashActivity extends NavModeActivity {
         });
     }
 
-    public static final String SOURCE="Fri Feb 14 20:23:51 +0800 2014";
+    public static final String SOURCE = "Fri Feb 14 20:23:51 +0800 2014";
 
     public static void test() {
        /*  Fri Feb 14 20:23:51 GMT+08:00 2014
@@ -328,11 +328,11 @@ public class SplashActivity extends NavModeActivity {
          2014年02月14日 20时23分51秒
          自 1970 年 1 月 1 日 00:00:00 GMT 以来此 Date 对象经过的毫秒数为：1392380631000毫秒*/
 
-        SimpleDateFormat sdf=new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", new Locale("CHINA"));
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", new Locale("CHINA"));
 
-        Date myDate=null;
+        Date myDate = null;
         try {
-            myDate=sdf.parse(SOURCE);
+            myDate = sdf.parse(SOURCE);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -341,13 +341,13 @@ public class SplashActivity extends NavModeActivity {
         sdf.applyPattern("EEE MMM dd HH:mm:ss Z yyyy");
         System.out.println(sdf.format(myDate));
 
-        SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", new Locale("CHINESE", "CHINA"));
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", new Locale("CHINESE", "CHINA"));
         System.out.println(sdf2.format(myDate));
 
         sdf2.applyPattern("yyyy年MM月dd日 HH时mm分ss秒");
         System.out.println(sdf2.format(myDate));
 
-        long miliSeconds=myDate.getTime();
-        System.out.println("自 1970 年 1 月 1 日 00:00:00 GMT 以来此 Date 对象经过的毫秒数为："+miliSeconds+"毫秒");
+        long miliSeconds = myDate.getTime();
+        System.out.println("自 1970 年 1 月 1 日 00:00:00 GMT 以来此 Date 对象经过的毫秒数为：" + miliSeconds + "毫秒");
     }
 }

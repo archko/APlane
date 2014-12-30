@@ -14,11 +14,11 @@ public class ImageBean {
 
     @Override
     public String toString() {
-        return "ImageBean{"+
-            ", id='"+id+'\''+
-            "name='"+name+'\''+
-            ", url='"+url+'\''+
-            ", thumb='"+thumb+'\''+
+        return "ImageBean{" +
+            ", id='" + id + '\'' +
+            "name='" + name + '\'' +
+            ", url='" + url + '\'' +
+            ", thumb='" + thumb + '\'' +
             //", path='"+path+'\''+
             '}';
     }

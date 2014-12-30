@@ -14,7 +14,7 @@ import com.me.microblog.util.WeiboLog;
  */
 public class SinaPublucStatusImpl extends AbsStatusImpl<Status> {
 
-    public static final String TAG="SinaPublucStatusImpl";
+    public static final String TAG = "SinaPublucStatusImpl";
 
     public SinaPublucStatusImpl() {
         /*AbsApiImpl absApi=new SinaStatusApi();
@@ -24,19 +24,19 @@ public class SinaPublucStatusImpl extends AbsStatusImpl<Status> {
     @Override
     public SStatusData<Status> loadData(Object... params) throws WeiboException {
         WeiboLog.d(TAG, "loadData.");
-        SinaStatusApi sWeiboApi2=(SinaStatusApi) mAbsApi;
-        SStatusData<Status> sStatusData=null;
+        SinaStatusApi sWeiboApi2 = (SinaStatusApi) mAbsApi;
+        SStatusData<Status> sStatusData = null;
         //SWeiboApi2 sWeiboApi2=((SWeiboApi2) App.getMicroBlog(App.getAppContext()));
-        if (null==sWeiboApi2) {
-            sStatusData=new SStatusData<Status>();
-            sStatusData.errorCode=WeiboException.API_ERROR;
-            sStatusData.errorMsg=App.getAppContext().getString(R.string.err_api_error);
+        if (null == sWeiboApi2) {
+            sStatusData = new SStatusData<Status>();
+            sStatusData.errorCode = WeiboException.API_ERROR;
+            sStatusData.errorMsg = App.getAppContext().getString(R.string.err_api_error);
         } else {
             /*Long sinceId=(Long) params[1];
             Long maxId=(Long) params[2];*/
-            Integer c=(Integer) params[3];
+            Integer c = (Integer) params[ 3 ];
             //Integer p=(Integer) params[4];
-            sStatusData=sWeiboApi2.getPublicTimeline(c);
+            sStatusData = sWeiboApi2.getPublicTimeline(c);
         }
 
         return sStatusData;

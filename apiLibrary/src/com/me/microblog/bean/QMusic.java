@@ -1,12 +1,11 @@
 package com.me.microblog.bean;
 
 /**
- *
  * @author archko
  */
 public class QMusic {
 
-    public static final long serialVersionUID=3894560643019408219L;
+    public static final long serialVersionUID = 3894560643019408219L;
 
     /**
      * 演唱者
@@ -23,10 +22,10 @@ public class QMusic {
 
     @Override
     public String toString() {
-        return "QMusic{"+
-            "author='"+author+'\''+
-            ", url='"+url+'\''+
-            ", title='"+title+'\''+
+        return "QMusic{" +
+            "author='" + author + '\'' +
+            ", url='" + url + '\'' +
+            ", title='" + title + '\'' +
             '}';
     }
 }

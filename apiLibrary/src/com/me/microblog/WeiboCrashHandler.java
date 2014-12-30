@@ -38,23 +38,23 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
     private Context mContext;
     private Thread.UncaughtExceptionHandler defaultExceptionHandler;
     //单例声明CustomException; 
-    private static WeiboCrashHandler customException=null;
+    private static WeiboCrashHandler customException = null;
 
     /**
      * Debug Log tag
      */
-    public static final String TAG="WeiboCrashHandler";
+    public static final String TAG = "WeiboCrashHandler";
     /**
      * 使用Properties来保存设备的信息和错误堆栈信息
      */
-    private Properties mDeviceCrashInfo=new Properties();
-    private static final String VERSION_NAME="versionName";
-    private static final String VERSION_CODE="versionCode";
-    private static final String STACK_TRACE="STACK_TRACE";
+    private Properties mDeviceCrashInfo = new Properties();
+    private static final String VERSION_NAME = "versionName";
+    private static final String VERSION_CODE = "versionCode";
+    private static final String STACK_TRACE = "STACK_TRACE";
     /**
      * 错误报告文件的扩展名
      */
-    private static final String CRASH_REPORTER_EXTENSION=".txt";
+    private static final String CRASH_REPORTER_EXTENSION = ".txt";
 
     /**
      * 保证只有一个CrashHandler实例
@@ -66,8 +66,8 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
      * 获取CrashHandler实例 ,单例模式
      */
     public static WeiboCrashHandler getInstance() {
-        if (customException==null) {
-            customException=new WeiboCrashHandler();
+        if (customException == null) {
+            customException = new WeiboCrashHandler();
         }
         return customException;
     }
@@ -80,8 +80,8 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
      * @param ctx
      */
     public void init(Context context) {
-        mContext=context;
-        defaultExceptionHandler=Thread.getDefaultUncaughtExceptionHandler();
+        mContext = context;
+        defaultExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
 
     }
@@ -92,7 +92,7 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
             exception.printStackTrace();
         }
 
-        if (!handleException(exception)&&defaultExceptionHandler!=null) {
+        if (! handleException(exception) && defaultExceptionHandler != null) {
             //如果用户没有处理则让系统默认的异常处理器来处理   
             defaultExceptionHandler.uncaughtException(thread, exception);
         } else {
@@ -123,12 +123,12 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
      * @return true:如果处理了该异常信息;否则返回false
      */
     private boolean handleException(final Throwable ex) {
-        if (ex==null) {
+        if (ex == null) {
             return true;
         }
-        final String msg=ex.getLocalizedMessage();
+        final String msg = ex.getLocalizedMessage();
         if (WeiboLog.DEBUG) {
-            WeiboLog.e("exception >>>>>>>"+msg);
+            WeiboLog.e("exception >>>>>>>" + msg);
         }
 
         //收集设备信息   
@@ -145,9 +145,9 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
             @Override
             public void run() {
                 Looper.prepare();
-                int msgId=R.string.app_crash;
+                int msgId = R.string.app_crash;
                 if (ex instanceof OutOfMemoryError) {
-                    msgId=R.string.app_crash_oome;
+                    msgId = R.string.app_crash_oome;
                 }
 
                 Toast.makeText(mContext, msgId, Toast.LENGTH_LONG).show();
@@ -172,16 +172,16 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
      * @param ctx
      */
     private void sendCrashReportsToServer(Context ctx) {
-        final String[] crFiles=getCrashReportFiles(ctx);
-        if (crFiles!=null&&crFiles.length>0) {
-            TreeSet<String> sortedFiles=new TreeSet<String>();
+        final String[] crFiles = getCrashReportFiles(ctx);
+        if (crFiles != null && crFiles.length > 0) {
+            TreeSet<String> sortedFiles = new TreeSet<String>();
             sortedFiles.addAll(Arrays.asList(crFiles));
 
             for (String fileName : sortedFiles) {
                 if (WeiboLog.DEBUG) {
-                    WeiboLog.e("log日志文件名称："+fileName);
+                    WeiboLog.e("log日志文件名称：" + fileName);
                 }
-                final File cr=new File(ctx.getFilesDir(), fileName);
+                final File cr = new File(ctx.getFilesDir(), fileName);
                 postReport(cr);
                 cr.delete();// 删除已发送的报告   
             }
@@ -197,7 +197,7 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
      * @param file
      */
     private void postReport(File file) {
-        if (isNetworkAvailable(mContext)&&file!=null) {
+        if (isNetworkAvailable(mContext) && file != null) {
             /*
             try {
                 final FileInputStream inputStream = new FileInputStream(file);
@@ -228,11 +228,11 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
      * @return
      */
     private String[] getCrashReportFiles(Context ctx) {
-        final File filesDir=ctx.getFilesDir();
+        final File filesDir = ctx.getFilesDir();
         if (WeiboLog.DEBUG) {
-            WeiboLog.e("异常报告保存路径："+filesDir);
+            WeiboLog.e("异常报告保存路径：" + filesDir);
         }
-        FilenameFilter filter=new FilenameFilter() {
+        FilenameFilter filter = new FilenameFilter() {
 
             public boolean accept(File dir, String name) {
                 return name.endsWith(CRASH_REPORTER_EXTENSION);
@@ -248,27 +248,27 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
      * @return
      */
     private String saveCrashInfoToFile(Throwable ex) {
-        final Writer info=new StringWriter();
-        final PrintWriter printWriter=new PrintWriter(info);
+        final Writer info = new StringWriter();
+        final PrintWriter printWriter = new PrintWriter(info);
         ex.printStackTrace(printWriter);
 
-        Throwable cause=ex.getCause();
-        while (cause!=null) {
+        Throwable cause = ex.getCause();
+        while (cause != null) {
             cause.printStackTrace(printWriter);
-            cause=cause.getCause();
+            cause = cause.getCause();
         }
 
-        final String result=info.toString();
+        final String result = info.toString();
         if (WeiboLog.DEBUG) {
-            FileHelper.WriteStringToFile(result+"\r\n", App.mCacheDir+System.currentTimeMillis()+".txt", true);
+            FileHelper.WriteStringToFile(result + "\r\n", App.mCacheDir + System.currentTimeMillis() + ".txt", true);
         }
         printWriter.close();
         mDeviceCrashInfo.put(STACK_TRACE, result);
 
         try {
-            final long timestamp=System.currentTimeMillis();
-            final String fileName="crash-"+timestamp+CRASH_REPORTER_EXTENSION;
-            final FileOutputStream trace=mContext.openFileOutput(fileName, Context.MODE_PRIVATE);
+            final long timestamp = System.currentTimeMillis();
+            final String fileName = "crash-" + timestamp + CRASH_REPORTER_EXTENSION;
+            final FileOutputStream trace = mContext.openFileOutput(fileName, Context.MODE_PRIVATE);
             mDeviceCrashInfo.store(trace, "");
             trace.flush();
             trace.close();
@@ -288,11 +288,11 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
      */
     public void collectCrashDeviceInfo(Context ctx) {
         try {
-            final PackageManager pm=ctx.getPackageManager();
-            final PackageInfo pi=pm.getPackageInfo(ctx.getPackageName(), PackageManager.GET_ACTIVITIES);
-            if (pi!=null) {
-                mDeviceCrashInfo.put(VERSION_NAME, pi.versionName==null?"not set":pi.versionName);
-                mDeviceCrashInfo.put(VERSION_CODE, ""+pi.versionCode);
+            final PackageManager pm = ctx.getPackageManager();
+            final PackageInfo pi = pm.getPackageInfo(ctx.getPackageName(), PackageManager.GET_ACTIVITIES);
+            if (pi != null) {
+                mDeviceCrashInfo.put(VERSION_NAME, pi.versionName == null ? "not set" : pi.versionName);
+                mDeviceCrashInfo.put(VERSION_CODE, "" + pi.versionCode);
             }
         } catch (PackageManager.NameNotFoundException e) {
             if (WeiboLog.DEBUG) {
@@ -303,13 +303,13 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
         //使用反射来收集设备信息.在Build类中包含各种设备信息,   
         //例如: 系统版本号,设备生产商 等帮助调试程序的有用信息   
         //具体信息请参考后面的截图   
-        final Field[] fields=Build.class.getDeclaredFields();
+        final Field[] fields = Build.class.getDeclaredFields();
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
-                mDeviceCrashInfo.put(field.getName(), ""+field.get(null));
+                mDeviceCrashInfo.put(field.getName(), "" + field.get(null));
                 if (WeiboLog.DEBUG) {
-                    WeiboLog.e(TAG, field.getName()+" : "+field.get(null));
+                    WeiboLog.e(TAG, field.getName() + " : " + field.get(null));
                 }
             } catch (Exception e) {
                 if (WeiboLog.DEBUG) {
@@ -326,16 +326,16 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
      * @return true 可用; false 不可用
      */
     private boolean isNetworkAvailable(Context ctx) {
-        final ConnectivityManager cm=(ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm==null) {
+        final ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm == null) {
             return false;
         }
-        final NetworkInfo[] netinfo=cm.getAllNetworkInfo();
-        if (netinfo==null) {
+        final NetworkInfo[] netinfo = cm.getAllNetworkInfo();
+        if (netinfo == null) {
             return false;
         }
-        for (int i=0; i<netinfo.length; i++) {
-            if (netinfo[i].isConnected()) {
+        for (int i = 0; i < netinfo.length; i++) {
+            if (netinfo[ i ].isConnected()) {
                 return true;
             }
         }
@@ -352,13 +352,13 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
     }
 
     private void writeLog(String log, String name) {
-        CharSequence timestamp=DateFormat.format("yyyyMMdd_kkmmss", System.currentTimeMillis());
-        String filename=name+"_"+timestamp+".log";
+        CharSequence timestamp = DateFormat.format("yyyyMMdd_kkmmss", System.currentTimeMillis());
+        String filename = name + "_" + timestamp + ".log";
 
         try {
-            FileOutputStream stream=new FileOutputStream(filename);
-            OutputStreamWriter output=new OutputStreamWriter(stream);
-            BufferedWriter bw=new BufferedWriter(output);
+            FileOutputStream stream = new FileOutputStream(filename);
+            OutputStreamWriter output = new OutputStreamWriter(stream);
+            BufferedWriter bw = new BufferedWriter(output);
 
             bw.write(log);
             bw.newLine();
@@ -371,21 +371,21 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
     }
 
     private void writeLogcat(String name) {
-        CharSequence timestamp=DateFormat.format("yyyyMMdd_kkmmss", System.currentTimeMillis());
-        String filename=name+"_"+timestamp+".log";
-        String[] args={"logcat", "-v", "time", "-d"};
+        CharSequence timestamp = DateFormat.format("yyyyMMdd_kkmmss", System.currentTimeMillis());
+        String filename = name + "_" + timestamp + ".log";
+        String[] args = {"logcat", "-v", "time", "-d"};
 
         try {
-            Process process=Runtime.getRuntime().exec(args);
-            InputStreamReader input=new InputStreamReader(
+            Process process = Runtime.getRuntime().exec(args);
+            InputStreamReader input = new InputStreamReader(
                 process.getInputStream());
-            OutputStreamWriter output=new OutputStreamWriter(
+            OutputStreamWriter output = new OutputStreamWriter(
                 new FileOutputStream(filename));
-            BufferedReader br=new BufferedReader(input);
-            BufferedWriter bw=new BufferedWriter(output);
+            BufferedReader br = new BufferedReader(input);
+            BufferedWriter bw = new BufferedWriter(output);
             String line;
 
-            while ((line=br.readLine())!=null) {
+            while ((line = br.readLine()) != null) {
                 bw.write(line);
                 bw.newLine();
             }

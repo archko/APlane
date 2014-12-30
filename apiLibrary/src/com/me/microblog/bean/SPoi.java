@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class SPoi implements Serializable {
 
-    public static final long serialVersionUID=3894560643019408211L;
+    public static final long serialVersionUID = 3894560643019408211L;
 
     /**
      * 本条poi记录的spid

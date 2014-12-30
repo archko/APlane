@@ -15,8 +15,8 @@ import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.BaseFragment;
 import cn.archko.microblog.fragment.abs.FragmentCallback;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.me.microblog.util.WeiboLog;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.me.microblog.util.WeiboLog;
 
 /**
  * @version 1.00.00
@@ -28,12 +28,12 @@ public class HotPickCategoryFragment extends BaseFragment {
 
     FragmentCallback mFragmentCallback;
     //String category=keys[0];
-    int selectedPos=0;
+    int selectedPos = 0;
     /**
      * oauth2的热门用户分类也不同了。
      */
-    static final String[] keys={"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
-    static final String[] names={"娱乐", "搞笑", "美女", "视频", "星座", "各种萌", "时尚", "名车", "美食", "音乐"};
+    static final String[] keys = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+    static final String[] names = {"娱乐", "搞笑", "美女", "视频", "星座", "各种萌", "时尚", "名车", "美食", "音乐"};
 
     protected PullToRefreshListView mPullRefreshListView;
     protected ListView mListView;
@@ -46,19 +46,19 @@ public class HotPickCategoryFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        WeiboLog.d("onAttach:"+this);
+        WeiboLog.d("onAttach:" + this);
         try {
-            mFragmentCallback=(FragmentCallback) activity;
+            mFragmentCallback = (FragmentCallback) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()+" must implement FragmentCallback");
+            throw new ClassCastException(activity.toString() + " must implement FragmentCallback");
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RelativeLayout root=(RelativeLayout) inflater.inflate(R.layout.friend_list, null);
-        mPullRefreshListView=(PullToRefreshListView) root.findViewById(R.id.statusList);
-        mListView=mPullRefreshListView.getRefreshableView();
+        RelativeLayout root = (RelativeLayout) inflater.inflate(R.layout.friend_list, null);
+        mPullRefreshListView = (PullToRefreshListView) root.findViewById(R.id.statusList);
+        mListView = mPullRefreshListView.getRefreshableView();
         mPullRefreshListView.setMode(PullToRefreshBase.Mode.DISABLED);
         /*mListView.setLockScrollWhileRefreshing(true);
         SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -77,8 +77,8 @@ public class HotPickCategoryFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (null==mAdapter) {
-            mAdapter=new TimeLineAdapter();
+        if (null == mAdapter) {
+            mAdapter = new TimeLineAdapter();
         }
 
         mListView.setAdapter(mAdapter);
@@ -91,8 +91,8 @@ public class HotPickCategoryFragment extends BaseFragment {
     }
 
     public void onListItemClick(AdapterView<?> parent, View v, int position, long id) {
-        WeiboLog.i("Item clicked,position: "+position);
-        selectedPos=position;
+        WeiboLog.i("Item clicked,position: " + position);
+        selectedPos = position;
         viewUserHot();
     }
 
@@ -100,12 +100,12 @@ public class HotPickCategoryFragment extends BaseFragment {
      * 查看推荐类型的用户
      */
     private void viewUserHot() {
-        int pos=selectedPos;
-        if (mListView.getHeaderViewsCount()>0) {
+        int pos = selectedPos;
+        if (mListView.getHeaderViewsCount() > 0) {
             pos--;
         }
-        String name=keys[pos];
-        WeiboLog.d("选中的分类："+pos+" type："+name);
+        String name = keys[ pos ];
+        WeiboLog.d("选中的分类：" + pos + " type：" + name);
         //mFragmentCallback.switchTab(name, HotFragmentActivity.TYPE_HOT_STATUS_PICK);
     }
 
@@ -121,7 +121,7 @@ public class HotPickCategoryFragment extends BaseFragment {
 
         @Override
         public Object getItem(int i) {
-            return names[i];
+            return names[ i ];
         }
 
         @Override
@@ -132,19 +132,19 @@ public class HotPickCategoryFragment extends BaseFragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
-            if (convertView==null) {
-                convertView=((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
+            if (convertView == null) {
+                convertView = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
                     inflate(android.R.layout.simple_list_item_1, null);
 
-                holder=new ViewHolder();
-                holder.text1=(TextView) convertView.findViewById(android.R.id.text1);
+                holder = new ViewHolder();
+                holder.text1 = (TextView) convertView.findViewById(android.R.id.text1);
                 convertView.setTag(holder);
             } else {
                 // Get the ViewHolder back to get fast access to the TextView and the ImageView.
-                holder=(ViewHolder) convertView.getTag();
+                holder = (ViewHolder) convertView.getTag();
             }
 
-            holder.text1.setText(names[position]);
+            holder.text1.setText(names[ position ]);
 
             return convertView;
         }

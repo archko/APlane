@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class SPoiResult implements Serializable {
 
-    public static final long serialVersionUID=3894560643019408211L;
+    public static final long serialVersionUID = 3894560643019408211L;
 
     /**
      * 结果总数

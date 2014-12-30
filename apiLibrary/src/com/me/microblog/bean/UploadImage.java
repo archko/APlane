@@ -29,7 +29,7 @@ public class UploadImage implements Parcelable {
     /**
      * 是否上传了,这个为关键标识,而不是判断是否有id或路径.
      */
-    public boolean hasUploaded=false;
+    public boolean hasUploaded = false;
 
     public UploadImage() {
     }
@@ -38,22 +38,22 @@ public class UploadImage implements Parcelable {
         readFromParcel(in);
     }
 
-    public static final Parcelable.Creator CREATOR=new Parcelable.Creator() {
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public UploadImage createFromParcel(Parcel in) {
             return new UploadImage(in);
         }
 
         public UploadImage[] newArray(int size) {
-            return new UploadImage[size];
+            return new UploadImage[ size ];
         }
     };
 
     protected void readFromParcel(Parcel in) {
-        id=in.readInt();
-        dbId=in.readInt();
-        pic_id=in.readString();
-        path=in.readString();
-        hasUploaded=in.readInt()!=0;
+        id = in.readInt();
+        dbId = in.readInt();
+        pic_id = in.readString();
+        path = in.readString();
+        hasUploaded = in.readInt() != 0;
     }
 
     public int describeContents() {
@@ -71,12 +71,12 @@ public class UploadImage implements Parcelable {
 
     @Override
     public String toString() {
-        return "UploadImage{"+
-            "id="+id+
-            ", dbId="+dbId+
-            ", pic_id='"+pic_id+'\''+
-            ", path='"+path+'\''+
-            ", hasUploaded="+hasUploaded+
+        return "UploadImage{" +
+            "id=" + id +
+            ", dbId=" + dbId +
+            ", pic_id='" + pic_id + '\'' +
+            ", path='" + path + '\'' +
+            ", hasUploaded=" + hasUploaded +
             '}';
     }
 }

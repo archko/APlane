@@ -19,9 +19,9 @@ import com.me.microblog.App;
 import com.me.microblog.bean.Draft;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.SqliteWrapper;
 import com.me.microblog.util.WeiboLog;
-import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00
@@ -35,18 +35,18 @@ import cn.archko.microblog.utils.AKUtils;
  */
 public class DraftListFragment extends AbstractLocalListFragment<Draft> {
 
-    public static final String TAG="DraftListFragment";
-    public static final int GET_DRAFT=1;
+    public static final String TAG = "DraftListFragment";
+    public static final int GET_DRAFT = 1;
     /**
      * 当前的模式，如果为get_draft，就是获取数据用的。
      */
-    int mode=0;
+    int mode = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent=getActivity().getIntent();
-        mode=intent.getIntExtra("mode", 0);
+        Intent intent = getActivity().getIntent();
+        mode = intent.getIntExtra("mode", 0);
         /*if (mode==GET_DRAFT) {  //在获取数据时，不能再有编辑操作。
             mQuickAction.setActionItemVisible(View.GONE, 0);
             mQuickAction.setActionItemVisible(View.GONE, 1);
@@ -55,7 +55,7 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
     }
 
     public void initApi() {
-        mStatusImpl=new SinaDraftImpl();
+        mStatusImpl = new SinaDraftImpl();
     }
 
     /**
@@ -80,7 +80,7 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root=super.onCreateView(inflater, container, savedInstanceState);
+        View root = super.onCreateView(inflater, container, savedInstanceState);
         //mListView.setLockScrollWhileRefreshing(true);
 
         return root;
@@ -98,13 +98,13 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
     public View getView(int position, View convertView, ViewGroup parent) {
         //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
 
-        DraftItemView itemView=null;
-        Draft draft=mDataList.get(position);
+        DraftItemView itemView = null;
+        Draft draft = mDataList.get(position);
 
-        if (convertView==null) {
-            itemView=new DraftItemView(getActivity());
+        if (convertView == null) {
+            itemView = new DraftItemView(getActivity());
         } else {
-            itemView=(DraftItemView) convertView;
+            itemView = (DraftItemView) convertView;
         }
         itemView.update(draft);
 
@@ -122,18 +122,18 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
             ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
                 R.layout.draft_item, this);
             setMinimumHeight(40);
-            mTitle=(TextView) findViewById(R.id.title);
-            mMsg=(TextView) findViewById(R.id.msg);
-            icon=(ImageView) findViewById(R.id.image);
+            mTitle = (TextView) findViewById(R.id.title);
+            mMsg = (TextView) findViewById(R.id.msg);
+            icon = (ImageView) findViewById(R.id.image);
         }
 
         public void update(String text1, String text2) {
             mTitle.setText(text1);
-            mMsg.setText("粉丝："+text2);
+            mMsg.setText("粉丝：" + text2);
         }
 
         public void update(Draft draft) {
-            String content=draft.content;
+            String content = draft.content;
             /*if (content.length()>45) {
                 content=content.substring(0, 45)+"...";
             }*/
@@ -146,14 +146,14 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
 
     //--------------------- popupMenu ---------------------
     public void onCreateCustomMenu(PopupMenu menuBuilder) {
-        int index=0;
+        int index = 0;
         menuBuilder.getMenu().add(0, Constants.OP_ID_QUICK_REPOST, index++, R.string.opb_draft_edit);
         menuBuilder.getMenu().add(0, Constants.OP_ID_COMMENT, index++, R.string.opb_draft_delete);
     }
 
     @Override
     public void onPrepareCustomMenu(PopupMenu menuBuilder) {
-        if (mode==GET_DRAFT) {
+        if (mode == GET_DRAFT) {
             menuBuilder.getMenu().findItem(Constants.OP_ID_QUICK_REPOST).setVisible(false);
             menuBuilder.getMenu().findItem(Constants.OP_ID_COMMENT).setVisible(false);
         } else {
@@ -164,7 +164,7 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        int menuId=item.getItemId();
+        int menuId = item.getItemId();
         switch (menuId) {
             case Constants.OP_ID_QUICK_REPOST: {
                 quickRepostStatus();
@@ -184,21 +184,21 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
      * @param achor 用于显示QuickAction
      */
     protected void itemClick(View achor) {
-        WeiboLog.d(TAG, "mDataList.size():"+mDataList.size());
-        if (selectedPos>=mDataList.size()) {
+        WeiboLog.d(TAG, "mDataList.size():" + mDataList.size());
+        if (selectedPos >= mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;
         }
 
         try {
-            Draft data=mDataList.get(selectedPos);
-            if (mode==GET_DRAFT) {
-                Intent intent=new Intent();
+            Draft data = mDataList.get(selectedPos);
+            if (mode == GET_DRAFT) {
+                Intent intent = new Intent();
                 intent.putExtra("draft", data);
                 getActivity().setResult(Activity.RESULT_OK, intent);
                 getActivity().finish();
             } else {
-                Intent intent=new Intent(getActivity(), NewStatusActivity.class);
+                Intent intent = new Intent(getActivity(), NewStatusActivity.class);
                 intent.putExtra("draft", data);
                 intent.setAction(Constants.INTENT_NEW_BLOG);
                 getActivity().startActivity(intent);
@@ -212,15 +212,15 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
      * 快速转发，在这里是编辑草稿
      */
     protected void quickRepostStatus() {
-        if (selectedPos>=mDataList.size()) {
+        if (selectedPos >= mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;
         }
 
         try {
-            Draft data=mDataList.get(selectedPos);
+            Draft data = mDataList.get(selectedPos);
 
-            Intent intent=new Intent(getActivity(), NewStatusActivity.class);
+            Intent intent = new Intent(getActivity(), NewStatusActivity.class);
             intent.putExtra("draft", data);
             intent.setAction(Constants.INTENT_NEW_BLOG);
             getActivity().startActivity(intent);
@@ -233,19 +233,19 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
      * 跳转到到评论界面，在这里是删除草稿
      */
     protected void commentStatus() {
-        if (selectedPos>=mDataList.size()) {
+        if (selectedPos >= mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;
         }
 
         try {
-            Draft data=mDataList.get(selectedPos);
+            Draft data = mDataList.get(selectedPos);
 
-            int res=SqliteWrapper.deleteDraft(App.getAppContext(), data);
-            if (res>0) {
-                newTaskNoNet(new Object[]{true, -1l, -1l, 1, page, false}, null);
+            int res = SqliteWrapper.deleteDraft(App.getAppContext(), data);
+            if (res > 0) {
+                newTaskNoNet(new Object[]{true, - 1l, - 1l, 1, page, false}, null);
             } else {
-                AKUtils.showToast("删除失败！");
+                NotifyUtils.showToast("删除失败！");
             }
         } catch (Exception e) {
             e.printStackTrace();

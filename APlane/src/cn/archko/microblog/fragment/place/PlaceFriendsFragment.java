@@ -5,8 +5,8 @@ import android.view.View;
 import cn.archko.microblog.R;
 import com.me.microblog.App;
 import com.me.microblog.bean.Status;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import cn.archko.microblog.utils.AKUtils;
 
 /**
  * @version 1.00.00  获取当前登录用户与其好友的位置动态
@@ -15,7 +15,7 @@ import cn.archko.microblog.utils.AKUtils;
  */
 public class PlaceFriendsFragment extends PlaceStatusListFragment {
 
-    public static final String TAG="PlaceFriendsFragment";
+    public static final String TAG = "PlaceFriendsFragment";
 
     /**
      * When creating, retrieve this instance's number from its arguments.
@@ -52,24 +52,24 @@ public class PlaceFriendsFragment extends PlaceStatusListFragment {
      * @param isHomeStore 是否是主页,只有主页有存储
      */
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        WeiboLog.i(TAG, "sinceId:"+sinceId+", maxId:"+maxId+", isRefresh:"+isRefresh+", isHomeStore:"+isHomeStore);
-        if (!App.hasInternetConnection(getActivity())) {
-            AKUtils.showToast(R.string.network_error);
-            if (mRefreshListener!=null) {
+        WeiboLog.i(TAG, "sinceId:" + sinceId + ", maxId:" + maxId + ", isRefresh:" + isRefresh + ", isHomeStore:" + isHomeStore);
+        if (! App.hasInternetConnection(getActivity())) {
+            NotifyUtils.showToast(R.string.network_error);
+            if (mRefreshListener != null) {
                 mRefreshListener.onRefreshFinished();
             }
             refreshAdapter(false, false);
             return;
         }
 
-        int count=weibo_count;
-        if (!isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
+        int count = weibo_count;
+        if (! isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
             //count++;
         } else {
             //page=1;
         }
 
-        if (!isLoading) {
+        if (! isLoading) {
             newTask(new Object[]{isRefresh, sinceId, maxId, count, page, isHomeStore, "friends"}, null);
         }
     }
@@ -79,14 +79,14 @@ public class PlaceFriendsFragment extends PlaceStatusListFragment {
      * 查看Status原文信息,包括评论，但这里是一个位置微博。可能会有些不一样.
      */
     protected void itemClick(View achor) {
-        AKUtils.showToast("not implemented!");
-        if (selectedPos>=mDataList.size()) {
+        NotifyUtils.showToast("not implemented!");
+        if (selectedPos >= mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;
         }
 
         try {
-            Status status=mDataList.get(selectedPos);
+            Status status = mDataList.get(selectedPos);
 
             //WeiboOperation.toViewOriginalStatus(getActivity(), status);
         } catch (Exception e) {

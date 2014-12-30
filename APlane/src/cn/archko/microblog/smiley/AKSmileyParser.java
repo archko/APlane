@@ -18,8 +18,8 @@ public class AKSmileyParser {
     private static AKSmileyParser sInstance;
 
     public static AKSmileyParser getInstance(Context context) {
-        if (null==sInstance) {
-            sInstance=new AKSmileyParser(context);
+        if (null == sInstance) {
+            sInstance = new AKSmileyParser(context);
         }
         return sInstance;
     }
@@ -29,22 +29,22 @@ public class AKSmileyParser {
     public final String[] mSmileyTexts;
 
     private AKSmileyParser(Context context) {
-        mContext=context;
-        mSmileyTexts=AKSmiley.mSmileyMap.keySet().toArray(new String[0]);
-        System.out.println("AKSmileyParser:"+mSmileyTexts+" ssm:"+AKSmiley.mSmileyMap.size());
-        mPattern=buildPattern();
+        mContext = context;
+        mSmileyTexts = AKSmiley.mSmileyMap.keySet().toArray(new String[ 0 ]);
+        System.out.println("AKSmileyParser:" + mSmileyTexts + " ssm:" + AKSmiley.mSmileyMap.size());
+        mPattern = buildPattern();
     }
 
     /**
      * Builds the regular expression we use to find smileys in {@link #addSmileySpans}.
      */
     private Pattern buildPattern() {
-        int length=AKSmiley.mSmileyMap.size();
+        int length = AKSmiley.mSmileyMap.size();
         // Set the StringBuilder capacity with the assumption that the average
         // smiley is 3 characters long.
-        StringBuilder patternString=new StringBuilder(length*3);
+        StringBuilder patternString = new StringBuilder(length * 3);
 
-        System.out.println("buildPattern:"+mSmileyTexts);
+        System.out.println("buildPattern:" + mSmileyTexts);
         // Build a regex that looks like (:-)|:-(|...), but escaping the smilies
         // properly so they will be interpreted literally by the regex matcher.
         patternString.append("(");
@@ -53,7 +53,7 @@ public class AKSmileyParser {
             patternString.append('|');
         }
         // Replace the extra '|' with a ')'
-        patternString.replace(patternString.length()-1, patternString.length(), ")");
+        patternString.replace(patternString.length() - 1, patternString.length(), ")");
 
         return Pattern.compile(patternString.toString());
     }
@@ -64,14 +64,14 @@ public class AKSmileyParser {
      *
      * @param text A CharSequence possibly containing emoticons
      * @return A CharSequence annotated with ImageSpans covering any
-     *         recognized emoticons.
+     * recognized emoticons.
      */
     public CharSequence addSmileySpans(CharSequence text) {
-        SpannableStringBuilder builder=new SpannableStringBuilder(text);
+        SpannableStringBuilder builder = new SpannableStringBuilder(text);
 
-        Matcher matcher=mPattern.matcher(text);
+        Matcher matcher = mPattern.matcher(text);
         while (matcher.find()) {
-            int resId=AKSmiley.mSmileyMap.get(matcher.group());
+            int resId = AKSmiley.mSmileyMap.get(matcher.group());
             builder.setSpan(new ImageSpan(mContext, resId),
                 matcher.start(), matcher.end(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

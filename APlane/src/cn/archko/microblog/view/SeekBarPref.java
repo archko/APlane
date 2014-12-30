@@ -16,7 +16,7 @@ import com.me.microblog.util.WeiboLog;
  */
 public final class SeekBarPref extends Preference implements OnSeekBarChangeListener {
 
-    public static final String TAG="SeekBarPref";
+    public static final String TAG = "SeekBarPref";
 
     private int defaultValue;
     private int maxValue;
@@ -29,18 +29,18 @@ public final class SeekBarPref extends Preference implements OnSeekBarChangeList
     /**
      * 是否改变当前的字体大小,如果是字体配置,可以显示,如果不是,就不用
      */
-    boolean changeVal=true;
+    boolean changeVal = true;
 
     public SeekBarPref(final Context context, final AttributeSet attrs) {
         super(context, attrs);
-        minValue=12;
-        maxValue=26;
-        defaultValue=16;
+        minValue = 12;
+        maxValue = 26;
+        defaultValue = 16;
 
         //下面这段得不到值，只能取为最小值。可能这也是自定义的一个bug？
-        TypedArray a=context.obtainStyledAttributes(attrs, R.styleable.SeekBarPreference, 0, 0);
-        int dv=a.getInt(R.styleable.SeekBarPreference_defaultValue, minValue);
-        currentValue=dv;
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SeekBarPreference, 0, 0);
+        int dv = a.getInt(R.styleable.SeekBarPreference_defaultValue, minValue);
+        currentValue = dv;
         a.recycle();
     }
 
@@ -65,8 +65,8 @@ public final class SeekBarPref extends Preference implements OnSeekBarChangeList
      * @param defaultVal
      */
     public void setInitialValue(final int defaultVal) {
-        WeiboLog.v(TAG, "setInitialValue:"+defaultVal);
-        currentValue=defaultVal;
+        WeiboLog.v(TAG, "setInitialValue:" + defaultVal);
+        currentValue = defaultVal;
     }
 
     /**
@@ -76,24 +76,24 @@ public final class SeekBarPref extends Preference implements OnSeekBarChangeList
      * @param changeVal
      */
     public void setInitialValue(final int defaultVal, boolean changeVal, final int minVal, final int maxVal) {
-        WeiboLog.v(TAG, "setInitialValue:"+defaultVal);
-        currentValue=defaultVal;
-        this.changeVal=changeVal;
-        minValue=minVal;
-        maxValue=maxVal;
+        WeiboLog.v(TAG, "setInitialValue:" + defaultVal);
+        currentValue = defaultVal;
+        this.changeVal = changeVal;
+        minValue = minVal;
+        maxValue = maxVal;
     }
 
     @Override
     protected void onBindView(View view) {
         super.onBindView(view);
-        seekBar=(SeekBar) view.findViewById(R.id.pref_seek_bar);
-        seekBar.setMax(maxValue-minValue);
-        seekBar.setProgress(currentValue-minValue);
+        seekBar = (SeekBar) view.findViewById(R.id.pref_seek_bar);
+        seekBar.setMax(maxValue - minValue);
+        seekBar.setProgress(currentValue - minValue);
         seekBar.setKeyProgressIncrement(1);
         seekBar.setOnSeekBarChangeListener(this);
 
-        textLabel=(TextView) view.findViewById(R.id.label);
-        text=(TextView) view.findViewById(R.id.pref_seek_current_value);
+        textLabel = (TextView) view.findViewById(R.id.label);
+        text = (TextView) view.findViewById(R.id.pref_seek_current_value);
 
         setFontSize();
         //text.setTextSize(currentValue);
@@ -102,10 +102,10 @@ public final class SeekBarPref extends Preference implements OnSeekBarChangeList
 
     @Override
     public CharSequence getSummary() {
-        final String summary=super.getSummary().toString();
-        int value=minValue;
+        final String summary = super.getSummary().toString();
+        int value = minValue;
         try {
-            value=(getPersistedInt((defaultValue)));
+            value = (getPersistedInt((defaultValue)));
         } catch (NumberFormatException ex) {
         }
         //Log.d(TAG, "setSummary:"+value);
@@ -122,7 +122,7 @@ public final class SeekBarPref extends Preference implements OnSeekBarChangeList
     @Override
     public void onProgressChanged(final SeekBar seek, final int value, final boolean fromTouch) {
         //Log.d(TAG, "onProgressChanged.currentValue:"+currentValue+" val:"+value);
-        currentValue=value+minValue;
+        currentValue = value + minValue;
         setFontSize();
         text.setText(Integer.toString(currentValue));
     }
@@ -140,8 +140,8 @@ public final class SeekBarPref extends Preference implements OnSeekBarChangeList
         notifyChanged();
     }
 
-    void setFontSize(){
-        if(changeVal){
+    void setFontSize() {
+        if (changeVal) {
             textLabel.setTextSize(currentValue);
         }
     }

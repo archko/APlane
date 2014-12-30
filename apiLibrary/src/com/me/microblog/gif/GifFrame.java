@@ -10,8 +10,8 @@ import android.graphics.Bitmap;
 public class GifFrame {
 
     public GifFrame(Bitmap image, int delay) {
-        this.image=image;
-        this.delay=delay;
+        this.image = image;
+        this.delay = delay;
     }
 
     /**

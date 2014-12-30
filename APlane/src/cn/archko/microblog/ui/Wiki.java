@@ -1,8 +1,8 @@
 package cn.archko.microblog.ui;
 
-import java.util.StringTokenizer;
-
 import android.text.TextUtils;
+
+import java.util.StringTokenizer;
 
 public class Wiki {
 
@@ -18,7 +18,7 @@ public class Wiki {
                 if (listLevel > 0) {
                     do {
                         buf.append("</ul>");
-                    } while (--listLevel > 0);
+                    } while (-- listLevel > 0);
                     buf.append("\n");
                 }
                 buf.append("<br>");
@@ -30,14 +30,14 @@ public class Wiki {
                 if (listLevel > 0) {
                     do {
                         buf.append("</ul>");
-                    } while (--listLevel > 0);
+                    } while (-- listLevel > 0);
                     buf.append("\n");
                 }
                 int count = 1;
                 for (int i = 1; i < s.length() && s.charAt(i) == '='; i++, count++) {
                 }
                 int end = s.indexOf("=", count);
-                if (end == -1) {
+                if (end == - 1) {
                     end = s.length();
                 }
                 buf.append("<h").append(count).append(">");
@@ -49,12 +49,12 @@ public class Wiki {
                 if (count > listLevel) {
                     do {
                         buf.append("<ul>");
-                    } while (count > ++listLevel);
+                    } while (count > ++ listLevel);
                     buf.append("\n");
                 } else if (count < listLevel) {
                     do {
                         buf.append("</ul>");
-                    } while (count < --listLevel);
+                    } while (count < -- listLevel);
                     buf.append("\n");
                 }
                 buf.append("<li>");

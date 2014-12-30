@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class Geo implements Serializable {
 
-    public static final long serialVersionUID=3894560643019408226L;
+    public static final long serialVersionUID = 3894560643019408226L;
 
     public String type;//"point",
     public String coordinates;// [0.0, 0.0]

@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class SinaTrendApi extends AbsApiImpl {
 
-    public static final String TAG="SinaTrendApi";
+    public static final String TAG = "SinaTrendApi";
 
     //--------------------- 话题 ---------------------
 
@@ -30,21 +30,21 @@ public class SinaTrendApi extends AbsApiImpl {
      * 这个值比较重要，默认值即可。
      */
     public Trends getTrends(String type) throws WeiboException {
-        String hourly="https://api.weibo.com/2/trends/hourly.json";
-        String daily="https://api.weibo.com/2/trends/daily.json";
-        String weekly="https://api.weibo.com/2/trends/weekly.json";
-        String urlString=getBaseUrl()+"trends/"+type+".json";
-        WeiboLog.i("urlString:"+urlString);
+        String hourly = "https://api.weibo.com/2/trends/hourly.json";
+        String daily = "https://api.weibo.com/2/trends/daily.json";
+        String weekly = "https://api.weibo.com/2/trends/weekly.json";
+        String urlString = getBaseUrl() + "trends/" + type + ".json";
+        WeiboLog.i("urlString:" + urlString);
 
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("base_app", String.valueOf(0));
+        pair = new BasicNameValuePair("base_app", String.valueOf(0));
         nvps.add(pair);
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboUtils.printResult(TAG, "rs:" + rs);
-        if (!TextUtils.isEmpty(rs)&&!"[]".equals(rs)&&"daily".equals(type)) {
+        if (! TextUtils.isEmpty(rs) && ! "[]".equals(rs) && "daily".equals(type)) {
             WeiboUtils.saveStatus(rs, App.getAppContext().getFilesDir().getAbsolutePath(), Constants.TREND_FILE);
         }
         return WeiboParser.parseTrends(rs);
@@ -59,15 +59,15 @@ public class SinaTrendApi extends AbsApiImpl {
      */
     @Deprecated
     public Trends followTrend(String trend_name) throws WeiboException {
-        String urlString=getBaseUrl()+"trends/follow.json";
+        String urlString = getBaseUrl() + "trends/follow.json";
 
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("trend_name", trend_name);
+        pair = new BasicNameValuePair("trend_name", trend_name);
         nvps.add(pair);
 
-        String rs=get(urlString, true, nvps);
+        String rs = get(urlString, true, nvps);
         return WeiboParser.parseTrends(rs);
     }
 
@@ -80,15 +80,15 @@ public class SinaTrendApi extends AbsApiImpl {
      */
     @Deprecated
     public boolean unfollowTrend(String trend_name) throws WeiboException {
-        String urlString=getBaseUrl()+"trends/follow.json";
+        String urlString = getBaseUrl() + "trends/follow.json";
 
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("trend_name", trend_name);
+        pair = new BasicNameValuePair("trend_name", trend_name);
         nvps.add(pair);
 
-        String rs=get(urlString, true, nvps);
+        String rs = get(urlString, true, nvps);
         WeiboUtils.printResult(TAG, "unfollowTrend:" + rs);
         return WeiboParser.parseResult(rs);
     }

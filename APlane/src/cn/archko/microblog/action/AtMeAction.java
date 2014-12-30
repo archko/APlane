@@ -16,15 +16,15 @@ import com.me.microblog.util.WeiboLog;
  */
 public class AtMeAction implements Action {
 
-    public static final String TAG="AtMeAction";
+    public static final String TAG = "AtMeAction";
 
     @Override
     public ActionResult doAction(Context context, Object... params) {
-        Long id=(Long) params[0];
-        Integer follow_up=(Integer) params[1];
-        ActionResult actionResult=new ActionResult();
+        Long id = (Long) params[ 0 ];
+        Integer follow_up = (Integer) params[ 1 ];
+        ActionResult actionResult = new ActionResult();
         try {
-            SinaStatusApi statusApi=new SinaStatusApi();
+            SinaStatusApi statusApi = new SinaStatusApi();
             statusApi.updateToken();
             mentionsShield(actionResult, id, follow_up, context, statusApi);
         } catch (Exception e) {
@@ -43,23 +43,23 @@ public class AtMeAction implements Action {
      */
     void mentionsShield(ActionResult actionResult, Long id, Integer follow_up, Context context, SinaStatusApi sWeiboApi2) {
         try {
-            if (null==sWeiboApi2) {
-                actionResult.resoultCode=ActionResult.ACTION_FALL;
-                actionResult.reslutMsg=context.getString(R.string.err_api_error);
+            if (null == sWeiboApi2) {
+                actionResult.resoultCode = ActionResult.ACTION_FALL;
+                actionResult.reslutMsg = context.getString(R.string.err_api_error);
             } else {
-                WeiboLog.d(TAG, "Shield:"+id);
-                boolean rs=sWeiboApi2.mentionsShield(id, follow_up);
+                WeiboLog.d(TAG, "Shield:" + id);
+                boolean rs = sWeiboApi2.mentionsShield(id, follow_up);
                 if (rs) {
-                    actionResult.resoultCode=ActionResult.ACTION_SUCESS;
+                    actionResult.resoultCode = ActionResult.ACTION_SUCESS;
                 }
             }
         } catch (WeiboException e) {
-            int code=e.getStatusCode();
-            if (code==200) {
-                actionResult.resoultCode=ActionResult.ACTION_SUCESS;
+            int code = e.getStatusCode();
+            if (code == 200) {
+                actionResult.resoultCode = ActionResult.ACTION_SUCESS;
             }
             e.printStackTrace();
-            actionResult.reslutMsg=e.toString();
+            actionResult.reslutMsg = e.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }

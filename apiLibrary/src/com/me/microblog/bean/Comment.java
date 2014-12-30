@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Comment implements Serializable {
 
-    public static final long serialVersionUID=3894560643019408230L;
+    public static final long serialVersionUID = 3894560643019408230L;
 
     /**
      * 评论时间
@@ -50,29 +50,30 @@ public class Comment implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this==o) return true;
-        if (o==null||getClass()!=o.getClass()) return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        Comment comment=(Comment) o;
+        Comment comment = (Comment) o;
 
-        if (id!=comment.id) return false;
-        if (replyComment!=null ? !replyComment.equals(comment.replyComment) : comment.replyComment!=null) return false;
-        if (text!=null ? !text.equals(comment.text) : comment.text!=null) return false;
+        if (id != comment.id) return false;
+        if (replyComment != null ? ! replyComment.equals(comment.replyComment) : comment.replyComment != null)
+            return false;
+        if (text != null ? ! text.equals(comment.text) : comment.text != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result=(int) (id^(id>>>32));
-        result=31*result+(replyComment!=null ? replyComment.hashCode() : 0);
-        result=31*result+(text!=null ? text.hashCode() : 0);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (replyComment != null ? replyComment.hashCode() : 0);
+        result = 31 * result + (text != null ? text.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "Comment{"+"createdAt="+createdAt+", id="+id+", replyComment="+replyComment+", source="+source+", status="+status+", text="+text+", user="+user+", favorited="+favorited+", truncated="+truncated+'}';
+        return "Comment{" + "createdAt=" + createdAt + ", id=" + id + ", replyComment=" + replyComment + ", source=" + source + ", status=" + status + ", text=" + text + ", user=" + user + ", favorited=" + favorited + ", truncated=" + truncated + '}';
     }
 
 }

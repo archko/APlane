@@ -13,8 +13,8 @@ public class ActionTask extends AsyncTask<Object, Integer, ActionResult> {
 
     public ActionTask(Context context, Action action) {
         super();
-        this.mContext=context;
-        this.mAction=action;
+        this.mContext = context;
+        this.mAction = action;
     }
 
     @Override

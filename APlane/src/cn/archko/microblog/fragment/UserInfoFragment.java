@@ -25,10 +25,10 @@ import cn.archko.microblog.fragment.abs.AbsStatusAbstraction;
 import cn.archko.microblog.fragment.impl.SinaUserImpl;
 import cn.archko.microblog.ui.ImageViewerActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
+import cn.archko.microblog.utils.WeiboOperation;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.andrew.apollo.utils.ThemeUtils;
-import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.WeiboUtils;
@@ -36,21 +36,22 @@ import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
 import com.me.microblog.core.AbsApiImpl;
-import com.me.microblog.core.sina.SinaUserApi;
 import com.me.microblog.core.factory.AbsApiFactory;
 import com.me.microblog.core.factory.ApiConfigFactory;
+import com.me.microblog.core.sina.SinaUserApi;
 import com.me.microblog.oauth.Oauth2;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import cn.archko.microblog.utils.AKUtils;
-/*import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
 
 import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+/*import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
 
 /**
  * @version 1.00.00
@@ -59,7 +60,7 @@ import java.util.regex.Pattern;
  */
 public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
-    public static final String TAG="UserInfoFragment";
+    public static final String TAG = "UserInfoFragment";
     private TextView screeName;
     private ImageView profileImage;
     private TextView mContentFirst;
@@ -73,18 +74,18 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
     private TextView statuses, friends, followers, favourites;
     ImageView mGender;
 
-    User mUser=null;
+    User mUser = null;
     private Button followButton, atButton;
-    long currentUserId=-1;
+    long currentUserId = - 1;
 
     LinearLayout statusBtn, friendsBtn, followersBtn;
 
-    private int followingType=-1;   //0表示未关注,1表示已关注,-1表示未知
-    Handler mHandler=new Handler();
+    private int followingType = - 1;   //0表示未关注,1表示已关注,-1表示未知
+    Handler mHandler = new Handler();
     /**
      * 用户是否已经加载，因为切换不同的tab时会重新调用onActivityCreated，不必每次重新加载用户
      */
-    boolean isUserLoaded=false;
+    boolean isUserLoaded = false;
     /**
      * 其它信息的布局
      */
@@ -100,8 +101,8 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        WeiboLog.d(TAG, "onCreate:"+this);
-        mLayoutInflater=(LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        WeiboLog.d(TAG, "onCreate:" + this);
+        mLayoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         //mStatusImpl=new SinaUserImpl();
 
@@ -116,78 +117,78 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
     @Override
     public void initApi() {
-        mStatusImpl=new SinaUserImpl();
+        mStatusImpl = new SinaUserImpl();
 
-        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
         try {
-            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.userApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
-            AKUtils.showToast("初始化api异常.");
+            NotifyUtils.showToast("初始化api异常.");
             //getActivity().finish();
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root=_onCreateView(inflater, container, savedInstanceState);
+        View root = _onCreateView(inflater, container, savedInstanceState);
         ThemeUtils.getsInstance().themeBackground(root, getActivity());
         return root;
     }
 
     View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ScrollView root=(ScrollView) inflater.inflate(R.layout.ak_user_profile, null);
+        ScrollView root = (ScrollView) inflater.inflate(R.layout.ak_user_profile, null);
 
-        currentUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
+        currentUserId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
 
-        mPrefs=PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        screeName=(TextView) root.findViewById(R.id.screen_name);
-        profileImage=(ImageView) root.findViewById(R.id.iv_portrait);
-        description=(TextView) root.findViewById(R.id.description);
+        screeName = (TextView) root.findViewById(R.id.screen_name);
+        profileImage = (ImageView) root.findViewById(R.id.iv_portrait);
+        description = (TextView) root.findViewById(R.id.description);
 
-        followers=(TextView) root.findViewById(R.id.follower_count);
-        friends=(TextView) root.findViewById(R.id.friend_count);
-        favourites=(TextView) root.findViewById(R.id.favourite_count);
-        statuses=(TextView) root.findViewById(R.id.status_count);
+        followers = (TextView) root.findViewById(R.id.follower_count);
+        friends = (TextView) root.findViewById(R.id.friend_count);
+        favourites = (TextView) root.findViewById(R.id.favourite_count);
+        statuses = (TextView) root.findViewById(R.id.status_count);
 
-        statusBtn=(LinearLayout) root.findViewById(R.id.status_btn);
-        friendsBtn=(LinearLayout) root.findViewById(R.id.friends_btn);
-        followersBtn=(LinearLayout) root.findViewById(R.id.followers_btn);
+        statusBtn = (LinearLayout) root.findViewById(R.id.status_btn);
+        friendsBtn = (LinearLayout) root.findViewById(R.id.friends_btn);
+        followersBtn = (LinearLayout) root.findViewById(R.id.followers_btn);
 
-        mContentFirst=(TextView) root.findViewById(R.id.tv_content_first);
-        mContentSencond=(TextView) root.findViewById(R.id.tv_content_sencond);
-        mName=(TextView) root.findViewById(R.id.tv_name);
-        comment_num=(TextView) root.findViewById(R.id.comment_num);
-        repost_num=(TextView) root.findViewById(R.id.repost_num);
-        mContentSecondLayout=(LinearLayout) root.findViewById(R.id.tv_content_sencond_layout);
+        mContentFirst = (TextView) root.findViewById(R.id.tv_content_first);
+        mContentSencond = (TextView) root.findViewById(R.id.tv_content_sencond);
+        mName = (TextView) root.findViewById(R.id.tv_name);
+        comment_num = (TextView) root.findViewById(R.id.comment_num);
+        repost_num = (TextView) root.findViewById(R.id.repost_num);
+        mContentSecondLayout = (LinearLayout) root.findViewById(R.id.tv_content_sencond_layout);
         mContentSecondLayout.setVisibility(View.GONE);
 
-        followButton=(Button) root.findViewById(R.id.follow);
+        followButton = (Button) root.findViewById(R.id.follow);
 
-        mGender=(ImageView) root.findViewById(R.id.gender);
+        mGender = (ImageView) root.findViewById(R.id.gender);
 
         followButton.setOnClickListener(listener);
-        atButton=(Button) root.findViewById(R.id.at_btn);
+        atButton = (Button) root.findViewById(R.id.at_btn);
         atButton.setOnClickListener(listener);
 
-        mTrack=(LinearLayout) root.findViewById(R.id.tracks);
-        mController=(LinearLayout) root.findViewById(R.id.controller);
+        mTrack = (LinearLayout) root.findViewById(R.id.tracks);
+        mController = (LinearLayout) root.findViewById(R.id.controller);
 
         //loadOtherLayout();
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imageUrl=mUser.profileImageUrl;
-                if (!TextUtils.isEmpty(mUser.avatar_hd)) {
-                    imageUrl=mUser.avatar_hd;
-                } else if (!TextUtils.isEmpty(mUser.avatar_large)) {
-                    imageUrl=mUser.avatar_large;
+                String imageUrl = mUser.profileImageUrl;
+                if (! TextUtils.isEmpty(mUser.avatar_hd)) {
+                    imageUrl = mUser.avatar_hd;
+                } else if (! TextUtils.isEmpty(mUser.avatar_large)) {
+                    imageUrl = mUser.avatar_large;
                 }
-                if (!TextUtils.isEmpty(imageUrl)) {
-                    String[] imageUrls=new String[]{imageUrl};
-                    Intent intent=new Intent(getActivity(), ImageViewerActivity.class);
+                if (! TextUtils.isEmpty(imageUrl)) {
+                    String[] imageUrls = new String[]{imageUrl};
+                    Intent intent = new Intent(getActivity(), ImageViewerActivity.class);
                     intent.putExtra("thumbs", imageUrls);
                     intent.putExtra("pos", 0);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -200,7 +201,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
     }
 
     void loadOtherLayout() {
-        if (mTrack.getChildCount()>0) {
+        if (mTrack.getChildCount() > 0) {
             mTrack.removeAllViews();
         }
 
@@ -208,54 +209,54 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
         TextView info;
         TextView txt;
 
-        String mark=mUser.remark;
-        container=mLayoutInflater.inflate(R.layout.ak_user_profile_item, null);
+        String mark = mUser.remark;
+        container = mLayoutInflater.inflate(R.layout.ak_user_profile_item, null);
         mTrack.addView(container);
-        txt=(TextView) container.findViewById(R.id.txt);
-        info=(TextView) container.findViewById(R.id.info);
+        txt = (TextView) container.findViewById(R.id.txt);
+        info = (TextView) container.findViewById(R.id.info);
         txt.setText(R.string.user_remark);
         info.setText(mark);
 
-        String gender=mUser.gender;
-        container=mLayoutInflater.inflate(R.layout.ak_user_profile_item, null);
+        String gender = mUser.gender;
+        container = mLayoutInflater.inflate(R.layout.ak_user_profile_item, null);
         mTrack.addView(container);
-        txt=(TextView) container.findViewById(R.id.txt);
-        info=(TextView) container.findViewById(R.id.info);
+        txt = (TextView) container.findViewById(R.id.txt);
+        info = (TextView) container.findViewById(R.id.info);
         txt.setText(R.string.user_gender);
 
-        String genderStr=null;
+        String genderStr = null;
         if ("f".equals(gender)) {
-            genderStr=getString(R.string.user_female);
+            genderStr = getString(R.string.user_female);
         } else if ("m".equals(gender)) {
-            genderStr=getString(R.string.user_male);
+            genderStr = getString(R.string.user_male);
         } else {
-            genderStr=getString(R.string.user_unknown);
+            genderStr = getString(R.string.user_unknown);
         }
         info.setText(genderStr);
 
-        String location=mUser.location;
-        container=mLayoutInflater.inflate(R.layout.ak_user_profile_item, null);
+        String location = mUser.location;
+        container = mLayoutInflater.inflate(R.layout.ak_user_profile_item, null);
         mTrack.addView(container);
-        txt=(TextView) container.findViewById(R.id.txt);
-        info=(TextView) container.findViewById(R.id.info);
+        txt = (TextView) container.findViewById(R.id.txt);
+        info = (TextView) container.findViewById(R.id.info);
         txt.setText(R.string.user_loc);
         info.setText(location);
 
-        String url=mUser.url;
-        if (!TextUtils.isEmpty(url)) {
-            container=mLayoutInflater.inflate(R.layout.ak_user_profile_item, null);
+        String url = mUser.url;
+        if (! TextUtils.isEmpty(url)) {
+            container = mLayoutInflater.inflate(R.layout.ak_user_profile_item, null);
             mTrack.addView(container);
-            txt=(TextView) container.findViewById(R.id.txt);
-            info=(TextView) container.findViewById(R.id.info);
+            txt = (TextView) container.findViewById(R.id.txt);
+            info = (TextView) container.findViewById(R.id.info);
             txt.setText(R.string.user_url);
             info.setText(url);
         }
 
-        String user_create_at=DateUtils.getFullDateString(mUser.createdAt);
-        container=mLayoutInflater.inflate(R.layout.ak_user_profile_item, null);
+        String user_create_at = DateUtils.getFullDateString(mUser.createdAt);
+        container = mLayoutInflater.inflate(R.layout.ak_user_profile_item, null);
         mTrack.addView(container);
-        txt=(TextView) container.findViewById(R.id.txt);
-        info=(TextView) container.findViewById(R.id.info);
+        txt = (TextView) container.findViewById(R.id.txt);
+        info = (TextView) container.findViewById(R.id.info);
         txt.setText(R.string.user_create_at);
         info.setText(user_create_at);
     }
@@ -281,13 +282,13 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
         // We have a menu item to show in action bar.
         //setHasOptionsMenu(true);
 
-        Intent intent=getActivity().getIntent();
-        int user_type=intent.getIntExtra("user_type", -1);
-        if (!isUserLoaded) {
-            Serializable u=intent.getSerializableExtra("user");
-            if (u!=null) {
-                mUser=(User) u;
-                WeiboLog.i(TAG, "user bundle:"+mUser.screenName);
+        Intent intent = getActivity().getIntent();
+        int user_type = intent.getIntExtra("user_type", - 1);
+        if (! isUserLoaded) {
+            Serializable u = intent.getSerializableExtra("user");
+            if (u != null) {
+                mUser = (User) u;
+                WeiboLog.i(TAG, "user bundle:" + mUser.screenName);
                 setContent(mUser);
                 loadUserAsync();
             } else {
@@ -295,7 +296,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
             }
         } else {    //如果已经加载，因为布局重新加载了，只是用户缓存，所以需要重新载入数据。避免不了关系重载。
             //user=((UserFragmentActivity) getActivity()).mUser;
-            if (null!=mUser) {
+            if (null != mUser) {
                 setContent(mUser);
             }
         }
@@ -311,7 +312,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
      * @param intent
      */
     private void loadUserAsync() {
-        Intent intent=getActivity().getIntent();
+        Intent intent = getActivity().getIntent();
         newTask(new Object[]{intent, 0}, null);
         /*new Thread(new Runnable() {
 
@@ -331,56 +332,56 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
     }
 
     private void setContent(final User user) {
-        isUserLoaded=true;
+        isUserLoaded = true;
         mHandler.post(new Runnable() {
 
             @Override
             public void run() {
-                WeiboLog.d(TAG, "setContent.user:"+user.screenName);
-                if (user!=null) {
+                WeiboLog.d(TAG, "setContent.user:" + user.screenName);
+                if (user != null) {
                     try {
-                        mUser=user;
+                        mUser = user;
                         screeName.setText(user.screenName);
 
-                        if (user.id>0) {
-                            Intent intent=getActivity().getIntent();
+                        if (user.id > 0) {
+                            Intent intent = getActivity().getIntent();
                             intent.putExtra("user_id", user.id);
                         }
 
-                        description.setText("简介:"+user.description);
+                        description.setText("简介:" + user.description);
 
                         followers.setText(String.valueOf(user.followersCount));
                         friends.setText(String.valueOf(user.friendsCount));
                         favourites.setText(String.valueOf(user.favouritesCount));
                         statuses.setText(String.valueOf(user.statusesCount));
 
-                        profileImageUrl=TextUtils.isEmpty(user.avatar_large) ? user.profileImageUrl : user.avatar_large;
+                        profileImageUrl = TextUtils.isEmpty(user.avatar_large) ? user.profileImageUrl : user.avatar_large;
 
                         /*ImageLoader imageLoader=ImageLoader.getInstance();
                         imageLoader.displayImage(profileImageUrl, profileImage, options);*/
                         ApolloUtils.getImageFetcher(getActivity()).startLoadImage(profileImageUrl, profileImage);
 
-                        Status status=user.status;
-                        if (null!=status) {
+                        Status status = user.status;
+                        if (null != status) {
                             mName.setText(DateUtils.getDateString(status.createdAt));
-                            String title=status.text+" ";
-                            SpannableString spannableString=new SpannableString(title);
+                            String title = status.text + " ";
+                            SpannableString spannableString = new SpannableString(title);
                             //WeiboUtil.highlightContent(getActivity(), spannableString, getResources().getColor(R.color.holo_dark_item_at));
                             highlightAtClickable(spannableString, WeiboUtils.ATPATTERN);
                             highlightUrlClickable(spannableString, WeiboUtils.getWebPattern());
                             mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
                             mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
-                            comment_num.setText(getString(R.string.text_comment)+status.c_num);
-                            repost_num.setText(getString(R.string.text_repost)+status.r_num);
+                            comment_num.setText(getString(R.string.text_comment) + status.c_num);
+                            repost_num.setText(getString(R.string.text_repost) + status.r_num);
 
-                            Status retStatus=status.retweetedStatus;
-                            if (null!=retStatus) {
-                                if (retStatus.user!=null) {
-                                    title="@"+retStatus.user.screenName+" ";
+                            Status retStatus = status.retweetedStatus;
+                            if (null != retStatus) {
+                                if (retStatus.user != null) {
+                                    title = "@" + retStatus.user.screenName + " ";
                                 }
-                                title=retStatus.text+" ";
-                                spannableString=new SpannableString(title);
+                                title = retStatus.text + " ";
+                                spannableString = new SpannableString(title);
                                 //WeiboUtil.highlightContent(getActivity(), spannableString, getResources().getColor(R.color.holo_dark_item_highliht_link));
                                 highlightAtClickable(spannableString, WeiboUtils.ATPATTERN);
                                 highlightUrlClickable(spannableString, WeiboUtils.getWebPattern());
@@ -395,7 +396,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
                         }
 
                         followButton.setText("");
-                        if (currentUserId!=user.id) {
+                        if (currentUserId != user.id) {
                             followButton.setVisibility(View.VISIBLE);
                             if (user.following) {
                                 setUnFollowingButton();
@@ -409,7 +410,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
                         addButtonListener();
 
-                        String gender=user.gender;
+                        String gender = user.gender;
                         if ("f".equals(gender)) {
                             mGender.setImageResource(R.drawable.icon_female);
                         } else if ("m".equals(gender)) {
@@ -422,7 +423,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
                         e.printStackTrace();
                     }
                 } else {
-                    AKUtils.showToast("用户信息获取失败，", Toast.LENGTH_LONG);
+                    NotifyUtils.showToast("用户信息获取失败，", Toast.LENGTH_LONG);
                 }
             }
         });
@@ -437,12 +438,12 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
         followersBtn.setOnClickListener(listener);
     }
 
-    View.OnClickListener listener=new View.OnClickListener() {
+    View.OnClickListener listener = new View.OnClickListener() {
 
         @Override
         public void onClick(View view) {
-            if (null==mUser) {
-                AKUtils.showToast("需要先加载用户信息！");
+            if (null == mUser) {
+                NotifyUtils.showToast("需要先加载用户信息！");
                 return;
             }
 
@@ -473,11 +474,11 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
         }
 
         private void atStatus() {
-            if (null==mUser) {
+            if (null == mUser) {
                 return;
             }
 
-            String atString="@"+mUser.screenName+" ";
+            String atString = "@" + mUser.screenName + " ";
             /*Intent intent=new Intent(getActivity(), NewStatusActivity.class);
             intent.putExtra("at_some", atString);
             getActivity().startActivity(intent);*/
@@ -486,21 +487,21 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
     };
 
     private void doFollow() {
-        WeiboLog.i(TAG, "follow listener:"+followingType);
-        if (followingType==-1) {
+        WeiboLog.i(TAG, "follow listener:" + followingType);
+        if (followingType == - 1) {
             return;
         }
 
-        App app=(App) App.getAppContext();
-        if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB) {
-            FollwingTask follwingTask=new FollwingTask();
+        App app = (App) App.getAppContext();
+        if (app.getOauthBean().oauthType == Oauth2.OAUTH_TYPE_WEB) {
+            FollwingTask follwingTask = new FollwingTask();
             follwingTask.execute(new Integer[]{followingType});
         } else {
-            if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
+            if (System.currentTimeMillis() >= app.getOauthBean().expireTime && app.getOauthBean().expireTime != 0) {
                 WeiboLog.d(TAG, "web认证，token过期了.");
                 mOauth2Handler.oauth2(null);
             } else {
-                FollwingTask follwingTask=new FollwingTask();
+                FollwingTask follwingTask = new FollwingTask();
                 follwingTask.execute(new Integer[]{followingType});
             }
         }
@@ -511,7 +512,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
      */
     private void changeToUserFriends() {
         try {
-            Intent intent=getActivity().getIntent();
+            Intent intent = getActivity().getIntent();
             intent.putExtra("user_id", mUser.id);
             intent.putExtra("screen_name", mUser.screenName);
             intent.putExtra("type", UserFragmentActivity.TYPE_USER_FRIENDS);
@@ -527,7 +528,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
      */
     private void changeToUserFollowers() {
         try {
-            Intent intent=getActivity().getIntent();
+            Intent intent = getActivity().getIntent();
             intent.putExtra("user_id", mUser.id);
             intent.putExtra("screen_name", mUser.screenName);
             intent.putExtra("type", UserFragmentActivity.TYPE_USER_FOLLOWERS);
@@ -543,7 +544,7 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
      */
     private void changeToUserTimeline() {
         try {
-            Intent intent=getActivity().getIntent();
+            Intent intent = getActivity().getIntent();
             intent.putExtra("user_id", mUser.id);
             intent.putExtra("screen_name", mUser.screenName);
             intent.putExtra("type", UserFragmentActivity.TYPE_USER_TIMELINE);
@@ -556,12 +557,12 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
     private void setFollowingButton() {
         followButton.setText(R.string.follow);
-        followingType=0;
+        followingType = 0;
     }
 
     private void setUnFollowingButton() {
         followButton.setText(R.string.unfollow);
-        followingType=1;
+        followingType = 1;
     }
 
     class FollwingTask extends AsyncTask<Integer, Void, User> {
@@ -569,18 +570,18 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
         @Override
         protected User doInBackground(Integer... params) {
             try {
-                User now=null;
+                User now = null;
                 /*SWeiboApi2 weiboApi2=null;//weiboApi2=(SWeiboApi2) App.getMicroBlog(getActivity());
                 if (null==weiboApi2) {
                     return now;
                 }*/
-                SinaUserApi weiboApi2=new SinaUserApi();
+                SinaUserApi weiboApi2 = new SinaUserApi();
                 weiboApi2.updateToken();
 
-                if (followingType==0) {
-                    now=weiboApi2.createFriendships(mUser.id);
-                } else if (followingType==1) {
-                    now=weiboApi2.deleteFriendships(mUser.id);
+                if (followingType == 0) {
+                    now = weiboApi2.createFriendships(mUser.id);
+                } else if (followingType == 1) {
+                    now = weiboApi2.deleteFriendships(mUser.id);
                 }
 
                 return now;
@@ -593,24 +594,24 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
         @Override
         protected void onPostExecute(User resultObj) {
-            if (!isResumed()) {
+            if (! isResumed()) {
                 return;
             }
 
-            if (resultObj==null) {
-                AKUtils.showToast("处理失败", Toast.LENGTH_LONG);
+            if (resultObj == null) {
+                NotifyUtils.showToast("处理失败", Toast.LENGTH_LONG);
                 WeiboLog.e(TAG, "can't not follow.");
                 return;
             }
 
-            if (followingType==0) {
+            if (followingType == 0) {
                 setUnFollowingButton();
                 //Toast.makeText(getApplicationContext(),"follow "+user.screenName+" successfully!",Toast.LENGTH_LONG);
-                AKUtils.showToast("follow "+mUser.screenName+" successfully!", Toast.LENGTH_LONG);
-            } else if (followingType==1) {
+                NotifyUtils.showToast("follow " + mUser.screenName + " successfully!", Toast.LENGTH_LONG);
+            } else if (followingType == 1) {
                 setFollowingButton();
                 //Toast.makeText(getApplicationContext(),"unfollow "+user.screenName+" successfully!",Toast.LENGTH_LONG);
-                AKUtils.showToast("unfollow "+mUser.screenName+" successfully!", Toast.LENGTH_LONG);
+                NotifyUtils.showToast("unfollow " + mUser.screenName + " successfully!", Toast.LENGTH_LONG);
             }
         }
 
@@ -622,29 +623,29 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
      * @param result
      */
     protected void basePostOperation(Object[] result) {
-        if (null==result) {
+        if (null == result) {
             WeiboLog.w(TAG, "加载数据异常。");
-            AKUtils.showToast(R.string.more_loaded_failed, Toast.LENGTH_LONG);
+            NotifyUtils.showToast(R.string.more_loaded_failed, Toast.LENGTH_LONG);
             return;
         }
 
-        SStatusData<User> sStatusData=(SStatusData<User>) result[0];
-        if (null==sStatusData) {
+        SStatusData<User> sStatusData = (SStatusData<User>) result[ 0 ];
+        if (null == sStatusData) {
             WeiboLog.w(TAG, "请求数据异常。");
-            AKUtils.showToast(R.string.more_loaded_failed, Toast.LENGTH_LONG);
+            NotifyUtils.showToast(R.string.more_loaded_failed, Toast.LENGTH_LONG);
             return;
         }
 
-        if (!TextUtils.isEmpty(sStatusData.errorMsg)) {
-            WeiboLog.w(TAG, "请求数据异常。"+sStatusData.errorMsg);
-            String msg=sStatusData.errorMsg;
-            AKUtils.showToast(msg, Toast.LENGTH_LONG);
+        if (! TextUtils.isEmpty(sStatusData.errorMsg)) {
+            WeiboLog.w(TAG, "请求数据异常。" + sStatusData.errorMsg);
+            String msg = sStatusData.errorMsg;
+            NotifyUtils.showToast(msg, Toast.LENGTH_LONG);
             return;
         }
 
-        if (null==sStatusData.mData) {
+        if (null == sStatusData.mData) {
             WeiboLog.w(TAG, "加载数据为空。");
-            AKUtils.showToast(R.string.more_loaded_failed, Toast.LENGTH_LONG);
+            NotifyUtils.showToast(R.string.more_loaded_failed, Toast.LENGTH_LONG);
             return;
         }
 
@@ -674,55 +675,55 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
         @Override
         public void onClick(View view) {
-            WeiboLog.d("AtClicker:"+name);
+            WeiboLog.d("AtClicker:" + name);
             if (TextUtils.isEmpty(name)) {
                 WeiboLog.e(TAG, "nick name is null.");
                 return;
             }
             WeiboOperation.toViewStatusUser(UserInfoFragment.this.getActivity(), name,
-                -1, UserFragmentActivity.TYPE_USER_INFO);
+                - 1, UserFragmentActivity.TYPE_USER_INFO);
         }
 
     }
 
     public void highlightAtClickable(Spannable spannable, Pattern pattern) {
-        Matcher atMatcher=pattern.matcher(spannable);
+        Matcher atMatcher = pattern.matcher(spannable);
 
         while (atMatcher.find()) {
-            int start=atMatcher.start();
-            int end=atMatcher.end();
+            int start = atMatcher.start();
+            int end = atMatcher.end();
             //WeiboLog.d("weibo", "start:"+start+" end:"+end);
-            if (end-start==2) {
+            if (end - start == 2) {
             } else {
-                if (end-start<=2) {
+                if (end - start <= 2) {
                     break;
                 }
             }
 
-            String name=spannable.subSequence(start, end).toString();
-            AtClicker clicker=new AtClicker();
-            clicker.name=name;
+            String name = spannable.subSequence(start, end).toString();
+            AtClicker clicker = new AtClicker();
+            clicker.name = name;
             spannable.setSpan(clicker, start, end, 34);
         }
     }
 
     public void highlightUrlClickable(Spannable spannable, Pattern pattern) {
-        Matcher atMatcher=pattern.matcher(spannable);
+        Matcher atMatcher = pattern.matcher(spannable);
 
         while (atMatcher.find()) {
-            int start=atMatcher.start();
-            int end=atMatcher.end();
+            int start = atMatcher.start();
+            int end = atMatcher.end();
             //WeiboLog.d("weibo", "start:"+start+" end:"+end);
-            if (end-start==2) {
+            if (end - start == 2) {
             } else {
-                if (end-start<=2) {
+                if (end - start <= 2) {
                     break;
                 }
             }
 
-            String name=spannable.subSequence(start, end).toString();
-            UrlClicker clicker=new UrlClicker();
-            clicker.name=name;
+            String name = spannable.subSequence(start, end).toString();
+            UrlClicker clicker = new UrlClicker();
+            clicker.name = name;
             spannable.setSpan(clicker, start, end, 34);
         }
     }
@@ -743,14 +744,14 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
         @Override
         public void onClick(View view) {
-            WeiboLog.d("UrlClicker:"+name);
+            WeiboLog.d("UrlClicker:" + name);
             if (TextUtils.isEmpty(name)) {
                 WeiboLog.e(TAG, "url is null.");
                 return;
             }
             //String str1=URLEncoder.encode(this.name);
-            boolean prefWebview=mPrefs.getBoolean(PreferenceUtils.PREF_WEBVIEW, true);
-            if (!prefWebview) {
+            boolean prefWebview = mPrefs.getBoolean(PreferenceUtils.PREF_WEBVIEW, true);
+            if (! prefWebview) {
                 WeiboUtils.openUrlByDefaultBrowser(getActivity(), name);
             } else {
                 /*Intent intent=new Intent(getActivity(), WebviewActivity.class);

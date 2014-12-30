@@ -19,9 +19,9 @@ import java.util.List;
  * @author: archko Date: 13-1-28 Time: 下午7:15
  * @description:
  */
-public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
+public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
 
-    public static final String TAG="SinaPlaceApi";
+    public static final String TAG = "SinaPlaceApi";
 
     //--------------------- 位置服务 ---------------------
 
@@ -38,40 +38,39 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Status> getPlaceFriendTimeline(long sinceId, long maxId, int count, int page, int type)
         throws WeiboException {
-        String urlString=getBaseUrl()+"place/friends_timeline.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/friends_timeline.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        if (sinceId>0) {
-            pair=new BasicNameValuePair("since_id", String.valueOf(sinceId));
+        if (sinceId > 0) {
+            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
-        if (maxId>0) {
-            pair=new BasicNameValuePair("max_id", String.valueOf(maxId));
+        if (maxId > 0) {
+            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        if (page>0) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+        if (page > 0) {
+            pair = new BasicNameValuePair("page", String.valueOf(page));
             nvps.add(pair);
         }
 
-        if (type>0) {
-            pair=new BasicNameValuePair("type", String.valueOf(type));
+        if (type > 0) {
+            pair = new BasicNameValuePair("type", String.valueOf(type));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboLog.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseStatuses2(rs);
     }
@@ -90,35 +89,34 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Status> getPlaceUserFriendTimeline(long sinceId, long maxId, int count, int page)
         throws WeiboException {
-        String urlString=getBaseUrl()+"place/user_timeline.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/user_timeline.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        if (sinceId>0) {
-            pair=new BasicNameValuePair("since_id", String.valueOf(sinceId));
+        if (sinceId > 0) {
+            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
-        if (maxId>0) {
-            pair=new BasicNameValuePair("max_id", String.valueOf(maxId));
+        if (maxId > 0) {
+            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        if (page>0) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+        if (page > 0) {
+            pair = new BasicNameValuePair("page", String.valueOf(page));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboLog.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseStatuses2(rs);
     }
@@ -137,38 +135,37 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Status> getPlacePoiFriendTimeline(String poiid, long sinceId, long maxId, int count,
         int page) throws WeiboException {
-        String urlString=getBaseUrl()+"place/poi_timeline.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/poi_timeline.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("poiid", poiid);
+        pair = new BasicNameValuePair("poiid", poiid);
         nvps.add(pair);
 
-        if (sinceId>0) {
-            pair=new BasicNameValuePair("since_id", String.valueOf(sinceId));
+        if (sinceId > 0) {
+            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
-        if (maxId>0) {
-            pair=new BasicNameValuePair("max_id", String.valueOf(maxId));
+        if (maxId > 0) {
+            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        if (page>0) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+        if (page > 0) {
+            pair = new BasicNameValuePair("page", String.valueOf(page));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboLog.printResult("rs:" + rs);
         return WeiboParser.parseStatuses2(rs);
     }
@@ -191,32 +188,31 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Status> getPlaceNearbyFriendTimeline(double lat, double llong, int count, int page)
         throws WeiboException {
-        String urlString=getBaseUrl()+"place/nearby_timeline.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/nearby_timeline.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("lat", String.valueOf(lat));
+        pair = new BasicNameValuePair("lat", String.valueOf(lat));
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("long", String.valueOf(llong));
+        pair = new BasicNameValuePair("long", String.valueOf(llong));
         nvps.add(pair);
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        if (page>0) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+        if (page > 0) {
+            pair = new BasicNameValuePair("page", String.valueOf(page));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboLog.printResult("rs:" + rs);
         return WeiboParser.parseStatuses2(rs);
     }
@@ -230,18 +226,17 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public Status getPlaceStatusShow(long id) throws WeiboException {
-        String urlString=getBaseUrl()+"place/statuses/show.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/statuses/show.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("id", String.valueOf(id));
+        pair = new BasicNameValuePair("id", String.valueOf(id));
         nvps.add(pair);
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboLog.printResult("rs:" + rs);
         return WeiboParser.parseStatus(rs);
     }
@@ -254,18 +249,17 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      *
      * @return {"uid": "1315982102","checkin_num": 2,"tip_num": 3,"photo_num": 1,"todo_num": 0,"geo_statuses_num": 0}
      * @throws com.me.microblog.WeiboException
-     *
      */
     public void getPlaceUser(long id) throws WeiboException {
-        String urlString=getBaseUrl()+"place/users/show.json";
+        String urlString = getBaseUrl() + "place/users/show.json";
 
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("uid", String.valueOf(id));
+        pair = new BasicNameValuePair("uid", String.valueOf(id));
         nvps.add(pair);
 
-        String rs=get(urlString, true, nvps);
+        String rs = get(urlString, true, nvps);
         WeiboLog.printResult("rs:" + rs);
     }
 
@@ -281,24 +275,24 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      */
     public SStatusData<Status> getUserPhotos(long uid, int count, int page, int base_app)
         throws WeiboException {
-        String urlString=getBaseUrl()+"place/users/photos.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/users/photos.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("uid", String.valueOf(uid));
+        pair = new BasicNameValuePair("uid", String.valueOf(uid));
         nvps.add(pair);
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        if (page>0) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+        if (page > 0) {
+            pair = new BasicNameValuePair("page", String.valueOf(page));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboLog.printResult("getUserPhotos:" + rs);
         return WeiboParser.parseStatuses2(rs);
     }
@@ -315,28 +309,27 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Status> getUserPhotos(long uid, int count, int page) throws WeiboException {
-        String urlString=getBaseUrl()+"place/users/photos.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/users/photos.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("uid", String.valueOf(uid));
+        pair = new BasicNameValuePair("uid", String.valueOf(uid));
         nvps.add(pair);
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        if (page>0) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+        if (page > 0) {
+            pair = new BasicNameValuePair("page", String.valueOf(page));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboLog.printResult("rs:" + rs);
         return WeiboParser.parseStatuses2(rs);
     }
@@ -353,28 +346,27 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Status> getPlaceUserTips(long uid, int count, int page) throws WeiboException {
-        String urlString=getBaseUrl()+"place/users/tips.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/users/tips.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("uid", String.valueOf(uid));
+        pair = new BasicNameValuePair("uid", String.valueOf(uid));
         nvps.add(pair);
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        if (page>0) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+        if (page > 0) {
+            pair = new BasicNameValuePair("page", String.valueOf(page));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboLog.printResult("rs:" + rs);
         return WeiboParser.parseStatuses2(rs);
     }
@@ -389,18 +381,17 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public PlacePoi getPlacePoi(String poiid) throws WeiboException {
-        String urlString=getBaseUrl()+"place/pois/show.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/pois/show.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("poiid", (poiid));
+        pair = new BasicNameValuePair("poiid", (poiid));
         nvps.add(pair);
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboLog.printResult("rs:" + rs);
         return WeiboParser.parsePlacePoi(rs);
     }
@@ -415,28 +406,27 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      *
      * @return 返回的数据多了"total_number": 200
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<User> getPlacesUsers(String poiid, int count, int page) throws WeiboException {
-        String urlString=getBaseUrl()+"place/pois/users.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/pois/users.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("poiid", (poiid));
+        pair = new BasicNameValuePair("poiid", (poiid));
         nvps.add(pair);
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        if (page>0) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+        if (page > 0) {
+            pair = new BasicNameValuePair("page", String.valueOf(page));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboLog.printResult("rs:" + rs);
         return WeiboParser.getUserObjs2(rs);
     }
@@ -454,28 +444,27 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Status> getPoiTips(String poiid, int count, int page) throws WeiboException {
-        String urlString=getBaseUrl()+"place/pois/tips.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/pois/tips.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("poiid", (poiid));
+        pair = new BasicNameValuePair("poiid", (poiid));
         nvps.add(pair);
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        if (page>0) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+        if (page > 0) {
+            pair = new BasicNameValuePair("page", String.valueOf(page));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboLog.printResult("rs:" + rs);
         return WeiboParser.parseStatuses2(rs);
     }
@@ -493,28 +482,27 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Status> getPlacePhotos(String poiid, int count, int page) throws WeiboException {
-        String urlString=getBaseUrl()+"place/pois/photos.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/pois/photos.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("poiid", (poiid));
+        pair = new BasicNameValuePair("poiid", (poiid));
         nvps.add(pair);
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        if (page>0) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+        if (page > 0) {
+            pair = new BasicNameValuePair("page", String.valueOf(page));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboLog.printResult("rs:" + rs);
         return WeiboParser.parseStatuses2(rs);
     }
@@ -532,38 +520,37 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<PlacePoi> getPlaceSearch(String keyword, String city, String category, int count, int page) throws WeiboException {
-        String urlString=getBaseUrl()+"place/pois/search.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/pois/search.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("keyword", keyword);
+        pair = new BasicNameValuePair("keyword", keyword);
         nvps.add(pair);
 
-        if (!TextUtils.isEmpty(city)) {
-            pair=new BasicNameValuePair("city", city);
+        if (! TextUtils.isEmpty(city)) {
+            pair = new BasicNameValuePair("city", city);
             nvps.add(pair);
         }
 
-        if (!TextUtils.isEmpty(city)) {
-            pair=new BasicNameValuePair("category", category);
+        if (! TextUtils.isEmpty(city)) {
+            pair = new BasicNameValuePair("category", category);
             nvps.add(pair);
         }
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        if (page>0) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+        if (page > 0) {
+            pair = new BasicNameValuePair("page", String.valueOf(page));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, true, nvps);
+        String rs = get(urlString, true, nvps);
         WeiboLog.printResult("rs:" + rs);
         return WeiboParser.parsePlacePois(rs);
     }
@@ -578,25 +565,24 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<PlacePoi> getPlaceCategory(int pid, int flag) throws WeiboException {
-        String urlString=getBaseUrl()+"place/pois/category.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/pois/category.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        if (pid>0) {
-            pair=new BasicNameValuePair("pid", String.valueOf(pid));
+        if (pid > 0) {
+            pair = new BasicNameValuePair("pid", String.valueOf(pid));
             nvps.add(pair);
         }
 
-        if (flag>0) {
-            pair=new BasicNameValuePair("flag", String.valueOf(flag));
+        if (flag > 0) {
+            pair = new BasicNameValuePair("flag", String.valueOf(flag));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, true, nvps);
+        String rs = get(urlString, true, nvps);
         WeiboLog.printResult("rs:" + rs);
         return WeiboParser.parsePlacePois(rs);
     }
@@ -618,17 +604,17 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      */
     public SStatusData<PlacePoi> getPlaceNearbyPoi(double lat, double llong, int range, int count, int page)
         throws WeiboException {
-        String urlString=getBaseUrl()+"place/nearby/pois.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/nearby/pois.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("lat", String.valueOf(lat));
+        pair = new BasicNameValuePair("lat", String.valueOf(lat));
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("long", String.valueOf(llong));
+        pair = new BasicNameValuePair("long", String.valueOf(llong));
         nvps.add(pair);
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboLog.printResult("getPlaceNearbyPoi:" + rs);
         return WeiboParser.parsePlacePois(rs);
     }
@@ -648,35 +634,34 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      *
      * @return 返回的数据多了"total_number": 200
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<User> getPlacesNearbyUsers(double lat, double llong, int range, int count, int page) throws WeiboException {
-        String urlString=getBaseUrl()+"place/nearby/users.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/nearby/users.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("lat", String.valueOf(lat));
+        pair = new BasicNameValuePair("lat", String.valueOf(lat));
         nvps.add(pair);
-        pair=new BasicNameValuePair("long", String.valueOf(llong));
+        pair = new BasicNameValuePair("long", String.valueOf(llong));
         nvps.add(pair);
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        if (page>0) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+        if (page > 0) {
+            pair = new BasicNameValuePair("page", String.valueOf(page));
             nvps.add(pair);
         }
 
-        if (range>0) {
-            pair=new BasicNameValuePair("range", String.valueOf(range));
+        if (range > 0) {
+            pair = new BasicNameValuePair("range", String.valueOf(range));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboLog.printResult("rs:" + rs);
         return WeiboParser.getUserObjs2(rs);
     }
@@ -698,32 +683,32 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      */
     public SStatusData<Status> getNearbyPhotos(double lat, double llong, int range, int count, int page)
         throws WeiboException {
-        String urlString=getBaseUrl()+"place/nearby/photos.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/nearby/photos.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("lat", String.valueOf(lat));
+        pair = new BasicNameValuePair("lat", String.valueOf(lat));
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("long", String.valueOf(llong));
+        pair = new BasicNameValuePair("long", String.valueOf(llong));
         nvps.add(pair);
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        if (page>0) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+        if (page > 0) {
+            pair = new BasicNameValuePair("page", String.valueOf(page));
             nvps.add(pair);
         }
 
-        if (range>0) {
-            pair=new BasicNameValuePair("range", String.valueOf(range));
+        if (range > 0) {
+            pair = new BasicNameValuePair("range", String.valueOf(range));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, false, nvps);
+        String rs = get(urlString, false, nvps);
         WeiboLog.printResult("getNearbyPhotos:" + rs);
         return WeiboParser.parseStatuses2(rs);
     }
@@ -739,17 +724,17 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      * return 文档中返回的是微博列表一样的数据,多了"total_number": 20
      */
     public Status addCheckin(String poiid, String status) throws WeiboException {
-        String urlString=getBaseUrl()+"place/pois/add_checkin.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/pois/add_checkin.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("poiid", poiid);
+        pair = new BasicNameValuePair("poiid", poiid);
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("status", status);
+        pair = new BasicNameValuePair("status", status);
         nvps.add(pair);
 
-        String rs=post(urlString, true, nvps);
+        String rs = post(urlString, true, nvps);
         WeiboLog.printResult(TAG, "addCheckin:" + rs);
         return WeiboParser.parseStatus(rs);
     }
@@ -767,22 +752,22 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      */
     public void addPhotos(String poiid, String status, String pic_path, int public_to)
         throws WeiboException {
-        String urlString=getBaseUrl()+"place/pois/add_photo.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/pois/add_photo.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("poiid", poiid);
+        pair = new BasicNameValuePair("poiid", poiid);
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("status", status);
+        pair = new BasicNameValuePair("status", status);
         nvps.add(pair);
 
-        if (public_to>0) {
-            pair=new BasicNameValuePair("public", String.valueOf(public_to));
+        if (public_to > 0) {
+            pair = new BasicNameValuePair("public", String.valueOf(public_to));
             nvps.add(pair);
         }
 
-        String rs=post(urlString, true, nvps);
+        String rs = post(urlString, true, nvps);
         WeiboLog.printResult(TAG, "addPhotos:" + rs);
     }
 
@@ -796,22 +781,22 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi{
      * return 微博实体
      */
     public Status addPlaceTip(String poiid, String status, int public_to) throws WeiboException {
-        String urlString=getBaseUrl()+"place/pois/add_tip.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "place/pois/add_tip.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("poiid", poiid);
+        pair = new BasicNameValuePair("poiid", poiid);
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("status", status);
+        pair = new BasicNameValuePair("status", status);
         nvps.add(pair);
 
-        if (public_to>0) {
-            pair=new BasicNameValuePair("public", String.valueOf(public_to));
+        if (public_to > 0) {
+            pair = new BasicNameValuePair("public", String.valueOf(public_to));
             nvps.add(pair);
         }
 
-        String rs=post(urlString, false, nvps);
+        String rs = post(urlString, false, nvps);
         WeiboLog.printResult(TAG, "addPlaceTip:" + rs);
         return WeiboParser.parseStatus(rs);
     }

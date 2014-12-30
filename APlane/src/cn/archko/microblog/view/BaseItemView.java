@@ -35,7 +35,7 @@ import com.me.microblog.view.IBaseItemView;
  */
 public abstract class BaseItemView extends LinearLayout implements IBaseItemView, View.OnClickListener, View.OnTouchListener {
 
-    private static final String TAG="BaseItemView";
+    private static final String TAG = "BaseItemView";
     protected Context mContext;
     protected ListView parent;
     protected String mCacheDir;    //图片缓存目录
@@ -53,45 +53,45 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
     protected TextView mSourceFrom;    //来自
     protected TextView mCreateAt;  //发表时间
 
-    protected String mPortraitUrl=null;
+    protected String mPortraitUrl = null;
     protected String mPictureUrl;    //微博的内容图片url
     //private String retweetUrl;    //转发微博内容中的图片url.
 
     protected Status mStatus;    //微博
     protected Status mRetweetedStatus;    //转发的微博
 
-    protected boolean isShowLargeBitmap=false;
-    protected boolean isShowBitmap=true;
+    protected boolean isShowLargeBitmap = false;
+    protected boolean isShowBitmap = true;
     protected LinearLayout mLoctationlayout;    //位置布局
     protected TextView mLocation;   //位置信息
     protected SAnnotation sAnnotation;
     public final int[] sliderColors;
-    public static int mIndex=1;
+    public static int mIndex = 1;
     int mResId;
     //protected DisplayImageOptions options;
 
     public BaseItemView(Context context, ListView view, String cacheDir, Status status, boolean updateFlag) {
         super(context);
-        parent=view;
-        mCacheDir=cacheDir;
-        mContext=context;
-        sliderColors=new int[8];
-        sliderColors[0]=R.color.holo_blue_dark;
-        sliderColors[1]=R.color.holo_blue_light;
-        sliderColors[2]=R.color.holo_blue_light_transparent;
-        sliderColors[3]=R.color.holo_green_light;
-        sliderColors[4]=R.color.holo_red_light;
-        sliderColors[5]=R.color.holo_purple;
-        sliderColors[6]=R.color.holo_orange_light;
-        sliderColors[7]=R.color.holo_orange_dark;
+        parent = view;
+        mCacheDir = cacheDir;
+        mContext = context;
+        sliderColors = new int[ 8 ];
+        sliderColors[ 0 ] = R.color.holo_blue_dark;
+        sliderColors[ 1 ] = R.color.holo_blue_light;
+        sliderColors[ 2 ] = R.color.holo_blue_light_transparent;
+        sliderColors[ 3 ] = R.color.holo_green_light;
+        sliderColors[ 4 ] = R.color.holo_red_light;
+        sliderColors[ 5 ] = R.color.holo_purple;
+        sliderColors[ 6 ] = R.color.holo_orange_light;
+        sliderColors[ 7 ] = R.color.holo_orange_dark;
 
-        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         if ("1".equals(themeId)) {
-            mResId=R.drawable.image_loading_dark;
+            mResId = R.drawable.image_loading_dark;
         } else if ("2".equals(themeId)) {
-            mResId=R.drawable.image_loading_light;
+            mResId = R.drawable.image_loading_light;
         } else if ("0".equals(themeId)) {
-            mResId=R.drawable.image_loading_dark;
+            mResId = R.drawable.image_loading_dark;
         }
         /*options = new DisplayImageOptions.Builder()
 
@@ -238,17 +238,17 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
      */
     protected void loadPortrait(boolean updateFlag, boolean cache) {
         if (isShowBitmap) {
-            User user=mStatus.user;
-            if (null==user||TextUtils.isEmpty(user.profileImageUrl)) {
+            User user = mStatus.user;
+            if (null == user || TextUtils.isEmpty(user.profileImageUrl)) {
                 mPortrait.setImageResource(R.drawable.user_default_photo);
                 return;
             }
-            String profileImgUrl=mStatus.user.profileImageUrl;
+            String profileImgUrl = mStatus.user.profileImageUrl;
 
-            mPortraitUrl=profileImgUrl;
+            mPortraitUrl = profileImgUrl;
             //获取头像.
-            Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(mPortraitUrl);
-            if (null!=bitmap&&!bitmap.isRecycled()) {
+            Bitmap bitmap = ImageCache2.getInstance().getBitmapFromMemCache(mPortraitUrl);
+            if (null != bitmap && ! bitmap.isRecycled()) {
                 mPortrait.setImageBitmap(bitmap);
             } else {
                 mPortrait.setImageResource(R.drawable.user_default_photo);
@@ -300,7 +300,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
         });*/
     }
 
-    Handler mHandler=new Handler() {
+    Handler mHandler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
@@ -309,21 +309,21 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
     };
 
     public void updateBitmap(Message msg) {
-        int what=msg.what;
-        Bundle bundle=msg.getData();
+        int what = msg.what;
+        Bundle bundle = msg.getData();
 
-        String imgUrl=(String) msg.obj;
-        if (what!=Constants.TYPE_PORTRAIT) {
+        String imgUrl = (String) msg.obj;
+        if (what != Constants.TYPE_PORTRAIT) {
             //WeiboLog.d(TAG, "imgUrl:"+imgUrl+" bundle:"+bundle);
         }
         Bitmap bitmap;//=BitmapFactory.decodeFile(bundle.getString("name"));
-        bitmap=bundle.getParcelable("name");
-        if (TextUtils.isEmpty(imgUrl)||"null".equals(imgUrl)||null==bitmap) {
-            WeiboLog.w(TAG, "图片url不对，"+imgUrl);
+        bitmap = bundle.getParcelable("name");
+        if (TextUtils.isEmpty(imgUrl) || "null".equals(imgUrl) || null == bitmap) {
+            WeiboLog.w(TAG, "图片url不对，" + imgUrl);
             return;
         }
 
-        if (bitmap!=null&&!bitmap.isRecycled()) {
+        if (bitmap != null && ! bitmap.isRecycled()) {
             //if (!isShowLargeBitmap) {   //大图暂时不缓存内存，但是缓存小图
             //ImageCache2.getInstance().addBitmapToMemCache(imgUrl, bitmap);
             /*} else {
@@ -385,47 +385,47 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
                 }
             }*/
         } else {
-            WeiboLog.d(TAG, "bitmap is null:"+imgUrl);
+            WeiboLog.d(TAG, "bitmap is null:" + imgUrl);
         }
         //DownloadPool.downloading.remove(imgUrl);
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        boolean ret=false;
-        CharSequence text=((TextView) v).getText();
-        Spannable stext=Spannable.Factory.getInstance().newSpannable(text);
-        TextView widget=(TextView) v;
-        int action=event.getAction();
+        boolean ret = false;
+        CharSequence text = ((TextView) v).getText();
+        Spannable stext = Spannable.Factory.getInstance().newSpannable(text);
+        TextView widget = (TextView) v;
+        int action = event.getAction();
 
-        if (action==MotionEvent.ACTION_UP||
-            action==MotionEvent.ACTION_DOWN) {
-            int x=(int) event.getX();
-            int y=(int) event.getY();
+        if (action == MotionEvent.ACTION_UP ||
+            action == MotionEvent.ACTION_DOWN) {
+            int x = (int) event.getX();
+            int y = (int) event.getY();
 
-            x-=widget.getTotalPaddingLeft();
-            y-=widget.getTotalPaddingTop();
+            x -= widget.getTotalPaddingLeft();
+            y -= widget.getTotalPaddingTop();
 
-            x+=widget.getScrollX();
-            y+=widget.getScrollY();
+            x += widget.getScrollX();
+            y += widget.getScrollY();
 
-            Layout layout=widget.getLayout();
-            int line=layout.getLineForVertical(y);
-            int off=layout.getOffsetForHorizontal(line, x);
+            Layout layout = widget.getLayout();
+            int line = layout.getLineForVertical(y);
+            int off = layout.getOffsetForHorizontal(line, x);
 
-            ClickableSpan[] link=stext.getSpans(off, off, ClickableSpan.class);
+            ClickableSpan[] link = stext.getSpans(off, off, ClickableSpan.class);
             //Log.d(TAG, "onTouch:"+link.length+" text:");
-            if (link.length!=0) {
-                int start=stext.getSpanStart(link[0]);
-                int end=stext.getSpanEnd(link[0]);
+            if (link.length != 0) {
+                int start = stext.getSpanStart(link[ 0 ]);
+                int end = stext.getSpanEnd(link[ 0 ]);
                 //Log.d(TAG, "onTouch start:"+start+" end:"+end);
-                if (action==MotionEvent.ACTION_UP) {
-                    link[0].onClick(widget);
+                if (action == MotionEvent.ACTION_UP) {
+                    link[ 0 ].onClick(widget);
                     Selection.removeSelection(stext);
-                } else if (action==MotionEvent.ACTION_DOWN) {
+                } else if (action == MotionEvent.ACTION_DOWN) {
                     Selection.setSelection(stext, start, end);
                 }
-                ret=true;
+                ret = true;
             } else {
                 Selection.removeSelection(stext);
             }

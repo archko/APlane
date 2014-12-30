@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class DirectMessage implements Serializable {
 
-    public static final long serialVersionUID=3894560643019408229L;
+    public static final long serialVersionUID = 3894560643019408229L;
 
     /**
      * 发送时间
@@ -67,35 +67,35 @@ public class DirectMessage implements Serializable {
     public DirectMessage(Date createdAt, long id, String idstr, User recipient, long recipientId,
         String recipientScreenName, User sender, long senderId, String senderScreenName,
         String text, String source, long _id, String data, long uid) {
-        this.createdAt=createdAt;
-        this.id=id;
-        this.idstr=idstr;
-        this.recipient=recipient;
-        this.recipientId=recipientId;
-        this.recipientScreenName=recipientScreenName;
-        this.sender=sender;
-        this.senderId=senderId;
-        this.senderScreenName=senderScreenName;
-        this.text=text;
-        this.source=source;
-        this._id=_id;
-        this.data=data;
-        this.uid=uid;
+        this.createdAt = createdAt;
+        this.id = id;
+        this.idstr = idstr;
+        this.recipient = recipient;
+        this.recipientId = recipientId;
+        this.recipientScreenName = recipientScreenName;
+        this.sender = sender;
+        this.senderId = senderId;
+        this.senderScreenName = senderScreenName;
+        this.text = text;
+        this.source = source;
+        this._id = _id;
+        this.data = data;
+        this.uid = uid;
     }
 
     @Override
     public String toString() {
-        return "DirectMessage{"+
-            "createdAt="+createdAt+
-            ", id="+id+
-            ", idstr='"+idstr+'\''+
-            ", mid='"+mid+'\''+
-            ", recipientId="+recipientId+
-            ", recipientScreenName='"+recipientScreenName+'\''+
-            ", senderId="+senderId+
-            ", senderScreenName='"+senderScreenName+'\''+
-            ", text='"+text+'\''+
-            ", source='"+source+'\''+
+        return "DirectMessage{" +
+            "createdAt=" + createdAt +
+            ", id=" + id +
+            ", idstr='" + idstr + '\'' +
+            ", mid='" + mid + '\'' +
+            ", recipientId=" + recipientId +
+            ", recipientScreenName='" + recipientScreenName + '\'' +
+            ", senderId=" + senderId +
+            ", senderScreenName='" + senderScreenName + '\'' +
+            ", text='" + text + '\'' +
+            ", source='" + source + '\'' +
             '}';
     }
 }

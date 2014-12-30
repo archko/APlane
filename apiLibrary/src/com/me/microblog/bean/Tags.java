@@ -5,7 +5,7 @@ package com.me.microblog.bean;
  */
 public class Tags {
 
-    public static final long serialVersionUID=3894560643019408209L;
+    public static final long serialVersionUID = 3894560643019408209L;
     public String tag;
     public long id;
 }

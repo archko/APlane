@@ -16,24 +16,24 @@ import java.lang.reflect.Constructor;
 public class ApiConfigFactory {
 
     public static synchronized AbsApiFactory getApiConfig(OauthBean auth) throws WeiboException {
-        if (auth==null) {
+        if (auth == null) {
             throw new WeiboException("no account info.");
         }
 
-        String packageName=ApiConfigFactory.class.getPackage().getName();
-        ServiceProvider sp=auth.getServiceProvider();
+        String packageName = ApiConfigFactory.class.getPackage().getName();
+        ServiceProvider sp = auth.getServiceProvider();
         //packageName+=".impl."+sp.toString().toLowerCase();
-        packageName+="."+sp.toString()+"ApiFactory";
-        WeiboLog.d("packageName:"+packageName);
+        packageName += "." + sp.toString() + "ApiFactory";
+        WeiboLog.d("packageName:" + packageName);
 
-        AbsApiFactory apiFactory=null;
+        AbsApiFactory apiFactory = null;
         try {
-            Class<?> apiConfigInstanceClass=Class.forName(packageName);
-            Constructor<?> constructor=apiConfigInstanceClass.getConstructor();
-            apiFactory=(AbsApiFactory) constructor.newInstance();
-            WeiboLog.d("construct api factory:"+apiFactory);
+            Class<?> apiConfigInstanceClass = Class.forName(packageName);
+            Constructor<?> constructor = apiConfigInstanceClass.getConstructor();
+            apiFactory = (AbsApiFactory) constructor.newInstance();
+            WeiboLog.d("construct api factory:" + apiFactory);
         } catch (Exception e) {
-            WeiboLog.e("ApiConfigFactory:{}"+sp+e);
+            WeiboLog.e("ApiConfigFactory:{}" + sp + e);
         }
 
         return apiFactory;

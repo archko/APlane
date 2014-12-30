@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.Toast;
 import cn.archko.microblog.listeners.FragmentListListener;
 import com.andrew.apollo.utils.ThemeUtils;
 import com.me.microblog.App;
@@ -14,8 +13,8 @@ import com.me.microblog.R;
 import com.me.microblog.oauth.Oauth2Handler;
 import com.me.microblog.oauth.OauthCallback;
 import com.me.microblog.util.Constants;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import cn.archko.microblog.utils.AKUtils;
 
 import java.io.File;
 
@@ -26,7 +25,7 @@ import java.io.File;
  */
 public abstract class BaseFragment extends Fragment implements FragmentListListener {
 
-    public static final String TAG="BaseFragment";
+    public static final String TAG = "BaseFragment";
     public SharedPreferences mPrefs;
     public String mCacheDir;   //缓存图片存储上级目录.
     /**
@@ -41,7 +40,7 @@ public abstract class BaseFragment extends Fragment implements FragmentListListe
     public OnRefreshListener mRefreshListener;
     //--------------------- 认证 ---------------------
     public Oauth2Handler mOauth2Handler;
-    public OauthCallback mOauthCallback=new OauthCallback() {
+    public OauthCallback mOauthCallback = new OauthCallback() {
         @Override
         public void postOauthSuc(Object[] params) {
             postOauth(params);
@@ -59,10 +58,10 @@ public abstract class BaseFragment extends Fragment implements FragmentListListe
      * @param oauthCode 认证失败的代码,如果是特定的,就需要重新登录.
      */
     public void oauthFailed(int oauthCode) {
-        if (oauthCode==Constants.USER_PASS_IS_NULL) {
-            AKUtils.showToast(R.string.oauth_runtime_user_pass_is_null);
+        if (oauthCode == Constants.USER_PASS_IS_NULL) {
+            NotifyUtils.showToast(R.string.oauth_runtime_user_pass_is_null);
         } else {
-            AKUtils.showToast(R.string.oauth_runtime_failed);
+            NotifyUtils.showToast(R.string.oauth_runtime_failed);
         }
     }
 
@@ -81,27 +80,27 @@ public abstract class BaseFragment extends Fragment implements FragmentListListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPrefs=PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mOauth2Handler=new Oauth2Handler(getActivity(), mOauthCallback);
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mOauth2Handler = new Oauth2Handler(getActivity(), mOauthCallback);
 
-        mCacheDir=((App) getActivity().getApplicationContext()).mCacheDir;
-        File file=new File(mCacheDir);
-        if (!file.exists()) {
+        mCacheDir = ((App) getActivity().getApplicationContext()).mCacheDir;
+        File file = new File(mCacheDir);
+        if (! file.exists()) {
             file.mkdir();
         }
-        WeiboLog.v(TAG, "onCreate:"+this);
+        WeiboLog.v(TAG, "onCreate:" + this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        WeiboLog.v(TAG, "onPause:"+this);
+        WeiboLog.v(TAG, "onPause:" + this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        WeiboLog.v(TAG, "onResume:"+this);
+        WeiboLog.v(TAG, "onResume:" + this);
     }
 
     /**
@@ -119,36 +118,12 @@ public abstract class BaseFragment extends Fragment implements FragmentListListe
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        WeiboLog.v(TAG, "onAttach:"+this);
+        WeiboLog.v(TAG, "onAttach:" + this);
         try {
-            mRefreshListener=(OnRefreshListener) activity;
+            mRefreshListener = (OnRefreshListener) activity;
         } catch (ClassCastException e) {
             //throw new ClassCastException(activity.toString()+" must implement OnRefreshListener");
-            mRefreshListener=null;
-        }
-    }
-
-    public void showUIToast(final String message) {
-        Activity activity=getActivity();
-        if (null!=activity) {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(App.getAppContext(), message, Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
-
-    public void showUIToast(final int resId) {
-        Activity activity=getActivity();
-        if (null!=activity) {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(App.getAppContext(), resId, Toast.LENGTH_SHORT).show();
-                }
-            });
+            mRefreshListener = null;
         }
     }
 
@@ -193,7 +168,7 @@ public abstract class BaseFragment extends Fragment implements FragmentListListe
 
     //--------------------- theme ---------------------
     public void themeBackground() {
-        if (null!=mRoot) {
+        if (null != mRoot) {
             ThemeUtils.getsInstance().themeBackground(mRoot, getActivity());
         }
     }

@@ -20,7 +20,7 @@ public class ImageCache2 {
     /**
      * Default memory cache size as a percent of device memory class
      */
-    private static final float MEM_CACHE_DIVIDER=0.25f/2;
+    private static final float MEM_CACHE_DIVIDER = 0.25f / 2;
 
     private static ImageCache2 sInstance;
     LruCache<String, Bitmap> mLruCache;
@@ -30,16 +30,16 @@ public class ImageCache2 {
     /**
      * Used to temporarily pause the disk cache while scrolling
      */
-    public boolean mPauseDiskAccess=false;
+    public boolean mPauseDiskAccess = false;
 
     public ImageCache2() {
         init(App.getAppContext());
-        mImageManager=new ImageManager();
+        mImageManager = new ImageManager();
     }
 
     public final static ImageCache2 getInstance() {
-        if (null==sInstance) {
-            sInstance=new ImageCache2();
+        if (null == sInstance) {
+            sInstance = new ImageCache2();
         }
 
         return sInstance;
@@ -66,15 +66,15 @@ public class ImageCache2 {
     }
 
     public LruCache<String, Bitmap> getLruCache() {
-        if (null==mLruCache) {
-            mLruCache=new LruCache<String, Bitmap>(32);
+        if (null == mLruCache) {
+            mLruCache = new LruCache<String, Bitmap>(32);
         }
         return mLruCache;
     }
 
     public ImageManager getImageManager() {
-        if (null==mImageManager) {
-            mImageManager=new ImageManager();
+        if (null == mImageManager) {
+            mImageManager = new ImageManager();
         }
         return mImageManager;
     }
@@ -86,11 +86,11 @@ public class ImageCache2 {
      */
     //@SuppressLint("NewApi")
     public void initLruCache(final Context context) {
-        final ActivityManager activityManager=(ActivityManager) context
+        final ActivityManager activityManager = (ActivityManager) context
             .getSystemService(Context.ACTIVITY_SERVICE);
-        final int lruCacheSize=Math.round(MEM_CACHE_DIVIDER*activityManager.getMemoryClass()
-            *1024*1024);
-        mLruCache=new MemoryCache(lruCacheSize);
+        final int lruCacheSize = Math.round(MEM_CACHE_DIVIDER * activityManager.getMemoryClass()
+            * 1024 * 1024);
+        mLruCache = new MemoryCache(lruCacheSize);
 
         // Release some memory as needed
         if (true) {//if (ApolloUtils.hasICS()) {
@@ -101,10 +101,10 @@ public class ImageCache2 {
                  */
                 @Override
                 public void onTrimMemory(final int level) {
-                    if (level>=TRIM_MEMORY_MODERATE) {
+                    if (level >= TRIM_MEMORY_MODERATE) {
                         evictAll();
-                    } else if (level>=TRIM_MEMORY_BACKGROUND) {
-                        mLruCache.trimToSize(mLruCache.size()/2);
+                    } else if (level >= TRIM_MEMORY_BACKGROUND) {
+                        mLruCache.trimToSize(mLruCache.size() / 2);
                     }
                 }
 
@@ -134,11 +134,11 @@ public class ImageCache2 {
      * @param bitmap The {@link android.graphics.Bitmap} to cache
      */
     public void addBitmapToMemCache(final String data, final Bitmap bitmap) {
-        if (data==null||bitmap==null) {
+        if (data == null || bitmap == null) {
             return;
         }
         // Add to memory cache
-        if (getBitmapFromMemCache(data)==null) {
+        if (getBitmapFromMemCache(data) == null) {
             mLruCache.put(data, bitmap);
         }
     }
@@ -150,12 +150,12 @@ public class ImageCache2 {
      * @return The {@link android.graphics.Bitmap} if found in cache, null otherwise
      */
     public final Bitmap getBitmapFromMemCache(final String data) {
-        if (data==null) {
+        if (data == null) {
             return null;
         }
-        if (mLruCache!=null) {
-            final Bitmap lruBitmap=mLruCache.get(data);
-            if (lruBitmap!=null) {
+        if (mLruCache != null) {
+            final Bitmap lruBitmap = mLruCache.get(data);
+            if (lruBitmap != null) {
                 return lruBitmap;
             }
         }
@@ -169,19 +169,19 @@ public class ImageCache2 {
      * @return The {@link android.graphics.Bitmap} if found in cache, null otherwise
      */
     public final Bitmap getBitmapFromDiskCache(final String data) {
-        if (data==null) {
+        if (data == null) {
             return null;
         }
 
         // Check in the memory cache here to avoid going to the disk cache less
         // often
-        if (getBitmapFromMemCache(data)!=null) {
+        if (getBitmapFromMemCache(data) != null) {
             return getBitmapFromMemCache(data);
         }
 
-        final String key=Md5Digest.getInstance().getMd5(data);
-        Bitmap bitmap=mImageManager.loadBitmapFromSysByPathPortrait(key, -1);
-        if (bitmap!=null) {
+        final String key = Md5Digest.getInstance().getMd5(data);
+        Bitmap bitmap = mImageManager.loadBitmapFromSysByPathPortrait(key, - 1);
+        if (bitmap != null) {
             return bitmap;
         }
         return null;
@@ -195,14 +195,14 @@ public class ImageCache2 {
      * @return The {@link android.graphics.Bitmap} if found in cache, null otherwise
      */
     public final Bitmap getCachedBitmap(final String data) {
-        if (data==null) {
+        if (data == null) {
             return null;
         }
-        Bitmap cachedImage=getBitmapFromMemCache(data);
-        if (cachedImage==null) {
-            cachedImage=getBitmapFromDiskCache(data);
+        Bitmap cachedImage = getBitmapFromMemCache(data);
+        if (cachedImage == null) {
+            cachedImage = getBitmapFromDiskCache(data);
         }
-        if (cachedImage!=null) {
+        if (cachedImage != null) {
             addBitmapToMemCache(data, cachedImage);
             return cachedImage;
         }
@@ -222,11 +222,11 @@ public class ImageCache2 {
             ext=uri.substring(dot);
         }
         return ext;*/
-        String ext=".png";
+        String ext = ".png";
         if (uri.endsWith("gif")) {
-            ext=".gif";
+            ext = ".gif";
         } else if (uri.endsWith(".jpg")) {
-            ext=".jpg";
+            ext = ".jpg";
         }
 
         return ext;
@@ -241,8 +241,8 @@ public class ImageCache2 {
      * @param pause True to temporarily pause the disk cache, false otherwise.
      */
     public void setPauseDiskCache(final boolean pause) {
-        if (mPauseDiskAccess!=pause) {
-            mPauseDiskAccess=pause;
+        if (mPauseDiskAccess != pause) {
+            mPauseDiskAccess = pause;
         }
     }
 
@@ -258,7 +258,7 @@ public class ImageCache2 {
      * now would be a good time to garbage collect
      */
     public void evictAll() {
-        if (mLruCache!=null) {
+        if (mLruCache != null) {
             mLruCache.evictAll();
         }
         System.gc();

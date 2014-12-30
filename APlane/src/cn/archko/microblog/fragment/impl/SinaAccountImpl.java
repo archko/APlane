@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class SinaAccountImpl extends AbsStatusImpl<OauthBean> {
 
-    public static final String TAG="SinaAccountImpl";
+    public static final String TAG = "SinaAccountImpl";
 
     public SinaAccountImpl() {
     }
@@ -39,9 +39,9 @@ public class SinaAccountImpl extends AbsStatusImpl<OauthBean> {
     @Override
     public Object[] queryData(Object... params) throws WeiboException {
         try {
-            ArrayList<OauthBean> objects=SqliteWrapper.queryAccounts(App.getAppContext(), TwitterTable.AUTbl.WEIBO_SINA);
-            SStatusData<OauthBean> sStatusData=new SStatusData<OauthBean>();
-            sStatusData.mStatusData=objects;
+            ArrayList<OauthBean> objects = SqliteWrapper.queryAccounts(App.getAppContext(), TwitterTable.AUTbl.WEIBO_SINA);
+            SStatusData<OauthBean> sStatusData = new SStatusData<OauthBean>();
+            sStatusData.mStatusData = objects;
             return new Object[]{sStatusData, params};
         } catch (Exception e) {
             e.printStackTrace();

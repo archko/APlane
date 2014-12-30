@@ -26,15 +26,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
-import com.andrew.apollo.utils.PreferenceUtils;
-import com.andrew.apollo.utils.ThemeUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.ThreadBeanItemView;
+import com.andrew.apollo.utils.PreferenceUtils;
+import com.andrew.apollo.utils.ThemeUtils;
 import com.me.microblog.App;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Status;
 import com.me.microblog.core.sina.SinaSearchApi;
-import cn.archko.microblog.utils.AKUtils;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ import java.util.Map;
  */
 public class SearchActivity extends BaseOauthActivity implements OnRefreshListener {
 
-    public static final String TAG="SearchActivity";
+    public static final String TAG = "SearchActivity";
     private SharedPreferences mPreferences;
     EditText mSearchText;
     ImageView mSearchBtn;
@@ -58,9 +58,9 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
     /**
      * 0表示搜索微博，1为用户
      */
-    int mode=0;
-    boolean isSearching=false;
-    Handler mHandler=new Handler();
+    int mode = 0;
+    boolean isSearching = false;
+    Handler mHandler = new Handler();
     TimeLineAdapter mAdapter;
     ProgressDialog mProgressDialog;
     InputMethodManager imm;
@@ -71,8 +71,8 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
     protected ArrayList<Status> mTopicStatus;
     protected SStatusData<Status> mStatusData;
     protected TopicLineAdapter mTopicAdapter;
-    int mTopicCount=30;
-    int page=1;
+    int mTopicCount = 30;
+    int page = 1;
     SinaSearchApi mSinaSearchApi;
 
     @Override
@@ -81,24 +81,24 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
         setContentView(R.layout.search_view);
 
         WeiboLog.d(TAG, "onCreate");
-        mPreferences=PreferenceManager.getDefaultSharedPreferences(SearchActivity.this);
-        imm=(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(SearchActivity.this);
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         doInit();
-        mDataList=new ArrayList<Map<String, String>>();
-        mAdapter=new TimeLineAdapter();
+        mDataList = new ArrayList<Map<String, String>>();
+        mAdapter = new TimeLineAdapter();
         mListView.setAdapter(mAdapter);
 
-        mSinaSearchApi=new SinaSearchApi();
+        mSinaSearchApi = new SinaSearchApi();
         mSinaSearchApi.updateToken();
     }
 
     private void doInit() {
-        mSearchText=(EditText) findViewById(R.id.search_et);
-        mSearchBtn=(ImageView) findViewById(R.id.search_btn);
+        mSearchText = (EditText) findViewById(R.id.search_et);
+        mSearchBtn = (ImageView) findViewById(R.id.search_btn);
         //TODO需要处理搜索按钮的切换，黑色时看不清楚。
-        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        WeiboLog.d(TAG, "themeid;"+themeId);
+        String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        WeiboLog.d(TAG, "themeid;" + themeId);
         /*if ("0".equals(themeId)) {
             mSearchBtn.setImageResource(R.drawable.action_search_dark);
         } else if ("1".equals(themeId)) {
@@ -109,10 +109,10 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
             mSearchBtn.setImageResource(R.drawable.action_search_light);
         }*/
 
-        mStatusRb=(RadioButton) findViewById(R.id.status_rb);
-        mUserRb=(RadioButton) findViewById(R.id.user_rb);
-        mRadioGroup=(RadioGroup) findViewById(R.id.search_group);
-        mListView=(ListView) findViewById(R.id.statusList);
+        mStatusRb = (RadioButton) findViewById(R.id.status_rb);
+        mUserRb = (RadioButton) findViewById(R.id.user_rb);
+        mRadioGroup = (RadioGroup) findViewById(R.id.search_group);
+        mListView = (ListView) findViewById(R.id.statusList);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -130,28 +130,28 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
         mStatusRb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                WeiboLog.d(TAG, "微博按钮选择状态改变了。"+isChecked);
-                if (null==mTopicStatus) {
-                    mTopicStatus=new ArrayList<Status>();
+                WeiboLog.d(TAG, "微博按钮选择状态改变了。" + isChecked);
+                if (null == mTopicStatus) {
+                    mTopicStatus = new ArrayList<Status>();
                 } else {
                     mTopicStatus.clear();
                 }
 
-                if (null==mDataList) {
-                    mDataList=new ArrayList<Map<String, String>>();
+                if (null == mDataList) {
+                    mDataList = new ArrayList<Map<String, String>>();
                 } else {
                     mDataList.clear();
                 }
 
                 if (isChecked) {
-                    if (null==mTopicAdapter) {
-                        mTopicAdapter=new TopicLineAdapter();
+                    if (null == mTopicAdapter) {
+                        mTopicAdapter = new TopicLineAdapter();
                     }
                     mTopicAdapter.notifyDataSetChanged();
                     mListView.setAdapter(mTopicAdapter);
                 } else {
-                    if (null==mAdapter) {
-                        mAdapter=new TimeLineAdapter();
+                    if (null == mAdapter) {
+                        mAdapter = new TimeLineAdapter();
                     }
                     mAdapter.notifyDataSetChanged();
                     mListView.setAdapter(mAdapter);
@@ -159,7 +159,7 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
             }
         });
 
-        final ActionBar bar=getActionBar();
+        final ActionBar bar = getActionBar();
         bar.show();
         bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         bar.setDisplayShowTitleEnabled(true);
@@ -178,26 +178,26 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
      * @param view
      */
     private void search(View view) {
-        final String q=mSearchText.getEditableText().toString();
+        final String q = mSearchText.getEditableText().toString();
         if (TextUtils.isEmpty(q)) {
             Toast.makeText(SearchActivity.this, "请输入要搜索的内容。", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (mProgressDialog==null) {
-            mProgressDialog=new ProgressDialog(SearchActivity.this);
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(SearchActivity.this);
         }
 
         mProgressDialog.show();
 
         //if (!isSearching) { //只有搜索才改变当前的搜索状态。
-        int id=mRadioGroup.getCheckedRadioButtonId();
-        if (id==R.id.status_rb) {
-            mode=0;
+        int id = mRadioGroup.getCheckedRadioButtonId();
+        if (id == R.id.status_rb) {
+            mode = 0;
             doSearchTopic(q);
             return;
-        } else if (id==R.id.user_rb) {
-            mode=1;
+        } else if (id == R.id.user_rb) {
+            mode = 1;
         }
 
         mDataList.clear();
@@ -216,14 +216,14 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
     private void doSearchTopic(final String q) {
         WeiboLog.d(TAG, "doSearchTopic");
         imm.hideSoftInputFromWindow(mSearchText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
-        isSearching=true;
+        isSearching = true;
         new Thread(new Runnable() {
 
             @Override
             public void run() {
                 try {
                     //SWeiboApi2 sWeiboApi2=(SWeiboApi2) App.getMicroBlog(SearchActivity.this);
-                    final SStatusData<Status> data=mSinaSearchApi.searchTopics(q, mTopicCount, page);
+                    final SStatusData<Status> data = mSinaSearchApi.searchTopics(q, mTopicCount, page);
 
                     mHandler.postDelayed(new Runnable() {
                         @Override
@@ -232,20 +232,20 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
                         }
                     }, 0l);
                 } catch (Exception e) {
-                    final String msg=e.toString();
+                    final String msg = e.toString();
                     e.printStackTrace();
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            AKUtils.showToast("搜索失败："+msg);
+                            NotifyUtils.showToast("搜索失败：" + msg);
                         }
                     }, 0l);
                 } finally {
-                    isSearching=false;
+                    isSearching = false;
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            if (null!=mProgressDialog&&mProgressDialog.isShowing()) {
+                            if (null != mProgressDialog && mProgressDialog.isShowing()) {
                                 mProgressDialog.dismiss();
                             }
                         }
@@ -256,20 +256,20 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
     }
 
     void finishSearchTopic(SStatusData<Status> data) {
-        if (null==data) {
-            AKUtils.showToast("搜索失败：");
+        if (null == data) {
+            NotifyUtils.showToast("搜索失败：");
             return;
         }
         WeiboLog.d(TAG, "finishSearchTopic:");
-        if (data.errorCode>0&&!TextUtils.isEmpty(data.errorMsg)) {
-            AKUtils.showToast("搜索失败："+data.errorMsg);
-            WeiboLog.i(TAG, "搜索失败："+data.errorCode+" msg:"+data.errorMsg);
+        if (data.errorCode > 0 && ! TextUtils.isEmpty(data.errorMsg)) {
+            NotifyUtils.showToast("搜索失败：" + data.errorMsg);
+            WeiboLog.i(TAG, "搜索失败：" + data.errorCode + " msg:" + data.errorMsg);
             return;
         }
 
-        ArrayList<Status> statuses=data.mStatusData;
-        if (null!=data&&(null==statuses||statuses.size()<1)) {
-            AKUtils.showToast("搜索结果为空：");
+        ArrayList<Status> statuses = data.mStatusData;
+        if (null != data && (null == statuses || statuses.size() < 1)) {
+            NotifyUtils.showToast("搜索结果为空：");
             WeiboLog.i(TAG, "搜索结果为空：");
             return;
         }
@@ -281,14 +281,14 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
 
     void doSearch(final String q) {
         imm.hideSoftInputFromWindow(mSearchText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
-        isSearching=true;
+        isSearching = true;
         new Thread(new Runnable() {
 
             @Override
             public void run() {
                 try {
                     //SWeiboApi2 sWeiboApi2=(SWeiboApi2) App.getMicroBlog(SearchActivity.this);
-                    final ArrayList<Map<String, String>> data=mSinaSearchApi.getSearchSuggestions(q, 20, mode);
+                    final ArrayList<Map<String, String>> data = mSinaSearchApi.getSearchSuggestions(q, 20, mode);
 
                     mHandler.postDelayed(new Runnable() {
                         @Override
@@ -297,20 +297,20 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
                         }
                     }, 0l);
                 } catch (Exception e) {
-                    final String msg=e.toString();
+                    final String msg = e.toString();
                     e.printStackTrace();
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            AKUtils.showToast("搜索失败："+msg);
+                            NotifyUtils.showToast("搜索失败：" + msg);
                         }
                     }, 0l);
                 } finally {
-                    isSearching=false;
+                    isSearching = false;
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            if (null!=mProgressDialog&&mProgressDialog.isShowing()) {
+                            if (null != mProgressDialog && mProgressDialog.isShowing()) {
                                 mProgressDialog.dismiss();
                             }
                         }
@@ -321,10 +321,10 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
     }
 
     void finishSearch(ArrayList<Map<String, String>> data) {
-        WeiboLog.d(TAG, "data:"+data.size());
+        WeiboLog.d(TAG, "data:" + data.size());
         mDataList.clear();
-        if (null==data||data.size()<1) {
-            AKUtils.showToast("搜索结果为空！");
+        if (null == data || data.size() < 1) {
+            NotifyUtils.showToast("搜索结果为空！");
             WeiboLog.w(TAG, "搜索结果为空");
             mAdapter.notifyDataSetChanged();
             return;
@@ -335,11 +335,11 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
     }
 
     private void doItemClick(AdapterView<?> parent, View view, int position, long id) {
-        WeiboLog.d(TAG, "pos:"+position+" mode:"+mode);
+        WeiboLog.d(TAG, "pos:" + position + " mode:" + mode);
         try {
-            if (mode==0) {
+            if (mode == 0) {
                 doStatusClick(position);
-            } else if (mode==1) {
+            } else if (mode == 1) {
                 doUserClick(mDataList.get(position));
             }
         } catch (Exception e) {
@@ -348,15 +348,15 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
     }
 
     private void doStatusClick(int position) {
-        Status status=mTopicStatus.get(position);
+        Status status = mTopicStatus.get(position);
         WeiboOperation.toViewOriginalStatus(SearchActivity.this, status);
     }
 
     private void doUserClick(Map<String, String> map) {
-        String screenName=map.get("screen_name");
-        String uid=map.get("uid");
-        WeiboLog.d(TAG, "screen_name:"+screenName+" followers_count:"+map.get("followers_count")+" uid:"+uid);
-        Intent intent=new Intent(SearchActivity.this, UserFragmentActivity.class);
+        String screenName = map.get("screen_name");
+        String uid = map.get("uid");
+        WeiboLog.d(TAG, "screen_name:" + screenName + " followers_count:" + map.get("followers_count") + " uid:" + uid);
+        Intent intent = new Intent(SearchActivity.this, UserFragmentActivity.class);
         intent.putExtra("nickName", screenName);
         intent.putExtra("user_id", uid);
         intent.putExtra("type", UserFragmentActivity.TYPE_USER_INFO);
@@ -405,18 +405,18 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Map<String, String> data=mDataList.get(position);
+            Map<String, String> data = mDataList.get(position);
 
-            SearchItemView itemView=null;
-            if (null==convertView) {
-                itemView=new SearchItemView(SearchActivity.this);
+            SearchItemView itemView = null;
+            if (null == convertView) {
+                itemView = new SearchItemView(SearchActivity.this);
             } else {
-                itemView=(SearchItemView) convertView;
+                itemView = (SearchItemView) convertView;
             }
 
-            if (mode==0) {
+            if (mode == 0) {
                 itemView.update(String.valueOf(data.get("suggestion")), String.valueOf(data.get("count")));
-            } else if (mode==1) {
+            } else if (mode == 1) {
                 itemView.update(String.valueOf(data.get("screen_name")), String.valueOf(data.get("followers_count")));
             }
 
@@ -447,18 +447,18 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ThreadBeanItemView itemView=null;
-            Status status=mTopicStatus.get(position);
+            ThreadBeanItemView itemView = null;
+            Status status = mTopicStatus.get(position);
 
-            boolean updateFlag=true;
+            boolean updateFlag = true;
             /*if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
                 updateFlag=false;
             }*/
 
-            if (convertView==null) {
-                itemView=new ThreadBeanItemView(SearchActivity.this, mListView, App.mCacheDir, status, updateFlag, false, false, true);
+            if (convertView == null) {
+                itemView = new ThreadBeanItemView(SearchActivity.this, mListView, App.mCacheDir, status, updateFlag, false, false, true);
             } else {
-                itemView=(ThreadBeanItemView) convertView;
+                itemView = (ThreadBeanItemView) convertView;
             }
             itemView.update(status, updateFlag, false, false, true);
 
@@ -477,14 +477,14 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
             ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
                 R.layout.sidebar_item, this);
             setMinimumHeight(40);
-            mTitle=(TextView) findViewById(R.id.title);
-            mMsg=(TextView) findViewById(R.id.msg);
+            mTitle = (TextView) findViewById(R.id.title);
+            mMsg = (TextView) findViewById(R.id.msg);
             findViewById(R.id.image).setVisibility(View.GONE);
         }
 
         public void update(String text1, String text2) {
             mTitle.setText(text1);
-            mMsg.setText("粉丝："+text2);
+            mMsg.setText("粉丝：" + text2);
         }
     }
 }

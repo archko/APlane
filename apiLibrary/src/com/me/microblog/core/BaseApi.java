@@ -18,17 +18,17 @@ import java.util.List;
 @Deprecated
 public abstract class BaseApi {
 
-    public static final String DE_OAUTH_CALLBACK_URL="http://archko.deoauth.com";
-    public static final String USERAGENT="Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.4) Gecko/20091111 Gentoo Firefox/3.5.4";
-    protected static final String ACCEPTENCODING="gzip,deflate";
+    public static final String DE_OAUTH_CALLBACK_URL = "http://archko.deoauth.com";
+    public static final String USERAGENT = "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.4) Gecko/20091111 Gentoo Firefox/3.5.4";
+    protected static final String ACCEPTENCODING = "gzip,deflate";
 
     //设置http参数
-    public static final int CONNECT_TIMEOUT=6000;
-    public static final int READ_TIMEOUT=10000;
+    public static final int CONNECT_TIMEOUT = 6000;
+    public static final int READ_TIMEOUT = 10000;
     public static HttpParams httpParameters;
 
     {
-        httpParameters=new BasicHttpParams();
+        httpParameters = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParameters, CONNECT_TIMEOUT);// Set the default socket timeout (SO_TIMEOUT) // in milliseconds which is the timeout for waiting for data.
         HttpConnectionParams.setSoTimeout(httpParameters, READ_TIMEOUT);
     }
@@ -39,7 +39,7 @@ public abstract class BaseApi {
      * @return
      */
     public abstract String getBaseUrl();
-    
+
     public abstract ResultToken oauth();
 
     public abstract String get(String urlString);

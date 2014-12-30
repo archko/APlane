@@ -35,7 +35,7 @@ import java.lang.ref.WeakReference;
 @Deprecated
 public class ImageTask extends Thread {
 
-    public static final String TAG="FetchImage";
+    public static final String TAG = "FetchImage";
     private DefaultHttpClient httpClient;
     private HttpGet mHttpGet;
     private Context mContext;
@@ -56,7 +56,7 @@ public class ImageTask extends Thread {
     /**
      * Default transition drawable fade time
      */
-    public static final int FADE_IN_TIME=200;
+    public static final int FADE_IN_TIME = 200;
 
     /**
      * Default album art
@@ -78,47 +78,47 @@ public class ImageTask extends Thread {
      */
     private Drawable[] mArrayDrawable;
 
-    public boolean isCancled=false;
+    public boolean isCancled = false;
 
     public ImageTask(Context context, DefaultHttpClient client, HttpGet httpGet, DownloadPiece piece) {
-        this.httpClient=client;
-        this.mHttpGet=httpGet;
-        this.mType=piece.type;
-        this.mHandler=piece.handler;
-        this.mContext=context;
-        this.uri=piece.uri;
-        this.dir=piece.dir;
-        this.cache=piece.cache;
-        mPiece=piece;
+        this.httpClient = client;
+        this.mHttpGet = httpGet;
+        this.mType = piece.type;
+        this.mHandler = piece.handler;
+        this.mContext = context;
+        this.uri = piece.uri;
+        this.dir = piece.dir;
+        this.cache = piece.cache;
+        mPiece = piece;
         init(context);
     }
 
     public final String getDefaultTheme(Context context) {
-        SharedPreferences mPreferences=PreferenceManager.getDefaultSharedPreferences(context);
-        String themeId=mPreferences.getString("theme", "2");
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String themeId = mPreferences.getString("theme", "2");
         return themeId;
     }
 
     private void init(Context context) {
-        int mResId=R.drawable.image_loading_dark;
-        if (mPiece.type==Constants.TYPE_PORTRAIT) {
-            mResId=R.drawable.user_default_photo;
+        int mResId = R.drawable.image_loading_dark;
+        if (mPiece.type == Constants.TYPE_PORTRAIT) {
+            mResId = R.drawable.user_default_photo;
         } else {
-            String themeId=getDefaultTheme(context);
-            mResId=R.drawable.image_loading_dark;
+            String themeId = getDefaultTheme(context);
+            mResId = R.drawable.image_loading_dark;
             if ("2".equals(themeId)) {
-                mResId=R.drawable.image_loading_light;
+                mResId = R.drawable.image_loading_light;
             }
         }
-        mDefault=((BitmapDrawable) context.getResources().getDrawable(mResId)).getBitmap();
-        mDefaultArtwork=new BitmapDrawable(context.getResources(), mDefault);
+        mDefault = ((BitmapDrawable) context.getResources().getDrawable(mResId)).getBitmap();
+        mDefaultArtwork = new BitmapDrawable(context.getResources(), mDefault);
         // No filter and no dither makes things much quicker
         mDefaultArtwork.setFilterBitmap(false);
         mDefaultArtwork.setDither(false);
-        mCurrentDrawable=new ColorDrawable(App.getAppContext().getResources().getColor(R.color.transparent));
+        mCurrentDrawable = new ColorDrawable(App.getAppContext().getResources().getColor(R.color.transparent));
         // A transparent image (layer 0) and the new result (layer 1)
-        mArrayDrawable=new Drawable[2];
-        mArrayDrawable[0]=mCurrentDrawable;
+        mArrayDrawable = new Drawable[ 2 ];
+        mArrayDrawable[ 0 ] = mCurrentDrawable;
     }
 
     public void startThread() {
@@ -128,54 +128,54 @@ public class ImageTask extends Thread {
 
     @Override
     public void run() {
-        App app=(App) this.mContext.getApplicationContext();
+        App app = (App) this.mContext.getApplicationContext();
         HttpResponse response;
 
-        if (ImageCache2.getInstance().isScrolling()||DownloadPoolThread.cancelWork(mPiece)||isCancled) {
+        if (ImageCache2.getInstance().isScrolling() || DownloadPoolThread.cancelWork(mPiece) || isCancled) {
             //app.mDownloadPool.ActiveThread_Pop();
             DownloadPoolThread.getDownloadPoolThread().popDownloadQuery(mPiece.uri);
             return;
         }
 
         try {
-            Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(mPiece.uri);
-            if (null!=bitmap) {
+            Bitmap bitmap = ImageCache2.getInstance().getBitmapFromMemCache(mPiece.uri);
+            if (null != bitmap) {
                 SendMessage(mPiece.handler, mPiece, bitmap);
                 return;
             }
 
-            String ext= WeiboUtils.getExt(uri);
-            String name=Md5Digest.getInstance().getMd5(uri)+ext;
-            if (null==name) {
+            String ext = WeiboUtils.getExt(uri);
+            String name = Md5Digest.getInstance().getMd5(uri) + ext;
+            if (null == name) {
                 //app.mDownloadPool.ActiveThread_Pop();
                 DownloadPoolThread.getDownloadPoolThread().popDownloadQuery(mPiece.uri);
                 return;
             }
-            String imagepath=dir+name;
+            String imagepath = dir + name;
 
-            bitmap=ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(imagepath, -1);
-            if (null!=bitmap) {
-                if (!DownloadPoolThread.cancelWork(mPiece)) {
+            bitmap = ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(imagepath, - 1);
+            if (null != bitmap) {
+                if (! DownloadPoolThread.cancelWork(mPiece)) {
                     SendMessage(mPiece.handler, mPiece, bitmap);
                 }
                 return;
             }
 
-            if (DownloadPoolThread.cancelWork(mPiece)||isCancled) {
+            if (DownloadPoolThread.cancelWork(mPiece) || isCancled) {
                 //app.mDownloadPool.ActiveThread_Pop();
                 DownloadPoolThread.getDownloadPoolThread().popDownloadQuery(mPiece.uri);
                 return;
             }
-            response=httpClient.execute(mHttpGet);
-            int code=response.getStatusLine().getStatusCode();
-            if (code==200) {
-                byte[] bytes=EntityUtils.toByteArray(response.getEntity());
+            response = httpClient.execute(mHttpGet);
+            int code = response.getStatusLine().getStatusCode();
+            if (code == 200) {
+                byte[] bytes = EntityUtils.toByteArray(response.getEntity());
                 if (cache) {
                     ImageManager.saveBytesAsFile(bytes, imagepath);
                     //WeiboLog.d(TAG, "需要缓存："+str2);
-                    bitmap=ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(imagepath, -1);
+                    bitmap = ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(imagepath, - 1);
                 } else {
-                    bitmap=ImageManager.decodeBitmap(bytes, -1);
+                    bitmap = ImageManager.decodeBitmap(bytes, - 1);
                 }
                 //WeiboLog.d(TAG, "cache:"+cache+" uri:"+uri+" length:"+bytes.length+" mFilepath:"+mFilepath+" dir:"+dir+" bitmap:"+bitmap);
 
@@ -185,15 +185,15 @@ public class ImageTask extends Thread {
 
                 SendMessage(mPiece.handler, mPiece, bitmap);
             } else {
-                WeiboLog.w(TAG, "下载图片失败:"+uri);
+                WeiboLog.w(TAG, "下载图片失败:" + uri);
             }
         } catch (IOException e) {
-            WeiboLog.d(TAG, "uri:"+uri+" exception:"+e.toString());
+            WeiboLog.d(TAG, "uri:" + uri + " exception:" + e.toString());
         } finally {
             // 默认把它移出，不再下载。
             //app.mDownloadPool.ActiveThread_Pop();
             DownloadPoolThread.getDownloadPoolThread().popDownloadQuery(mPiece.uri);
-            if (null!=mHttpGet) {
+            if (null != mHttpGet) {
                 mHttpGet.abort();
             }
         }
@@ -201,7 +201,7 @@ public class ImageTask extends Thread {
 
     public void SendMessage(Handler handler, final DownloadPiece piece, final Bitmap bitmap) {
         DownloadPoolThread.getDownloadPoolThread().popDownloadQuery(mPiece.uri);
-        if (null==piece||null==bitmap||handler==null||isCancled) {
+        if (null == piece || null == bitmap || handler == null || isCancled) {
             WeiboLog.d(TAG, "SendMessage,bitmap is null.");
             return;
         }
@@ -220,26 +220,26 @@ public class ImageTask extends Thread {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (!DownloadPoolThread.cancelWork(mPiece)) {
-                    WeakReference<ImageView> viewWeakReference=mPiece.mImageReference;//DownloadPoolThread.downloading.get(uri);
-                    ImageView view=(ImageView) viewWeakReference.get();
-                    if (null!=view) {
+                if (! DownloadPoolThread.cancelWork(mPiece)) {
+                    WeakReference<ImageView> viewWeakReference = mPiece.mImageReference;//DownloadPoolThread.downloading.get(uri);
+                    ImageView view = (ImageView) viewWeakReference.get();
+                    if (null != view) {
                         //WeiboLog.v(TAG, "SendMessage "+uri);
                         //view.setImageBitmap(bitmap);
                         setBitmap(view, bitmap, piece.type);
                     } else {
-                        WeiboLog.v(TAG, "SendMessage view is null:"+piece);
+                        WeiboLog.v(TAG, "SendMessage view is null:" + piece);
                     }
                 } else {
-                    WeiboLog.d(TAG, "SendMessage,cancel work:"+piece);
+                    WeiboLog.d(TAG, "SendMessage,cancel work:" + piece);
                 }
             }
 
             private void setBitmap(ImageView view, Bitmap bitmap, int type) {
-                if (type==Constants.TYPE_PORTRAIT) {
+                if (type == Constants.TYPE_PORTRAIT) {
                     view.setImageBitmap(bitmap);
                 } else {
-                    final BitmapDrawable layerTwo=new BitmapDrawable(App.getAppContext().getResources(), bitmap);
+                    final BitmapDrawable layerTwo = new BitmapDrawable(App.getAppContext().getResources(), bitmap);
                     /*layerTwo.setFilterBitmap(false);
                     layerTwo.setDither(false);
                     mArrayDrawable[1]=layerTwo;
@@ -256,17 +256,17 @@ public class ImageTask extends Thread {
 
     @Deprecated
     public static void SendMessage(Handler handler, int what, Bundle bundle, String uri) {
-        if (handler==null) {
+        if (handler == null) {
             return;
         }
-        Message message=Message.obtain();//new Message();
-        message.what=what;
-        message.obj=uri;
+        Message message = Message.obtain();//new Message();
+        message.what = what;
+        message.obj = uri;
         message.setData(bundle);
         handler.sendMessage(message);
     }
 
     public void cancel(boolean b) {
-        isCancled=true;
+        isCancled = true;
     }
 }

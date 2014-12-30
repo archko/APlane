@@ -79,9 +79,10 @@ import java.util.Comparator;
  * ViewPager in the API 4+ Support Demos and API 13+ Support Demos sample code.
  *
  * {@sample development/samples/Support13Demos/src/com/example/android/supportv13/app/ActionBarTabsPager.java
- *      complete}
+ * complete}
  */
 public class LazyViewPager extends ViewGroup {
+
     private static final String TAG = "LazyViewPager";
     private static final boolean DEBUG = false;
 
@@ -95,7 +96,7 @@ public class LazyViewPager extends ViewGroup {
 
     private static final int MIN_FLING_VELOCITY = 400; // dips
 
-    private static final int[] LAYOUT_ATTRS = new int[] {
+    private static final int[] LAYOUT_ATTRS = new int[]{
         android.R.attr.layout_gravity
     };
 
@@ -106,6 +107,7 @@ public class LazyViewPager extends ViewGroup {
     private int mExpectedAdapterCount;
 
     static class ItemInfo {
+
         Object object;
         int position;
         boolean scrolling;
@@ -113,11 +115,12 @@ public class LazyViewPager extends ViewGroup {
         float offset;
     }
 
-    private static final Comparator<ItemInfo> COMPARATOR = new Comparator<ItemInfo>(){
+    private static final Comparator<ItemInfo> COMPARATOR = new Comparator<ItemInfo>() {
         @Override
         public int compare(ItemInfo lhs, ItemInfo rhs) {
             return lhs.position - rhs.position;
-        }};
+        }
+    };
 
     private static final Interpolator sInterpolator = new Interpolator() {
         public float getInterpolation(float t) {
@@ -135,7 +138,7 @@ public class LazyViewPager extends ViewGroup {
 
     private PagerAdapter mAdapter;
     private int mCurItem;   // Index of currently displayed page.
-    private int mRestoredCurItem = -1;
+    private int mRestoredCurItem = - 1;
     private Parcelable mRestoredAdapterState = null;
     private ClassLoader mRestoredClassLoader = null;
     private Scroller mScroller;
@@ -149,7 +152,7 @@ public class LazyViewPager extends ViewGroup {
     // Offsets of the first and last items, if known.
     // Set during population, used to determine if we are at the beginning
     // or end of the pager data set during touch scrolling.
-    private float mFirstOffset = -Float.MAX_VALUE;
+    private float mFirstOffset = - Float.MAX_VALUE;
     private float mLastOffset = Float.MAX_VALUE;
 
     private int mChildWidthMeasureSpec;
@@ -183,7 +186,7 @@ public class LazyViewPager extends ViewGroup {
      * Sentinel value for no current active pointer.
      * Used by {@link #mActivePointerId}.
      */
-    private static final int INVALID_POINTER = -1;
+    private static final int INVALID_POINTER = - 1;
 
     /**
      * Determines speed during touch scrolling
@@ -257,9 +260,9 @@ public class LazyViewPager extends ViewGroup {
          * This method will be invoked when the current page is scrolled, either as part
          * of a programmatically initiated smooth scroll or a user initiated touch scroll.
          *
-         * @param position Position index of the first page currently being displayed.
-         *                 Page position+1 will be visible if positionOffset is nonzero.
-         * @param positionOffset Value from [0, 1) indicating the offset from the page at position.
+         * @param position             Position index of the first page currently being displayed.
+         *                             Page position+1 will be visible if positionOffset is nonzero.
+         * @param positionOffset       Value from [0, 1) indicating the offset from the page at position.
          * @param positionOffsetPixels Value in pixels indicating the offset from position.
          */
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels);
@@ -291,6 +294,7 @@ public class LazyViewPager extends ViewGroup {
      * every method of {@link OnPageChangeListener}.
      */
     public static class SimpleOnPageChangeListener implements OnPageChangeListener {
+
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             // This space for rent
@@ -317,10 +321,11 @@ public class LazyViewPager extends ViewGroup {
      * be ignored.</p>
      */
     public interface PageTransformer {
+
         /**
          * Apply a property transformation to the given page.
          *
-         * @param page Apply the transformation to this page
+         * @param page     Apply the transformation to this page
          * @param position Position of page relative to the current front-and-center
          *                 position of the pager. 0 is front and center. 1 is one full
          *                 page position to the right, and -1 is one page position to the left.
@@ -332,6 +337,7 @@ public class LazyViewPager extends ViewGroup {
      * Used internally to monitor when adapters are switched.
      */
     interface OnAdapterChangeListener {
+
         public void onAdapterChanged(PagerAdapter oldAdapter, PagerAdapter newAdapter);
     }
 
@@ -339,7 +345,9 @@ public class LazyViewPager extends ViewGroup {
      * Used internally to tag special types of child views that should be added as
      * pager decorations by default.
      */
-    interface Decor {}
+    interface Decor {
+
+    }
 
     public LazyViewPager(Context context) {
         super(context);
@@ -373,9 +381,9 @@ public class LazyViewPager extends ViewGroup {
         ViewCompat.setAccessibilityDelegate(this, new MyAccessibilityDelegate());
 
         if (ViewCompat.getImportantForAccessibility(this)
-                == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
+            == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
             ViewCompat.setImportantForAccessibility(this,
-                    ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+                ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
         }
     }
 
@@ -436,10 +444,10 @@ public class LazyViewPager extends ViewGroup {
             if (mRestoredCurItem >= 0) {
                 mAdapter.restoreState(mRestoredAdapterState, mRestoredClassLoader);
                 setCurrentItemInternal(mRestoredCurItem, false, true);
-                mRestoredCurItem = -1;
+                mRestoredCurItem = - 1;
                 mRestoredAdapterState = null;
                 mRestoredClassLoader = null;
-            } else if (!wasFirstLayout) {
+            } else if (! wasFirstLayout) {
                 populate();
             } else {
                 requestLayout();
@@ -455,7 +463,7 @@ public class LazyViewPager extends ViewGroup {
         for (int i = 0; i < getChildCount(); i++) {
             final View child = getChildAt(i);
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-            if (!lp.isDecor) {
+            if (! lp.isDecor) {
                 removeViewAt(i);
                 i--;
             }
@@ -488,13 +496,13 @@ public class LazyViewPager extends ViewGroup {
      */
     public void setCurrentItem(int item) {
         mPopulatePending = false;
-        setCurrentItemInternal(item, !mFirstLayout, false);
+        setCurrentItemInternal(item, ! mFirstLayout, false);
     }
 
     /**
      * Set the currently selected page.
      *
-     * @param item Item index to select
+     * @param item         Item index to select
      * @param smoothScroll True to smoothly scroll to the new item, false to transition immediately
      */
     public void setCurrentItem(int item, boolean smoothScroll) {
@@ -515,7 +523,7 @@ public class LazyViewPager extends ViewGroup {
             setScrollingCacheEnabled(false);
             return;
         }
-        if (!always && mCurItem == item && mItems.size() != 0) {
+        if (! always && mCurItem == item && mItems.size() != 0) {
             setScrollingCacheEnabled(false);
             return;
         }
@@ -530,7 +538,7 @@ public class LazyViewPager extends ViewGroup {
             // We are doing a jump by more than one page.  To avoid
             // glitches, we want to keep all current pages in the view
             // until the scroll ends.
-            for (int i=0; i<mItems.size(); i++) {
+            for (int i = 0; i < mItems.size(); i++) {
                 mItems.get(i).scrolling = true;
             }
         }
@@ -539,7 +547,7 @@ public class LazyViewPager extends ViewGroup {
         if (mFirstLayout) {
             // We don't have any idea how big we are yet and shouldn't have any pages either.
             // Just set things up and let the pending layout handle things.
-        mCurItem = item;
+            mCurItem = item;
             if (dispatchSelected && mOnPageChangeListener != null) {
                 mOnPageChangeListener.onPageSelected(item);
             }
@@ -554,13 +562,13 @@ public class LazyViewPager extends ViewGroup {
     }
 
     private void scrollToItem(int item, boolean smoothScroll, int velocity,
-            boolean dispatchSelected) {
+        boolean dispatchSelected) {
         final ItemInfo curInfo = infoForPosition(item);
         int destX = 0;
         if (curInfo != null) {
             final int width = getClientWidth();
             destX = (int) (width * Math.max(mFirstOffset,
-                    Math.min(curInfo.offset, mLastOffset)));
+                Math.min(curInfo.offset, mLastOffset)));
         }
         if (smoothScroll) {
             smoothScrollTo(destX, 0, velocity);
@@ -603,7 +611,7 @@ public class LazyViewPager extends ViewGroup {
      *
      * @param reverseDrawingOrder true if the supplied PageTransformer requires page views
      *                            to be drawn from last to first instead of first to last.
-     * @param transformer PageTransformer that will modify each page's animation properties
+     * @param transformer         PageTransformer that will modify each page's animation properties
      */
     public void setPageTransformer(boolean reverseDrawingOrder, PageTransformer transformer) {
         if (Build.VERSION.SDK_INT >= 11) {
@@ -625,7 +633,7 @@ public class LazyViewPager extends ViewGroup {
             if (mSetChildrenDrawingOrderEnabled == null) {
                 try {
                     mSetChildrenDrawingOrderEnabled = ViewGroup.class.getDeclaredMethod(
-                            "setChildrenDrawingOrderEnabled", new Class[] { Boolean.TYPE });
+                        "setChildrenDrawingOrderEnabled", new Class[]{Boolean.TYPE});
                 } catch (NoSuchMethodException e) {
                     Log.e(TAG, "Can't find setChildrenDrawingOrderEnabled", e);
                 }
@@ -688,7 +696,7 @@ public class LazyViewPager extends ViewGroup {
     public void setOffscreenPageLimit(int limit) {
         if (limit < DEFAULT_OFFSCREEN_PAGES) {
             Log.w(TAG, "Requested offscreen page limit " + limit + " too small; defaulting to " +
-                    DEFAULT_OFFSCREEN_PAGES);
+                DEFAULT_OFFSCREEN_PAGES);
             limit = DEFAULT_OFFSCREEN_PAGES;
         }
         if (limit != mOffscreenPageLimit) {
@@ -782,8 +790,8 @@ public class LazyViewPager extends ViewGroup {
     /**
      * Like {@link View#scrollBy}, but scroll smoothly instead of immediately.
      *
-     * @param x the number of pixels to scroll by on the X axis
-     * @param y the number of pixels to scroll by on the Y axis
+     * @param x        the number of pixels to scroll by on the X axis
+     * @param y        the number of pixels to scroll by on the Y axis
      * @param velocity the velocity associated with a fling, if applicable. (0 otherwise)
      */
     void smoothScrollTo(int x, int y, int velocity) {
@@ -810,7 +818,7 @@ public class LazyViewPager extends ViewGroup {
         final int halfWidth = width / 2;
         final float distanceRatio = Math.min(1f, 1.0f * Math.abs(dx) / width);
         final float distance = halfWidth + halfWidth *
-                distanceInfluenceForSnapDuration(distanceRatio);
+            distanceInfluenceForSnapDuration(distanceRatio);
 
         int duration = 0;
         velocity = Math.abs(velocity);
@@ -846,7 +854,7 @@ public class LazyViewPager extends ViewGroup {
         final int adapterCount = mAdapter.getCount();
         mExpectedAdapterCount = adapterCount;
         boolean needPopulate = mItems.size() < mOffscreenPageLimit * 2 + 1 &&
-                mItems.size() < adapterCount;
+            mItems.size() < adapterCount;
         int newCurrItem = mCurItem;
 
         boolean isUpdating = false;
@@ -862,7 +870,7 @@ public class LazyViewPager extends ViewGroup {
                 mItems.remove(i);
                 i--;
 
-                if (!isUpdating) {
+                if (! isUpdating) {
                     mAdapter.startUpdate(this);
                     isUpdating = true;
                 }
@@ -901,7 +909,7 @@ public class LazyViewPager extends ViewGroup {
             for (int i = 0; i < childCount; i++) {
                 final View child = getChildAt(i);
                 final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-                if (!lp.isDecor) {
+                if (! lp.isDecor) {
                     lp.widthFactor = 0.f;
                 }
             }
@@ -951,7 +959,7 @@ public class LazyViewPager extends ViewGroup {
         final int pageLimit = mOffscreenPageLimit;
         final int startPos = Math.max(0, mCurItem - pageLimit);
         final int N = mAdapter.getCount();
-        final int endPos = Math.min(N-1, mCurItem + pageLimit);
+        final int endPos = Math.min(N - 1, mCurItem + pageLimit);
 
         if (N != mExpectedAdapterCount) {
             String resName;
@@ -961,27 +969,27 @@ public class LazyViewPager extends ViewGroup {
                 resName = Integer.toHexString(getId());
             }
             throw new IllegalStateException("The application's PagerAdapter changed the adapter's" +
-                    " contents without calling PagerAdapter#notifyDataSetChanged!" +
-                    " Expected adapter item count: " + mExpectedAdapterCount + ", found: " + N +
-                    " Pager id: " + resName +
-                    " Pager class: " + getClass() +
-                    " Problematic adapter: " + mAdapter.getClass());
+                " contents without calling PagerAdapter#notifyDataSetChanged!" +
+                " Expected adapter item count: " + mExpectedAdapterCount + ", found: " + N +
+                " Pager id: " + resName +
+                " Pager class: " + getClass() +
+                " Problematic adapter: " + mAdapter.getClass());
         }
 
         // Locate the currently focused item or add it if needed.
-        int curIndex = -1;
+        int curIndex = - 1;
         ItemInfo curItem = null;
         for (curIndex = 0; curIndex < mItems.size(); curIndex++) {
             final ItemInfo ii = mItems.get(curIndex);
             if (ii.position >= mCurItem) {
                 if (ii.position == mCurItem) curItem = ii;
                 break;
-                }
-                }
+            }
+        }
 
         if (curItem == null && N > 0) {
             curItem = addNewItem(mCurItem, curIndex);
-            }
+        }
 
         // Fill 3x the available width or up to the number of offscreen
         // pages requested to either side, whichever is larger.
@@ -992,18 +1000,18 @@ public class LazyViewPager extends ViewGroup {
             ItemInfo ii = itemIndex >= 0 ? mItems.get(itemIndex) : null;
             final int clientWidth = getClientWidth();
             final float leftWidthNeeded = clientWidth <= 0 ? 0 :
-                    2.f - curItem.widthFactor + (float) getPaddingLeft() / (float) clientWidth;
+                2.f - curItem.widthFactor + (float) getPaddingLeft() / (float) clientWidth;
             for (int pos = mCurItem - 1; pos >= 0; pos--) {
                 if (extraWidthLeft >= leftWidthNeeded && pos < startPos) {
                     if (ii == null) {
                         break;
-        }
-                    if (pos == ii.position && !ii.scrolling) {
+                    }
+                    if (pos == ii.position && ! ii.scrolling) {
                         mItems.remove(itemIndex);
                         mAdapter.destroyItem(this, pos, ii.object);
                         if (DEBUG) {
                             Log.i(TAG, "populate() - destroyItem() with pos: " + pos +
-                                    " view: " + ((View) ii.object));
+                                " view: " + ((View) ii.object));
                         }
                         itemIndex--;
                         curIndex--;
@@ -1026,19 +1034,19 @@ public class LazyViewPager extends ViewGroup {
             if (extraWidthRight < 2.f) {
                 ii = itemIndex < mItems.size() ? mItems.get(itemIndex) : null;
                 final float rightWidthNeeded = clientWidth <= 0 ? 0 :
-                        (float) getPaddingRight() / (float) clientWidth + 2.f;
+                    (float) getPaddingRight() / (float) clientWidth + 2.f;
                 for (int pos = mCurItem + 1; pos < N; pos++) {
                     if (extraWidthRight >= rightWidthNeeded && pos > endPos) {
                         if (ii == null) {
                             break;
-            }
-                        if (pos == ii.position && !ii.scrolling) {
+                        }
+                        if (pos == ii.position && ! ii.scrolling) {
                             mItems.remove(itemIndex);
                             mAdapter.destroyItem(this, pos, ii.object);
                             if (DEBUG) {
                                 Log.i(TAG, "populate() - destroyItem() with pos: " + pos +
-                                        " view: " + ((View) ii.object));
-        }
+                                    " view: " + ((View) ii.object));
+                            }
                             ii = itemIndex < mItems.size() ? mItems.get(itemIndex) : null;
                         }
                     } else if (ii != null && pos == ii.position) {
@@ -1059,7 +1067,7 @@ public class LazyViewPager extends ViewGroup {
 
         if (DEBUG) {
             Log.i(TAG, "Current page list:");
-            for (int i=0; i<mItems.size(); i++) {
+            for (int i = 0; i < mItems.size(); i++) {
                 Log.i(TAG, "#" + i + ": page " + mItems.get(i).position);
             }
         }
@@ -1075,7 +1083,7 @@ public class LazyViewPager extends ViewGroup {
             final View child = getChildAt(i);
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
             lp.childIndex = i;
-            if (!lp.isDecor && lp.widthFactor == 0.f) {
+            if (! lp.isDecor && lp.widthFactor == 0.f) {
                 // 0 means requery the adapter for this, it doesn't have a valid width.
                 final ItemInfo ii = infoForChild(child);
                 if (ii != null) {
@@ -1090,7 +1098,7 @@ public class LazyViewPager extends ViewGroup {
             View currentFocused = findFocus();
             ItemInfo ii = currentFocused != null ? infoForAnyChild(currentFocused) : null;
             if (ii == null || ii.position != mCurItem) {
-                for (int i=0; i<getChildCount(); i++) {
+                for (int i = 0; i < getChildCount(); i++) {
                     View child = getChildAt(i);
                     ii = infoForChild(child);
                     if (ii != null && ii.position == mCurItem) {
@@ -1132,7 +1140,7 @@ public class LazyViewPager extends ViewGroup {
                 ItemInfo ii = null;
                 float offset = oldCurInfo.offset + oldCurInfo.widthFactor + marginOffset;
                 for (int pos = oldCurPosition + 1;
-                        pos <= curItem.position && itemIndex < mItems.size(); pos++) {
+                     pos <= curItem.position && itemIndex < mItems.size(); pos++) {
                     ii = mItems.get(itemIndex);
                     while (pos > ii.position && itemIndex < mItems.size() - 1) {
                         itemIndex++;
@@ -1152,7 +1160,7 @@ public class LazyViewPager extends ViewGroup {
                 ItemInfo ii = null;
                 float offset = oldCurInfo.offset;
                 for (int pos = oldCurPosition - 1;
-                        pos >= curItem.position && itemIndex >= 0; pos--) {
+                     pos >= curItem.position && itemIndex >= 0; pos--) {
                     ii = mItems.get(itemIndex);
                     while (pos < ii.position && itemIndex > 0) {
                         itemIndex--;
@@ -1174,9 +1182,9 @@ public class LazyViewPager extends ViewGroup {
         final int itemCount = mItems.size();
         float offset = curItem.offset;
         int pos = curItem.position - 1;
-        mFirstOffset = curItem.position == 0 ? curItem.offset : -Float.MAX_VALUE;
+        mFirstOffset = curItem.position == 0 ? curItem.offset : - Float.MAX_VALUE;
         mLastOffset = curItem.position == N - 1 ?
-                curItem.offset + curItem.widthFactor - 1 : Float.MAX_VALUE;
+            curItem.offset + curItem.widthFactor - 1 : Float.MAX_VALUE;
         // Previous pages
         for (int i = curIndex - 1; i >= 0; i--, pos--) {
             final ItemInfo ii = mItems.get(i);
@@ -1212,6 +1220,7 @@ public class LazyViewPager extends ViewGroup {
      * contains that state.
      */
     public static class SavedState extends BaseSavedState {
+
         int position;
         Parcelable adapterState;
         ClassLoader loader;
@@ -1230,21 +1239,22 @@ public class LazyViewPager extends ViewGroup {
         @Override
         public String toString() {
             return "FragmentPager.SavedState{"
-                    + Integer.toHexString(System.identityHashCode(this))
-                    + " position=" + position + "}";
+                + Integer.toHexString(System.identityHashCode(this))
+                + " position=" + position + "}";
         }
 
         public static final Parcelable.Creator<SavedState> CREATOR
-                = ParcelableCompat.newCreator(new ParcelableCompatCreatorCallbacks<SavedState>() {
-                    @Override
-                    public SavedState createFromParcel(Parcel in, ClassLoader loader) {
-                        return new SavedState(in, loader);
-                    }
-                    @Override
-                    public SavedState[] newArray(int size) {
-                        return new SavedState[size];
-                    }
-                });
+            = ParcelableCompat.newCreator(new ParcelableCompatCreatorCallbacks<SavedState>() {
+            @Override
+            public SavedState createFromParcel(Parcel in, ClassLoader loader) {
+                return new SavedState(in, loader);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[ size ];
+            }
+        });
 
         SavedState(Parcel in, ClassLoader loader) {
             super(in);
@@ -1270,12 +1280,12 @@ public class LazyViewPager extends ViewGroup {
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {
-        if (!(state instanceof SavedState)) {
+        if (! (state instanceof SavedState)) {
             super.onRestoreInstanceState(state);
             return;
         }
 
-        SavedState ss = (SavedState)state;
+        SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(ss.getSuperState());
 
         if (mAdapter != null) {
@@ -1290,7 +1300,7 @@ public class LazyViewPager extends ViewGroup {
 
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        if (!checkLayoutParams(params)) {
+        if (! checkLayoutParams(params)) {
             params = generateLayoutParams(params);
         }
         final LayoutParams lp = (LayoutParams) params;
@@ -1324,7 +1334,7 @@ public class LazyViewPager extends ViewGroup {
     }
 
     ItemInfo infoForChild(View child) {
-        for (int i=0; i<mItems.size(); i++) {
+        for (int i = 0; i < mItems.size(); i++) {
             ItemInfo ii = mItems.get(i);
             if (mAdapter.isViewFromObject(child, ii.object)) {
                 return ii;
@@ -1335,11 +1345,11 @@ public class LazyViewPager extends ViewGroup {
 
     ItemInfo infoForAnyChild(View child) {
         ViewParent parent;
-        while ((parent=child.getParent()) != this) {
-            if (parent == null || !(parent instanceof View)) {
+        while ((parent = child.getParent()) != this) {
+            if (parent == null || ! (parent instanceof View)) {
                 return null;
             }
-            child = (View)parent;
+            child = (View) parent;
         }
         return infoForChild(child);
     }
@@ -1368,7 +1378,7 @@ public class LazyViewPager extends ViewGroup {
         // adding and removing different arbitrary views and do not
         // want the layout to change as this happens.
         setMeasuredDimension(getDefaultSize(0, widthMeasureSpec),
-                getDefaultSize(0, heightMeasureSpec));
+            getDefaultSize(0, heightMeasureSpec));
 
         final int measuredWidth = getMeasuredWidth();
         final int maxGutterSize = measuredWidth / 10;
@@ -1384,7 +1394,7 @@ public class LazyViewPager extends ViewGroup {
          * views won't intersect. We will pin to edges based on gravity.
          */
         int size = getChildCount();
-        for (int i = 0; i < size; ++i) {
+        for (int i = 0; i < size; ++ i) {
             final View child = getChildAt(i);
             if (child.getVisibility() != GONE) {
                 final LayoutParams lp = (LayoutParams) child.getLayoutParams();
@@ -1439,16 +1449,16 @@ public class LazyViewPager extends ViewGroup {
 
         // Page views next.
         size = getChildCount();
-        for (int i = 0; i < size; ++i) {
+        for (int i = 0; i < size; ++ i) {
             final View child = getChildAt(i);
             if (child.getVisibility() != GONE) {
                 if (DEBUG) Log.v(TAG, "Measuring #" + i + " " + child
-		        + ": " + mChildWidthMeasureSpec);
+                    + ": " + mChildWidthMeasureSpec);
 
                 final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-                if (lp == null || !lp.isDecor) {
+                if (lp == null || ! lp.isDecor) {
                     final int widthSpec = MeasureSpec.makeMeasureSpec(
-                            (int) (childWidthSize * lp.widthFactor), MeasureSpec.EXACTLY);
+                        (int) (childWidthSize * lp.widthFactor), MeasureSpec.EXACTLY);
                     child.measure(widthSpec, mChildHeightMeasureSpec);
                 }
             }
@@ -1466,27 +1476,27 @@ public class LazyViewPager extends ViewGroup {
     }
 
     private void recomputeScrollPosition(int width, int oldWidth, int margin, int oldMargin) {
-        if (oldWidth > 0 && !mItems.isEmpty()) {
+        if (oldWidth > 0 && ! mItems.isEmpty()) {
             final int widthWithMargin = width - getPaddingLeft() - getPaddingRight() + margin;
             final int oldWidthWithMargin = oldWidth - getPaddingLeft() - getPaddingRight()
-                                           + oldMargin;
+                + oldMargin;
             final int xpos = getScrollX();
             final float pageOffset = (float) xpos / oldWidthWithMargin;
             final int newOffsetPixels = (int) (pageOffset * widthWithMargin);
 
             scrollTo(newOffsetPixels, getScrollY());
-            if (!mScroller.isFinished()) {
+            if (! mScroller.isFinished()) {
                 // We now return to your regularly scheduled scroll, already in progress.
                 final int newDuration = mScroller.getDuration() - mScroller.timePassed();
                 ItemInfo targetInfo = infoForPosition(mCurItem);
                 mScroller.startScroll(newOffsetPixels, 0,
-                        (int) (targetInfo.offset * width), 0, newDuration);
+                    (int) (targetInfo.offset * width), 0, newDuration);
             }
         } else {
             final ItemInfo ii = infoForPosition(mCurItem);
             final float scrollOffset = ii != null ? Math.min(ii.offset, mLastOffset) : 0;
             final int scrollPos = (int) (scrollOffset *
-                                         (width - getPaddingLeft() - getPaddingRight()));
+                (width - getPaddingLeft() - getPaddingRight()));
             if (scrollPos != getScrollX()) {
                 completeScroll(false);
                 scrollTo(scrollPos, getScrollY());
@@ -1528,7 +1538,7 @@ public class LazyViewPager extends ViewGroup {
                             break;
                         case Gravity.CENTER_HORIZONTAL:
                             childLeft = Math.max((width - child.getMeasuredWidth()) / 2,
-                                    paddingLeft);
+                                paddingLeft);
                             break;
                         case Gravity.RIGHT:
                             childLeft = width - paddingRight - child.getMeasuredWidth();
@@ -1545,7 +1555,7 @@ public class LazyViewPager extends ViewGroup {
                             break;
                         case Gravity.CENTER_VERTICAL:
                             childTop = Math.max((height - child.getMeasuredHeight()) / 2,
-                                    paddingTop);
+                                paddingTop);
                             break;
                         case Gravity.BOTTOM:
                             childTop = height - paddingBottom - child.getMeasuredHeight();
@@ -1554,8 +1564,8 @@ public class LazyViewPager extends ViewGroup {
                     }
                     childLeft += scrollX;
                     child.layout(childLeft, childTop,
-                            childLeft + child.getMeasuredWidth(),
-                            childTop + child.getMeasuredHeight());
+                        childLeft + child.getMeasuredWidth(),
+                        childTop + child.getMeasuredHeight());
                     decorCount++;
                 }
             }
@@ -1567,8 +1577,8 @@ public class LazyViewPager extends ViewGroup {
             final View child = getChildAt(i);
             if (child.getVisibility() != GONE) {
                 final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-            ItemInfo ii;
-                if (!lp.isDecor && (ii = infoForChild(child)) != null) {
+                ItemInfo ii;
+                if (! lp.isDecor && (ii = infoForChild(child)) != null) {
                     int loff = (int) (childWidth * ii.offset);
                     int childLeft = paddingLeft + loff;
                     int childTop = paddingTop;
@@ -1577,21 +1587,21 @@ public class LazyViewPager extends ViewGroup {
                         // Do it now that we know what we're working with.
                         lp.needsMeasure = false;
                         final int widthSpec = MeasureSpec.makeMeasureSpec(
-                                (int) (childWidth * lp.widthFactor),
-                                MeasureSpec.EXACTLY);
+                            (int) (childWidth * lp.widthFactor),
+                            MeasureSpec.EXACTLY);
                         final int heightSpec = MeasureSpec.makeMeasureSpec(
-                                (int) (height - paddingTop - paddingBottom),
-                                MeasureSpec.EXACTLY);
+                            (int) (height - paddingTop - paddingBottom),
+                            MeasureSpec.EXACTLY);
                         child.measure(widthSpec, heightSpec);
                     }
-                if (DEBUG) Log.v(TAG, "Positioning #" + i + " " + child + " f=" + ii.object
-		        + ":" + childLeft + "," + childTop + " " + child.getMeasuredWidth()
-		        + "x" + child.getMeasuredHeight());
-                child.layout(childLeft, childTop,
+                    if (DEBUG) Log.v(TAG, "Positioning #" + i + " " + child + " f=" + ii.object
+                        + ":" + childLeft + "," + childTop + " " + child.getMeasuredWidth()
+                        + "x" + child.getMeasuredHeight());
+                    child.layout(childLeft, childTop,
                         childLeft + child.getMeasuredWidth(),
                         childTop + child.getMeasuredHeight());
+                }
             }
-        }
         }
         mTopPageBounds = paddingTop;
         mBottomPageBounds = height - paddingBottom;
@@ -1605,15 +1615,15 @@ public class LazyViewPager extends ViewGroup {
 
     @Override
     public void computeScroll() {
-        if (!mScroller.isFinished() && mScroller.computeScrollOffset()) {
-                int oldX = getScrollX();
-                int oldY = getScrollY();
-                int x = mScroller.getCurrX();
-                int y = mScroller.getCurrY();
+        if (! mScroller.isFinished() && mScroller.computeScrollOffset()) {
+            int oldX = getScrollX();
+            int oldY = getScrollY();
+            int x = mScroller.getCurrX();
+            int y = mScroller.getCurrY();
 
-                if (oldX != x || oldY != y) {
-                    scrollTo(x, y);
-                if (!pageScrolled(x)) {
+            if (oldX != x || oldY != y) {
+                scrollTo(x, y);
+                if (! pageScrolled(x)) {
                     mScroller.abortAnimation();
                     scrollTo(0, y);
                 }
@@ -1632,9 +1642,9 @@ public class LazyViewPager extends ViewGroup {
         if (mItems.size() == 0) {
             mCalledSuper = false;
             onPageScrolled(0, 0, 0);
-            if (!mCalledSuper) {
+            if (! mCalledSuper) {
                 throw new IllegalStateException(
-                        "onPageScrolled did not call superclass implementation");
+                    "onPageScrolled did not call superclass implementation");
             }
             return false;
         }
@@ -1644,14 +1654,14 @@ public class LazyViewPager extends ViewGroup {
         final float marginOffset = (float) mPageMargin / width;
         final int currentPage = ii.position;
         final float pageOffset = (((float) xpos / width) - ii.offset) /
-                (ii.widthFactor + marginOffset);
+            (ii.widthFactor + marginOffset);
         final int offsetPixels = (int) (pageOffset * widthWithMargin);
 
         mCalledSuper = false;
         onPageScrolled(currentPage, pageOffset, offsetPixels);
-        if (!mCalledSuper) {
+        if (! mCalledSuper) {
             throw new IllegalStateException(
-                    "onPageScrolled did not call superclass implementation");
+                "onPageScrolled did not call superclass implementation");
         }
         return true;
     }
@@ -1663,9 +1673,9 @@ public class LazyViewPager extends ViewGroup {
      * (e.g. super.onPageScrolled(position, offset, offsetPixels)) before onPageScrolled
      * returns.
      *
-     * @param position Position index of the first page currently being displayed.
-     *                 Page position+1 will be visible if positionOffset is nonzero.
-     * @param offset Value from [0, 1) indicating the offset from the page at position.
+     * @param position     Position index of the first page currently being displayed.
+     *                     Page position+1 will be visible if positionOffset is nonzero.
+     * @param offset       Value from [0, 1) indicating the offset from the page at position.
      * @param offsetPixels Value in pixels indicating the offset from position.
      */
     protected void onPageScrolled(int position, float offset, int offsetPixels) {
@@ -1679,7 +1689,7 @@ public class LazyViewPager extends ViewGroup {
             for (int i = 0; i < childCount; i++) {
                 final View child = getChildAt(i);
                 final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-                if (!lp.isDecor) continue;
+                if (! lp.isDecor) continue;
 
                 final int hgrav = lp.gravity & Gravity.HORIZONTAL_GRAVITY_MASK;
                 int childLeft = 0;
@@ -1693,7 +1703,7 @@ public class LazyViewPager extends ViewGroup {
                         break;
                     case Gravity.CENTER_HORIZONTAL:
                         childLeft = Math.max((width - child.getMeasuredWidth()) / 2,
-                                paddingLeft);
+                            paddingLeft);
                         break;
                     case Gravity.RIGHT:
                         childLeft = width - paddingRight - child.getMeasuredWidth();
@@ -1709,9 +1719,9 @@ public class LazyViewPager extends ViewGroup {
             }
         }
 
-                if (mOnPageChangeListener != null) {
-                    mOnPageChangeListener.onPageScrolled(position, offset, offsetPixels);
-                }
+        if (mOnPageChangeListener != null) {
+            mOnPageChangeListener.onPageScrolled(position, offset, offsetPixels);
+        }
         if (mInternalPageChangeListener != null) {
             mInternalPageChangeListener.onPageScrolled(position, offset, offsetPixels);
         }
@@ -1748,7 +1758,7 @@ public class LazyViewPager extends ViewGroup {
             }
         }
         mPopulatePending = false;
-        for (int i=0; i<mItems.size(); i++) {
+        for (int i = 0; i < mItems.size(); i++) {
             ItemInfo ii = mItems.get(i);
             if (ii.scrolling) {
                 needPopulate = true;
@@ -1772,7 +1782,7 @@ public class LazyViewPager extends ViewGroup {
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             final int layerType = enable ?
-                    ViewCompat.LAYER_TYPE_HARDWARE : ViewCompat.LAYER_TYPE_NONE;
+                ViewCompat.LAYER_TYPE_HARDWARE : ViewCompat.LAYER_TYPE_NONE;
             ViewCompat.setLayerType(getChildAt(i), layerType, null);
         }
     }
@@ -1839,8 +1849,8 @@ public class LazyViewPager extends ViewGroup {
                 final float yDiff = Math.abs(y - mInitialMotionY);
                 if (DEBUG) Log.v(TAG, "Moved x to " + x + "," + y + " diff=" + xDiff + "," + yDiff);
 
-                if (dx != 0 && !isGutterDrag(mLastMotionX, dx) &&
-                        canScroll(this, false, (int) dx, (int) x, (int) y)) {
+                if (dx != 0 && ! isGutterDrag(mLastMotionX, dx) &&
+                    canScroll(this, false, (int) dx, (int) x, (int) y)) {
                     // Nested view has scrollable area under this point. Let it be handled there.
                     mLastMotionX = x;
                     mLastMotionY = y;
@@ -1853,22 +1863,22 @@ public class LazyViewPager extends ViewGroup {
                     requestParentDisallowInterceptTouchEvent(true);
                     setScrollState(SCROLL_STATE_DRAGGING);
                     mLastMotionX = dx > 0 ? mInitialMotionX + mTouchSlop :
-                            mInitialMotionX - mTouchSlop;
+                        mInitialMotionX - mTouchSlop;
                     mLastMotionY = y;
                     setScrollingCacheEnabled(true);
                 } else if (yDiff > mTouchSlop) {
-                        // The finger has moved enough in the vertical
-                        // direction to be counted as a drag...  abort
-                        // any attempt to drag horizontally, to work correctly
-                        // with children that have scrolling containers.
-                        if (DEBUG) Log.v(TAG, "Starting unable to drag!");
-                        mIsUnableToDrag = true;
-                    }
+                    // The finger has moved enough in the vertical
+                    // direction to be counted as a drag...  abort
+                    // any attempt to drag horizontally, to work correctly
+                    // with children that have scrolling containers.
+                    if (DEBUG) Log.v(TAG, "Starting unable to drag!");
+                    mIsUnableToDrag = true;
+                }
                 if (mIsBeingDragged) {
                     // Scroll to follow the motion event
                     if (performDrag(x)) {
                         ViewCompat.postInvalidateOnAnimation(this);
-                }
+                    }
                 }
                 break;
             }
@@ -1885,7 +1895,7 @@ public class LazyViewPager extends ViewGroup {
 
                 mScroller.computeScrollOffset();
                 if (mScrollState == SCROLL_STATE_SETTLING &&
-                        Math.abs(mScroller.getFinalX() - mScroller.getCurrX()) > mCloseEnough) {
+                    Math.abs(mScroller.getFinalX() - mScroller.getCurrX()) > mCloseEnough) {
                     // Let the user 'catch' the pager as it animates.
                     mScroller.abortAnimation();
                     mPopulatePending = false;
@@ -1899,8 +1909,8 @@ public class LazyViewPager extends ViewGroup {
                 }
 
                 if (DEBUG) Log.v(TAG, "Down at " + mLastMotionX + "," + mLastMotionY
-                        + " mIsBeingDragged=" + mIsBeingDragged
-                        + "mIsUnableToDrag=" + mIsUnableToDrag);
+                    + " mIsBeingDragged=" + mIsBeingDragged
+                    + "mIsUnableToDrag=" + mIsUnableToDrag);
                 break;
             }
 
@@ -1962,7 +1972,7 @@ public class LazyViewPager extends ViewGroup {
                 break;
             }
             case MotionEvent.ACTION_MOVE:
-                if (!mIsBeingDragged) {
+                if (! mIsBeingDragged) {
                     final int pointerIndex = MotionEventCompat.findPointerIndex(ev, mActivePointerId);
                     final float x = MotionEventCompat.getX(ev, pointerIndex);
                     final float xDiff = Math.abs(x - mLastMotionX);
@@ -1974,7 +1984,7 @@ public class LazyViewPager extends ViewGroup {
                         mIsBeingDragged = true;
                         requestParentDisallowInterceptTouchEvent(true);
                         mLastMotionX = x - mInitialMotionX > 0 ? mInitialMotionX + mTouchSlop :
-                                mInitialMotionX - mTouchSlop;
+                            mInitialMotionX - mTouchSlop;
                         mLastMotionY = y;
                         setScrollState(SCROLL_STATE_DRAGGING);
                         setScrollingCacheEnabled(true);
@@ -1990,17 +2000,17 @@ public class LazyViewPager extends ViewGroup {
                 if (mIsBeingDragged) {
                     // Scroll to follow the motion event
                     final int activePointerIndex = MotionEventCompat.findPointerIndex(
-                            ev, mActivePointerId);
+                        ev, mActivePointerId);
                     final float x = MotionEventCompat.getX(ev, activePointerIndex);
                     needsInvalidate |= performDrag(x);
-                        }
+                }
                 break;
             case MotionEvent.ACTION_UP:
                 if (mIsBeingDragged) {
                     final VelocityTracker velocityTracker = mVelocityTracker;
                     velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
                     int initialVelocity = (int) VelocityTrackerCompat.getXVelocity(
-                            velocityTracker, mActivePointerId);
+                        velocityTracker, mActivePointerId);
                     mPopulatePending = true;
                     final int width = getClientWidth();
                     final int scrollX = getScrollX();
@@ -2008,11 +2018,11 @@ public class LazyViewPager extends ViewGroup {
                     final int currentPage = ii.position;
                     final float pageOffset = (((float) scrollX / width) - ii.offset) / ii.widthFactor;
                     final int activePointerIndex =
-                            MotionEventCompat.findPointerIndex(ev, mActivePointerId);
+                        MotionEventCompat.findPointerIndex(ev, mActivePointerId);
                     final float x = MotionEventCompat.getX(ev, activePointerIndex);
                     final int totalDelta = (int) (x - mInitialMotionX);
                     int nextPage = determineTargetPage(currentPage, pageOffset, initialVelocity,
-                            totalDelta);
+                        totalDelta);
                     setCurrentItemInternal(nextPage, true, true, initialVelocity);
 
                     mActivePointerId = INVALID_POINTER;
@@ -2038,7 +2048,7 @@ public class LazyViewPager extends ViewGroup {
             case MotionEventCompat.ACTION_POINTER_UP:
                 onSecondaryPointerUp(ev);
                 mLastMotionX = MotionEventCompat.getX(ev,
-                        MotionEventCompat.findPointerIndex(ev, mActivePointerId));
+                    MotionEventCompat.findPointerIndex(ev, mActivePointerId));
                 break;
         }
         if (needsInvalidate) {
@@ -2103,13 +2113,13 @@ public class LazyViewPager extends ViewGroup {
 
     /**
      * @return Info about the page at the current scroll position.
-     *         This can be synthetic for a missing middle page; the 'object' field can be null.
+     * This can be synthetic for a missing middle page; the 'object' field can be null.
      */
     private ItemInfo infoForCurrentScrollPosition() {
         final int width = getClientWidth();
         final float scrollOffset = width > 0 ? (float) getScrollX() / width : 0;
         final float marginOffset = width > 0 ? (float) mPageMargin / width : 0;
-        int lastPos = -1;
+        int lastPos = - 1;
         float lastOffset = 0.f;
         float lastWidth = 0.f;
         boolean first = true;
@@ -2118,7 +2128,7 @@ public class LazyViewPager extends ViewGroup {
         for (int i = 0; i < mItems.size(); i++) {
             ItemInfo ii = mItems.get(i);
             float offset;
-            if (!first && ii.position != lastPos + 1) {
+            if (! first && ii.position != lastPos + 1) {
                 // Create a synthetic item for a missing page.
                 ii = mTempItem;
                 ii.offset = lastOffset + lastWidth + marginOffset;
@@ -2174,26 +2184,26 @@ public class LazyViewPager extends ViewGroup {
 
         final int overScrollMode = ViewCompat.getOverScrollMode(this);
         if (overScrollMode == ViewCompat.OVER_SCROLL_ALWAYS ||
-                (overScrollMode == ViewCompat.OVER_SCROLL_IF_CONTENT_SCROLLS &&
-                        mAdapter != null && mAdapter.getCount() > 1)) {
-            if (!mLeftEdge.isFinished()) {
+            (overScrollMode == ViewCompat.OVER_SCROLL_IF_CONTENT_SCROLLS &&
+                mAdapter != null && mAdapter.getCount() > 1)) {
+            if (! mLeftEdge.isFinished()) {
                 final int restoreCount = canvas.save();
                 final int height = getHeight() - getPaddingTop() - getPaddingBottom();
                 final int width = getWidth();
 
                 canvas.rotate(270);
-                canvas.translate(-height + getPaddingTop(), mFirstOffset * width);
+                canvas.translate(- height + getPaddingTop(), mFirstOffset * width);
                 mLeftEdge.setSize(height, width);
                 needsInvalidate |= mLeftEdge.draw(canvas);
                 canvas.restoreToCount(restoreCount);
             }
-            if (!mRightEdge.isFinished()) {
+            if (! mRightEdge.isFinished()) {
                 final int restoreCount = canvas.save();
                 final int width = getWidth();
                 final int height = getHeight() - getPaddingTop() - getPaddingBottom();
 
                 canvas.rotate(90);
-                canvas.translate(-getPaddingTop(), -(mLastOffset + 1) * width);
+                canvas.translate(- getPaddingTop(), - (mLastOffset + 1) * width);
                 mRightEdge.setSize(height, width);
                 needsInvalidate |= mRightEdge.draw(canvas);
                 canvas.restoreToCount(restoreCount);
@@ -2227,7 +2237,7 @@ public class LazyViewPager extends ViewGroup {
             final int lastPos = mItems.get(itemCount - 1).position;
             for (int pos = firstPos; pos < lastPos; pos++) {
                 while (pos > ii.position && itemIndex < itemCount) {
-                    ii = mItems.get(++itemIndex);
+                    ii = mItems.get(++ itemIndex);
                 }
 
                 float drawAt;
@@ -2242,9 +2252,9 @@ public class LazyViewPager extends ViewGroup {
 
                 if (drawAt + mPageMargin > scrollX) {
                     mMarginDrawable.setBounds((int) drawAt, mTopPageBounds,
-                            (int) (drawAt + mPageMargin + 0.5f), mBottomPageBounds);
-                mMarginDrawable.draw(canvas);
-            }
+                        (int) (drawAt + mPageMargin + 0.5f), mBottomPageBounds);
+                    mMarginDrawable.draw(canvas);
+                }
 
                 if (drawAt > scrollX + width) {
                     break; // No more visible, no sense in continuing
@@ -2266,7 +2276,6 @@ public class LazyViewPager extends ViewGroup {
      * is already in progress, this method will return false.
      *
      * @return true if the fake drag began successfully, false if it could not be started.
-     *
      * @see #fakeDragBy(float)
      * @see #endFakeDrag()
      */
@@ -2297,14 +2306,14 @@ public class LazyViewPager extends ViewGroup {
      * @see #fakeDragBy(float)
      */
     public void endFakeDrag() {
-        if (!mFakeDragging) {
+        if (! mFakeDragging) {
             throw new IllegalStateException("No fake drag in progress. Call beginFakeDrag first.");
         }
 
         final VelocityTracker velocityTracker = mVelocityTracker;
         velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
         int initialVelocity = (int) VelocityTrackerCompat.getXVelocity(
-                velocityTracker, mActivePointerId);
+            velocityTracker, mActivePointerId);
         mPopulatePending = true;
         final int width = getClientWidth();
         final int scrollX = getScrollX();
@@ -2313,7 +2322,7 @@ public class LazyViewPager extends ViewGroup {
         final float pageOffset = (((float) scrollX / width) - ii.offset) / ii.widthFactor;
         final int totalDelta = (int) (mLastMotionX - mInitialMotionX);
         int nextPage = determineTargetPage(currentPage, pageOffset, initialVelocity,
-                totalDelta);
+            totalDelta);
         setCurrentItemInternal(nextPage, true, true, initialVelocity);
         endDrag();
 
@@ -2328,7 +2337,7 @@ public class LazyViewPager extends ViewGroup {
      * @see #endFakeDrag()
      */
     public void fakeDragBy(float xOffset) {
-        if (!mFakeDragging) {
+        if (! mFakeDragging) {
             throw new IllegalStateException("No fake drag in progress. Call beginFakeDrag first.");
         }
 
@@ -2363,7 +2372,7 @@ public class LazyViewPager extends ViewGroup {
         // Synthesize an event for the VelocityTracker.
         final long time = SystemClock.uptimeMillis();
         final MotionEvent ev = MotionEvent.obtain(mFakeDragBeginTime, time, MotionEvent.ACTION_MOVE,
-                mLastMotionX, 0, 0);
+            mLastMotionX, 0, 0);
         mVelocityTracker.addMovement(ev);
         ev.recycle();
     }
@@ -2372,7 +2381,6 @@ public class LazyViewPager extends ViewGroup {
      * Returns true if a fake drag is in progress.
      *
      * @return true if currently in a fake drag, false otherwise.
-     *
      * @see #beginFakeDrag()
      * @see #fakeDragBy(float)
      * @see #endFakeDrag()
@@ -2411,7 +2419,7 @@ public class LazyViewPager extends ViewGroup {
             mScrollingCacheEnabled = enabled;
             if (USE_CACHE) {
                 final int size = getChildCount();
-                for (int i = 0; i < size; ++i) {
+                for (int i = 0; i < size; ++ i) {
                     final View child = getChildAt(i);
                     if (child.getVisibility() != GONE) {
                         child.setDrawingCacheEnabled(enabled);
@@ -2440,12 +2448,12 @@ public class LazyViewPager extends ViewGroup {
     /**
      * Tests scrollability within child views of v given a delta of dx.
      *
-     * @param v View to test for horizontal scrollability
+     * @param v      View to test for horizontal scrollability
      * @param checkV Whether the view v passed should itself be checked for scrollability (true),
      *               or just its children (false).
-     * @param dx Delta scrolled in pixels
-     * @param x X coordinate of the active touch point
-     * @param y Y coordinate of the active touch point
+     * @param dx     Delta scrolled in pixels
+     * @param x      X coordinate of the active touch point
+     * @param y      Y coordinate of the active touch point
      * @return true if child views of v can be scrolled by delta of dx.
      */
     protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
@@ -2460,15 +2468,15 @@ public class LazyViewPager extends ViewGroup {
                 // This will not work for transformed views in Honeycomb+
                 final View child = group.getChildAt(i);
                 if (x + scrollX >= child.getLeft() && x + scrollX < child.getRight() &&
-                        y + scrollY >= child.getTop() && y + scrollY < child.getBottom() &&
-                        canScroll(child, true, dx, x + scrollX - child.getLeft(),
-                                y + scrollY - child.getTop())) {
+                    y + scrollY >= child.getTop() && y + scrollY < child.getBottom() &&
+                    canScroll(child, true, dx, x + scrollX - child.getLeft(),
+                        y + scrollY - child.getTop())) {
                     return true;
                 }
             }
         }
 
-        return checkV && ViewCompat.canScrollHorizontally(v, -dx);
+        return checkV && ViewCompat.canScrollHorizontally(v, - dx);
     }
 
     @Override
@@ -2518,22 +2526,22 @@ public class LazyViewPager extends ViewGroup {
         } else if (currentFocused != null) {
             boolean isChild = false;
             for (ViewParent parent = currentFocused.getParent(); parent instanceof ViewGroup;
-                    parent = parent.getParent()) {
+                 parent = parent.getParent()) {
                 if (parent == this) {
                     isChild = true;
                     break;
                 }
             }
-            if (!isChild) {
+            if (! isChild) {
                 // This would cause the focus search down below to fail in fun ways.
                 final StringBuilder sb = new StringBuilder();
                 sb.append(currentFocused.getClass().getSimpleName());
                 for (ViewParent parent = currentFocused.getParent(); parent instanceof ViewGroup;
-                        parent = parent.getParent()) {
+                     parent = parent.getParent()) {
                     sb.append(" => ").append(parent.getClass().getSimpleName());
                 }
                 Log.e(TAG, "arrowScroll tried to find focus based on non-child " +
-                        "current focused view " + sb.toString());
+                    "current focused view " + sb.toString());
                 currentFocused = null;
             }
         }
@@ -2541,7 +2549,7 @@ public class LazyViewPager extends ViewGroup {
         boolean handled = false;
 
         View nextFocused = FocusFinder.getInstance().findNextFocus(this, currentFocused,
-                direction);
+            direction);
         if (nextFocused != null && nextFocused != currentFocused) {
             if (direction == View.FOCUS_LEFT) {
                 // If there is nothing to the left, or this is causing us to
@@ -2605,15 +2613,15 @@ public class LazyViewPager extends ViewGroup {
 
     boolean pageLeft() {
         if (mCurItem > 0) {
-            setCurrentItem(mCurItem-1, true);
+            setCurrentItem(mCurItem - 1, true);
             return true;
         }
         return false;
     }
 
     boolean pageRight() {
-        if (mAdapter != null && mCurItem < (mAdapter.getCount()-1)) {
-            setCurrentItem(mCurItem+1, true);
+        if (mAdapter != null && mCurItem < (mAdapter.getCount() - 1)) {
+            setCurrentItem(mCurItem + 1, true);
             return true;
         }
         return false;
@@ -2650,11 +2658,11 @@ public class LazyViewPager extends ViewGroup {
                 (focusableCount == views.size())) {
             // Note that we can't call the superclass here, because it will
             // add all views in.  So we need to do the same thing View does.
-            if (!isFocusable()) {
+            if (! isFocusable()) {
                 return;
             }
             if ((focusableMode & FOCUSABLES_TOUCH_MODE) == FOCUSABLES_TOUCH_MODE &&
-                    isInTouchMode() && !isFocusableInTouchMode()) {
+                isInTouchMode() && ! isFocusableInTouchMode()) {
                 return;
             }
             if (views != null) {
@@ -2687,7 +2695,7 @@ public class LazyViewPager extends ViewGroup {
      */
     @Override
     protected boolean onRequestFocusInDescendants(int direction,
-            Rect previouslyFocusedRect) {
+        Rect previouslyFocusedRect) {
         int index;
         int increment;
         int end;
@@ -2698,8 +2706,8 @@ public class LazyViewPager extends ViewGroup {
             end = count;
         } else {
             index = count - 1;
-            increment = -1;
-            end = -1;
+            increment = - 1;
+            end = - 1;
         }
         for (int i = index; i != end; i += increment) {
             View child = getChildAt(i);
@@ -2729,7 +2737,7 @@ public class LazyViewPager extends ViewGroup {
             if (child.getVisibility() == VISIBLE) {
                 final ItemInfo ii = infoForChild(child);
                 if (ii != null && ii.position == mCurItem &&
-                        child.dispatchPopulateAccessibilityEvent(event)) {
+                    child.dispatchPopulateAccessibilityEvent(event)) {
                     return true;
                 }
             }
@@ -2743,7 +2751,7 @@ public class LazyViewPager extends ViewGroup {
         return new LayoutParams();
     }
 
-        @Override
+    @Override
     protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
         return generateDefaultLayoutParams();
     }
@@ -2767,7 +2775,7 @@ public class LazyViewPager extends ViewGroup {
             final AccessibilityRecordCompat recordCompat = AccessibilityRecordCompat.obtain();
             recordCompat.setScrollable(canScroll());
             if (event.getEventType() == AccessibilityEventCompat.TYPE_VIEW_SCROLLED
-                    && mAdapter != null) {
+                && mAdapter != null) {
                 recordCompat.setItemCount(mAdapter.getCount());
                 recordCompat.setFromIndex(mCurItem);
                 recordCompat.setToIndex(mCurItem);
@@ -2782,7 +2790,7 @@ public class LazyViewPager extends ViewGroup {
             if (canScrollHorizontally(1)) {
                 info.addAction(AccessibilityNodeInfoCompat.ACTION_SCROLL_FORWARD);
             }
-            if (canScrollHorizontally(-1)) {
+            if (canScrollHorizontally(- 1)) {
                 info.addAction(AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD);
             }
         }
@@ -2798,13 +2806,15 @@ public class LazyViewPager extends ViewGroup {
                         setCurrentItem(mCurItem + 1);
                         return true;
                     }
-                } return false;
+                }
+                return false;
                 case AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD: {
-                    if (canScrollHorizontally(-1)) {
+                    if (canScrollHorizontally(- 1)) {
                         setCurrentItem(mCurItem - 1);
                         return true;
                     }
-                } return false;
+                }
+                return false;
             }
             return false;
         }
@@ -2815,10 +2825,12 @@ public class LazyViewPager extends ViewGroup {
     }
 
     private class PagerObserver extends DataSetObserver {
+
         @Override
         public void onChanged() {
             dataSetChanged();
         }
+
         @Override
         public void onInvalidated() {
             dataSetChanged();
@@ -2830,6 +2842,7 @@ public class LazyViewPager extends ViewGroup {
      * ViewPager.
      */
     public static class LayoutParams extends ViewGroup.LayoutParams {
+
         /**
          * true if this view is a decoration on the pager itself and not
          * a view supplied by the adapter.
@@ -2878,12 +2891,13 @@ public class LazyViewPager extends ViewGroup {
     }
 
     static class ViewPositionComparator implements Comparator<View> {
+
         @Override
         public int compare(View lhs, View rhs) {
             final LayoutParams llp = (LayoutParams) lhs.getLayoutParams();
             final LayoutParams rlp = (LayoutParams) rhs.getLayoutParams();
             if (llp.isDecor != rlp.isDecor) {
-                return llp.isDecor ? 1 : -1;
+                return llp.isDecor ? 1 : - 1;
             }
             return llp.position - rlp.position;
         }

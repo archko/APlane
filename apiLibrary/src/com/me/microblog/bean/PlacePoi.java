@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class PlacePoi implements Serializable {
 
-    public static final long serialVersionUID=3894560643019408221L;
+    public static final long serialVersionUID = 3894560643019408221L;
 
     public String poiid;// "B2094654D069A6F4419C",
     public String title;// "三个贵州人(中关村店)",
@@ -36,30 +36,30 @@ public class PlacePoi implements Serializable {
 
     @Override
     public String toString() {
-        return "PlacePoi{"+
-            "poiid='"+poiid+'\''+
-            ", title='"+title+'\''+
-            ", address='"+address+'\''+
-            ", lon="+lon+
-            ", lat="+lat+
-            ", category='"+category+'\''+
-            ", city='"+city+'\''+
-            ", province='"+province+'\''+
-            ", country='"+country+'\''+
-            ", url='"+url+'\''+
-            ", phone='"+phone+'\''+
-            ", postcode='"+postcode+'\''+
-            ", weibo_id='"+weibo_id+'\''+
-            ", categorys='"+categorys+'\''+
-            ", category_name='"+category_name+'\''+
-            ", icon='"+icon+'\''+
-            ", checkin_num="+checkin_num+
-            ", checkin_user_num="+checkin_user_num+
-            ", tip_num="+tip_num+
-            ", photo_num="+photo_num+
-            ", todo_num="+todo_num+
-            ", distance="+distance+
-            ", checkin_time='"+checkin_time+'\''+
+        return "PlacePoi{" +
+            "poiid='" + poiid + '\'' +
+            ", title='" + title + '\'' +
+            ", address='" + address + '\'' +
+            ", lon=" + lon +
+            ", lat=" + lat +
+            ", category='" + category + '\'' +
+            ", city='" + city + '\'' +
+            ", province='" + province + '\'' +
+            ", country='" + country + '\'' +
+            ", url='" + url + '\'' +
+            ", phone='" + phone + '\'' +
+            ", postcode='" + postcode + '\'' +
+            ", weibo_id='" + weibo_id + '\'' +
+            ", categorys='" + categorys + '\'' +
+            ", category_name='" + category_name + '\'' +
+            ", icon='" + icon + '\'' +
+            ", checkin_num=" + checkin_num +
+            ", checkin_user_num=" + checkin_user_num +
+            ", tip_num=" + tip_num +
+            ", photo_num=" + photo_num +
+            ", todo_num=" + todo_num +
+            ", distance=" + distance +
+            ", checkin_time='" + checkin_time + '\'' +
             '}';
     }
 }

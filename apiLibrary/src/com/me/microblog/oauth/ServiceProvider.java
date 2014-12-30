@@ -9,7 +9,7 @@ package com.me.microblog.oauth;
  */
 public enum ServiceProvider {
 
-    None(-1, null, ServiceProvider.CATEGORY_WEIBO, null), // 空，仅用于非SP请求或无需指定SP的情况
+    None(- 1, null, ServiceProvider.CATEGORY_WEIBO, null), // 空，仅用于非SP请求或无需指定SP的情况
 
     //微博
     Sina(ServiceProvider.SP_SINA, "新浪微博", ServiceProvider.CATEGORY_WEIBO, "APlane"),
@@ -26,10 +26,10 @@ public enum ServiceProvider {
     Facebook(ServiceProvider.SP_FACEBOOK, "Facebook", ServiceProvider.CATEGORY_SNS, "");
 
     private ServiceProvider(int spNo, String spName, String spCategory, String officalName) {
-        this.spNo=spNo;
-        this.spName=spName;
-        this.spCategory=spCategory;
-        this.officalName=officalName;
+        this.spNo = spNo;
+        this.spName = spName;
+        this.spCategory = spCategory;
+        this.officalName = officalName;
     }
 
     /**
@@ -57,58 +57,58 @@ public enum ServiceProvider {
     }
 
     //平台编号
-    public static final int SP_SINA=0;     // 新浪的SP编号
-    public static final int SP_TENCENT=2;     // 腾讯的SP编号
-    public static final int SP_QQZONE=3;     // QQ空间的SP编号
-    public static final int SP_TWITTER=4;     // 推特的SP编号
-    public static final int SP_SOHU=20;     // 搜狐的SP编号
-    public static final int SP_NETEASE=21;     // 网易的SP编号
+    public static final int SP_SINA = 0;     // 新浪的SP编号
+    public static final int SP_TENCENT = 2;     // 腾讯的SP编号
+    public static final int SP_QQZONE = 3;     // QQ空间的SP编号
+    public static final int SP_TWITTER = 4;     // 推特的SP编号
+    public static final int SP_SOHU = 20;     // 搜狐的SP编号
+    public static final int SP_NETEASE = 21;     // 网易的SP编号
 
-    public static final int SP_FANFOU=22;     // 饭否的SP编号
+    public static final int SP_FANFOU = 22;     // 饭否的SP编号
 
-    public static final int SP_RENREN=23;     // 人人网的SP编号
-    public static final int SP_KAIXIN=24;     // 开心网的SP编号
+    public static final int SP_RENREN = 23;     // 人人网的SP编号
+    public static final int SP_KAIXIN = 24;     // 开心网的SP编号
 
-    public static final int SP_FACEBOOK=25;     // Facebook的SP编号
+    public static final int SP_FACEBOOK = 25;     // Facebook的SP编号
 
-    public static final String CATEGORY_WEIBO="weibo";
-    public static final String CATEGORY_SNS="sns";
+    public static final String CATEGORY_WEIBO = "weibo";
+    public static final String CATEGORY_SNS = "sns";
 
     public static ServiceProvider getServiceProvider(int spNo) {
-        ServiceProvider sp=null;
+        ServiceProvider sp = null;
         switch (spNo) {
             case SP_SINA:
-                sp=Sina;
+                sp = Sina;
                 break;
             case SP_SOHU:
-                sp=Sohu;
+                sp = Sohu;
                 break;
             case SP_NETEASE:
-                sp=NetEase;
+                sp = NetEase;
                 break;
             case SP_TENCENT:
-                sp=Tencent;
+                sp = Tencent;
                 break;
             case SP_TWITTER:
-                sp=Twitter;
+                sp = Twitter;
                 break;
             case SP_FANFOU:
-                sp=Fanfou;
+                sp = Fanfou;
                 break;
             case SP_RENREN:
-                sp=RenRen;
+                sp = RenRen;
                 break;
             case SP_KAIXIN:
-                sp=KaiXin;
+                sp = KaiXin;
                 break;
             case SP_QQZONE:
-                sp=QQZone;
+                sp = QQZone;
                 break;
             case SP_FACEBOOK:
-                sp=Facebook;
+                sp = Facebook;
                 break;
             default:
-                sp=Sina;
+                sp = Sina;
                 break;
         }
         return sp;

@@ -19,9 +19,9 @@ import java.util.List;
  * @author: archko Date: 13-1-28 Time: 下午7:15
  * @description:
  */
-public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
+public class SinaGroupApi extends AbsApiImpl implements IGroupApi {
 
-    public static final String TAG="SinaGroupApi";
+    public static final String TAG = "SinaGroupApi";
 
     //--------------------- 好友分组 ------------------------
     //需要单独向用户提出SCOPE授权请求的接口，用户单独授权后才可以调用
@@ -38,12 +38,11 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Group> getGroups() throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/groups.json";
+        String urlString = getBaseUrl() + "friendships/groups.json";
 
-        String rs=get(urlString, true);
+        String rs = get(urlString, true);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         /*if (!TextUtils.isEmpty(rs)){//&&!"[]".equals(rs)) { 不管有没有数据，都保存，
             WeiboUtil.saveStatus(rs, App.getAppContext().getFilesDir().getAbsolutePath(), Constants.GROUP_FILE);
@@ -67,43 +66,42 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Status> getGroupTimeLine(String list_id, long sinceId, long maxId, int count,
         int page, int feature) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/groups/timeline.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "friendships/groups/timeline.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("count", String.valueOf(count));
+        pair = new BasicNameValuePair("count", String.valueOf(count));
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("list_id", String.valueOf(list_id));
+        pair = new BasicNameValuePair("list_id", String.valueOf(list_id));
         nvps.add(pair);
 
-        if (0<sinceId) {
-            pair=new BasicNameValuePair("since_id", String.valueOf(sinceId));
+        if (0 < sinceId) {
+            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
-        if (0<maxId) {
-            pair=new BasicNameValuePair("max_id", String.valueOf(maxId));
+        if (0 < maxId) {
+            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
-        if (0<page) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+        if (0 < page) {
+            pair = new BasicNameValuePair("page", String.valueOf(page));
             nvps.add(pair);
         }
 
-        if (0<feature) {
-            pair=new BasicNameValuePair("feature", String.valueOf(feature));
+        if (0 < feature) {
+            pair = new BasicNameValuePair("feature", String.valueOf(feature));
             nvps.add(pair);
         }
 
-        pair=new BasicNameValuePair("base_app", "0");
+        pair = new BasicNameValuePair("base_app", "0");
         nvps.add(pair);
 
-        String rs=get(urlString, true, nvps);
+        String rs = get(urlString, true, nvps);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseStatuses2(rs);
     }
@@ -120,26 +118,25 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<User> getGroupMembers(String list_id, long cur, int count) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/groups/members.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "friendships/groups/members.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("list_id", String.valueOf(list_id));
+        pair = new BasicNameValuePair("list_id", String.valueOf(list_id));
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("count", String.valueOf(count));
+        pair = new BasicNameValuePair("count", String.valueOf(count));
         nvps.add(pair);
 
-        if (cur>-1) {
-            pair=new BasicNameValuePair("cursor", String.valueOf(cur));
+        if (cur > - 1) {
+            pair = new BasicNameValuePair("cursor", String.valueOf(cur));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, true, nvps);
+        String rs = get(urlString, true, nvps);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.getUserObjs2(rs);
     }
@@ -152,18 +149,17 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public Group getGroup(String list_id) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/groups/show.json";
+        String urlString = getBaseUrl() + "friendships/groups/show.json";
 
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("list_id", String.valueOf(list_id));
+        pair = new BasicNameValuePair("list_id", String.valueOf(list_id));
         nvps.add(pair);
 
-        String rs=get(urlString, true, nvps);
+        String rs = get(urlString, true, nvps);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseGroup(rs);
     }
@@ -181,28 +177,27 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public Group createGroup(String name, String description, String tags) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/groups/create.json";
+        String urlString = getBaseUrl() + "friendships/groups/create.json";
 
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("name", String.valueOf(name));
+        pair = new BasicNameValuePair("name", String.valueOf(name));
         nvps.add(pair);
 
-        if (!TextUtils.isEmpty(description)) {
-            pair=new BasicNameValuePair("description", description);
+        if (! TextUtils.isEmpty(description)) {
+            pair = new BasicNameValuePair("description", description);
             nvps.add(pair);
         }
 
-        if (!TextUtils.isEmpty(tags)) {
-            pair=new BasicNameValuePair("tags", tags);
+        if (! TextUtils.isEmpty(tags)) {
+            pair = new BasicNameValuePair("tags", tags);
             nvps.add(pair);
         }
 
-        String rs=post(urlString, false, nvps);
+        String rs = post(urlString, false, nvps);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseGroup(rs);
     }
@@ -222,31 +217,30 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public Group updateGroup(String list_id, String name, String description, String tags) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/groups/update.json";
+        String urlString = getBaseUrl() + "friendships/groups/update.json";
 
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("list_id", list_id);
+        pair = new BasicNameValuePair("list_id", list_id);
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("name", name);
+        pair = new BasicNameValuePair("name", name);
         nvps.add(pair);
 
-        if (!TextUtils.isEmpty(description)) {
-            pair=new BasicNameValuePair("description", description);
+        if (! TextUtils.isEmpty(description)) {
+            pair = new BasicNameValuePair("description", description);
             nvps.add(pair);
         }
 
-        if (!TextUtils.isEmpty(tags)) {
-            pair=new BasicNameValuePair("tags", tags);
+        if (! TextUtils.isEmpty(tags)) {
+            pair = new BasicNameValuePair("tags", tags);
             nvps.add(pair);
         }
 
-        String rs=post(urlString, true, nvps);
+        String rs = post(urlString, true, nvps);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseGroup(rs);
     }
@@ -262,19 +256,18 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     @Deprecated
     public String destroyGroup(String list_id) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/groups/destroy.json";
+        String urlString = getBaseUrl() + "friendships/groups/destroy.json";
 
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("list_id", list_id);
+        pair = new BasicNameValuePair("list_id", list_id);
         nvps.add(pair);
 
-        String rs=post(urlString, true, nvps);
+        String rs = post(urlString, true, nvps);
         return rs;
     }
 
@@ -289,22 +282,21 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public Group addMemberToGroup(String uid, String list_id) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/groups/members/add.json";
+        String urlString = getBaseUrl() + "friendships/groups/members/add.json";
 
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("uid", uid);
+        pair = new BasicNameValuePair("uid", uid);
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("list_id", list_id);
+        pair = new BasicNameValuePair("list_id", list_id);
         nvps.add(pair);
 
-        String rs=post(urlString, true, nvps);
+        String rs = post(urlString, true, nvps);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseGroup(rs);
     }
@@ -326,27 +318,26 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     @Deprecated
     public boolean addMembersToGroup(String list_id, String uids, String group_descriptions) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/groups/members/add_batch.json";
+        String urlString = getBaseUrl() + "friendships/groups/members/add_batch.json";
 
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("list_id", list_id);
+        pair = new BasicNameValuePair("list_id", list_id);
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("uids", uids);
+        pair = new BasicNameValuePair("uids", uids);
         nvps.add(pair);
 
-        if (!TextUtils.isEmpty(group_descriptions)) {
-            pair=new BasicNameValuePair("description", group_descriptions);
+        if (! TextUtils.isEmpty(group_descriptions)) {
+            pair = new BasicNameValuePair("description", group_descriptions);
             nvps.add(pair);
         }
 
-        String rs=post(urlString, true, nvps);
+        String rs = post(urlString, true, nvps);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseResult(rs);
     }
@@ -366,27 +357,26 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     @Deprecated
     public String updateGroupDesc(String list_id, String uid, String group_description) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/groups/members/update.json";
+        String urlString = getBaseUrl() + "friendships/groups/members/update.json";
 
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("list_id", list_id);
+        pair = new BasicNameValuePair("list_id", list_id);
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("uid", uid);
+        pair = new BasicNameValuePair("uid", uid);
         nvps.add(pair);
 
-        if (!TextUtils.isEmpty(group_description)) {
-            pair=new BasicNameValuePair("group_description", group_description);
+        if (! TextUtils.isEmpty(group_description)) {
+            pair = new BasicNameValuePair("group_description", group_description);
             nvps.add(pair);
         }
 
-        String rs=post(urlString, true, nvps);
+        String rs = post(urlString, true, nvps);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         return rs;
     }
@@ -400,21 +390,20 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public Group destroyGroupMember(String uid, String list_ids) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/groups/members/destroy.json";
+        String urlString = getBaseUrl() + "friendships/groups/members/destroy.json";
 
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("uid", uid);
+        pair = new BasicNameValuePair("uid", uid);
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("list_ids", list_ids);
+        pair = new BasicNameValuePair("list_ids", list_ids);
         nvps.add(pair);
 
-        String rs=post(urlString, true, nvps);
+        String rs = post(urlString, true, nvps);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseGroup(rs);
     }
@@ -430,22 +419,21 @@ public class SinaGroupApi extends AbsApiImpl implements IGroupApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     @Deprecated
     public boolean orderGroup(String list_ids, int count) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/groups/order.json";
+        String urlString = getBaseUrl() + "friendships/groups/order.json";
 
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("list_ids", list_ids);
+        pair = new BasicNameValuePair("list_ids", list_ids);
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("count", String.valueOf(count));
+        pair = new BasicNameValuePair("count", String.valueOf(count));
         nvps.add(pair);
 
-        String rs=post(urlString, true, nvps);
+        String rs = post(urlString, true, nvps);
         WeiboUtils.printResult(TAG, "rs:" + rs);
         return WeiboParser.parseResult(rs);
     }

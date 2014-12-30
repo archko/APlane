@@ -33,21 +33,21 @@ public class WeatherBean {
 
     @Override
     public String toString() {
-        return "WeatherBean{"+
-            "city='"+city+'\''+
-            ", postal_code='"+postal_code+'\''+
-            ", latitude_e6='"+latitude_e6+'\''+
-            ", longitude_e6='"+longitude_e6+'\''+
-            ", forecast_date='"+forecast_date+'\''+
-            ", current_date_time='"+current_date_time+'\''+
-            ", unit_system='"+unit_system+'\''+
-            ", condition='"+condition+'\''+
-            ", temp_f='"+temp_f+'\''+
-            ", temp_c='"+temp_c+'\''+
-            ", humidity='"+humidity+'\''+
-            ", icon='"+icon+'\''+
-            ", wind_condition='"+wind_condition+'\''+
-            ", forecastConditions="+forecastConditions+
+        return "WeatherBean{" +
+            "city='" + city + '\'' +
+            ", postal_code='" + postal_code + '\'' +
+            ", latitude_e6='" + latitude_e6 + '\'' +
+            ", longitude_e6='" + longitude_e6 + '\'' +
+            ", forecast_date='" + forecast_date + '\'' +
+            ", current_date_time='" + current_date_time + '\'' +
+            ", unit_system='" + unit_system + '\'' +
+            ", condition='" + condition + '\'' +
+            ", temp_f='" + temp_f + '\'' +
+            ", temp_c='" + temp_c + '\'' +
+            ", humidity='" + humidity + '\'' +
+            ", icon='" + icon + '\'' +
+            ", wind_condition='" + wind_condition + '\'' +
+            ", forecastConditions=" + forecastConditions +
             '}';
     }
 }

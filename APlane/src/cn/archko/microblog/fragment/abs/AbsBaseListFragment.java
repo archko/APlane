@@ -26,42 +26,41 @@ import cn.archko.microblog.R;
 import cn.archko.microblog.recycler.RecycleHolder;
 import cn.archko.microblog.ui.PrefsActivity;
 import com.andrew.apollo.cache.ImageCache;
-import com.andrew.apollo.utils.ThemeUtils;
+import com.andrew.apollo.utils.ApolloUtils;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.SStatusData;
-import com.andrew.apollo.utils.ApolloUtils;
-import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.util.DateUtils;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import cn.archko.microblog.utils.AKUtils;
-/*import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;*/
 
 import java.util.ArrayList;
+
+/*import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;*/
 
 /**
  * @author: archko Date: 13-1-28 Time: 下午6:44
  * @description:
  */
-public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> implements AbsListView.OnScrollListener{
+public abstract class AbsBaseListFragment <T> extends AbsStatusAbstraction<T> implements AbsListView.OnScrollListener {
 
-    public static final String TAG="AbsBaseListFragment";
+    public static final String TAG = "AbsBaseListFragment";
     protected ContentResolver mResolver;
     protected TimeLineAdapter mAdapter;
 
     /**
      * 是否自动加载更多内容
      */
-    protected boolean autoLoading=true;
+    protected boolean autoLoading = true;
 
     /**
      * ListView中最后一项位置
      */
-    protected int lastItem=0;
-    protected volatile boolean state=false;   //暂时无用
+    protected int lastItem = 0;
+    protected volatile boolean state = false;   //暂时无用
 
     /**
      * 更多的FooterView
@@ -92,10 +91,10 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      */
     protected ArrayList<T> mDataList;
     protected SStatusData<T> mStatusData;
-    protected Handler mHandler=new Handler();
-    protected int weibo_count=25;   //一次显示微博数量
-    protected int page=1;//当前页,这个值不能随便地变，目前来说不需要用到。
-    protected int mScrollState=0;   //滚动的状态,为0时表示当前静止,滚动结束
+    protected Handler mHandler = new Handler();
+    protected int weibo_count = 25;   //一次显示微博数量
+    protected int page = 1;//当前页,这个值不能随便地变，目前来说不需要用到。
+    protected int mScrollState = 0;   //滚动的状态,为0时表示当前静止,滚动结束
 
     /**
      * 列表选中的位置
@@ -104,42 +103,42 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
     /**
      * 是否是要刷新，因为新的ListView调用显示头部，会选中头部。
      */
-    protected boolean isRefreshing=false;
+    protected boolean isRefreshing = false;
 
     /**
      * 是否正在加载，暂时无用
      */
-    protected boolean isLoading=false;
+    protected boolean isLoading = false;
     /**
      * 是否在列表中显示大的位图，只有在下面的显示列表图片时，才有效。
      */
-    protected boolean showLargeBitmap=false;
+    protected boolean showLargeBitmap = false;
     /**
      * 是否显示列表图片
      */
-    protected boolean showBitmap=true;
+    protected boolean showBitmap = true;
     /**
      * 是否显示快速滚动块。
      * 在增加上下导航按钮后，快速滚动似乎不是那么必要的
      */
-    protected boolean fastScroll=true;
+    protected boolean fastScroll = true;
     /**
      * 是否显示上下导航按钮
      */
-    protected boolean showNavBtn=true;
+    protected boolean showNavBtn = true;
     /**
      * 是否显示上下导航按钮
      */
-    protected boolean showNavPageBtn=true;
+    protected boolean showNavPageBtn = true;
     /**
      * 是否已经添加到Activity中,新的fragment会有这样的问题.
      */
-    protected boolean hasAttach=false;
+    protected boolean hasAttach = false;
 
     @Override
     public void onDetach() {
         super.onDetach();
-        hasAttach=false;
+        hasAttach = false;
     }
 
     /**
@@ -150,8 +149,8 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
         super.onCreate(savedInstanceState);
         WeiboLog.v(TAG, "onCreate:");
 
-        footerView=new RelativeLayout(getActivity());
-        mResolver=App.getAppContext().getContentResolver();
+        footerView = new RelativeLayout(getActivity());
+        mResolver = App.getAppContext().getContentResolver();
 
         /*boolean slb, sb;
         slb="1".equals(mPrefs.getString(PrefsActivity.PREF_RESOLUTION, "0"));
@@ -159,18 +158,18 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
         showLargeBitmap=slb;
         showBitmap=sb;*/
 
-        if (null==mDataList) {
-            mDataList=new ArrayList<T>();
-            mAdapter=new TimeLineAdapter();
+        if (null == mDataList) {
+            mDataList = new ArrayList<T>();
+            mAdapter = new TimeLineAdapter();
         } else {
-            mAdapter=new TimeLineAdapter();
+            mAdapter = new TimeLineAdapter();
         }
 
         //mDataList=new ArrayList<T>();
-        mStatusData=new SStatusData<T>();
-        mStatusData.mStatusData=mDataList;
+        mStatusData = new SStatusData<T>();
+        mStatusData.mStatusData = mDataList;
 
-        this.zoomRunnable=new Runnable() {
+        this.zoomRunnable = new Runnable() {
             public void run() {
                 fadeZoom();
             }
@@ -180,7 +179,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
     @Override
     public void onPause() {
         super.onPause();
-        WeiboLog.v(TAG, "onPause:"+this);
+        WeiboLog.v(TAG, "onPause:" + this);
     }
 
     @Override
@@ -188,37 +187,37 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
         super.onResume();
         boolean slb, sb;
 
-        fastScroll=mPrefs.getBoolean(PrefsActivity.PREF_FAST_SCROLL, true);
-        if (null!=mListView) {
+        fastScroll = mPrefs.getBoolean(PrefsActivity.PREF_FAST_SCROLL, true);
+        if (null != mListView) {
             mListView.setFastScrollEnabled(fastScroll);
         }
 
-        slb="1".equals(mPrefs.getString(PrefsActivity.PREF_RESOLUTION, getString(R.string.default_resolution)));
-        sb=mPrefs.getBoolean(PrefsActivity.PREF_SHOW_BITMAP, true);
+        slb = "1".equals(mPrefs.getString(PrefsActivity.PREF_RESOLUTION, getString(R.string.default_resolution)));
+        sb = mPrefs.getBoolean(PrefsActivity.PREF_SHOW_BITMAP, true);
 
-        if (showLargeBitmap!=slb||showBitmap!=sb) {
+        if (showLargeBitmap != slb || showBitmap != sb) {
             notifyChanged();
         }
-        showLargeBitmap=slb;
-        showBitmap=sb;
+        showLargeBitmap = slb;
+        showBitmap = sb;
 
-        showNavBtn=mPrefs.getBoolean(PrefsActivity.PREF_SHOW_NAV_BTN, true);
-        showNavPageBtn=mPrefs.getBoolean(PrefsActivity.PREF_SHOW_NAV_PAGE_BTN, true);
+        showNavBtn = mPrefs.getBoolean(PrefsActivity.PREF_SHOW_NAV_BTN, true);
+        showNavPageBtn = mPrefs.getBoolean(PrefsActivity.PREF_SHOW_NAV_PAGE_BTN, true);
 
-        WeiboLog.d(TAG, "onResume:"+showNavBtn+" showLargeBitmap:"+showLargeBitmap);
+        WeiboLog.d(TAG, "onResume:" + showNavBtn + " showLargeBitmap:" + showLargeBitmap);
 
-        if (null!=zoomLayout) {
+        if (null != zoomLayout) {
             if (showNavBtn) {
                 showZoom();
             } else {
-                showNavPageBtn=false;
+                showNavPageBtn = false;
                 zoomHandler.removeCallbacks(zoomRunnable);
                 zoomLayout.clearAnimation();
                 zoomLayout.setVisibility(View.GONE);
             }
         }
 
-        weibo_count=((App) App.getAppContext()).getPageCount();
+        weibo_count = ((App) App.getAppContext()).getPageCount();
     }
 
     protected void notifyChanged() {
@@ -227,22 +226,22 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
     @Override
     public void onDestroy() {
         super.onDestroy();
-        WeiboLog.v(TAG, "onDestroy:"+this);
-        state=false;
+        WeiboLog.v(TAG, "onDestroy:" + this);
+        state = false;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        WeiboLog.v(TAG, "onDestroyView:"+this);
-        mLoadingLayout=null;
+        WeiboLog.v(TAG, "onDestroyView:" + this);
+        mLoadingLayout = null;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         WeiboLog.d(TAG, "onCreateView.");
-        View view=_onCreateView(inflater, container, savedInstanceState);
-        mRoot=view;
+        View view = _onCreateView(inflater, container, savedInstanceState);
+        mRoot = view;
         themeBackground();
 
         return view;
@@ -258,24 +257,24 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      */
     //abstract public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
     public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RelativeLayout root=(RelativeLayout) inflater.inflate(R.layout.status_list, null);
-        mEmptyTxt=(TextView) root.findViewById(R.id.empty_txt);
-        mPullRefreshListView=(PullToRefreshListView) root.findViewById(R.id.statusList);
-        mListView=mPullRefreshListView.getRefreshableView();
+        RelativeLayout root = (RelativeLayout) inflater.inflate(R.layout.status_list, null);
+        mEmptyTxt = (TextView) root.findViewById(R.id.empty_txt);
+        mPullRefreshListView = (PullToRefreshListView) root.findViewById(R.id.statusList);
+        mListView = mPullRefreshListView.getRefreshableView();
 
         // ------------------------------------------------------------------
         /*root.setLayoutParams(new FrameLayout.LayoutParams(
        ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));*/
 
-        up=(ImageView) root.findViewById(R.id.up);
-        down=(ImageView) root.findViewById(R.id.down);
+        up = (ImageView) root.findViewById(R.id.up);
+        down = (ImageView) root.findViewById(R.id.down);
         up.setOnClickListener(navClickListener);
         down.setOnClickListener(navClickListener);
 
         up.setBackgroundColor(Color.TRANSPARENT);
         down.setBackgroundColor(Color.TRANSPARENT);
-        zoomLayout=(RelativeLayout) root.findViewById(R.id.zoomLayout);
-        zoomAnim=AnimationUtils.loadAnimation(getActivity(), R.anim.zoom);
+        zoomLayout = (RelativeLayout) root.findViewById(R.id.zoomLayout);
+        zoomAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.zoom);
 
         mListView.setRecyclerListener(new RecycleHolder());
         mListView.setOnScrollListener(this);
@@ -290,11 +289,11 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (null==mStatusImpl) {
+        if (null == mStatusImpl) {
             throw new IllegalArgumentException("StatusImpl should not be null.");
         }
-        isLoading=false;
-        if (null!=mPullRefreshListView) {
+        isLoading = false;
+        if (null != mPullRefreshListView) {
             mPullRefreshListView.onRefreshComplete();
         }
         _onActivityCreated(savedInstanceState);
@@ -324,19 +323,19 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                int position=pos;
-                if (mListView.getHeaderViewsCount()>0) {
-                    position-=mListView.getHeaderViewsCount();
+                int position = pos;
+                if (mListView.getHeaderViewsCount() > 0) {
+                    position -= mListView.getHeaderViewsCount();
                 }
-                if (position==-1) {
+                if (position == - 1) {
                     WeiboLog.v("选中的是头部，不可点击");
                     return;
                 }
 
-                selectedPos=position;
-                WeiboLog.v(TAG, "itemClick:"+pos+" selectedPos:"+selectedPos);
+                selectedPos = position;
+                WeiboLog.v(TAG, "itemClick:" + pos + " selectedPos:" + selectedPos);
 
-                if (view==footerView) {   //if (mAdapter.getCount()>0&&position>=mAdapter.getCount()) {
+                if (view == footerView) {   //if (mAdapter.getCount()>0&&position>=mAdapter.getCount()) {
                     mMoreProgressBar.setVisibility(View.VISIBLE);
                     fetchMore();
                     return;
@@ -348,19 +347,19 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
 
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                WeiboLog.v(TAG, "itemLongClick:"+pos);
-                int position=pos;
-                if (mListView.getHeaderViewsCount()>0) {
-                    position-=mListView.getHeaderViewsCount();
+                WeiboLog.v(TAG, "itemLongClick:" + pos);
+                int position = pos;
+                if (mListView.getHeaderViewsCount() > 0) {
+                    position -= mListView.getHeaderViewsCount();
                 }
-                selectedPos=position;
+                selectedPos = position;
 
-                if (mAdapter.getCount()>0&&position>=mAdapter.getCount()) {
+                if (mAdapter.getCount() > 0 && position >= mAdapter.getCount()) {
                     WeiboLog.v(TAG, "footerView.click.");
                     return true;
                 }
 
-                if (view!=footerView) {
+                if (view != footerView) {
                     //showButtonBar(view);
                     return AbsBaseListFragment.this.itemLongClick(view);
                 }
@@ -398,18 +397,18 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
         mListView.addFooterView(footerView);
         //mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        if (mAdapter==null) {
-            mAdapter=new TimeLineAdapter();
+        if (mAdapter == null) {
+            mAdapter = new TimeLineAdapter();
         }
         mListView.setAdapter(mAdapter);
 
-        WeiboLog.v(TAG, "isLoading:"+isLoading+" status:"+(null==mDataList ? "null" : mDataList.size()));
+        WeiboLog.v(TAG, "isLoading:" + isLoading + " status:" + (null == mDataList ? "null" : mDataList.size()));
         loadData();
     }
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-        WeiboLog.d(TAG, "onScrollStateChanged.scrollState:"+scrollState);
+        WeiboLog.d(TAG, "onScrollStateChanged.scrollState:" + scrollState);
         if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING
             || scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
             ImageCache.getInstance(getActivity()).setPauseDiskCache(true);
@@ -456,16 +455,16 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      * 下拉刷新数据
      */
     protected void pullToRefreshData() {
-        isRefreshing=true;
+        isRefreshing = true;
         //page=1;
-        fetchData(-1, -1, true, true);
+        fetchData(- 1, - 1, true, true);
     }
 
     /**
      * 上拉刷新
      */
     protected void pullUpRefreshData() {
-        if (null!=mDataList&&mDataList.size()>0) {
+        if (null != mDataList && mDataList.size() > 0) {
             fetchMore();
         } else {
             WeiboLog.w(TAG, "no data,pull up failed.now pull to refresh.");
@@ -477,7 +476,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      * 这是一个可刷新的方法,当ActionBar中的按钮按下时,就可以刷新它了.
      */
     public void refresh() {
-        if (null!=mListView) {
+        if (null != mListView) {
             mListView.setSelection(1);
         }
         pullToRefreshData();
@@ -501,12 +500,12 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      * 这是数据的入口,一切从此开始.
      */
     protected void loadData() {
-        if (mDataList!=null&&mDataList.size()>0) {
+        if (mDataList != null && mDataList.size() > 0) {
             mAdapter.notifyDataSetChanged();
         } else {
-            if (!isLoading) {
-                isRefreshing=true;
-                fetchData(-1, -1, true, true);
+            if (! isLoading) {
+                isRefreshing = true;
+                fetchData(- 1, - 1, true, true);
             } else {
                 mEmptyTxt.setText(R.string.list_pre_empty_txt);
                 mEmptyTxt.setVisibility(View.VISIBLE);
@@ -518,7 +517,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      * 获取更多数据，需要子类覆盖，因为有不同的类型。这里不作数据获取操作.
      */
     public void fetchMore() {
-        isRefreshing=false;
+        isRefreshing = false;
     }
 
     /**
@@ -526,17 +525,17 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      */
     protected void showMoreView() {
         WeiboLog.v(TAG, "showMoreView");
-        if (null==mLoadingLayout) {
+        if (null == mLoadingLayout) {
             WeiboLog.d(TAG, "null==mLoadingLayout.");
-            mLoadingLayout=(RelativeLayout) LayoutInflater.from(getActivity().getApplicationContext())
+            mLoadingLayout = (RelativeLayout) LayoutInflater.from(getActivity().getApplicationContext())
                 .inflate(R.layout.ak_more_progressbar, null);
-            mMoreProgressBar=(ProgressBar) mLoadingLayout.findViewById(R.id.progress_bar);
-            mMoreTxt=(TextView) mLoadingLayout.findViewById(R.id.more_txt);
+            mMoreProgressBar = (ProgressBar) mLoadingLayout.findViewById(R.id.progress_bar);
+            mMoreTxt = (TextView) mLoadingLayout.findViewById(R.id.more_txt);
         }
 
         mMoreTxt.setText(R.string.more);
 
-        WeiboLog.v(TAG, "mListView.getFooterViewsCount():"+mListView.getFooterViewsCount());
+        WeiboLog.v(TAG, "mListView.getFooterViewsCount():" + mListView.getFooterViewsCount());
         /*if (mListView.getFooterViewsCount()<1) {
             footerView.removeAllViews();
             RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(
@@ -552,7 +551,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
             }else {
         }*/
         footerView.removeAllViews();
-        RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
         );
         footerView.addView(mLoadingLayout, layoutParams);
@@ -569,24 +568,24 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      * @param isHomeStore 是否是主页,只有主页有存储
      */
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        WeiboLog.i(TAG, "sinceId:"+sinceId+", maxId:"+maxId+", isRefresh:"+isRefresh+", isHomeStore:"+isHomeStore);
-        if (!App.hasInternetConnection(getActivity())) {
-            AKUtils.showToast(R.string.network_error);
-            if (mRefreshListener!=null) {
+        WeiboLog.i(TAG, "sinceId:" + sinceId + ", maxId:" + maxId + ", isRefresh:" + isRefresh + ", isHomeStore:" + isHomeStore);
+        if (! App.hasInternetConnection(getActivity())) {
+            NotifyUtils.showToast(R.string.network_error);
+            if (mRefreshListener != null) {
                 mRefreshListener.onRefreshFinished();
             }
             refreshAdapter(false, false);
             return;
         }
 
-        int count=weibo_count;
-        if (!isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
+        int count = weibo_count;
+        if (! isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
             //count++;
         } else {
             //page=1;
         }
 
-        if (!isLoading) {
+        if (! isLoading) {
             newTask(new Object[]{isRefresh, sinceId, maxId, count, page, isHomeStore}, null);
         }
     }
@@ -596,19 +595,19 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      */
     public void basePreOperation() {
         //WeiboLog.v(TAG, "basePreOperation:"+mPullRefreshListView);
-        if (null!=mPullRefreshListView) {
+        if (null != mPullRefreshListView) {
             mPullRefreshListView.setRefreshing();
         }
 
-        if (null==mDataList||mDataList.size()<1) {
+        if (null == mDataList || mDataList.size() < 1) {
             mEmptyTxt.setText(R.string.list_pre_empty_txt);
             mEmptyTxt.setVisibility(View.VISIBLE);
         }
 
-        if (mRefreshListener!=null) {
+        if (mRefreshListener != null) {
             mRefreshListener.onRefreshStarted();
         }
-        isLoading=true;
+        isLoading = true;
     }
 
     /**
@@ -623,8 +622,8 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      */
     public Object[] baseBackgroundOperation(Object... objects) {
         try {
-            WeiboLog.d(TAG, "baseBackgroundOperation:"+objects);
-            SStatusData<T> sStatusData=(SStatusData<T>) getData(objects);
+            WeiboLog.d(TAG, "baseBackgroundOperation:" + objects);
+            SStatusData<T> sStatusData = (SStatusData<T>) getData(objects);
 
             saveData(sStatusData);
             return new Object[]{sStatusData, objects};
@@ -640,23 +639,23 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      * @param resultObj
      */
     public void basePostOperation(Object[] result) {
-        isRefreshing=false;
+        isRefreshing = false;
         //page++;
         WeiboLog.d(TAG, "basePostOperation");
-        if (mRefreshListener!=null) {
+        if (mRefreshListener != null) {
             mRefreshListener.onRefreshFinished();
         }
 
-        isLoading=false;
+        isLoading = false;
         if (isResumed()) {
             //setListShown(true);
         } else {
             //setListShownNoAnimation(true);
         }
 
-        if (null==result) {
+        if (null == result) {
             WeiboLog.w(TAG, "加载数据异常。");
-            if (null!=mMoreTxt&&null!=mMoreProgressBar) {
+            if (null != mMoreTxt && null != mMoreProgressBar) {
                 mMoreTxt.setText(R.string.more_loaded_failed);
                 mMoreProgressBar.setVisibility(View.GONE);
             }
@@ -664,35 +663,35 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
             return;
         }
 
-        SStatusData<T> sStatusData=(SStatusData<T>) result[0];
-        if (null==sStatusData) {
+        SStatusData<T> sStatusData = (SStatusData<T>) result[ 0 ];
+        if (null == sStatusData) {
             WeiboLog.w(TAG, "请求数据异常。");
-            if (null!=mMoreTxt&&null!=mMoreProgressBar) {
+            if (null != mMoreTxt && null != mMoreProgressBar) {
                 mMoreTxt.setText(R.string.more_loaded_failed);
                 mMoreProgressBar.setVisibility(View.GONE);
             }
-            String msg=getString(R.string.more_loaded_failed);
+            String msg = getString(R.string.more_loaded_failed);
 
-            AKUtils.showToast(msg, Toast.LENGTH_LONG);
+            NotifyUtils.showToast(msg, Toast.LENGTH_LONG);
             refreshAdapter(false, false);
             return;
         }
 
-        if (!TextUtils.isEmpty(sStatusData.errorMsg)) {
-            WeiboLog.w(TAG, "请求数据异常。"+sStatusData.errorMsg);
-            if (null!=mMoreTxt&&null!=mMoreProgressBar) {
+        if (! TextUtils.isEmpty(sStatusData.errorMsg)) {
+            WeiboLog.w(TAG, "请求数据异常。" + sStatusData.errorMsg);
+            if (null != mMoreTxt && null != mMoreProgressBar) {
                 mMoreTxt.setText(R.string.more_loaded_failed);
                 mMoreProgressBar.setVisibility(View.GONE);
             }
-            String msg=sStatusData.errorMsg;
-            AKUtils.showToast(msg, Toast.LENGTH_LONG);
+            String msg = sStatusData.errorMsg;
+            NotifyUtils.showToast(msg, Toast.LENGTH_LONG);
             refreshAdapter(false, false);
             return;
         }
 
-        if (null==sStatusData.mStatusData) {
+        if (null == sStatusData.mStatusData) {
             WeiboLog.w(TAG, "加载数据为空。");
-            if (null!=mMoreTxt&&null!=mMoreProgressBar) {
+            if (null != mMoreTxt && null != mMoreProgressBar) {
                 mMoreTxt.setText(R.string.more_loaded_failed);
                 mMoreProgressBar.setVisibility(View.GONE);
             }
@@ -703,7 +702,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
         //only remove footerView when load succefully
         footerView.removeAllViews();
 
-        Boolean isRefresh=(Boolean) ((Object[]) ((Object[]) result)[1])[0];
+        Boolean isRefresh = (Boolean) ((Object[]) ((Object[]) result)[ 1 ])[ 0 ];
         //Boolean isHomeStore=(Boolean) ((Object[]) result)[2];
 
         refreshNewData(sStatusData, isRefresh);
@@ -728,9 +727,9 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      * @param isRefresh   是否是刷新列表
      */
     public void refreshNewData(SStatusData<T> sStatusData, Boolean isRefresh) {
-        ArrayList<T> list=sStatusData.mStatusData;
+        ArrayList<T> list = sStatusData.mStatusData;
 
-        if (null!=list) {
+        if (null != list) {
             if (isRefresh) {
                 //mListView.clearChoices();
                 mDataList.clear();
@@ -749,21 +748,21 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      * @param isRefresh 是否是刷新数据。
      */
     public void refreshAdapter(boolean load, boolean isRefresh) {
-        WeiboLog.d(TAG, "refreshAdapter.load:"+load+" isRefresh:"+isRefresh);
+        WeiboLog.d(TAG, "refreshAdapter.load:" + load + " isRefresh:" + isRefresh);
         if (load) {
-            mPullRefreshListView.setLastUpdatedLabel(getString(R.string.pull_to_refresh_label)+DateUtils.longToDateTimeString(System.currentTimeMillis()));
+            mPullRefreshListView.setLastUpdatedLabel(getString(R.string.pull_to_refresh_label) + DateUtils.longToDateTimeString(System.currentTimeMillis()));
             mAdapter.notifyDataSetChanged();
         }
         mPullRefreshListView.onRefreshComplete();
 
         if (isRefresh) {
-            if (null!=mListView) {
+            if (null != mListView) {
                 mListView.setSelection(1);
             }
         }
 
-        if (mDataList.size()>0) {
-            if (mEmptyTxt.getVisibility()==View.VISIBLE) {
+        if (mDataList.size() > 0) {
+            if (mEmptyTxt.getVisibility() == View.VISIBLE) {
                 mEmptyTxt.setVisibility(View.GONE);
             }
         } else {
@@ -774,12 +773,12 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
 
     //--------------------- 增加上下导航按钮 ---------------------
     protected RelativeLayout zoomLayout;
-    protected Handler zoomHandler=new Handler();
+    protected Handler zoomHandler = new Handler();
     protected Runnable zoomRunnable;
     protected Animation zoomAnim;
 
     protected ImageView up, down;
-    protected View.OnClickListener navClickListener=new View.OnClickListener() {
+    protected View.OnClickListener navClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             navClick(view);
@@ -794,19 +793,19 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
     //protected abstract void navClick(View view);
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     protected void navClick(View view) {
-        if (view.getId()==R.id.up) {
+        if (view.getId() == R.id.up) {
             showZoom();
-            if (showNavPageBtn&&ApolloUtils.hasJellyBean()) {
+            if (showNavPageBtn && ApolloUtils.hasJellyBean()) {
                 mListView.performAccessibilityAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD, null);
             } else {
                 mListView.setSelection(1);
             }
-        } else if (view.getId()==R.id.down) {
+        } else if (view.getId() == R.id.down) {
             showZoom();
-            if (showNavPageBtn&&ApolloUtils.hasJellyBean()) {
+            if (showNavPageBtn && ApolloUtils.hasJellyBean()) {
                 mListView.performAccessibilityAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD, null);
             } else {
-                mListView.setSelection(mAdapter.getCount()-1);
+                mListView.setSelection(mAdapter.getCount() - 1);
             }
         }
     }

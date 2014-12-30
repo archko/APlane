@@ -34,16 +34,16 @@ import java.util.ArrayList;
  */
 public class SendTaskPool extends Thread {
 
-    public static final String TAG="SendTaskPool";
+    public static final String TAG = "SendTaskPool";
     private ArrayList<SendTask> mQuery;
     Context mContext;
-    private boolean isStop=false;
+    private boolean isStop = false;
     Handler mHandler;
 
     public SendTaskPool(Context context) {
-        this.mQuery=new ArrayList<SendTask>();
-        mContext=context;
-        mHandler=new Handler(Looper.getMainLooper());
+        this.mQuery = new ArrayList<SendTask>();
+        mContext = context;
+        mHandler = new Handler(Looper.getMainLooper());
         queryAllTask();
     }
 
@@ -53,7 +53,7 @@ public class SendTaskPool extends Thread {
      * @param stop
      */
     public void setStop(boolean stop) {
-        isStop=stop;
+        isStop = stop;
         synchronized (this) {
             notifyAll();
         }
@@ -66,15 +66,15 @@ public class SendTaskPool extends Thread {
      */
     private void doTask_Impl(SendTask task) {
         synchronized (this) {
-            if (!App.hasInternetConnection(mContext)) {
+            if (! App.hasInternetConnection(mContext)) {
                 WeiboLog.d(TAG, "no internet connection,failed to execute task.");
                 return;
             }
 
-            App app=(App) App.getAppContext();
-            if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB) {
+            App app = (App) App.getAppContext();
+            if (app.getOauthBean().oauthType == Oauth2.OAUTH_TYPE_WEB) {
             } else {
-                if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
+                if (System.currentTimeMillis() >= app.getOauthBean().expireTime && app.getOauthBean().expireTime != 0) {
                     WeiboLog.w(TAG, "web认证，token过期了.不能执行任务。");
                     return;
                 } else {
@@ -82,20 +82,20 @@ public class SendTaskPool extends Thread {
                 }
             }
 
-            WeiboLog.d(TAG, "执行一个任务。"+task);
+            WeiboLog.d(TAG, "执行一个任务。" + task);
 
-            int type=task.type;
-            if (type==TwitterTable.SendQueueTbl.SEND_TYPE_STATUS) {
-                WeiboLog.d(TAG, "发布的微博 task."+task);
+            int type = task.type;
+            if (type == TwitterTable.SendQueueTbl.SEND_TYPE_STATUS) {
+                WeiboLog.d(TAG, "发布的微博 task." + task);
                 sendStatus(task);
-            } else if (type==TwitterTable.SendQueueTbl.SEND_TYPE_REPOST_STATUS) {
-                WeiboLog.d(TAG, "转发的微博 task."+task);
+            } else if (type == TwitterTable.SendQueueTbl.SEND_TYPE_REPOST_STATUS) {
+                WeiboLog.d(TAG, "转发的微博 task." + task);
                 sendRepostStatus(task);
-            } else if (type==TwitterTable.SendQueueTbl.SEND_TYPE_COMMENT) {
-                WeiboLog.d(TAG, "发布的评论 task."+task);
+            } else if (type == TwitterTable.SendQueueTbl.SEND_TYPE_COMMENT) {
+                WeiboLog.d(TAG, "发布的评论 task." + task);
                 sendComment(task);
-            } else if (type==TwitterTable.SendQueueTbl.SEND_TYPE_ADD_FAV) {
-                WeiboLog.d(TAG, "添加收藏 task."+task);
+            } else if (type == TwitterTable.SendQueueTbl.SEND_TYPE_ADD_FAV) {
+                WeiboLog.d(TAG, "添加收藏 task." + task);
                 addFavorite(task);
             }
 
@@ -106,50 +106,50 @@ public class SendTaskPool extends Thread {
 
     private void sendStatus(SendTask task) {
         try {
-            String imgUrl=task.imgUrl;
-            String content=task.content;
-            String data=task.data;
-            String[] datas=data.split("-");
-            double latitude=Double.valueOf(datas[0]);
-            double longitude=Double.valueOf(datas[1]);
-            String txt=task.text;
-            int visible=0;
-            if (!TextUtils.isEmpty(txt)||!"null".equals(txt)) {
-                visible=Integer.valueOf(txt);
+            String imgUrl = task.imgUrl;
+            String content = task.content;
+            String data = task.data;
+            String[] datas = data.split("-");
+            double latitude = Double.valueOf(datas[ 0 ]);
+            double longitude = Double.valueOf(datas[ 1 ]);
+            String txt = task.text;
+            int visible = 0;
+            if (! TextUtils.isEmpty(txt) || ! "null".equals(txt)) {
+                visible = Integer.valueOf(txt);
             }
 
-            SinaStatusApi statusApi=new SinaStatusApi();
+            SinaStatusApi statusApi = new SinaStatusApi();
 
-            Status status=null;
-            int code=0;
-            String msg="";
-            if (!TextUtils.isEmpty(imgUrl)&&!"null".equals(imgUrl)) {
+            Status status = null;
+            int code = 0;
+            String msg = "";
+            if (! TextUtils.isEmpty(imgUrl) && ! "null".equals(imgUrl)) {
                 try {
-                    status=statusApi.upload(imgUrl, content, latitude, longitude, visible);
+                    status = statusApi.upload(imgUrl, content, latitude, longitude, visible);
                 } catch (WeiboException e) {
-                    code=e.getStatusCode();
-                    msg=e.toString();
+                    code = e.getStatusCode();
+                    msg = e.toString();
                 }
             } else {
                 try {
-                    status=statusApi.updateStatus(content, latitude, longitude, visible);
+                    status = statusApi.updateStatus(content, latitude, longitude, visible);
                 } catch (WeiboException e) {
-                    code=e.getStatusCode();
-                    msg=e.toString();
+                    code = e.getStatusCode();
+                    msg = e.toString();
                 }
             }
 
-            WeiboLog.d(TAG, "发送微博."+status);
-            if (null!=status) {
-                int res=SqliteWrapper.deleteSendTask(mContext, task);
+            WeiboLog.d(TAG, "发送微博." + status);
+            if (null != status) {
+                int res = SqliteWrapper.deleteSendTask(mContext, task);
                 //mContext.getContentResolver().delete(TwitterTable.SendQueueTbl.CONTENT_URI, " _id='"+task.id+"'", null);
-                WeiboLog.d(TAG, "删除完成的任务："+res);
+                WeiboLog.d(TAG, "删除完成的任务：" + res);
                 showToast(R.string.new_status_suc);
             } else {
                 showToast(R.string.new_status_failed);
                 SqliteWrapper.updateSendTask(App.getAppContext(), code, msg, task);
-                task.resultCode=code;
-                task.resultMsg=msg;
+                task.resultCode = code;
+                task.resultMsg = msg;
             }
             notifyTaskChanged(task);
         } catch (Exception e) {
@@ -159,32 +159,32 @@ public class SendTaskPool extends Thread {
 
     private void sendRepostStatus(SendTask task) {
         try {
-            Status status=null;
-            String content=task.content;
-            String is_comment=task.data;
-            long statusId=Long.valueOf(task.source);
+            Status status = null;
+            String content = task.content;
+            String is_comment = task.data;
+            long statusId = Long.valueOf(task.source);
 
-            SinaStatusApi statusApi=new SinaStatusApi();
-            int code=0;
-            String msg="";
+            SinaStatusApi statusApi = new SinaStatusApi();
+            int code = 0;
+            String msg = "";
             try {
-                status=statusApi.repostStatus(statusId, content, is_comment);
+                status = statusApi.repostStatus(statusId, content, is_comment);
             } catch (WeiboException e) {
-                code=e.getStatusCode();
-                msg=e.toString();
+                code = e.getStatusCode();
+                msg = e.toString();
             }
 
-            WeiboLog.i(TAG, "转发."+status);
-            if (null!=status) {
-                int res=SqliteWrapper.deleteSendTask(mContext, task);
+            WeiboLog.i(TAG, "转发." + status);
+            if (null != status) {
+                int res = SqliteWrapper.deleteSendTask(mContext, task);
                 //mContext.getContentResolver().delete(TwitterTable.SendQueueTbl.CONTENT_URI, " _id='"+task.id+"'", null);
-                WeiboLog.d(TAG, "删除完成的任务："+res);
+                WeiboLog.d(TAG, "删除完成的任务：" + res);
                 showToast(R.string.repost_suc);
             } else {
                 showToast(R.string.repost_failed);
                 SqliteWrapper.updateSendTask(App.getAppContext(), code, msg, task);
-                task.resultCode=code;
-                task.resultMsg=msg;
+                task.resultCode = code;
+                task.resultMsg = msg;
             }
             notifyTaskChanged(task);
         } catch (Exception e) {
@@ -194,34 +194,34 @@ public class SendTaskPool extends Thread {
 
     private void sendComment(SendTask task) {
         try {
-            Comment comment=null;
-            String content=task.content;
-            String comment_ori=task.data;
-            long statusId=Long.valueOf(task.source);
+            Comment comment = null;
+            String content = task.content;
+            String comment_ori = task.data;
+            long statusId = Long.valueOf(task.source);
 
-            int code=0;
-            String msg="";
-            SinaCommentApi commentApi=new SinaCommentApi();
+            int code = 0;
+            String msg = "";
+            SinaCommentApi commentApi = new SinaCommentApi();
             try {
-                comment=commentApi.commentStatus(statusId, content, comment_ori);
+                comment = commentApi.commentStatus(statusId, content, comment_ori);
             } catch (WeiboException e) {
-                code=e.getStatusCode();
-                msg=e.toString();
+                code = e.getStatusCode();
+                msg = e.toString();
             }
-            WeiboLog.i(TAG, "发送评论."+comment);
+            WeiboLog.i(TAG, "发送评论." + comment);
 
-            if (null!=comment) {
-                int res=SqliteWrapper.deleteSendTask(mContext, task);
+            if (null != comment) {
+                int res = SqliteWrapper.deleteSendTask(mContext, task);
                 //mContext.getContentResolver().delete(TwitterTable.SendQueueTbl.CONTENT_URI, " _id='"+task.id+"'", null);
-                WeiboLog.d(TAG, "删除完成的任务："+res);
+                WeiboLog.d(TAG, "删除完成的任务：" + res);
                 showToast(R.string.comment_suc);
-                task.uid=comment.id;    //在评论成功后，可能值为评论的id。
+                task.uid = comment.id;    //在评论成功后，可能值为评论的id。
             } else {
                 showToast(R.string.comment_failed);
                 SqliteWrapper.updateSendTask(App.getAppContext(), code, msg, task);
-                task.resultCode=code;
-                task.resultMsg=msg;
-                task.uid=0;
+                task.resultCode = code;
+                task.resultMsg = msg;
+                task.uid = 0;
             }
             notifyTaskChanged(task);
         } catch (Exception e) {
@@ -231,29 +231,29 @@ public class SendTaskPool extends Thread {
 
     private void addFavorite(SendTask task) {
         try {
-            Favorite favorite=null;
-            long statusId=Long.valueOf(task.source);
+            Favorite favorite = null;
+            long statusId = Long.valueOf(task.source);
 
-            int code=0;
-            String msg="";
-            SinaStatusApi statusApi=new SinaStatusApi();
+            int code = 0;
+            String msg = "";
+            SinaStatusApi statusApi = new SinaStatusApi();
             try {
-                favorite=statusApi.createFavorite(statusId);
+                favorite = statusApi.createFavorite(statusId);
             } catch (WeiboException e) {
-                code=e.getStatusCode();
-                msg=e.toString();
+                code = e.getStatusCode();
+                msg = e.toString();
             }
-            WeiboLog.i(TAG, "添加收藏."+favorite);
+            WeiboLog.i(TAG, "添加收藏." + favorite);
 
-            if (null!=favorite) {
-                int res=SqliteWrapper.deleteSendTask(mContext, task);
-                WeiboLog.d(TAG, "删除完成的收藏任务："+res);
+            if (null != favorite) {
+                int res = SqliteWrapper.deleteSendTask(mContext, task);
+                WeiboLog.d(TAG, "删除完成的收藏任务：" + res);
                 showToast(R.string.favorite_add_suc);
             } else {
                 showToast(R.string.favorite_add_failed);
                 SqliteWrapper.updateSendTask(App.getAppContext(), code, msg, task);
-                task.resultCode=code;
-                task.resultMsg=msg;
+                task.resultCode = code;
+                task.resultMsg = msg;
             }
             notifyTaskChanged(task);
         } catch (Exception e) {
@@ -263,7 +263,7 @@ public class SendTaskPool extends Thread {
 
     private void notifyTaskChanged(SendTask task) {
         try {
-            Intent i=new Intent(Constants.TASK_CHANGED);
+            Intent i = new Intent(Constants.TASK_CHANGED);
             i.putExtra("task", task);
             i.putExtra("id", task.id);
             mContext.sendStickyBroadcast(i);
@@ -291,8 +291,8 @@ public class SendTaskPool extends Thread {
 
     public SendTask Get(int paramInt) {
         synchronized (this) {
-            int size=this.mQuery.size();
-            if (paramInt<=size) {
+            int size = this.mQuery.size();
+            if (paramInt <= size) {
                 return mQuery.get(paramInt);
             }
         }
@@ -307,7 +307,7 @@ public class SendTaskPool extends Thread {
 
     public SendTask Pop() {
         synchronized (this) {
-            SendTask task=this.mQuery.remove(0);
+            SendTask task = this.mQuery.remove(0);
             return task;
         }
     }
@@ -338,7 +338,7 @@ public class SendTaskPool extends Thread {
 
     private void addTask(SendTask task) {
         try {
-            ContentValues cv=new ContentValues();
+            ContentValues cv = new ContentValues();
             cv.put(TwitterTable.SendQueueTbl.USER_ID, task.userId);
             cv.put(TwitterTable.SendQueueTbl.CONTENT, task.content);
             cv.put(TwitterTable.SendQueueTbl.IMG_URL, task.imgUrl);
@@ -350,9 +350,9 @@ public class SendTaskPool extends Thread {
             cv.put(TwitterTable.SendQueueTbl.TYPE, task.type);
             cv.put(TwitterTable.SendQueueTbl.SEND_RESULT_CODE, 0);
 
-            Uri uri=mContext.getContentResolver().insert(TwitterTable.SendQueueTbl.CONTENT_URI, cv);
-            task.id=Long.valueOf(uri.getLastPathSegment());
-            WeiboLog.d(TAG, "插入新的任务:"+uri);
+            Uri uri = mContext.getContentResolver().insert(TwitterTable.SendQueueTbl.CONTENT_URI, cv);
+            task.id = Long.valueOf(uri.getLastPathSegment());
+            WeiboLog.d(TAG, "插入新的任务:" + uri);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -374,7 +374,7 @@ public class SendTaskPool extends Thread {
 
     private void deleteTask(SendTask task) {
         for (SendTask sendTask : mQuery) {
-            if (task.id==sendTask.id) {
+            if (task.id == sendTask.id) {
                 mQuery.remove(sendTask);
                 break;
             }
@@ -398,8 +398,8 @@ public class SendTaskPool extends Thread {
                 }
 
                 notifyAll();
-                if (GetCount()!=0) {
-                    SendTask piece=Pop();
+                if (GetCount() != 0) {
+                    SendTask piece = Pop();
                     doTask_Impl(piece);
                 } else {
                     try {
@@ -418,14 +418,14 @@ public class SendTaskPool extends Thread {
      */
     void queryAllTask() {
         SharedPreferences settings;
-        settings=PreferenceManager.getDefaultSharedPreferences(mContext);
-        long aUserId=settings.getLong(Constants.PREF_CURRENT_USER_ID, -1);
-        ArrayList<SendTask> sendTasks=SqliteWrapper.queryAllTasks(mContext, String.valueOf(aUserId), 0);
-        WeiboLog.d(TAG, "queryAllTask:"+aUserId+" task count:"+sendTasks.size());
+        settings = PreferenceManager.getDefaultSharedPreferences(mContext);
+        long aUserId = settings.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
+        ArrayList<SendTask> sendTasks = SqliteWrapper.queryAllTasks(mContext, String.valueOf(aUserId), 0);
+        WeiboLog.d(TAG, "queryAllTask:" + aUserId + " task count:" + sendTasks.size());
 
         synchronized (this) {
             for (SendTask task : sendTasks) {
-                if (!mQuery.contains(task)) {
+                if (! mQuery.contains(task)) {
                     mQuery.add(task);
                 }
             }

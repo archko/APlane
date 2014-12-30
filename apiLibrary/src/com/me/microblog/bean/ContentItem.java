@@ -16,9 +16,9 @@ public class ContentItem {
 
     @Override
     public String toString() {
-        return "ContentItem{"+
-            "type='"+type+'\''+
-            ", content="+content+
+        return "ContentItem{" +
+            "type='" + type + '\'' +
+            ", content=" + content +
             '}';
     }
 }

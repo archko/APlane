@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * User: archko Date: 12-7-23 Time: 上午11:11
  */
-public class SStatusData<T> {
+public class SStatusData <T> {
 
     /**
      * 微博列表
@@ -21,15 +21,15 @@ public class SStatusData<T> {
 
     @Override
     public String toString() {
-        return "SStatusData{"+
-            "mStatusData="+mStatusData+
-            ", mData="+mData+
-            ", previous_cursor="+previous_cursor+
-            ", next_cursor="+next_cursor+
-            ", total_number="+total_number+
-            ", hasvisible="+hasvisible+
-            ", errorCode="+errorCode+
-            ", errorMsg='"+errorMsg+'\''+
+        return "SStatusData{" +
+            "mStatusData=" + mStatusData +
+            ", mData=" + mData +
+            ", previous_cursor=" + previous_cursor +
+            ", next_cursor=" + next_cursor +
+            ", total_number=" + total_number +
+            ", hasvisible=" + hasvisible +
+            ", errorCode=" + errorCode +
+            ", errorMsg='" + errorMsg + '\'' +
             '}';
     }
 }

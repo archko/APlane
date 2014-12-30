@@ -35,10 +35,10 @@ public class CheckableFrameLayout extends FrameLayout implements Checkable {
     }
 
     public void setChecked(boolean checked) {
-        mChecked=checked;
+        mChecked = checked;
         //setBackgroundDrawable(checked ? new ColorDrawable(0xff0000a0) : null);
-        setBackgroundDrawable(checked?new ColorDrawable(0xff0000a0):null);
-        System.out.println("bg:"+getBackground());
+        setBackgroundDrawable(checked ? new ColorDrawable(0xff0000a0) : null);
+        System.out.println("bg:" + getBackground());
     }
 
     public boolean isChecked() {
@@ -46,7 +46,7 @@ public class CheckableFrameLayout extends FrameLayout implements Checkable {
     }
 
     public void toggle() {
-        setChecked(!mChecked);
+        setChecked(! mChecked);
     }
 
 }

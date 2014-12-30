@@ -19,9 +19,9 @@ import java.util.Map;
  * @author: archko Date: 13-1-28 Time: 下午7:20
  * @description:
  */
-public class SinaSearchApi extends AbsApiImpl implements ISearchApi{
+public class SinaSearchApi extends AbsApiImpl implements ISearchApi {
 
-    public static final String TAG="SinaSearchApi";
+    public static final String TAG = "SinaSearchApi";
     //--------------------- 搜索 ---------------------
 
     /**
@@ -33,19 +33,19 @@ public class SinaSearchApi extends AbsApiImpl implements ISearchApi{
      * type 	false 	int 	学校类型，0：全部、1：大学、2：高中、3：中专技校、4：初中、5：小学，默认为0。
      */
     public ArrayList<User> getSuggestionsSchools(String q, int count) throws WeiboException {
-        String urlString=getBaseUrl()+"search/suggestions/schools.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "search/suggestions/schools.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("q", q);
+        pair = new BasicNameValuePair("q", q);
         nvps.add(pair);
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, true, nvps);
+        String rs = get(urlString, true, nvps);
         return WeiboParser.getUsers(rs);
     }
 
@@ -61,34 +61,34 @@ public class SinaSearchApi extends AbsApiImpl implements ISearchApi{
      * @param type 类型，0为微博，1为用户，2为学校，3为公司，4为应用
      */
     public ArrayList<Map<String, String>> getSearchSuggestions(String q, int count, int type) throws WeiboException {
-        String searchUrl="";
-        if (type==0) {
-            searchUrl="search/suggestions/statuses.json";
-        } else if (type==1) {
-            searchUrl="search/suggestions/users.json";
-        } else if (type==2) {
-            searchUrl="search/suggestions/schools.json";
-        } else if (type==3) {
-            searchUrl="search/suggestions/companies.json";
-        } else if (type==4) {
-            searchUrl="search/suggestions/apps.json";
+        String searchUrl = "";
+        if (type == 0) {
+            searchUrl = "search/suggestions/statuses.json";
+        } else if (type == 1) {
+            searchUrl = "search/suggestions/users.json";
+        } else if (type == 2) {
+            searchUrl = "search/suggestions/schools.json";
+        } else if (type == 3) {
+            searchUrl = "search/suggestions/companies.json";
+        } else if (type == 4) {
+            searchUrl = "search/suggestions/apps.json";
         }
 
-        String urlString=getBaseUrl()+searchUrl;
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + searchUrl;
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("q", q);
+        pair = new BasicNameValuePair("q", q);
         nvps.add(pair);
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        WeiboLog.v(TAG, "search:q:"+q+" count:"+count+" type:"+type);
-        String rs=get(urlString, false, nvps);
-        WeiboLog.v(TAG, "rs:"+rs);
+        WeiboLog.v(TAG, "search:q:" + q + " count:" + count + " type:" + type);
+        String rs = get(urlString, false, nvps);
+        WeiboLog.v(TAG, "rs:" + rs);
         return WeiboParser.getSuggestions(rs, type);
     }
 
@@ -104,27 +104,26 @@ public class SinaSearchApi extends AbsApiImpl implements ISearchApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<Status> searchTopics(String q, int count, int page) throws WeiboException {
-        String urlString=getBaseUrl()+"search/topics.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "search/topics.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("q", q);
+        pair = new BasicNameValuePair("q", q);
         nvps.add(pair);
 
-        if (0<count) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (0 < count) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        if (0<page) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+        if (0 < page) {
+            pair = new BasicNameValuePair("page", String.valueOf(page));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, false, nvps);
-        WeiboLog.v(TAG, "searchTopics:"+rs);
+        String rs = get(urlString, false, nvps);
+        WeiboLog.v(TAG, "searchTopics:" + rs);
         return WeiboParser.parseStatuses2(rs);
     }
 
@@ -150,24 +149,24 @@ public class SinaSearchApi extends AbsApiImpl implements ISearchApi{
      * @throws com.me.microblog.WeiboException
      */
     public SStatusData<Status> searchStatuses(String q, int count, int page) throws WeiboException {
-        String urlString=getBaseUrl()+"search/statuses.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "search/statuses.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("q", URLEncoder.encode(q));
+        pair = new BasicNameValuePair("q", URLEncoder.encode(q));
         nvps.add(pair);
 
-        if (0<count) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (0 < count) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        if (0<page) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+        if (0 < page) {
+            pair = new BasicNameValuePair("page", String.valueOf(page));
             nvps.add(pair);
         }
 
-        String rs=get(urlString, false, nvps);
-        WeiboLog.v("searchStatuses:"+rs);
+        String rs = get(urlString, false, nvps);
+        WeiboLog.v("searchStatuses:" + rs);
         return WeiboParser.parseStatuses2(rs);
     }
 }

@@ -3,12 +3,11 @@ package com.me.microblog.bean;
 import java.util.ArrayList;
 
 /**
- *
  * @author archko
  */
 public class QStatusData {
 
-    public static final long serialVersionUID=3894560643019408218L;
+    public static final long serialVersionUID = 3894560643019408218L;
 
     /**
      * 返回值，0-成功，非0-失败
@@ -41,17 +40,17 @@ public class QStatusData {
 
     @Override
     public String toString() {
-        return "QStatusData{"+"ret="+ret+", msg="+msg+", errcode="+errcode+", totalnum="
-            +totalnum+", timestamp="+timestamp+", hasnext="+hasnext
-            +", qStatuses="+qStatusToString()+'}';
+        return "QStatusData{" + "ret=" + ret + ", msg=" + msg + ", errcode=" + errcode + ", totalnum="
+            + totalnum + ", timestamp=" + timestamp + ", hasnext=" + hasnext
+            + ", qStatuses=" + qStatusToString() + '}';
     }
 
     String qStatusToString() {
-        if (qStatuses==null||qStatuses.size()<1) {
+        if (qStatuses == null || qStatuses.size() < 1) {
             return "[]";
         }
 
-        StringBuilder sb=new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         for (QStatus qStatus : qStatuses) {
             sb.append(qStatus.toString()).append("\n");
         }

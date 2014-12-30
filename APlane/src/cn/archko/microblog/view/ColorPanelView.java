@@ -22,7 +22,7 @@ import android.view.View;
  * This class draws a panel which which will be filled with a color which can be
  * set. It can be used to show the currently selected color which you will get
  * from the {@link ColorPickerView}.
- * 
+ *
  * @author Daniel Nilsson
  */
 public class ColorPanelView extends View {
@@ -121,15 +121,15 @@ public class ColorPanelView extends View {
 
         mColorRect = new RectF(left, top, right, bottom);
 
-        mAlphaPattern = new AlphaPatternDrawable((int)(5 * mDensity));
+        mAlphaPattern = new AlphaPatternDrawable((int) (5 * mDensity));
 
         mAlphaPattern.setBounds(Math.round(mColorRect.left), Math.round(mColorRect.top),
-                Math.round(mColorRect.right), Math.round(mColorRect.bottom));
+            Math.round(mColorRect.right), Math.round(mColorRect.bottom));
     }
 
     /**
      * Set the color that should be shown by this view.
-     * 
+     *
      * @param color
      */
     public void setColor(final int color) {
@@ -139,7 +139,7 @@ public class ColorPanelView extends View {
 
     /**
      * Get the color currently show by this view.
-     * 
+     *
      * @return
      */
     public int getColor() {
@@ -148,7 +148,7 @@ public class ColorPanelView extends View {
 
     /**
      * Set the color of the border surrounding the panel.
-     * 
+     *
      * @param color
      */
     public void setBorderColor(final int color) {

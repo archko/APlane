@@ -40,15 +40,15 @@ import java.net.URL;
  */
 public class ImageViewerDialog extends AlertDialog {
 
-    public static final String TAG="ImageViewerDialog";
-    private static Drawable defaultBackground=null;
+    public static final String TAG = "ImageViewerDialog";
+    private static Drawable defaultBackground = null;
     private Context mContext;
     private boolean finishPicLoad;
     private LayoutInflater mInflater;
     private ImageView mImage;
     private LinearLayout mLayout;
     private AsyncTask<Void, Void, Uri> loadPicTask;
-    public boolean loadPictureRunning=false;
+    public boolean loadPictureRunning = false;
     private String mSaveDir; //目前不是存在这个目录的。
     private TextProgressBar mProgressBar;
     private String uri;
@@ -56,16 +56,16 @@ public class ImageViewerDialog extends AlertDialog {
     MyWebView mWebView;
     private TextView mTxt;//显示帮助文字,下载或解析
     private TextView mPathView; //保存的文本路径
-    private int imageType=0;    //图像类型,gif还是其它
+    private int imageType = 0;    //图像类型,gif还是其它
     private ImageView mSave;//保存
     String mPath;   //文件路径,如果存在就直接保存,
-    boolean mShouldDownloadImage=true; //是否需要下载
-    Handler mHandler=new Handler() {
+    boolean mShouldDownloadImage = true; //是否需要下载
+    Handler mHandler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
-            int what=msg.what;
-            Integer progress=(Integer) msg.obj;
+            int what = msg.what;
+            Integer progress = (Integer) msg.obj;
             switch (what) {
                 case 1:
                     mProgressBar.setProgress(progress);
@@ -82,7 +82,7 @@ public class ImageViewerDialog extends AlertDialog {
         }
     };
 
-    private IImageLoadCallback imageLoadCallback=new IImageLoadCallback() {
+    private IImageLoadCallback imageLoadCallback = new IImageLoadCallback() {
 
         @Override
         public void loadError() {
@@ -118,26 +118,26 @@ public class ImageViewerDialog extends AlertDialog {
 
     public ImageViewerDialog(Context ctx, String imageUrl, String saveDir, Drawable d, String thumb) {
         super(ctx);
-        this.mContext=ctx;
-        this.mSaveDir=saveDir;
-        this.imageType=imageUrl.endsWith("gif")? Constants.GIF_TYPE:Constants.PNG_TYPE;
-        this.uri=imageUrl;
+        this.mContext = ctx;
+        this.mSaveDir = saveDir;
+        this.imageType = imageUrl.endsWith("gif") ? Constants.GIF_TYPE : Constants.PNG_TYPE;
+        this.uri = imageUrl;
 
-        this.mInflater=(LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.mLayout=(LinearLayout) this.mInflater.inflate(R.layout.imageviewerdialog, null);
-        this.mImage=(ImageView) this.mLayout.findViewById(R.id.ivImage);
+        this.mInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.mLayout = (LinearLayout) this.mInflater.inflate(R.layout.imageviewerdialog, null);
+        this.mImage = (ImageView) this.mLayout.findViewById(R.id.ivImage);
         this.mImage.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View paramView) {
                 ImageViewerDialog.this.dismiss();
 
-                mShouldDownloadImage=false;
+                mShouldDownloadImage = false;
             }
         });
-        this.mTxt=(TextView) mLayout.findViewById(R.id.txt);
-        this.mPathView=(TextView) mLayout.findViewById(R.id.path_txt);
-        this.mSave=(ImageView) mLayout.findViewById(R.id.save);
+        this.mTxt = (TextView) mLayout.findViewById(R.id.txt);
+        this.mPathView = (TextView) mLayout.findViewById(R.id.path_txt);
+        this.mSave = (ImageView) mLayout.findViewById(R.id.save);
         mSave.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -145,21 +145,21 @@ public class ImageViewerDialog extends AlertDialog {
                 saveImage();
             }
         });
-        this.mProgressBar=(TextProgressBar) this.mLayout.findViewById(R.id.progress_bar);
+        this.mProgressBar = (TextProgressBar) this.mLayout.findViewById(R.id.progress_bar);
         /*this.gifView=(GifView2) mLayout.findViewById(R.id.gif_view);
         gifView.setImageLoadCallback(imageLoadCallback);*/
-        mWebView=(MyWebView) mLayout.findViewById(R.id.webview);
+        mWebView = (MyWebView) mLayout.findViewById(R.id.webview);
         mWebView.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(motionEvent.getAction()==MotionEvent.ACTION_MOVE||motionEvent.getAction() ==MotionEvent.ACTION_DOWN){
+                if (motionEvent.getAction() == MotionEvent.ACTION_MOVE || motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     return true;
                 }
 
-                if (motionEvent.getAction()==MotionEvent.ACTION_UP) {
-                    if (null!=ImageViewerDialog.this.getWindow().getDecorView()
-                        &&ImageViewerDialog.this.getWindow().getDecorView().isShown()) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if (null != ImageViewerDialog.this.getWindow().getDecorView()
+                        && ImageViewerDialog.this.getWindow().getDecorView().isShown()) {
                         ImageViewerDialog.this.dismiss();
                         return true;
                     }
@@ -168,9 +168,9 @@ public class ImageViewerDialog extends AlertDialog {
             }
         });
 
-        loadPictureRunning=false;
-        mShouldDownloadImage=true;
-        
+        loadPictureRunning = false;
+        mShouldDownloadImage = true;
+
         //setDefaultBackground(thumb);
     }
 
@@ -178,18 +178,18 @@ public class ImageViewerDialog extends AlertDialog {
      * 保存图片到文件系统。
      */
     private void saveImage() {
-        if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+        if (! Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             Toast.makeText(mContext, R.string.image_sdcard_not_mount, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String dir=Environment.getExternalStorageDirectory().getPath()+"/";//((App) mContext.getApplicationContext()).mCacheDir;
+        String dir = Environment.getExternalStorageDirectory().getPath() + "/";//((App) mContext.getApplicationContext()).mCacheDir;
         /*if (imageType==WeiboUtil.GIF_TYPE) {
             dir+=WeiboUtil.GIF;
         } else {
             dir+=WeiboUtil.PICTURE_DIR;
         }*/
-        String targetFilePath=dir+System.currentTimeMillis()+ WeiboUtils.getExt(uri);
+        String targetFilePath = dir + System.currentTimeMillis() + WeiboUtils.getExt(uri);
 
         /*String source=mSaveDir;
         if (imageType==Constants.GIF_TYPE) {
@@ -197,8 +197,8 @@ public class ImageViewerDialog extends AlertDialog {
         } else {
             source+=Constants.PICTURE_DIR;
         }source+WeiboUtil.getWeiboUtil().getMd5(uri)+WeiboUtil.getExt(uri)*/
-        boolean flag= StreamUtils.copyFileToFile(targetFilePath, mPath);
-        WeiboLog.d(TAG, "保存图片:"+targetFilePath);
+        boolean flag = StreamUtils.copyFileToFile(targetFilePath, mPath);
+        WeiboLog.d(TAG, "保存图片:" + targetFilePath);
         mSave.setVisibility(View.GONE);
         if (flag) {
             Toast.makeText(mContext, String.format(mContext.getString(R.string.image_save_suc), targetFilePath),
@@ -211,7 +211,7 @@ public class ImageViewerDialog extends AlertDialog {
     }
 
     private Drawable getLoadingBackground() {
-        if (defaultBackground==null) {
+        if (defaultBackground == null) {
             /*Bitmap localBitmap = BitmapLoader.getBitmap(this.mContext.getResources(), 2130838029);
             defaultBackground = new BitmapDrawable(localBitmap);*/
         }
@@ -231,9 +231,9 @@ public class ImageViewerDialog extends AlertDialog {
 
     private void downloadImage() {
         mWebView.setVisibility(View.GONE);
-        if (!loadPictureRunning) {
+        if (! loadPictureRunning) {
             mProgressBar.setVisibility(View.VISIBLE);
-            mDownloadThread=new DownloadThread();
+            mDownloadThread = new DownloadThread();
             mDownloadThread.start();
         } else {
             Toast.makeText(mContext, "正在下载图片，请稍后...", Toast.LENGTH_SHORT).show();
@@ -252,10 +252,10 @@ public class ImageViewerDialog extends AlertDialog {
     public void dismiss() {
         super.dismiss();
         WeiboLog.d(TAG, "dismiss.");
-        mShouldDownloadImage=false;
+        mShouldDownloadImage = false;
         //gifView.stopAnimate();
         mWebView.setVisibility(View.GONE);
-        mPath=null;
+        mPath = null;
     }
 
     //////////////////------------------
@@ -263,19 +263,19 @@ public class ImageViewerDialog extends AlertDialog {
 
         @Override
         public void run() {
-            loadPictureRunning=true;
+            loadPictureRunning = true;
             //get bitmap from sys.
-            String dir=mSaveDir+Constants.PICTURE_DIR;
-            if (imageType==Constants.GIF_TYPE) {
-                dir=mSaveDir+Constants.GIF;
+            String dir = mSaveDir + Constants.PICTURE_DIR;
+            if (imageType == Constants.GIF_TYPE) {
+                dir = mSaveDir + Constants.GIF;
             }
 
             //identity folder and file.
-            final String name= WeiboUtils.getWeiboUtil().getMd5(uri)+ WeiboUtils.getExt(uri);
-            String path=dir+name;
-            mPath=path;
-            WeiboLog.d(TAG, "DownloadThread.path:"+path);
-            final File file=new File(path);
+            final String name = WeiboUtils.getWeiboUtil().getMd5(uri) + WeiboUtils.getExt(uri);
+            String path = dir + name;
+            mPath = path;
+            WeiboLog.d(TAG, "DownloadThread.path:" + path);
+            final File file = new File(path);
             if (file.exists()) {
                 showImage(file);
                 return;
@@ -283,7 +283,7 @@ public class ImageViewerDialog extends AlertDialog {
 
             //download image and save
             //return result true or false.
-            boolean result=downloadFile(uri, file);
+            boolean result = downloadFile(uri, file);
             if (result) {
                 showImage(file);
             } else {
@@ -301,7 +301,7 @@ public class ImageViewerDialog extends AlertDialog {
                     }
                 });
             }
-            loadPictureRunning=false;
+            loadPictureRunning = false;
         }
     }
 
@@ -313,15 +313,15 @@ public class ImageViewerDialog extends AlertDialog {
             public void run() {
                 ImageViewerDialog.this.mProgressBar.setVisibility(View.GONE);
                 mTxt.setVisibility(View.GONE);
-                if (imageType==Constants.PNG_TYPE) {
+                if (imageType == Constants.PNG_TYPE) {
                     ImageViewerDialog.this.mProgressBar.setVisibility(View.GONE);
                     //gifView.setVisibility(View.GONE);
                     mImage.setVisibility(View.VISIBLE);
                     mSave.setVisibility(View.VISIBLE);
                     ImageViewerDialog.this.mLayout.setBackgroundResource(R.drawable.pic_bg_scaleable);
-                    Bitmap bitmap=null;
+                    Bitmap bitmap = null;
                     try {
-                        bitmap=ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(file.getAbsolutePath(), -1);
+                        bitmap = ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(file.getAbsolutePath(), - 1);
                     } catch (OutOfMemoryError e) {
                         System.gc();
                         e.printStackTrace();
@@ -329,8 +329,8 @@ public class ImageViewerDialog extends AlertDialog {
                         return;
                     }
 
-                    if (null!=bitmap) {
-                        WeiboLog.d(TAG, "width："+bitmap.getWidth()+" height:"+bitmap.getHeight());
+                    if (null != bitmap) {
+                        WeiboLog.d(TAG, "width：" + bitmap.getWidth() + " height:" + bitmap.getHeight());
                         mImage.setImageBitmap(bitmap);
                     } else {
                         try {
@@ -340,7 +340,7 @@ public class ImageViewerDialog extends AlertDialog {
                         }
                     }
 
-                    ImageViewerDialog.this.finishPicLoad=true;
+                    ImageViewerDialog.this.finishPicLoad = true;
                 } else {
                     /*InputStream is=null;
                     try {
@@ -351,10 +351,10 @@ public class ImageViewerDialog extends AlertDialog {
 
                     mTxt.setText("开始解析gif图片...");*/
                     mImage.setVisibility(View.GONE);
-                    String url="file://"+file.getAbsolutePath();
-                    WeiboLog.d("url:"+url);
-                    WebSettings websettings=mWebView.getSettings();
-                    android.webkit.WebSettings.LayoutAlgorithm layoutalgorithm=android.webkit.WebSettings.LayoutAlgorithm.SINGLE_COLUMN;
+                    String url = "file://" + file.getAbsolutePath();
+                    WeiboLog.d("url:" + url);
+                    WebSettings websettings = mWebView.getSettings();
+                    android.webkit.WebSettings.LayoutAlgorithm layoutalgorithm = android.webkit.WebSettings.LayoutAlgorithm.SINGLE_COLUMN;
                     websettings.setLayoutAlgorithm(layoutalgorithm);
                     //mWebView.setMeasureSpec(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     mWebView.loadUrl(url);
@@ -375,12 +375,12 @@ public class ImageViewerDialog extends AlertDialog {
     }
 
     void setMeasureSpec(int i1, int j1) {
-        int k1=(int) getContext().getResources().getDimension(R.dimen.image_dialog_max_width);
-        int l1=(int) getContext().getResources().getDimension(R.dimen.image_dialog_max_height);
-        if (i1>k1) {
-            int i2=(j1*k1)/i1;
-            if (i2>l1) {
-                int j2=(i1*l1)/j1;
+        int k1 = (int) getContext().getResources().getDimension(R.dimen.image_dialog_max_width);
+        int l1 = (int) getContext().getResources().getDimension(R.dimen.image_dialog_max_height);
+        if (i1 > k1) {
+            int i2 = (j1 * k1) / i1;
+            if (i2 > l1) {
+                int j2 = (i1 * l1) / j1;
                 mWebView.setMeasureSpec(j2, l1);
                 return;
             } else {
@@ -389,8 +389,8 @@ public class ImageViewerDialog extends AlertDialog {
             }
         }
 
-        if (j1>l1) {
-            int k2=(i1*l1)/j1;
+        if (j1 > l1) {
+            int k2 = (i1 * l1) / j1;
             mWebView.setMeasureSpec(k2, l1);
             return;
         } else {
@@ -402,22 +402,22 @@ public class ImageViewerDialog extends AlertDialog {
     @Override
     protected void onStop() {
         super.onStop();
-        if (mWebView!=null) {
+        if (mWebView != null) {
             mWebView.clearCache(true);
             mWebView.destroy();
         }
     }
 
     public boolean downloadFile(String downloadUrl, File saveFilePath) {
-        int fileSize=-1;
-        int downFileSize=0;
-        boolean result=false;
-        int progress=0;
+        int fileSize = - 1;
+        int downFileSize = 0;
+        boolean result = false;
+        int progress = 0;
 
         try {
-            URL url=new URL(downloadUrl);
-            HttpURLConnection conn=(HttpURLConnection) url.openConnection();
-            if (null==conn) {
+            URL url = new URL(downloadUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            if (null == conn) {
                 try {
                     saveFilePath.delete();
                 } catch (Exception e) {
@@ -435,20 +435,20 @@ public class ImageViewerDialog extends AlertDialog {
                 conn.setRequestProperty("User-Agent", BaseApi.USERAGENT);
                 conn.setDoInput(true);
                 conn.connect();
-                if (conn.getResponseCode()==HttpURLConnection.HTTP_OK) {
-                    fileSize=conn.getContentLength();
-                    InputStream is=new BufferedInputStream(conn.getInputStream());//conn.getInputStream();
-                    FileOutputStream fos=new FileOutputStream(saveFilePath);
-                    byte[] buffer=new byte[2048];
-                    int i=0;
+                if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    fileSize = conn.getContentLength();
+                    InputStream is = new BufferedInputStream(conn.getInputStream());//conn.getInputStream();
+                    FileOutputStream fos = new FileOutputStream(saveFilePath);
+                    byte[] buffer = new byte[ 2048 ];
+                    int i = 0;
                     Message msg;
 
-                    msg=Message.obtain();
-                    msg.what=2;
-                    msg.obj=fileSize;
+                    msg = Message.obtain();
+                    msg.what = 2;
+                    msg.obj = fileSize;
 
-                    while ((i=is.read(buffer))!=-1) {
-                        if (!mShouldDownloadImage) {
+                    while ((i = is.read(buffer)) != - 1) {
+                        if (! mShouldDownloadImage) {
                             try {
                                 saveFilePath.delete();
                             } catch (Exception e) {
@@ -457,35 +457,35 @@ public class ImageViewerDialog extends AlertDialog {
                             return false;
                         }
 
-                        downFileSize=downFileSize+i;
+                        downFileSize = downFileSize + i;
                         // 下载进度
-                        progress=(int) (downFileSize*100.0/fileSize);
+                        progress = (int) (downFileSize * 100.0 / fileSize);
                         fos.write(buffer, 0, i);
 
-                        msg=Message.obtain();
-                        msg.what=1;
-                        msg.obj=progress;
+                        msg = Message.obtain();
+                        msg.what = 1;
+                        msg.obj = progress;
                         mHandler.sendMessage(msg);
                     }
                     fos.flush();
                     fos.close();
                     is.close();
 
-                    msg=Message.obtain();
-                    msg.what=3;
+                    msg = Message.obtain();
+                    msg.what = 3;
                     mHandler.sendMessage(msg);
-                    result=true;
+                    result = true;
                 } else {
-                    WeiboLog.d(TAG, "code:"+conn.getResponseCode()+" message:"+conn.getResponseMessage());
-                    result=false;
+                    WeiboLog.d(TAG, "code:" + conn.getResponseCode() + " message:" + conn.getResponseMessage());
+                    result = false;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            }   finally {
+            } finally {
                 conn.disconnect();
             }
         } catch (Exception e) {
-            result=false;
+            result = false;
             WeiboLog.e(TAG, "downloadFile catch Exception:", e);
         }
         return result;

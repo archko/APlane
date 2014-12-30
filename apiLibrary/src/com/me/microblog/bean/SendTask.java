@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class SendTask implements Serializable {
 
-    public static final long serialVersionUID=3894560643019408213L;
+    public static final long serialVersionUID = 3894560643019408213L;
 
     public long id;
     /**
@@ -58,19 +58,19 @@ public class SendTask implements Serializable {
 
     @Override
     public String toString() {
-        return "SendTask{"+
-            "id="+id+
-            ", userId="+userId+
-            ", content='"+content+'\''+
-            ", imgUrl='"+imgUrl+'\''+
-            ", createAt="+createAt+
-            ", text='"+text+'\''+
-            ", source='"+source+'\''+
-            ", data='"+data+'\''+
-            ", uid="+uid+
-            ", type="+type+
-            ", resultMsg='"+resultMsg+'\''+
-            ", resultCode="+resultCode+
+        return "SendTask{" +
+            "id=" + id +
+            ", userId=" + userId +
+            ", content='" + content + '\'' +
+            ", imgUrl='" + imgUrl + '\'' +
+            ", createAt=" + createAt +
+            ", text='" + text + '\'' +
+            ", source='" + source + '\'' +
+            ", data='" + data + '\'' +
+            ", uid=" + uid +
+            ", type=" + type +
+            ", resultMsg='" + resultMsg + '\'' +
+            ", resultCode=" + resultCode +
             '}';
     }
 }

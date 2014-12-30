@@ -15,27 +15,27 @@ import java.io.IOException;
  * @description:
  * @author: archko 11-12-4
  */
-public class TestGifActivity extends Activity implements View.OnClickListener{
+public class TestGifActivity extends Activity implements View.OnClickListener {
 
-    private static final String TAG="TestGifActivity";
+    private static final String TAG = "TestGifActivity";
     private GifView2 gf2;
-    private boolean flag=true;
+    private boolean flag = true;
 
     @Override
-    public void onCreate(Bundle icicle){
+    public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.gif_layout2);
 
-        gf2=(GifView2) findViewById(R.id.gif2);
+        gf2 = (GifView2) findViewById(R.id.gif2);
         gf2.setGifImageType(GifView2.GifImageType.ANIMATION);
 
         try {
-            File file=new File("/sdcard/test.gif");
-            FileInputStream fis=null;
+            File file = new File("/sdcard/test.gif");
+            FileInputStream fis = null;
 
-            fis=new FileInputStream(file);
-            System.out.println("fis:"+fis.available());
-            gf2.setGifImage(fis,false);
+            fis = new FileInputStream(file);
+            System.out.println("fis:" + fis.available());
+            gf2.setGifImage(fis, false);
 
             /*FileInputStream fileInputStream=new FileInputStream(file);
             byte[] bytes=new byte[fileInputStream.available()];
@@ -48,12 +48,12 @@ public class TestGifActivity extends Activity implements View.OnClickListener{
     }
 
     @Override
-    public void onClick(View v){
+    public void onClick(View v) {
         gf2.startAnimate();
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         gf2.stopAnimate();
     }

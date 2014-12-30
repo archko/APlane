@@ -17,9 +17,9 @@ import java.util.List;
  * @author: archko Date: 13-1-28 Time: 下午7:20
  * @description:
  */
-public class SinaUserApi extends AbsApiImpl implements IUserApi{
+public class SinaUserApi extends AbsApiImpl implements IUserApi {
 
-    public static final String TAG="SinaUserApi";
+    public static final String TAG = "SinaUserApi";
     //--------------------- 用户 ---------------------
 
     /**
@@ -33,16 +33,15 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public User getMyself() throws WeiboException {
-        String urlString=getBaseUrl()+"account/get_uid.json";
-        String rs=get(urlString, true);
+        String urlString = getBaseUrl() + "account/get_uid.json";
+        String rs = get(urlString, true);
 
         try {
-            long id=WeiboParser.parseID(rs);
-            User user=new User();
-            user.id=id;
+            long id = WeiboParser.parseID(rs);
+            User user = new User();
+            user.id = id;
             return user;
         } catch (WeiboException e) {
             throw new WeiboException(e);
@@ -58,19 +57,18 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi{
      * @param 用户ID user_id. 指定用户UID,主要是用来区分用户UID跟微博昵称一样
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public User getUser(long id) throws WeiboException {
-        String urlString=getBaseUrl()+"users/show.json";
+        String urlString = getBaseUrl() + "users/show.json";
 
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("uid", String.valueOf(id));
+        pair = new BasicNameValuePair("uid", String.valueOf(id));
         nvps.add(pair);
 
-        String rs=get(urlString, true, nvps);
-        WeiboLog.v(TAG, "getUser:"+id+" rs:"+rs);
+        String rs = get(urlString, true, nvps);
+        WeiboLog.v(TAG, "getUser:" + id + " rs:" + rs);
         return WeiboParser.parseUser(rs);
     }
 
@@ -81,19 +79,18 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi{
      * @param screen_name. 指定微博昵称，主要是用来区分用户UID跟微博昵称一样，产生歧义的时候。
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public User getUser(String screenName) throws WeiboException {
-        String urlString=getBaseUrl()+"users/show.json";
+        String urlString = getBaseUrl() + "users/show.json";
 
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("screen_name", screenName);
+        pair = new BasicNameValuePair("screen_name", screenName);
         nvps.add(pair);
 
-        String rs=get(urlString, true, nvps);
-        WeiboLog.v(TAG, "getUser:"+screenName+" rs:"+rs);
+        String rs = get(urlString, true, nvps);
+        WeiboLog.v(TAG, "getUser:" + screenName + " rs:" + rs);
         return WeiboParser.parseUser(rs);
     }
 
@@ -114,51 +111,50 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi{
      * @param count
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<User> getFriends(long userId, long cur, int count, int trim_status) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/friends.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "friendships/friends.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("count", String.valueOf(count));
+        pair = new BasicNameValuePair("count", String.valueOf(count));
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("uid", String.valueOf(userId));
+        pair = new BasicNameValuePair("uid", String.valueOf(userId));
         nvps.add(pair);
 
-        if (cur>-1) {
-            pair=new BasicNameValuePair("cursor", String.valueOf(cur));
+        if (cur > - 1) {
+            pair = new BasicNameValuePair("cursor", String.valueOf(cur));
             nvps.add(pair);
         }
 
-        pair=new BasicNameValuePair("trim_status", String.valueOf(trim_status));
+        pair = new BasicNameValuePair("trim_status", String.valueOf(trim_status));
         nvps.add(pair);
 
-        String rs=get(urlString, true, nvps);
+        String rs = get(urlString, true, nvps);
         return WeiboParser.getUserObjs2(rs);
     }
 
     public SStatusData<User> getFriends(String screenName, long cur, int count, int trim_status) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/friends.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "friendships/friends.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("count", String.valueOf(count));
+        pair = new BasicNameValuePair("count", String.valueOf(count));
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("screen_name", screenName);
+        pair = new BasicNameValuePair("screen_name", screenName);
         nvps.add(pair);
 
-        if (cur>-1) {
-            pair=new BasicNameValuePair("cursor", String.valueOf(cur));
+        if (cur > - 1) {
+            pair = new BasicNameValuePair("cursor", String.valueOf(cur));
             nvps.add(pair);
         }
-        pair=new BasicNameValuePair("trim_status", String.valueOf(trim_status));
+        pair = new BasicNameValuePair("trim_status", String.valueOf(trim_status));
 
-        String rs=get(urlString, true, nvps);
+        String rs = get(urlString, true, nvps);
         return WeiboParser.getUserObjs2(rs);
     }
 
@@ -174,51 +170,50 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi{
      *
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<User> getMyFollowers(long userId, long cur, int count) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/followers.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "friendships/followers.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("uid", String.valueOf(userId));
+        pair = new BasicNameValuePair("uid", String.valueOf(userId));
         nvps.add(pair);
 
-        if (cur>-1) {
-            pair=new BasicNameValuePair("cursor", String.valueOf(cur));
+        if (cur > - 1) {
+            pair = new BasicNameValuePair("cursor", String.valueOf(cur));
             nvps.add(pair);
         }
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        pair=new BasicNameValuePair("trim_status", "0");
+        pair = new BasicNameValuePair("trim_status", "0");
         nvps.add(pair);
 
-        String rs=get(urlString, true, nvps);
+        String rs = get(urlString, true, nvps);
         return WeiboParser.getUserObjs2(rs);
     }
 
     public SStatusData<User> getMyFollowers(String screenName, long cur, int count) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/followers.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "friendships/followers.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        pair=new BasicNameValuePair("count", String.valueOf(count));
+        pair = new BasicNameValuePair("count", String.valueOf(count));
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("screen_name", screenName);
+        pair = new BasicNameValuePair("screen_name", screenName);
         nvps.add(pair);
 
-        if (cur>-1) {
-            pair=new BasicNameValuePair("cursor", String.valueOf(cur));
+        if (cur > - 1) {
+            pair = new BasicNameValuePair("cursor", String.valueOf(cur));
             nvps.add(pair);
         }
-        String rs=get(urlString, true, nvps);
+        String rs = get(urlString, true, nvps);
         return WeiboParser.getUserObjs2(rs);
     }
 
@@ -230,24 +225,23 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi{
      *
      * @return 是一个用户列表.
      * @throws com.me.microblog.WeiboException
-     *
      */
     public SStatusData<User> getMyActiveFollowers(long userId, int count) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/followers.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "friendships/followers.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
 
-        if (userId>0) {
-            pair=new BasicNameValuePair("uid", String.valueOf(userId));
+        if (userId > 0) {
+            pair = new BasicNameValuePair("uid", String.valueOf(userId));
             nvps.add(pair);
         }
 
-        if (count>0) {
-            pair=new BasicNameValuePair("count", String.valueOf(count));
+        if (count > 0) {
+            pair = new BasicNameValuePair("count", String.valueOf(count));
             nvps.add(pair);
         }
-        String rs=get(urlString, true, nvps);
+        String rs = get(urlString, true, nvps);
         return WeiboParser.getUserObjs2(rs);
     }
 
@@ -260,29 +254,28 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi{
      * @param uid
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public User createFriendships(long uid) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/create.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "friendships/create.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("uid", String.valueOf(uid));
+        pair = new BasicNameValuePair("uid", String.valueOf(uid));
         nvps.add(pair);
 
-        String rs=post(urlString, true, nvps);
+        String rs = post(urlString, true, nvps);
         return WeiboParser.parseUser(rs);
     }
 
     public User createFriendships(String s) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/create.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "friendships/create.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("screen_name", s);
+        pair = new BasicNameValuePair("screen_name", s);
         nvps.add(pair);
 
-        String rs=post(urlString, true, nvps);
+        String rs = post(urlString, true, nvps);
         return WeiboParser.parseUser(rs);
     }
 
@@ -295,29 +288,28 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi{
      * @param uid
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public User deleteFriendships(long uid) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/destroy.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "friendships/destroy.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("uid", String.valueOf(uid));
+        pair = new BasicNameValuePair("uid", String.valueOf(uid));
         nvps.add(pair);
 
-        String rs=post(urlString, true, nvps);
+        String rs = post(urlString, true, nvps);
         return WeiboParser.parseUser(rs);
     }
 
     public User deleteFriendships(String s) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/destroy.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "friendships/destroy.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("screen_name", s);
+        pair = new BasicNameValuePair("screen_name", s);
         nvps.add(pair);
 
-        String rs=post(urlString, true, nvps);
+        String rs = post(urlString, true, nvps);
         return WeiboParser.parseUser(rs);
     }
 
@@ -334,32 +326,31 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi{
      * @param uid
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public Relationship getFriendship(Long sourceId, String source_screen_name, Long targetId,
         String target_screen_name) throws WeiboException {
 
-        String urlString=getBaseUrl()+"friendships/show.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "friendships/show.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        if (sourceId!=null) {
-            pair=new BasicNameValuePair("source_id", String.valueOf(sourceId));
+        if (sourceId != null) {
+            pair = new BasicNameValuePair("source_id", String.valueOf(sourceId));
             nvps.add(pair);
         }
-        if (source_screen_name!=null&&!"".equals(source_screen_name)) {
-            pair=new BasicNameValuePair("source_screen_name", source_screen_name);
+        if (source_screen_name != null && ! "".equals(source_screen_name)) {
+            pair = new BasicNameValuePair("source_screen_name", source_screen_name);
             nvps.add(pair);
         }
-        if (targetId!=null) {
-            pair=new BasicNameValuePair("target_id", String.valueOf(targetId));
+        if (targetId != null) {
+            pair = new BasicNameValuePair("target_id", String.valueOf(targetId));
             nvps.add(pair);
         }
-        if (target_screen_name!=null&&!"".equals(target_screen_name)) {
-            pair=new BasicNameValuePair("target_screen_name", target_screen_name);
+        if (target_screen_name != null && ! "".equals(target_screen_name)) {
+            pair = new BasicNameValuePair("target_screen_name", target_screen_name);
             nvps.add(pair);
         }
-        String rs=get(urlString, true, nvps);
+        String rs = get(urlString, true, nvps);
         return WeiboParser.parseRelationship(rs);
     }
 
@@ -376,20 +367,19 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi{
      * @param uid
      * @return
      * @throws com.me.microblog.WeiboException
-     *
      */
     public Relationship getFriendship(Long sourceId, Long targetId) throws WeiboException {
-        String urlString=getBaseUrl()+"friendships/show.json";
-        List<BasicNameValuePair> nvps=new ArrayList<BasicNameValuePair>();
+        String urlString = getBaseUrl() + "friendships/show.json";
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
 
         BasicNameValuePair pair;
-        pair=new BasicNameValuePair("source_id", String.valueOf(sourceId));
+        pair = new BasicNameValuePair("source_id", String.valueOf(sourceId));
         nvps.add(pair);
 
-        pair=new BasicNameValuePair("target_id", String.valueOf(targetId));
+        pair = new BasicNameValuePair("target_id", String.valueOf(targetId));
         nvps.add(pair);
 
-        String rs=get(urlString, true, nvps);
+        String rs = get(urlString, true, nvps);
         return WeiboParser.parseRelationship(rs);
     }
 }

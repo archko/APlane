@@ -21,9 +21,9 @@ import java.util.ArrayList;
 public class RssXMLHandler extends DefaultHandler implements IXmlParser {
 
     WeatherBean mWeatherBean;
-    ForecastCondition rb=null;
-    boolean is_current_conditions=false;
-    boolean is_forecast_conditions=false;
+    ForecastCondition rb = null;
+    boolean is_current_conditions = false;
+    boolean is_forecast_conditions = false;
     //private StringBuilder sb=new StringBuilder();
 
     public WeatherBean getWeatherBean() {
@@ -35,12 +35,12 @@ public class RssXMLHandler extends DefaultHandler implements IXmlParser {
 
     @Override
     public void parseRss(InputStream is) {
-        SAXParserFactory factory=SAXParserFactory.newInstance();
-        SAXParser parser=null;
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        SAXParser parser = null;
         try {
-            parser=factory.newSAXParser();
+            parser = factory.newSAXParser();
 
-            XMLReader xmlReader=parser.getXMLReader();
+            XMLReader xmlReader = parser.getXMLReader();
 
             xmlReader.setContentHandler(this);
             xmlReader.parse(new InputSource(is));
@@ -51,71 +51,71 @@ public class RssXMLHandler extends DefaultHandler implements IXmlParser {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            is=null;
-            factory=null;
-            parser=null;
+            is = null;
+            factory = null;
+            parser = null;
         }
     }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes)
         throws SAXException {
-        if ("weather".equals(qName)||"weather".equals(localName)) {
+        if ("weather".equals(qName) || "weather".equals(localName)) {
 
-        } else if ("city".equals(qName)||"city".equals(localName)) {
-            mWeatherBean.city=attributes.getValue(0);
-        } else if ("postal_code".equals(qName)||"weather".equals(localName)) {
-            mWeatherBean.postal_code=attributes.getValue(0);
-        } else if ("latitude_e6".equals(qName)||"weather".equals(localName)) {
-            mWeatherBean.latitude_e6=attributes.getValue(0);
-        } else if ("longitude_e6".equals(qName)||"weather".equals(localName)) {
-            mWeatherBean.longitude_e6=attributes.getValue(0);
-        } else if ("forecast_date".equals(qName)||"weather".equals(localName)) {
-            mWeatherBean.forecast_date=attributes.getValue(0);
-        } else if ("current_date_time".equals(qName)||"weather".equals(localName)) {
-            mWeatherBean.current_date_time=attributes.getValue(0);
-        } else if ("unit_system".equals(qName)||"weather".equals(localName)) {
-            mWeatherBean.unit_system=attributes.getValue(0);
-        } else if ("current_conditions".equals(qName)||"current_conditions".equals(localName)) {
-            is_current_conditions=true;
-            is_forecast_conditions=false;
-        } else if ("forecast_conditions".equals(qName)||"forecast_conditions".equals(localName)) {
-            rb=new ForecastCondition();
+        } else if ("city".equals(qName) || "city".equals(localName)) {
+            mWeatherBean.city = attributes.getValue(0);
+        } else if ("postal_code".equals(qName) || "weather".equals(localName)) {
+            mWeatherBean.postal_code = attributes.getValue(0);
+        } else if ("latitude_e6".equals(qName) || "weather".equals(localName)) {
+            mWeatherBean.latitude_e6 = attributes.getValue(0);
+        } else if ("longitude_e6".equals(qName) || "weather".equals(localName)) {
+            mWeatherBean.longitude_e6 = attributes.getValue(0);
+        } else if ("forecast_date".equals(qName) || "weather".equals(localName)) {
+            mWeatherBean.forecast_date = attributes.getValue(0);
+        } else if ("current_date_time".equals(qName) || "weather".equals(localName)) {
+            mWeatherBean.current_date_time = attributes.getValue(0);
+        } else if ("unit_system".equals(qName) || "weather".equals(localName)) {
+            mWeatherBean.unit_system = attributes.getValue(0);
+        } else if ("current_conditions".equals(qName) || "current_conditions".equals(localName)) {
+            is_current_conditions = true;
+            is_forecast_conditions = false;
+        } else if ("forecast_conditions".equals(qName) || "forecast_conditions".equals(localName)) {
+            rb = new ForecastCondition();
             mWeatherBean.forecastConditions.add(rb);
-            is_forecast_conditions=true;
-            is_current_conditions=false;
+            is_forecast_conditions = true;
+            is_current_conditions = false;
         }
         /////
-        else if ("condition".equals(qName)||"condition".equals(localName)) {
+        else if ("condition".equals(qName) || "condition".equals(localName)) {
             if (is_current_conditions) {
-                mWeatherBean.condition=attributes.getValue(0);
+                mWeatherBean.condition = attributes.getValue(0);
             } else if (is_forecast_conditions) {
-                rb.condition=attributes.getValue(0);
+                rb.condition = attributes.getValue(0);
             }
-        } else if ("temp_f".equals(qName)||"temp_f".equals(localName)) {
-            mWeatherBean.temp_f=attributes.getValue(0);
-        } else if ("temp_c".equals(qName)||"temp_c".equals(localName)) {
-            mWeatherBean.temp_c=attributes.getValue(0);
-        } else if ("humidity".equals(qName)||"humidity".equals(localName)) {
-            mWeatherBean.humidity=attributes.getValue(0);
-        } else if ("unit_system".equals(qName)||"unit_system".equals(localName)) {
-            mWeatherBean.unit_system=attributes.getValue(0);
-        } else if ("wind_condition".equals(qName)||"wind_condition".equals(localName)) {
-            mWeatherBean.wind_condition=attributes.getValue(0);
+        } else if ("temp_f".equals(qName) || "temp_f".equals(localName)) {
+            mWeatherBean.temp_f = attributes.getValue(0);
+        } else if ("temp_c".equals(qName) || "temp_c".equals(localName)) {
+            mWeatherBean.temp_c = attributes.getValue(0);
+        } else if ("humidity".equals(qName) || "humidity".equals(localName)) {
+            mWeatherBean.humidity = attributes.getValue(0);
+        } else if ("unit_system".equals(qName) || "unit_system".equals(localName)) {
+            mWeatherBean.unit_system = attributes.getValue(0);
+        } else if ("wind_condition".equals(qName) || "wind_condition".equals(localName)) {
+            mWeatherBean.wind_condition = attributes.getValue(0);
         }
         /////
-        else if ("icon".equals(qName)||"icon".equals(localName)) {
+        else if ("icon".equals(qName) || "icon".equals(localName)) {
             if (is_current_conditions) {
-                mWeatherBean.icon=attributes.getValue(0);
+                mWeatherBean.icon = attributes.getValue(0);
             } else if (is_forecast_conditions) {
-                rb.icon=attributes.getValue(0);
+                rb.icon = attributes.getValue(0);
             }
-        } else if ("day_of_week".equals(qName)||"day_of_week".equals(localName)) {
-            rb.day_of_week=attributes.getValue(0);
-        } else if ("low".equals(qName)||"low".equals(localName)) {
-            rb.low=attributes.getValue(0);
-        } else if ("high".equals(qName)||"high".equals(localName)) {
-            rb.high=attributes.getValue(0);
+        } else if ("day_of_week".equals(qName) || "day_of_week".equals(localName)) {
+            rb.day_of_week = attributes.getValue(0);
+        } else if ("low".equals(qName) || "low".equals(localName)) {
+            rb.low = attributes.getValue(0);
+        } else if ("high".equals(qName) || "high".equals(localName)) {
+            rb.high = attributes.getValue(0);
         }
     }
 
@@ -175,8 +175,8 @@ public class RssXMLHandler extends DefaultHandler implements IXmlParser {
 
     @Override
     public void startDocument() throws SAXException {
-        this.mWeatherBean=new WeatherBean();
-        mWeatherBean.forecastConditions=new ArrayList<ForecastCondition>();
+        this.mWeatherBean = new WeatherBean();
+        mWeatherBean.forecastConditions = new ArrayList<ForecastCondition>();
     }
 
     @Override

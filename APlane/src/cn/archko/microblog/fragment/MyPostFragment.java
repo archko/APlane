@@ -15,8 +15,8 @@ import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.action.StatusAction;
 import cn.archko.microblog.fragment.impl.SinaMyPostStatusImpl;
-import com.andrew.apollo.utils.PreferenceUtils;
 import cn.archko.microblog.view.ActionModeItemView;
+import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.action.ActionResult;
@@ -25,10 +25,9 @@ import com.me.microblog.bean.Status;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.factory.AbsApiFactory;
 import com.me.microblog.core.factory.ApiConfigFactory;
-import com.me.microblog.core.factory.SinaApiFactory;
 import com.me.microblog.util.Constants;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import cn.archko.microblog.utils.AKUtils;
 
 import java.util.ArrayList;
 
@@ -39,33 +38,33 @@ import java.util.ArrayList;
  */
 public class MyPostFragment extends StatusListFragment {
 
-    public static final String TAG="MyPostFragment";
-    long mUserId=-1l;
+    public static final String TAG = "MyPostFragment";
+    long mUserId = - 1l;
 
-    boolean isDeleting=false;
+    boolean isDeleting = false;
     private ActionMode mMode;
 
     //--------------------- 数据加载 ---------------------
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
+        mUserId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
 
-        WeiboLog.v(TAG, "onCreate:"+this);
+        WeiboLog.v(TAG, "onCreate:" + this);
         //mStatusImpl=new SinaMyPostStatusImpl();
     }
 
     @Override
     public void initApi() {
-        mStatusImpl=new SinaMyPostStatusImpl();
+        mStatusImpl = new SinaMyPostStatusImpl();
 
-        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
         try {
-            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
-            AKUtils.showToast("初始化api异常.");
+            NotifyUtils.showToast("初始化api异常.");
             //getActivity().finish();
         }
     }
@@ -90,18 +89,18 @@ public class MyPostFragment extends StatusListFragment {
     public View getView(int position, View convertView, ViewGroup parent) {
         //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
 
-        ActionModeItemView itemView=null;
-        Status status=mDataList.get(position);
+        ActionModeItemView itemView = null;
+        Status status = mDataList.get(position);
 
-        boolean updateFlag=true;
-        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag=false;
+        boolean updateFlag = true;
+        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            updateFlag = false;
         }
 
-        if (convertView==null) {
-            itemView=new ActionModeItemView(getActivity(), mListView, mCacheDir, status, updateFlag, true, showLargeBitmap, showBitmap);
+        if (convertView == null) {
+            itemView = new ActionModeItemView(getActivity(), mListView, mCacheDir, status, updateFlag, true, showLargeBitmap, showBitmap);
         } else {
-            itemView=(ActionModeItemView) convertView;
+            itemView = (ActionModeItemView) convertView;
         }
         itemView.update(status, updateFlag, true, showLargeBitmap, showBitmap);
 
@@ -111,11 +110,11 @@ public class MyPostFragment extends StatusListFragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (null!=mMode) {
+        if (null != mMode) {
             mListView.clearChoices();
             mListView.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
             mMode.finish();
-            mMode=null;
+            mMode = null;
         }
     }
 
@@ -124,14 +123,14 @@ public class MyPostFragment extends StatusListFragment {
      */
     @Override
     protected void loadData() {
-        if (mDataList!=null&&mDataList.size()>0) {
+        if (mDataList != null && mDataList.size() > 0) {
             //setListShown(true);
 
             //mProgressContainer.setVisibility(View.GONE);
             //mListContainer.setVisibility(View.VISIBLE);
             mAdapter.notifyDataSetChanged();
         } else {
-            if (!isLoading) {
+            if (! isLoading) {
                 loadLocalData();
             } else {
                 mEmptyTxt.setText(R.string.list_pre_empty_txt);
@@ -144,8 +143,8 @@ public class MyPostFragment extends StatusListFragment {
      * 从缓存中查询数据.
      */
     void loadLocalData() {
-        if (!isLoading) {
-            Object[] params=new Object[]{false, currentUserId};
+        if (! isLoading) {
+            Object[] params = new Object[]{false, currentUserId};
             newTaskNoNet(params, null);
         }
     }
@@ -159,22 +158,22 @@ public class MyPostFragment extends StatusListFragment {
      * @param isHomeStore 是否是主页,只有主页有存储
      */
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        WeiboLog.i("sinceId:"+sinceId+", maxId:"+maxId+", isRefresh:"+isRefresh+", isHomeStore:"+isHomeStore);
-        if (!App.hasInternetConnection(getActivity())) {
-            AKUtils.showToast(R.string.network_error);
-            if (mRefreshListener!=null) {
+        WeiboLog.i("sinceId:" + sinceId + ", maxId:" + maxId + ", isRefresh:" + isRefresh + ", isHomeStore:" + isHomeStore);
+        if (! App.hasInternetConnection(getActivity())) {
+            NotifyUtils.showToast(R.string.network_error);
+            if (mRefreshListener != null) {
                 mRefreshListener.onRefreshFinished();
             }
             refreshAdapter(false, false);
             return;
         }
 
-        int count=weibo_count;
-        if (!isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
+        int count = weibo_count;
+        if (! isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
             count++;
         }
 
-        if (!isLoading) {
+        if (! isLoading) {
             newTask(new Object[]{isRefresh, mUserId, sinceId, maxId, count, page, isHomeStore}, null);
         }
     }
@@ -182,40 +181,40 @@ public class MyPostFragment extends StatusListFragment {
     //--------------------- 微博操作 ---------------------
     @Override
     public void onCreateCustomMenu(PopupMenu menuBuilder) {
-        int index=0;
+        int index = 0;
         menuBuilder.getMenu().add(0, Constants.OP_ID_QUICK_REPOST, index++, R.string.opb_destroy_status);
         menuBuilder.getMenu().add(0, Constants.OP_ID_COMMENT, index++, R.string.opb_destroy_batch);
     }
 
-    Handler mStatusHandler=new Handler() {
+    Handler mStatusHandler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
-            isDeleting=false;
-            if (!isResumed()) {
+            isDeleting = false;
+            if (! isResumed()) {
                 WeiboLog.w(TAG, "已经结束了Fragment，不需要通知消息");
                 return;
             }
 
             switch (msg.what) {
                 case ActionResult.ACTION_SUCESS: {
-                    ActionResult actionResult=(ActionResult) msg.obj;
-                    ArrayList<Long> sucIds=(ArrayList<Long>) actionResult.obj;
-                    AKUtils.showToast(String.format(getResources().getString(R.string.status_delete_suc), sucIds.size()));
+                    ActionResult actionResult = (ActionResult) msg.obj;
+                    ArrayList<Long> sucIds = (ArrayList<Long>) actionResult.obj;
+                    NotifyUtils.showToast(String.format(getResources().getString(R.string.status_delete_suc), sucIds.size()));
 
                     updateList(sucIds);
                     break;
                 }
 
                 case ActionResult.ACTION_FALL:
-                    ActionResult actionResult=(ActionResult) msg.obj;
-                    AKUtils.showToast(actionResult.reslutMsg, Toast.LENGTH_LONG);
-                    WeiboLog.d(TAG, "delete status failed."+actionResult.reslutMsg);
+                    ActionResult actionResult = (ActionResult) msg.obj;
+                    NotifyUtils.showToast(actionResult.reslutMsg, Toast.LENGTH_LONG);
+                    WeiboLog.d(TAG, "delete status failed." + actionResult.reslutMsg);
 
-                    ArrayList<Long> sucIds=(ArrayList<Long>) actionResult.obj;
-                    ArrayList<Long> failedIds=(ArrayList<Long>) (actionResult.results)[0];
-                    WeiboLog.i(TAG, "成功："+sucIds.size()+" 失败:"+failedIds.size());
-                    AKUtils.showToast("成功："+sucIds.size()+"个 失败:"+failedIds.size()+"个");
+                    ArrayList<Long> sucIds = (ArrayList<Long>) actionResult.obj;
+                    ArrayList<Long> failedIds = (ArrayList<Long>) (actionResult.results)[ 0 ];
+                    WeiboLog.i(TAG, "成功：" + sucIds.size() + " 失败:" + failedIds.size());
+                    NotifyUtils.showToast("成功：" + sucIds.size() + "个 失败:" + failedIds.size() + "个");
 
                     updateList(sucIds);
                     break;
@@ -232,16 +231,16 @@ public class MyPostFragment extends StatusListFragment {
          * @param dataList 原来的数据
          */
         private void updateList(ArrayList<Long> sucIds) {
-            ArrayList<Status> dataList=mDataList;
-            boolean find=false;
-            Status tmp=null;
-            if (sucIds.size()>0) {
+            ArrayList<Status> dataList = mDataList;
+            boolean find = false;
+            Status tmp = null;
+            if (sucIds.size() > 0) {
                 clearSelection();
                 for (Long id : sucIds) {
                     for (Status status : dataList) {
-                        if (id==status.id) {
-                            find=true;
-                            tmp=status;
+                        if (id == status.id) {
+                            find = true;
+                            tmp = status;
                             break;
                         }
                     }
@@ -249,9 +248,9 @@ public class MyPostFragment extends StatusListFragment {
                     if (find) {
                         dataList.remove(tmp);
                     }
-                    find=false;
+                    find = false;
                 }
-                WeiboLog.d(TAG, "新的数据集合为："+dataList.size());
+                WeiboLog.d(TAG, "新的数据集合为：" + dataList.size());
             }
         }
     };
@@ -259,11 +258,11 @@ public class MyPostFragment extends StatusListFragment {
     @Override
     protected void itemClick(View achor) {
         if (isDeleting) {
-            AKUtils.showToast("正在处理删除操作，不能查看！");
+            NotifyUtils.showToast("正在处理删除操作，不能查看！");
             return;
         }
 
-        if (null==mMode) {
+        if (null == mMode) {
             super.itemClick(achor);
         }
     }
@@ -275,11 +274,11 @@ public class MyPostFragment extends StatusListFragment {
      */
     protected boolean itemLongClick(View achor) {
         if (isDeleting) {
-            AKUtils.showToast("正在处理删除操作，不能查看！");
+            NotifyUtils.showToast("正在处理删除操作，不能查看！");
             return true;
         }
 
-        if (null==mMode) {
+        if (null == mMode) {
             //showButtonBar(achor);
             return super.itemLongClick(achor);
         }
@@ -292,23 +291,23 @@ public class MyPostFragment extends StatusListFragment {
      */
     protected void quickRepostStatus() {
         WeiboLog.d(TAG, "delete status.");
-        if (selectedPos==-1) {
+        if (selectedPos == - 1) {
             return;
         }
 
-        if (!App.hasInternetConnection(getActivity())) {
-            AKUtils.showToast(R.string.network_error);
+        if (! App.hasInternetConnection(getActivity())) {
+            NotifyUtils.showToast(R.string.network_error);
 
             return;
         }
 
         try {
-            AKUtils.showToast("开始删除，请稍等！");
-            Status status=mDataList.get(selectedPos);
-            StatusAction action=new StatusAction();
+            NotifyUtils.showToast("开始删除，请稍等！");
+            Status status = mDataList.get(selectedPos);
+            StatusAction action = new StatusAction();
 
-            isDeleting=true;
-            AsyncActionTask task=new AsyncActionTask(getActivity(), action);
+            isDeleting = true;
+            AsyncActionTask task = new AsyncActionTask(getActivity(), action);
             task.execute(0, status.id, mStatusHandler);
         } catch (Exception e) {
             e.printStackTrace();
@@ -330,8 +329,8 @@ public class MyPostFragment extends StatusListFragment {
     //--------------------- action mode ---------------------
     private void turnOnActionMode() {
         WeiboLog.d(TAG, "turnOnActionMode");
-        mMode=getActivity().startActionMode(new StatusActionMode());
-        ListView lv=mListView;
+        mMode = getActivity().startActionMode(new StatusActionMode());
+        ListView lv = mListView;
         lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
     }
 
@@ -343,12 +342,12 @@ public class MyPostFragment extends StatusListFragment {
             WeiboLog.d(TAG, "onCreateActionMode");
             getActivity().getMenuInflater().inflate(R.menu.status_mode_menu, menu);
 
-            int selectId=R.drawable.ic_action_select_invert_light;
-            String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+            int selectId = R.drawable.ic_action_select_invert_light;
+            String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
             if ("0".equals(themeId)) {
             } else if ("1".equals(themeId)) {
             } else if ("2".equals(themeId)) {
-                selectId=R.drawable.ic_action_select_invert_light;
+                selectId = R.drawable.ic_action_select_invert_light;
             }
             menu.findItem(R.id.invert_selection).setIcon(selectId);
             return true;
@@ -371,12 +370,12 @@ public class MyPostFragment extends StatusListFragment {
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            WeiboLog.d(TAG, "onActionItemClicked:"+item);
-            int itemId=item.getItemId();
-            if (itemId==R.id.delete) {
+            WeiboLog.d(TAG, "onActionItemClicked:" + item);
+            int itemId = item.getItemId();
+            if (itemId == R.id.delete) {
                 actionModeDelete();
                 return true;
-            } else if (itemId==R.id.invert_selection) {
+            } else if (itemId == R.id.invert_selection) {
                 actionModeInvertSelection();
                 return true;
             }
@@ -388,47 +387,47 @@ public class MyPostFragment extends StatusListFragment {
         public void onDestroyActionMode(ActionMode mode) {
             WeiboLog.d(TAG, "onDestroyActionMode");
 
-            mMode=null;
+            mMode = null;
             clearSelection();
         }
     }
 
     private void actionModeDelete() {
-        if (!App.hasInternetConnection(getActivity())) {
-            AKUtils.showToast(R.string.network_error);
+        if (! App.hasInternetConnection(getActivity())) {
+            NotifyUtils.showToast(R.string.network_error);
 
             return;
         }
 
-        ListView lv=mListView;
+        ListView lv = mListView;
 
-        ArrayList<Long> checkedIds=new ArrayList<Long>();
+        ArrayList<Long> checkedIds = new ArrayList<Long>();
 
-        long[] selectedIds=lv.getCheckItemIds();
-        WeiboLog.d(TAG, " selectedIds:"+selectedIds.length);
-        int pos=0;
+        long[] selectedIds = lv.getCheckItemIds();
+        WeiboLog.d(TAG, " selectedIds:" + selectedIds.length);
+        int pos = 0;
         Status tmp;
         try {   //TODO 下面的pos可能是-1，大概是前一次 选择后没有清除
             for (long id : selectedIds) {
-                pos=(int) id;
-                WeiboLog.d(TAG, "pos:"+pos);
-                tmp=(Status) mAdapter.getItem(pos);
+                pos = (int) id;
+                WeiboLog.d(TAG, "pos:" + pos);
+                tmp = (Status) mAdapter.getItem(pos);
                 checkedIds.add(tmp.id);
-                WeiboLog.v(TAG, "title:"+tmp);
+                WeiboLog.v(TAG, "title:" + tmp);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (checkedIds.size()>0) {
+        if (checkedIds.size() > 0) {
             //String strCheckedIds=TextUtils.join(", ", checkedIds);
             //WeiboLog.d(TAG, "strCheckedIds:"+strCheckedIds);
             try {
-                AKUtils.showToast("开始批量删除，请稍等！");
-                StatusAction action=new StatusAction();
-                isDeleting=true;
+                NotifyUtils.showToast("开始批量删除，请稍等！");
+                StatusAction action = new StatusAction();
+                isDeleting = true;
 
-                AsyncActionTask task=new AsyncActionTask(getActivity(), action);
+                AsyncActionTask task = new AsyncActionTask(getActivity(), action);
                 task.execute(1, checkedIds, mStatusHandler);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -438,19 +437,19 @@ public class MyPostFragment extends StatusListFragment {
     }
 
     private void actionModeInvertSelection() {
-        ListView lv=mListView;
+        ListView lv = mListView;
 
-        for (int i=0; i<lv.getCount(); i++) {
-            lv.setItemChecked(i, !lv.isItemChecked(i));
+        for (int i = 0; i < lv.getCount(); i++) {
+            lv.setItemChecked(i, ! lv.isItemChecked(i));
         }
         mMode.invalidate();
     }
 
     void clearSelection() {
-        ListView lv=mListView;
+        ListView lv = mListView;
         // Uncheck all
-        int count=lv.getAdapter().getCount();
-        for (int i=0; i<count; i++) {
+        int count = lv.getAdapter().getCount();
+        for (int i = 0; i < count; i++) {
             lv.setItemChecked(i, false);
         }
         lv.clearChoices();

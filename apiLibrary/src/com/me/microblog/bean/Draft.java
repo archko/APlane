@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Draft implements Serializable {
 
-    public static final long serialVersionUID=3894560643019408228L;
+    public static final long serialVersionUID = 3894560643019408228L;
 
     public long id;
     /**
@@ -49,15 +49,15 @@ public class Draft implements Serializable {
 
     @Override
     public String toString() {
-        return "Draft{"+
-            "id="+id+
-            ", userId="+userId+
-            ", content='"+content+'\''+
-            ", imgUrl='"+imgUrl+'\''+
-            ", text='"+text+'\''+
-            ", source='"+source+'\''+
-            ", uid="+uid+
-            ", type="+type+
+        return "Draft{" +
+            "id=" + id +
+            ", userId=" + userId +
+            ", content='" + content + '\'' +
+            ", imgUrl='" + imgUrl + '\'' +
+            ", text='" + text + '\'' +
+            ", source='" + source + '\'' +
+            ", uid=" + uid +
+            ", type=" + type +
             '}';
     }
 }

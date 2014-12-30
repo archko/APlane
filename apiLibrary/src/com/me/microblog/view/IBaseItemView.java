@@ -7,7 +7,7 @@ import com.me.microblog.bean.Status;
  * @description:
  * @author: archko 11-12-17
  */
-public interface IBaseItemView{
+public interface IBaseItemView {
 
     void update(final Status bean, boolean updateFlag, boolean cache, boolean showLargeBitmap, boolean showBitmap);
 }

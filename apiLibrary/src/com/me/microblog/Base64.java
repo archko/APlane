@@ -16,8 +16,8 @@
  */
 
 /**
-* @author Alexander Y. Kleymenov
-*/
+ * @author Alexander Y. Kleymenov
+ */
 
 package com.me.microblog;
 
@@ -26,6 +26,7 @@ package com.me.microblog;
  * as specified in RFC 2045 (http://www.ietf.org/rfc/rfc2045.txt).
  */
 public class Base64 {
+
     private Base64() {
     }
 
@@ -38,20 +39,20 @@ public class Base64 {
         int length = len / 4 * 3;
         // return an empty array on empty or short input without padding
         if (length == 0) {
-            return new byte[0];
+            return new byte[ 0 ];
         }
         // temporary array
-        byte[] out = new byte[length];
+        byte[] out = new byte[ length ];
         // number of padding characters ('=')
         int pad = 0;
         byte chr;
         // compute the number of the padding characters
         // and adjust the length of the input
-        for (;;len--) {
-            chr = in[len-1];
+        for (; ; len--) {
+            chr = in[ len - 1 ];
             // skip the neutral characters
             if ((chr == '\n') || (chr == '\r') ||
-                    (chr == ' ') || (chr == '\t')) {
+                (chr == ' ') || (chr == '\t')) {
                 continue;
             }
             if (chr == '=') {
@@ -68,11 +69,11 @@ public class Base64 {
         int bits = 0;
         // holds the value of the input quantum
         int quantum = 0;
-        for (int i=0; i<len; i++) {
-            chr = in[i];
+        for (int i = 0; i < len; i++) {
+            chr = in[ i ];
             // skip the neutral characters
             if ((chr == '\n') || (chr == '\r') ||
-                    (chr == ' ') || (chr == '\t')) {
+                (chr == ' ') || (chr == '\t')) {
                 continue;
             }
             if ((chr >= 'A') && (chr <= 'Z')) {
@@ -99,50 +100,50 @@ public class Base64 {
             }
             // append the value to the quantum
             quantum = (quantum << 6) | (byte) bits;
-            if (in_index%4 == 3) {
+            if (in_index % 4 == 3) {
                 // 4 characters were read, so make the output:
-                out[out_index++] = (byte) ((quantum & 0x00FF0000) >> 16);
-                out[out_index++] = (byte) ((quantum & 0x0000FF00) >> 8);
-                out[out_index++] = (byte) (quantum & 0x000000FF);
+                out[ out_index++ ] = (byte) ((quantum & 0x00FF0000) >> 16);
+                out[ out_index++ ] = (byte) ((quantum & 0x0000FF00) >> 8);
+                out[ out_index++ ] = (byte) (quantum & 0x000000FF);
             }
             in_index++;
         }
         if (pad > 0) {
             // adjust the quantum value according to the padding
-            quantum = quantum << (6*pad);
+            quantum = quantum << (6 * pad);
             // make output
-            out[out_index++] = (byte) ((quantum & 0x00FF0000) >> 16);
+            out[ out_index++ ] = (byte) ((quantum & 0x00FF0000) >> 16);
             if (pad == 1) {
-                out[out_index++] = (byte) ((quantum & 0x0000FF00) >> 8);
+                out[ out_index++ ] = (byte) ((quantum & 0x0000FF00) >> 8);
             }
         }
         // create the resulting array
-        byte[] result = new byte[out_index];
+        byte[] result = new byte[ out_index ];
         System.arraycopy(out, 0, result, 0, out_index);
         return result;
     }
 
     private static final byte[] map = new byte[]
         {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-         'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b',
-         'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
-         'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3',
-         '4', '5', '6', '7', '8', '9', '+', '/'};
+            'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b',
+            'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+            'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3',
+            '4', '5', '6', '7', '8', '9', '+', '/'};
 
     public static String encode(byte[] in) {
         int length = in.length * 4 / 3;
         length += length / 76 + 3; // for crlr
-        byte[] out = new byte[length];
-        int index = 0, i, crlr = 0, end = in.length - in.length%3;
-        for (i=0; i<end; i+=3) {
-            out[index++] = map[(in[i] & 0xff) >> 2];
-            out[index++] = map[((in[i] & 0x03) << 4)
-                                | ((in[i+1] & 0xff) >> 4)];
-            out[index++] = map[((in[i+1] & 0x0f) << 2)
-                                | ((in[i+2] & 0xff) >> 6)];
-            out[index++] = map[(in[i+2] & 0x3f)];
-            if (((index - crlr)%76 == 0) && (index != 0)) {
-                out[index++] = '\n';
+        byte[] out = new byte[ length ];
+        int index = 0, i, crlr = 0, end = in.length - in.length % 3;
+        for (i = 0; i < end; i += 3) {
+            out[ index++ ] = map[ (in[ i ] & 0xff) >> 2 ];
+            out[ index++ ] = map[ ((in[ i ] & 0x03) << 4)
+                | ((in[ i + 1 ] & 0xff) >> 4) ];
+            out[ index++ ] = map[ ((in[ i + 1 ] & 0x0f) << 2)
+                | ((in[ i + 2 ] & 0xff) >> 6) ];
+            out[ index++ ] = map[ (in[ i + 2 ] & 0x3f) ];
+            if (((index - crlr) % 76 == 0) && (index != 0)) {
+                out[ index++ ] = '\n';
                 crlr++;
                 //out[index++] = '\r';
                 //crlr++;
@@ -150,17 +151,17 @@ public class Base64 {
         }
         switch (in.length % 3) {
             case 1:
-                out[index++] = map[(in[end] & 0xff) >> 2];
-                out[index++] = map[(in[end] & 0x03) << 4];
-                out[index++] = '=';
-                out[index++] = '=';
+                out[ index++ ] = map[ (in[ end ] & 0xff) >> 2 ];
+                out[ index++ ] = map[ (in[ end ] & 0x03) << 4 ];
+                out[ index++ ] = '=';
+                out[ index++ ] = '=';
                 break;
             case 2:
-                out[index++] = map[(in[end] & 0xff) >> 2];
-                out[index++] = map[((in[end] & 0x03) << 4)
-                                    | ((in[end+1] & 0xff) >> 4)];
-                out[index++] = map[((in[end+1] & 0x0f) << 2)];
-                out[index++] = '=';
+                out[ index++ ] = map[ (in[ end ] & 0xff) >> 2 ];
+                out[ index++ ] = map[ ((in[ end ] & 0x03) << 4)
+                    | ((in[ end + 1 ] & 0xff) >> 4) ];
+                out[ index++ ] = map[ ((in[ end + 1 ] & 0x0f) << 2) ];
+                out[ index++ ] = '=';
                 break;
         }
         return new String(out, 0, index);

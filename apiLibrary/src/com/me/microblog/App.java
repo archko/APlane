@@ -1,23 +1,21 @@
 package com.me.microblog;
 
-import java.io.File;
-
-import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.oauth.OauthBean;
 import com.me.microblog.thread.DownloadPool;
-import com.me.microblog.thread.DownloadPoolThread;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.SqliteWrapper;
 import com.me.microblog.util.WeiboLog;
+
+import java.io.File;
 /*import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -28,34 +26,34 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;*/
  */
 public class App extends Application {
 
-    public static final String TAG="App";
+    public static final String TAG = "App";
     private static App instance;
     private OauthBean mOauthBean;
-    public static boolean isLogined=false;
-    public DownloadPool mDownloadPool=null;
+    public static boolean isLogined = false;
+    public DownloadPool mDownloadPool = null;
     public static String mCacheDir; //图片存储上级目录
-    public static final String KEY="abcdefgopqrstuvwxyzhijklmn";
+    public static final String KEY = "abcdefgopqrstuvwxyzhijklmn";
     //public static String OAUTH_MODE=Constants.SOAUTH_TYPE_WEB;   //默认使用的是客户端认证。
     /**
      * OAuth2的过期时间,使用OauthBean中的值
      */
     //public long oauth2_timestampe=0;
-    private int pageCount=Constants.WEIBO_COUNT;
+    private int pageCount = Constants.WEIBO_COUNT;
 
     public void logout() {
-        mOauthBean=null;
+        mOauthBean = null;
         //oauth2_timestampe=0;
-        isLogined=false;
+        isLogined = false;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        instance=this;
+        instance = this;
 
-        SharedPreferences pref=PreferenceManager.getDefaultSharedPreferences(this);
-        int threadCount=pref.getInt(Constants.PREF_THREAD_COUNT, Constants.THREAD_COUNT);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        int threadCount = pref.getInt(Constants.PREF_THREAD_COUNT, Constants.THREAD_COUNT);
 
         //initDownloadPool(threadCount);
 
@@ -65,7 +63,7 @@ public class App extends Application {
 
         initOauth2(false);
 
-        SharedPreferences.Editor editor=pref.edit();
+        SharedPreferences.Editor editor = pref.edit();
         editor.remove(Constants.PREF_SERVICE_STATUS);
         editor.remove(Constants.PREF_SERVICE_COMMENT);
         editor.remove(Constants.PREF_SERVICE_FOLLOWER);
@@ -90,8 +88,8 @@ public class App extends Application {
      * @return
      */
     public OauthBean getOauthBean() {
-        if (null==mOauthBean) {
-            mOauthBean=new OauthBean();
+        if (null == mOauthBean) {
+            mOauthBean = new OauthBean();
         }
         return mOauthBean;
     }
@@ -102,7 +100,7 @@ public class App extends Application {
      * @param oauthBean
      */
     public void setOauthBean(OauthBean oauthBean) {
-        mOauthBean=oauthBean;
+        mOauthBean = oauthBean;
         //oauth2_timestampe=mOauthBean.expireTime;
     }
 
@@ -112,16 +110,16 @@ public class App extends Application {
      * @param force 是否强制初始化，如果是在登录页面选择的，就需要强制初始化一次
      */
     public void initOauth2(boolean force) {
-        if (mOauthBean!=null&&!TextUtils.isEmpty(mOauthBean.accessToken)) {
-            WeiboLog.i(TAG, "initOauth2已经初始化过了！"+mOauthBean);
+        if (mOauthBean != null && ! TextUtils.isEmpty(mOauthBean.accessToken)) {
+            WeiboLog.i(TAG, "initOauth2已经初始化过了！" + mOauthBean);
             return;
         }
 
-        OauthBean bean=SqliteWrapper.queryAccount(this, TwitterTable.AUTbl.WEIBO_SINA, TwitterTable.AUTbl.ACCOUNT_IS_DEFAULT, -1);
-        WeiboLog.d(TAG, "initOauth2:"+bean);
-        if (null!=bean) {
-            SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor editor=preferences.edit();
+        OauthBean bean = SqliteWrapper.queryAccount(this, TwitterTable.AUTbl.WEIBO_SINA, TwitterTable.AUTbl.ACCOUNT_IS_DEFAULT, - 1);
+        WeiboLog.d(TAG, "initOauth2:" + bean);
+        if (null != bean) {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = preferences.edit();
             editor.putString(Constants.PREF_ACCESS_TOKEN, bean.accessToken);
             editor.putLong(Constants.PREF_CURRENT_USER_ID, Long.valueOf(bean.openId));
             editor.commit();
@@ -134,23 +132,23 @@ public class App extends Application {
     }
 
     private void initCacheDir() {
-        mCacheDir=Constants.CACHE_DIR;
-        File file=new File(mCacheDir+Constants.ICON_DIR);
-        if (!file.exists()) {
+        mCacheDir = Constants.CACHE_DIR;
+        File file = new File(mCacheDir + Constants.ICON_DIR);
+        if (! file.exists()) {
             file.mkdirs();
-            WeiboLog.i(TAG, "创建头像存储目录."+file.getAbsolutePath());
+            WeiboLog.i(TAG, "创建头像存储目录." + file.getAbsolutePath());
         }
 
-        file=new File(mCacheDir+Constants.PICTURE_DIR);
-        if (!file.exists()) {
+        file = new File(mCacheDir + Constants.PICTURE_DIR);
+        if (! file.exists()) {
             file.mkdirs();
-            WeiboLog.i(TAG, "创建图片存储目录."+file.getAbsolutePath());
+            WeiboLog.i(TAG, "创建图片存储目录." + file.getAbsolutePath());
         }
 
-        file=new File(mCacheDir+Constants.GIF);
-        if (!file.exists()) {
+        file = new File(mCacheDir + Constants.GIF);
+        if (! file.exists()) {
             file.mkdirs();
-            WeiboLog.i(TAG, "创建gif图片存储目录."+file.getAbsolutePath());
+            WeiboLog.i(TAG, "创建gif图片存储目录." + file.getAbsolutePath());
         }
     }
 
@@ -162,14 +160,14 @@ public class App extends Application {
      */
     public static boolean hasInternetConnection(Activity activity) {
         try {
-            ConnectivityManager connectivity=(ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (connectivity==null) {
+            ConnectivityManager connectivity = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivity == null) {
                 return false;
             } else {
-                NetworkInfo[] info=connectivity.getAllNetworkInfo();
-                if (info!=null) {
-                    for (int i=0; i<info.length; i++) {
-                        if (info[i].getState()==NetworkInfo.State.CONNECTED) {
+                NetworkInfo[] info = connectivity.getAllNetworkInfo();
+                if (info != null) {
+                    for (int i = 0; i < info.length; i++) {
+                        if (info[ i ].getState() == NetworkInfo.State.CONNECTED) {
                             return true;
                         }
                     }
@@ -182,14 +180,14 @@ public class App extends Application {
     }
 
     public static boolean hasInternetConnection(Context context) {
-        ConnectivityManager connectivity=(ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity==null) {
+        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity == null) {
             return false;
         } else {
-            NetworkInfo[] info=connectivity.getAllNetworkInfo();
-            if (info!=null) {
-                for (int i=0; i<info.length; i++) {
-                    if (info[i].getState()==NetworkInfo.State.CONNECTED) {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null) {
+                for (int i = 0; i < info.length; i++) {
+                    if (info[ i ].getState() == NetworkInfo.State.CONNECTED) {
                         return true;
                     }
                 }
@@ -199,7 +197,7 @@ public class App extends Application {
     }
 
     public void loadAccount(SharedPreferences pref) {
-        int weiboCount=pref.getInt(Constants.PREF_WEIBO_COUNT, Constants.WEIBO_COUNT);
+        int weiboCount = pref.getInt(Constants.PREF_WEIBO_COUNT, Constants.WEIBO_COUNT);
         setPageCount(weiboCount);
     }
 
@@ -208,13 +206,13 @@ public class App extends Application {
     }
 
     public void setPageCount(int pageCount) {
-        this.pageCount=pageCount;
+        this.pageCount = pageCount;
     }
 
     @Override
     public void onTerminate() {
-        isLogined=false;
-        mOauthBean=null;
+        isLogined = false;
+        mOauthBean = null;
         WeiboLog.i(TAG, "onTerminate");
 
         super.onTerminate();
@@ -227,15 +225,15 @@ public class App extends Application {
     }
 
     private void initDownloadPool(int threadCount) {
-        if (this.mDownloadPool!=null) {
+        if (this.mDownloadPool != null) {
             this.mDownloadPool.setThreadCount(threadCount);
             return;
         }
 
         WeiboLog.d(TAG, "initDownloadPool.");
-        DownloadPool downloadPool=new DownloadPool(this);
+        DownloadPool downloadPool = new DownloadPool(this);
         downloadPool.setThreadCount(threadCount);
-        this.mDownloadPool=downloadPool;
+        this.mDownloadPool = downloadPool;
         this.mDownloadPool.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
         this.mDownloadPool.setName("DownloadPool");
         this.mDownloadPool.start();
@@ -305,11 +303,11 @@ public class App extends Application {
     /**
      * 经纬度,供附近的Fragment使用的,
      */
-    public double longitude=0.0;
-    public double latitude=0.0;
-    public int range=10000;
+    public double longitude = 0.0;
+    public double latitude = 0.0;
+    public int range = 10000;
     /**
      * 定位的时间.如果地图定位没有自动更新,就需要手动更新.
      */
-    public long mLocationTimestamp=0;
+    public long mLocationTimestamp = 0;
 }
