@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
-import cn.archko.microblog.fragment.abs.BaseFragment;
 import cn.archko.microblog.ui.AccountUserActivity;
 import cn.archko.microblog.ui.NewStatusActivity;
 import cn.archko.microblog.ui.PrefsActivity;

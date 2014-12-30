@@ -37,7 +37,6 @@ import cn.archko.microblog.fragment.HomeFragment;
 import cn.archko.microblog.fragment.HomeGridFragment;
 import cn.archko.microblog.fragment.PrefsFragment;
 import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
-import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.service.WeiboService;
