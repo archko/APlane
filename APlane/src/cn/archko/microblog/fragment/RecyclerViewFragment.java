@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,19 +33,18 @@ import com.me.microblog.db.TwitterTable;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import com.usabusi.swiperefreshlayoutupdown.view.SwipeRefreshLayoutUpDown;
 
 import java.util.Date;
 
 /**
  * @author: archko 30-12-12
  */
-public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> implements SwipeRefreshLayoutUpDown.OnRefreshListener {
+public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> implements SwipeRefreshLayout.OnRefreshListener {
 
     public static final String TAG = "RecyclerViewFragment";
     private RecyclerView mRecyclerView;
     LayoutAdapter mAdapter;
-    SwipeRefreshLayoutUpDown mSwipeLayout;
+    SwipeRefreshLayout mSwipeLayout;
 
     @Override
     public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,14 +66,12 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
 
         mHeader = inflater.inflate(R.layout.ak_overlay_header, null);
 
-        mSwipeLayout = (SwipeRefreshLayoutUpDown) root.findViewById(R.id.swipe_container);
+        mSwipeLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(this);
         mSwipeLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
             android.R.color.holo_green_light,
             android.R.color.holo_orange_light,
             android.R.color.holo_red_light);
-        mSwipeLayout.setPullMode(SwipeRefreshLayoutUpDown.PullMode.BOTH);
-        mSwipeLayout.setLoadNoFull(false);
 
         mRecyclerView.setRecyclerListener(new RecyclerViewHolder());
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -191,11 +189,12 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
 
     @Override
     public void onRefresh() {
-        if (mSwipeLayout.getCurrentPullMode() == SwipeRefreshLayoutUpDown.PullMode.PULL_FROM_START) {
+        /*if (mSwipeLayout.getCurrentPullMode() == SwipeRefreshLayoutUpDown.PullMode.PULL_FROM_START) {
             pullToRefreshData();
         } else if (mSwipeLayout.getCurrentPullMode() == SwipeRefreshLayoutUpDown.PullMode.PULL_FROM_END) {
             pullUpRefreshData();
-        }
+        }*/
+        pullToRefreshData();
     }
 
     protected void navClick(View view) {
