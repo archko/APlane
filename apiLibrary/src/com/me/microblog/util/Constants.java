@@ -151,6 +151,7 @@ public class Constants {
     public final static String PREF_THREAD_COUNT = "pref_thread_count";
 
     public static final String TAB_ID_HOME = "tab_id_home";  //主页id
+    public static final String TAB_ID_HOME2 = "tab_id_home2";  //主页id
     public static final String TAB_ID_COMMENT = "tab_id_comment";  //
     public static final String TAB_ID_AT_STATUS = "tab_id_at_status";  //at status
     public static final String TAB_ID_FOLLOWER = "tab_id_follower";  //tab_id_follower

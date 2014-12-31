@@ -35,6 +35,7 @@ import cn.archko.microblog.R;
 import cn.archko.microblog.action.GroupAction;
 import cn.archko.microblog.fragment.HomeFragment;
 import cn.archko.microblog.fragment.HomeGridFragment;
+import cn.archko.microblog.fragment.HomeRecyclerViewFragment;
 import cn.archko.microblog.fragment.PrefsFragment;
 import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
 import cn.archko.microblog.fragment.abs.OnRefreshListener;
@@ -978,6 +979,9 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
                             homeFragment.updateGroupTimeline(mGroupList.get(pos));
                         } else if (current instanceof HomeGridFragment) {
                             HomeGridFragment homeFragment = (HomeGridFragment) current;
+                            homeFragment.updateGroupTimeline(mGroupList.get(pos));
+                        } else if (current instanceof HomeRecyclerViewFragment) {
+                            HomeRecyclerViewFragment homeFragment = (HomeRecyclerViewFragment) current;
                             homeFragment.updateGroupTimeline(mGroupList.get(pos));
                         }
                     } catch (Exception e) {

@@ -29,9 +29,9 @@ import java.util.ArrayList;
  * @description: 主页, 显示登录用户与其关注对象所发的微博.
  * @author: archko 11-11-17
  */
-public class HomeFragment extends StatusListFragment {
+public class HomeRecyclerViewFragment extends RecyclerViewFragment {
 
-    public static final String TAG = "HomeFragment";
+    public static final String TAG = "HomeRecyclerViewFragment";
     /**
      * 是否是要刷新，不刷新时获取下一页数据不停止服务，暂时没有解决问题。
      */
@@ -144,7 +144,7 @@ public class HomeFragment extends StatusListFragment {
      */
     @Override
     protected void loadData() {
-        WeiboLog.d(TAG, "home.loaddata:");
+        WeiboLog.d(TAG, "home.loaddata:"+mDataList);
         if (mDataList != null && mDataList.size() > 0) {
             //setListShown(true);
 
@@ -217,7 +217,6 @@ public class HomeFragment extends StatusListFragment {
         super.refreshAdapter(load, isRefresh);
         isGroupUpdated = false;
         if (isRefresh && load) {
-            mListView.setSelection(1);
             clearHomeNotify();
         }
         isRefreshData = false;
@@ -300,16 +299,6 @@ public class HomeFragment extends StatusListFragment {
     }
 
     //--------------------- 微博操作 ---------------------
-
-    /*@Override
-    protected Object[] baseQueryBackgroundOperation(Object... params) throws WeiboException {
-        return mStatusImpl.queryData(params);
-    }*/
-
-    /*@Override
-    protected void saveData(SStatusData<Status> statusData) {
-
-    }*/
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

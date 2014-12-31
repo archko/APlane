@@ -22,6 +22,7 @@ import cn.archko.microblog.fragment.AtmeFragment;
 import cn.archko.microblog.fragment.CommentsFragment;
 import cn.archko.microblog.fragment.DirectMessageFragment;
 import cn.archko.microblog.fragment.HomeFragment;
+import cn.archko.microblog.fragment.HomeRecyclerViewFragment;
 import cn.archko.microblog.fragment.MyFavFragment;
 import cn.archko.microblog.fragment.MyPostFragment;
 import cn.archko.microblog.fragment.PrefsFragment;
@@ -281,6 +282,10 @@ public class SidebarAdapter extends BaseAdapter {
             drawableId = R.drawable.tab_home_light;
         }
         entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_HOME, mContext.getString(R.string.tab_label_home),
+            drawableId, HomeRecyclerViewFragment.class, true);
+        addEntry(entry, init);
+
+        entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_HOME2, mContext.getString(R.string.tab_label_home),
             drawableId, HomeFragment.class, true);
         addEntry(entry, init);
         /*entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_HOME, mContext.getString(R.string.tab_label_home),
