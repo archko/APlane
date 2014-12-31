@@ -41,32 +41,33 @@ import java.util.Date;
  */
 public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> implements SwipeRefreshLayout.OnRefreshListener {
 
-    public static final String TAG = "RecyclerViewFragment";
+    public static final String TAG="RecyclerViewFragment";
     private RecyclerView mRecyclerView;
     LayoutAdapter mAdapter;
     SwipeRefreshLayout mSwipeLayout;
+    private boolean mLastItemVisible;
 
     @Override
     public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RelativeLayout root = (RelativeLayout) inflater.inflate(R.layout.ak_layout_recycler_view, null);
-        mEmptyTxt = (TextView) root.findViewById(R.id.empty_txt);
-        mRecyclerView = (RecyclerView) root.findViewById(R.id.statusList);
+        RelativeLayout root=(RelativeLayout) inflater.inflate(R.layout.ak_layout_recycler_view, null);
+        mEmptyTxt=(TextView) root.findViewById(R.id.empty_txt);
+        mRecyclerView=(RecyclerView) root.findViewById(R.id.statusList);
 
         // ------------------------------------------------------------------
 
-        up = (ImageView) root.findViewById(R.id.up);
-        down = (ImageView) root.findViewById(R.id.down);
+        up=(ImageView) root.findViewById(R.id.up);
+        down=(ImageView) root.findViewById(R.id.down);
         up.setOnClickListener(navClickListener);
         down.setOnClickListener(navClickListener);
 
         up.setBackgroundColor(Color.TRANSPARENT);
         down.setBackgroundColor(Color.TRANSPARENT);
-        zoomLayout = (RelativeLayout) root.findViewById(R.id.zoomLayout);
-        zoomAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.zoom);
+        zoomLayout=(RelativeLayout) root.findViewById(R.id.zoomLayout);
+        zoomAnim=AnimationUtils.loadAnimation(getActivity(), R.anim.zoom);
 
-        mHeader = inflater.inflate(R.layout.ak_overlay_header, null);
+        mHeader=inflater.inflate(R.layout.ak_overlay_header, null);
 
-        mSwipeLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe_container);
+        mSwipeLayout=(SwipeRefreshLayout) root.findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(this);
         mSwipeLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
             android.R.color.holo_green_light,
@@ -77,20 +78,32 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int scrollState) {
-                WeiboLog.d(TAG, "onScrollStateChanged.scrollState:" + scrollState);
-                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING
-                    || scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                    ImageCache.getInstance(getActivity()).setPauseDiskCache(true);
-                    //WeiboLog.v(TAG, "onScrollStateChanged.scroll");
-                } else {
+                //WeiboLog.d(TAG, "onScrollStateChanged.scrollState:"+scrollState+" mLastItemVisible:"+mLastItemVisible);
+                if (scrollState==RecyclerView.SCROLL_STATE_IDLE) {
                     ImageCache.getInstance(getActivity()).setPauseDiskCache(false);
+                    if (mLastItemVisible) {
+                        //mAdapter.getFooterView().setVisibility(View.VISIBLE);
+                        showMoreView();
+                    } else {
+                        //mAdapter.getFooterView().setVisibility(View.GONE);
+                    }
                     mAdapter.notifyDataSetChanged();
+                } else {
+                    ImageCache.getInstance(getActivity()).setPauseDiskCache(true);
                 }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+                isEndOfList();
+            }
+        });
+        footerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMoreProgressBar.setVisibility(View.VISIBLE);
+                mSwipeLayout.setRefreshing(true);
+                fetchMore();
             }
         });
 
@@ -133,7 +146,7 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
                 int position = pos;
                 selectedPos = position;
 
-                if (mAdapter.getItemCount() > 0 && position >= mAdapter.getItemCount()) {
+                if (mAdapter.getCount() > 0 && position >= mAdapter.getCount()) {
                     WeiboLog.v(TAG, "footerView.click.");
                     return true;
                 }
@@ -149,10 +162,12 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
         //final Drawable divider = getResources().getDrawable(R.drawable.divider);
         //mRecyclerView.addItemDecoration(new DividerItemDecoration(divider));
 
-        mAdapter = new LayoutAdapter(getActivity());
+        mAdapter=new LayoutAdapter(getActivity());
+        //showMoreView();
+        mAdapter.addFooterView(footerView);
         mRecyclerView.setAdapter(mAdapter);
 
-        WeiboLog.v(TAG, "isLoading:" + isLoading + " status:" + (null == mDataList ? "null" : mDataList.size()));
+        WeiboLog.v(TAG, "isLoading:"+isLoading+" status:"+(null==mDataList ? "null" : mDataList.size()));
         mSwipeLayout.setRefreshing(true);
         loadData();
     }
@@ -169,18 +184,18 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
     public View getView(int position, View convertView, ViewGroup parent) {
         //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
 
-        ThreadBeanItemView itemView = null;
-        Status status = mDataList.get(position);
+        ThreadBeanItemView itemView=null;
+        Status status=mDataList.get(position);
 
-        boolean updateFlag = true;
-        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag = false;
+        boolean updateFlag=true;
+        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            updateFlag=false;
         }
 
-        if (convertView == null) {
-            itemView = new ThreadBeanItemView(getActivity(), mListView, mCacheDir, status, updateFlag, true, showLargeBitmap, showBitmap);
+        if (convertView==null) {
+            itemView=new ThreadBeanItemView(getActivity(), mListView, mCacheDir, status, updateFlag, true, showLargeBitmap, showBitmap);
         } else {
-            itemView = (ThreadBeanItemView) convertView;
+            itemView=(ThreadBeanItemView) convertView;
         }
         itemView.update(status, updateFlag, true, showLargeBitmap, showBitmap);
 
@@ -197,24 +212,49 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
         pullToRefreshData();
     }
 
+    private boolean isEndOfList() {
+        if (mRecyclerView.getChildCount()==0) {
+            mLastItemVisible=false;
+            return false;
+        }
+
+        int totalCount=mAdapter.getCount()-1;
+        int lastItemPositionOnScreen=((LinearLayoutManager) mRecyclerView.getLayoutManager()).findLastVisibleItemPosition();
+        //WeiboLog.d(TAG, "lastItemPositionOnScreen:"+lastItemPositionOnScreen+" total:"+totalCount);
+        if (totalCount!=lastItemPositionOnScreen) {
+            mLastItemVisible=false;
+            return false;
+        }
+
+        final int lastItemBottomPosition=mRecyclerView.getChildAt(mRecyclerView.getChildCount()-1).getBottom();
+        //WeiboLog.d(TAG, "lastItemBottomPosition:"+lastItemBottomPosition+" height:"+mRecyclerView.getHeight());
+        if (lastItemBottomPosition<=mRecyclerView.getHeight()) {
+            mLastItemVisible=true;
+            return true;
+        }
+
+        mLastItemVisible=false;
+        return false;
+    }
+
     protected void navClick(View view) {
-        if (view.getId() == R.id.up) {
+        if (view.getId()==R.id.up) {
             showZoom();
             if (showNavPageBtn) {
-                int scrollY = mRecyclerView.getScrollY();
-                scrollY -= mRecyclerView.getHeight();
+                int scrollY=mRecyclerView.getScrollY();
+                scrollY-=mRecyclerView.getHeight();
                 mRecyclerView.scrollBy(0, scrollY);
             } else {
                 mRecyclerView.smoothScrollToPosition(0);
             }
-        } else if (view.getId() == R.id.down) {
+        } else if (view.getId()==R.id.down) {
             showZoom();
             if (showNavPageBtn) {
-                int scrollY = mRecyclerView.getScrollY();
-                scrollY += mRecyclerView.getHeight();
+                int scrollY=mRecyclerView.getScrollY();
+                scrollY+=mRecyclerView.getHeight();
                 mRecyclerView.scrollBy(0, scrollY);
             } else {
-                mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
+                mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount()-1);
             }
         }
     }
@@ -228,12 +268,17 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
     @Override
     public void fetchMore() {
         super.fetchMore();
-        WeiboLog.v(TAG, "fetchMore.lastItem:" + lastItem + " selectedPos:" + selectedPos);
-        if (mAdapter.getItemCount() > 0) {
+        WeiboLog.v(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
+        if (mAdapter.getCount()>0) {
             Status st;
-            st = (Status) mDataList.get(mAdapter.getItemCount() - 1);
-            fetchData(- 1, st.id, false, false);
+            st=(Status) mDataList.get(mAdapter.getCount()-1);
+            fetchData(-1, st.id, false, false);
         }
+    }
+
+    public void refresh() {
+        mSwipeLayout.setRefreshing(true);
+        pullToRefreshData();
     }
 
     //--------------------- 微博操作 ---------------------
@@ -252,13 +297,13 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
      */
     @Override
     protected void viewOriginalStatus(View achor) {
-        if (selectedPos >= mDataList.size()) {
+        if (selectedPos>=mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;
         }
 
         try {
-            Status status = mDataList.get(selectedPos);
+            Status status=mDataList.get(selectedPos);
 
             WeiboOperation.toViewOriginalStatus(getActivity(), status);
         } catch (Exception e) {
@@ -268,7 +313,7 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
 
     //--------------------- popupMenu ---------------------
     public void onCreateCustomMenu(PopupMenu menuBuilder) {
-        int index = 0;
+        int index=0;
         menuBuilder.getMenu().add(0, Constants.OP_ID_QUICK_REPOST, index++, R.string.opb_quick_repost);
         menuBuilder.getMenu().add(0, Constants.OP_ID_COMMENT, index++, R.string.opb_comment);
         menuBuilder.getMenu().add(0, Constants.OP_ID_ORITEXT, index++, R.string.opb_origin_text);
@@ -278,8 +323,8 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        int menuId = item.getItemId();
-        WeiboLog.d(TAG, "onMenuItemClick:" + menuId);
+        int menuId=item.getItemId();
+        WeiboLog.d(TAG, "onMenuItemClick:"+menuId);
         switch (menuId) {
             case Constants.OP_ID_QUICK_REPOST: {
                 quickRepostStatus();
@@ -313,27 +358,27 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
      * 创建收藏.
      */
     protected void createFavorite() {
-        WeiboLog.d(TAG, "selectedPos:" + selectedPos);
-        if (selectedPos == - 1) {
+        WeiboLog.d(TAG, "selectedPos:"+selectedPos);
+        if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
             return;
         }
 
         try {
-            Status status = mDataList.get(selectedPos);
-            if (null != status) {
+            Status status=mDataList.get(selectedPos);
+            if (null!=status) {
                 /*String type="0";
                 Long statusId=status.id;
                 OperationTask task=new OperationTask();
                 task.execute(new Object[]{type, statusId});*/
-                Intent taskService = new Intent(getActivity(), SendTaskService.class);
-                SendTask task = new SendTask();
-                task.uid = currentUserId;
-                task.userId = currentUserId;
-                task.content = status.text;
-                task.source = String.valueOf(status.id);
-                task.type = TwitterTable.SendQueueTbl.SEND_TYPE_ADD_FAV;
-                task.createAt = new Date().getTime();
+                Intent taskService=new Intent(getActivity(), SendTaskService.class);
+                SendTask task=new SendTask();
+                task.uid=currentUserId;
+                task.userId=currentUserId;
+                task.content=status.text;
+                task.source=String.valueOf(status.id);
+                task.type=TwitterTable.SendQueueTbl.SEND_TYPE_ADD_FAV;
+                task.createAt=new Date().getTime();
                 taskService.putExtra("send_task", task);
                 getActivity().startService(taskService);
                 NotifyUtils.showToast("新收藏任务添加到队列服务中了。");
@@ -348,7 +393,7 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
      */
     protected void commentStatus() {
         try {
-            Status status = mDataList.get(selectedPos);
+            Status status=mDataList.get(selectedPos);
 
             WeiboOperation.toCommentStatus(getActivity(), status);
         } catch (Exception e) {
@@ -361,7 +406,7 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
      */
     protected void repostStatus() {
         try {
-            Status status = mDataList.get(selectedPos);
+            Status status=mDataList.get(selectedPos);
 
             WeiboOperation.toRepostStatus(getActivity(), status);
         } catch (Exception e) {
@@ -374,15 +419,15 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
      */
     protected void viewStatusUser() {
         WeiboLog.d(TAG, "not implemented.");
-        if (selectedPos == - 1) {
+        if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
             return;
         }
 
         try {
-            Status status = mDataList.get(selectedPos);
-            if (null != status) {
-                User user = status.user;
+            Status status=mDataList.get(selectedPos);
+            if (null!=status) {
+                User user=status.user;
                 WeiboOperation.toViewStatusUser(getActivity(), user, UserFragmentActivity.TYPE_USER_INFO);
             }
         } catch (Exception e) {
@@ -395,24 +440,24 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
      */
     protected void quickRepostStatus() {
         WeiboLog.d(TAG, "quickRepostStatus.");
-        if (selectedPos == - 1) {
+        if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
             return;
         }
 
         try {
-            Status status = mDataList.get(selectedPos);
+            Status status=mDataList.get(selectedPos);
             //WeiboOperation.quickRepostStatus(status.id);
-            Intent taskService = new Intent(getActivity(), SendTaskService.class);
-            SendTask task = new SendTask();
-            task.uid = currentUserId;
-            task.userId = currentUserId;
-            task.content = "";
-            task.source = String.valueOf(status.id);
-            task.data = "0";
-            task.type = TwitterTable.SendQueueTbl.SEND_TYPE_REPOST_STATUS;
-            task.text = status.text;
-            task.createAt = new Date().getTime();
+            Intent taskService=new Intent(getActivity(), SendTaskService.class);
+            SendTask task=new SendTask();
+            task.uid=currentUserId;
+            task.userId=currentUserId;
+            task.content="";
+            task.source=String.valueOf(status.id);
+            task.data="0";
+            task.type=TwitterTable.SendQueueTbl.SEND_TYPE_REPOST_STATUS;
+            task.text=status.text;
+            task.createAt=new Date().getTime();
             taskService.putExtra("send_task", task);
             getActivity().startService(taskService);
             NotifyUtils.showToast("转发任务添加到队列服务中了。");
@@ -421,22 +466,22 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
         }
     }
 
-    public View getView(SimpleViewHolder holder, int position) {
+    public View getView(SimpleViewHolder holder, final int position) {
         //WeiboLog.d(TAG, "getView.pos:" + position + " holder:" + holder);
 
-        View convertView = holder.baseItemView;
-        ThreadBeanItemView itemView = null;
-        Status status = mDataList.get(position);
+        View convertView=holder.baseItemView;
+        ThreadBeanItemView itemView=null;
+        Status status=mDataList.get(position);
 
-        boolean updateFlag = true;
-        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag = false;
+        boolean updateFlag=true;
+        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            updateFlag=false;
         }
 
-        if (convertView == null) {
-            itemView = new ThreadBeanItemView(getActivity(), null, mCacheDir, status, updateFlag, true, showLargeBitmap, showBitmap);
+        if (convertView==null) {
+            itemView=new ThreadBeanItemView(getActivity(), null, mCacheDir, status, updateFlag, true, showLargeBitmap, showBitmap);
         } else {
-            itemView = (ThreadBeanItemView) convertView;
+            itemView=(ThreadBeanItemView) convertView;
         }
         itemView.update(status, updateFlag, true, showLargeBitmap, showBitmap);
         itemView.setOnClickListener(new View.OnClickListener() {
@@ -458,27 +503,28 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
 
     protected View newView(ViewGroup parent, int viewType) {
         //WeiboLog.d(TAG, "newView:" + parent + " viewType:" + viewType);
-        ThreadBeanItemView itemView = null;
-        boolean updateFlag = true;
-        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag = false;
+        ThreadBeanItemView itemView=null;
+        boolean updateFlag=true;
+        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            updateFlag=false;
         }
-        itemView = new ThreadBeanItemView(getActivity(), null, mCacheDir, null, updateFlag, true, showLargeBitmap, showBitmap);
+        itemView=new ThreadBeanItemView(getActivity(), null, mCacheDir, null, updateFlag, true, showLargeBitmap, showBitmap);
         return itemView;
     }
 
     public void refreshAdapter(boolean load, boolean isRefresh) {
-        WeiboLog.d(TAG, "refreshAdapter.load:" + load + " isRefresh:" + isRefresh);
+        //WeiboLog.d(TAG, "refreshAdapter.load:"+load+" isRefresh:"+isRefresh);
         if (load) {
             mAdapter.notifyDataSetChanged();
         }
         mSwipeLayout.setRefreshing(false);
 
         if (isRefresh) {
+            mRecyclerView.smoothScrollToPosition(0);
         }
 
-        if (mDataList.size() > 0) {
-            if (mEmptyTxt.getVisibility() == View.VISIBLE) {
+        if (mDataList.size()>0) {
+            if (mEmptyTxt.getVisibility()==View.VISIBLE) {
                 mEmptyTxt.setVisibility(View.GONE);
             }
         } else {
@@ -490,27 +536,80 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
     //------------------------------------------
     public class LayoutAdapter extends RecyclerView.Adapter<SimpleViewHolder> {
 
+        protected static final int TYPE_HEADERVIEW=0x001;
+        protected static final int TYPE_FOOTERVIEW=0x002;
         private final Context mContext;
+        protected View footerView;
+
+        public View getFooterView() {
+            return footerView;
+        }
+
+        public void addFooterView(View footerView) {
+            this.footerView=footerView;
+        }
+
+        public void removeFooterView() {
+            this.footerView=null;
+        }
 
         public LayoutAdapter(Context context) {
-            mContext = context;
+            mContext=context;
         }
 
         @Override
         public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            final View view = RecyclerViewFragment.this.newView(parent, viewType);
+            View mView;
+            switch (viewType) {
+                /*case TYPE_HEADERVIEW:
+                    //mView=getHeaderView();
+                    break;*/
+                case TYPE_FOOTERVIEW:
+                    mView=getFooterView();
+                    break;
+                default:
+                    mView=RecyclerViewFragment.this.newView(parent, viewType);
+                    break;
+            }
+            //mView=RecyclerViewFragment.this.newView(parent, viewType);
             // LayoutInflater.from(mContext).inflate(R.layout.test_row_staggered_demo, parent, false);
-            return new SimpleViewHolder(view);
+            return new SimpleViewHolder(mView);
         }
 
         @Override
         public void onBindViewHolder(SimpleViewHolder holder, int position) {
-            RecyclerViewFragment.this.getView(holder, position);
+            int itemType=getItemViewType(position);
+            if (itemType==TYPE_FOOTERVIEW) {
+
+            } else {
+                RecyclerViewFragment.this.getView(holder, position);
+            }
         }
 
         @Override
         public int getItemCount() {
+            return mDataList.size()+(footerView==null ? 0 : 1);
+        }
+
+        public int getCount() {
             return mDataList.size();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            int count=getItemCount()-1;
+            /*if (isHeaderView(position)) {
+                return TYPE_HEADERVIEW;
+            } else*/
+            if (isFooterView(position, count)) {
+                return TYPE_FOOTERVIEW;
+            } else {
+                return super.getItemViewType(position);
+            }
+        }
+
+        private boolean isFooterView(int position, int count) {
+            return position==count&&footerView!=null;
         }
     }
 

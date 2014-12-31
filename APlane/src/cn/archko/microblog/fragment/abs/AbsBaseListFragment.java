@@ -535,7 +535,7 @@ public abstract class AbsBaseListFragment <T> extends AbsStatusAbstraction<T> im
 
         mMoreTxt.setText(R.string.more);
 
-        WeiboLog.v(TAG, "mListView.getFooterViewsCount():" + mListView.getFooterViewsCount());
+        //WeiboLog.v(TAG, "mListView.getFooterViewsCount():" + mListView.getFooterViewsCount());
         /*if (mListView.getFooterViewsCount()<1) {
             footerView.removeAllViews();
             RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(
