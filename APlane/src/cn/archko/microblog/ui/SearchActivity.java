@@ -456,7 +456,7 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
             }*/
 
             if (convertView == null) {
-                itemView = new ThreadBeanItemView(SearchActivity.this, mListView, App.mCacheDir, status, updateFlag, false, false, true);
+                itemView = new ThreadBeanItemView(SearchActivity.this,App.mCacheDir, updateFlag, false, false, true);
             } else {
                 itemView = (ThreadBeanItemView) convertView;
             }
@@ -468,7 +468,6 @@ public class SearchActivity extends BaseOauthActivity implements OnRefreshListen
 
     private class SearchItemView extends LinearLayout {
 
-        private ListView parent;
         private TextView mTitle;
         private TextView mMsg;    //
 

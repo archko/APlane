@@ -3,18 +3,19 @@ package cn.archko.microblog.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.RecyclerView;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.action.StatusAction;
 import cn.archko.microblog.fragment.impl.SinaMyPostStatusImpl;
+import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.view.ActionModeItemView;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
  * @description: 我发布的微博，可以有删除选项。
  * @author: archko 11-11-17
  */
-public class MyPostFragment extends StatusListFragment {
+public class MyPostFragment extends RecyclerViewFragment {
 
     public static final String TAG = "MyPostFragment";
     long mUserId = - 1l;
@@ -74,7 +75,7 @@ public class MyPostFragment extends StatusListFragment {
         super.onActivityCreated(savedInstanceState);
 
         setHasOptionsMenu(true);
-        mListView.setItemsCanFocus(false);
+        //mListView.setItemsCanFocus(false);
     }
 
     /**
@@ -86,24 +87,49 @@ public class MyPostFragment extends StatusListFragment {
      * @return
      */
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
+    public View getView(SimpleViewHolder holder, final int position) {
+        //WeiboLog.d(TAG, "getView.pos:" + position + " holder:" + holder);
 
-        ActionModeItemView itemView = null;
-        Status status = mDataList.get(position);
+        View convertView=holder.baseItemView;
+        ActionModeItemView itemView=null;
+        Status status=mDataList.get(position);
 
-        boolean updateFlag = true;
-        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag = false;
+        boolean updateFlag=true;
+        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            updateFlag=false;
         }
 
-        if (convertView == null) {
-            itemView = new ActionModeItemView(getActivity(), mListView, mCacheDir, status, updateFlag, true, showLargeBitmap, showBitmap);
+        if (convertView==null) {
+            itemView=new ActionModeItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
         } else {
-            itemView = (ActionModeItemView) convertView;
+            itemView=(ActionModeItemView) convertView;
         }
         itemView.update(status, updateFlag, true, showLargeBitmap, showBitmap);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemClick(view);
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                prepareMenu(up);
+                return true;
+            }
+        });
 
+        return itemView;
+    }
+
+    public View newView(ViewGroup parent, int viewType) {
+        //WeiboLog.d(TAG, "newView:" + parent + " viewType:" + viewType);
+        ActionModeItemView itemView=null;
+        boolean updateFlag=true;
+        if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
+            updateFlag=false;
+        }
+        itemView=new ActionModeItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
         return itemView;
     }
 
@@ -111,8 +137,8 @@ public class MyPostFragment extends StatusListFragment {
     public void onStop() {
         super.onStop();
         if (null != mMode) {
-            mListView.clearChoices();
-            mListView.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
+            /*mListView.clearChoices();
+            mListView.setChoiceMode(AbsListView.CHOICE_MODE_NONE);*/
             mMode.finish();
             mMode = null;
         }
@@ -330,8 +356,8 @@ public class MyPostFragment extends StatusListFragment {
     private void turnOnActionMode() {
         WeiboLog.d(TAG, "turnOnActionMode");
         mMode = getActivity().startActionMode(new StatusActionMode());
-        ListView lv = mListView;
-        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        /*ListView lv = mListView;
+        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);*/
     }
 
     //TODO 在这里用有些问题，比如应用 Mode时，不能将列表选中项清空。不能在第一次长按时选中某项。
@@ -399,7 +425,7 @@ public class MyPostFragment extends StatusListFragment {
             return;
         }
 
-        ListView lv = mListView;
+        /*ListView lv = mListView;
 
         ArrayList<Long> checkedIds = new ArrayList<Long>();
 
@@ -433,20 +459,20 @@ public class MyPostFragment extends StatusListFragment {
                 e.printStackTrace();
             }
             mMode.finish();
-        }
+        }*/
     }
 
     private void actionModeInvertSelection() {
-        ListView lv = mListView;
+        /*ListView lv = mListView;
 
         for (int i = 0; i < lv.getCount(); i++) {
             lv.setItemChecked(i, ! lv.isItemChecked(i));
         }
-        mMode.invalidate();
+        mMode.invalidate();*/
     }
 
     void clearSelection() {
-        ListView lv = mListView;
+        /*ListView lv = mListView;
         // Uncheck all
         int count = lv.getAdapter().getCount();
         for (int i = 0; i < count; i++) {
@@ -454,6 +480,6 @@ public class MyPostFragment extends StatusListFragment {
         }
         lv.clearChoices();
         lv.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();*/
     }
 }

@@ -2,7 +2,6 @@ package cn.archko.microblog.view;
 
 import android.content.Context;
 import android.widget.Checkable;
-import android.widget.ListView;
 import cn.archko.microblog.R;
 import com.me.microblog.bean.Status;
 
@@ -17,9 +16,9 @@ public class ActionModeItemView extends ThreadBeanItemView implements Checkable 
 
     private boolean checked = false;
 
-    public ActionModeItemView(Context context, ListView view, String cacheDir, Status status, boolean updateFlag,
+    public ActionModeItemView(Context context, String cacheDir, boolean updateFlag,
         boolean cache, boolean showLargeBitmap, boolean showBitmap) {
-        super(context, view, cacheDir, status, updateFlag, cache, showLargeBitmap, showBitmap);
+        super(context, cacheDir, updateFlag, cache, showLargeBitmap, showBitmap);
     }
 
     @Override

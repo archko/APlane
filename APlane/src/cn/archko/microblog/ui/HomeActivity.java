@@ -34,7 +34,6 @@ import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.action.GroupAction;
 import cn.archko.microblog.fragment.HomeFragment;
-import cn.archko.microblog.fragment.HomeGridFragment;
 import cn.archko.microblog.fragment.HomeRecyclerViewFragment;
 import cn.archko.microblog.fragment.PrefsFragment;
 import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
@@ -611,29 +610,6 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
                 checkUpdate();
             }
         }
-
-        /*getSlidingMenu().setBehindScrollScale(0.0f);
-        getSlidingMenu().setFadeDegree(0.0f);
-
-        String nav_sidebar_touch=mPrefs.getString(PrefsActivity.PREF_NAV_SIDEBAR_TOUCH, getString(R.string.default_nav_sidebar_touch));
-        if ("0".equals(nav_sidebar_touch)) {
-            getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-        } else if ("1".equals(nav_sidebar_touch)) {
-            getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-        } else if ("2".equals(nav_sidebar_touch)) {
-            getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        }*/
-
-        /*int theme=R.color.holo_dark_bg_view;
-        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        if ("0".equals(themeId)) {
-        } else if ("1".equals(themeId)) {
-        } else {//if ("2".equals(themeId)) {
-            theme=R.color.holo_light_bg_view;
-        }
-
-        //findViewById(R.id.fragment_placeholder).setBackgroundResource(R.drawable.bg);
-        findViewById(R.id.fragment_placeholder).setBackgroundResource(theme);*/
     }
 
     @Override
@@ -976,9 +952,6 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
                     try {
                         if (current instanceof HomeFragment) {
                             HomeFragment homeFragment = (HomeFragment) current;
-                            homeFragment.updateGroupTimeline(mGroupList.get(pos));
-                        } else if (current instanceof HomeGridFragment) {
-                            HomeGridFragment homeFragment = (HomeGridFragment) current;
                             homeFragment.updateGroupTimeline(mGroupList.get(pos));
                         } else if (current instanceof HomeRecyclerViewFragment) {
                             HomeRecyclerViewFragment homeFragment = (HomeRecyclerViewFragment) current;

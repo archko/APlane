@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
@@ -40,7 +39,6 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
     private ImageView mPortrait;    //微博作者头像
     private TextView mName;
 
-    private ListView parent;
     private String mPortraitUrl = null;
     private String mCacheDir;    //图片缓存目录
     private User user;    //微博
@@ -50,7 +48,7 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
     private int followingType = - 1;   //0表示未关注,1表示已关注,-1表示未知
     //protected DisplayImageOptions options;
 
-    public UserItemView(Context context, ListView view, String cacheDir, User user, boolean updateFlag) {
+    public UserItemView(Context context, String cacheDir, boolean updateFlag) {
         super(context);
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.friend_item, this);
 
@@ -64,11 +62,9 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
         mPortrait.setOnClickListener(this);
         followBtn.setOnClickListener(this);
 
-        parent = view;
         mContext = context;
         mCacheDir = cacheDir;
 
-        //update(status, updateFlag);
         /*options = new DisplayImageOptions.Builder()
             .cacheInMemory(true)
             .cacheOnDisc(true)

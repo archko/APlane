@@ -1,6 +1,7 @@
 package cn.archko.microblog.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
 import cn.archko.microblog.fragment.impl.SinaAtMeCommentImpl;
 import cn.archko.microblog.listeners.CommentListener;
+import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.ui.SkinFragmentActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.WeiboOperation;
@@ -175,28 +177,54 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
         WeiboLog.d(TAG, "fetchMore.lastItem:" + lastItem + " selectedPos:" + selectedPos);
         if (mAdapter.getCount() > 0) {
             Comment st;
-            st = (Comment) mAdapter.getItem(mAdapter.getCount() - 1);
+            st = (Comment) mAdapter.getItem(mAdapter.getCount()-1);
             fetchData(- 1, st.id, false, false);
         }
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        CommentItemView itemView = null;
-        Comment status = mDataList.get(position);
-        boolean updateFlag = true;
-        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag = false;
+    public View getView(SimpleViewHolder holder, final int position) {
+        View convertView=holder.baseItemView;
+        CommentItemView itemView=null;
+        Comment status=mDataList.get(position);
+
+        boolean updateFlag=true;
+        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            updateFlag=false;
         }
 
-        if (convertView == null) {
-            itemView = new CommentItemView(getActivity(), mListView, mCacheDir, status, updateFlag, true, showBitmap, true);
+        if (convertView==null) {
+            itemView=new CommentItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
         } else {
-            itemView = (CommentItemView) convertView;
+            itemView=(CommentItemView) convertView;
         }
-
         itemView.update(status, updateFlag, true, showBitmap);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemClick(view);
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                prepareMenu(up);
+                return true;
+            }
+        });
 
+        return itemView;
+    }
+
+    @Override
+    public View newView(ViewGroup parent, int viewType) {
+        //WeiboLog.d(TAG, "newView:" + parent + " viewType:" + viewType);
+        CommentItemView itemView=null;
+        boolean updateFlag=true;
+        if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
+            updateFlag=false;
+        }
+        itemView=new CommentItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
         return itemView;
     }
 

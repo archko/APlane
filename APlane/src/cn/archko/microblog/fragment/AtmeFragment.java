@@ -32,7 +32,7 @@ import java.util.ArrayList;
  * @description:
  * @author: archko 11-11-17
  */
-public class AtmeFragment extends StatusListFragment {
+public class AtmeFragment extends RecyclerViewFragment {
 
     public static final String TAG = "AtmeFragment";
 
@@ -272,7 +272,7 @@ public class AtmeFragment extends StatusListFragment {
      */
     private void clearHomeNotify() {
         //int newAt=mPrefs.getInt(Constants.PREF_SERVICE_AT, 0);
-        mPrefs.edit().remove(Constants.PREF_SERVICE_AT).commit();
+        mPrefs.edit().remove(Constants.PREF_SERVICE_AT).apply();
         try {
             SkinFragmentActivity parent = (SkinFragmentActivity) getActivity();
             parent.refreshSidebar();

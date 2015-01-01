@@ -2,6 +2,7 @@ package cn.archko.microblog.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
 import cn.archko.microblog.fragment.impl.SinaCommentImpl;
 import cn.archko.microblog.listeners.CommentListener;
+import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.ui.PrefsActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.WeiboOperation;
@@ -128,23 +130,50 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
      * @return
      */
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(SimpleViewHolder holder, final int position) {
+        //WeiboLog.d(TAG, "getView.pos:" + position + " holder:" + holder);
+
+        View convertView=holder.baseItemView;
+        CommentItemView itemView = null;
         final Comment bean = mDataList.get(position);
 
-        boolean updateFlag = true;
-        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag = false;
+        boolean updateFlag=true;
+        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            updateFlag=false;
         }
 
-        CommentItemView itemView = null;
         if (null == convertView) {
-            itemView = new CommentItemView(getActivity(), mListView, mCacheDir, bean, updateFlag, false, showBitmap, false);
+            itemView = new CommentItemView(getActivity(), mCacheDir, updateFlag, false, showBitmap, false);
         } else {
             itemView = (CommentItemView) convertView;
         }
 
         itemView.update(bean, updateFlag, false, showBitmap);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemClick(view);
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                prepareMenu(up);
+                return true;
+            }
+        });
 
+        return itemView;
+    }
+
+    public View newView(ViewGroup parent, int viewType) {
+        //WeiboLog.d(TAG, "newView:" + parent + " viewType:" + viewType);
+        CommentItemView itemView=null;
+        boolean updateFlag=true;
+        if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
+            updateFlag=false;
+        }
+        itemView=new CommentItemView(getActivity(), mCacheDir, updateFlag, false, showBitmap, false);
         return itemView;
     }
 
@@ -197,7 +226,7 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
     public void refreshAdapter(boolean load, boolean isRefresh) {
         WeiboLog.d(TAG, "refreshAdapter.load:" + load + " isRefresh:" + isRefresh);
         try {
-            mPullRefreshListView.onRefreshComplete();
+            mSwipeLayout.setRefreshing(fastScroll);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -209,9 +238,7 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
         }
 
         if (isRefresh) {
-            if (null != mListView) {
-                mListView.setSelection(1);
-            }
+            scrollToHeader();
         }
 
         if (null != mDataList && mDataList.size() > 0) {

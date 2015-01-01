@@ -26,7 +26,7 @@ import com.me.microblog.util.WeiboLog;
  * @description: 显示用户的微博Fragment，根据传入的用户id
  * @author: archko 12-5-7
  */
-public class UserTimelineFragment extends StatusListFragment {
+public class UserTimelineFragment extends RecyclerViewFragment {
 
     public static final String TAG = "UserTimelineFragment";
     long userId = - 1;
@@ -66,101 +66,7 @@ public class UserTimelineFragment extends StatusListFragment {
 
     public void _onActivityCreated(Bundle savedInstanceState) {
         WeiboLog.v(TAG, "onActivityCreated");
-
-        // Give some text to display if there is no data.  In a real
-        // application this would come from a resource.
-        //setEmptyText("No phone numbers");
-
-        // We have a menu item to show in action bar.
-        //setHasOptionsMenu(true);
-
-        //mDataList=(ArrayList<Status>) getActivity().getLastNonConfigurationInstance();
-
-        //mListView.setFocusable(true);
-
-        //mListView.setOnScrollListener(this);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                int position = pos;
-                if (mListView.getHeaderViewsCount() > 0) {
-                    position -= mListView.getHeaderViewsCount();
-                }
-                if (position == - 1) {
-                    WeiboLog.v("选中的是头部，不可点击");
-                    return;
-                }
-
-                selectedPos = position;
-                WeiboLog.v(TAG, "itemClick:" + pos + " selectedPos:" + selectedPos);
-
-                if (view == footerView) {   //if (mAdapter.getCount()>0&&position>=mAdapter.getCount()) {
-                    mMoreProgressBar.setVisibility(View.VISIBLE);
-                    fetchMore();
-                    return;
-                }
-                UserTimelineFragment.this.itemClick(view);
-            }
-        });
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                WeiboLog.v(TAG, "itemLongClick:" + pos);
-                int position = pos;
-                if (mListView.getHeaderViewsCount() > 0) {
-                    position -= mListView.getHeaderViewsCount();
-                }
-                selectedPos = position;
-
-                if (mAdapter.getCount() > 0 && position >= mAdapter.getCount()) {
-                    WeiboLog.v(TAG, "footerView.click.");
-                    return true;
-                }
-
-                if (view != footerView) {
-                    //showButtonBar(view);
-                    return UserTimelineFragment.this.itemLongClick(view);
-                }
-                return true;
-            }
-        });
-        /*mPullRefreshListView.setOnRefreshListener(new OnRefreshListener<ListView>() {
-            @Override
-            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                pullToRefreshData();
-            }
-        });*/
-        mPullRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
-        mPullRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
-            @Override
-            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-                pullToRefreshData();
-            }
-
-            @Override
-            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-                pullUpRefreshData();
-            }
-        });
-
-        // Add an end-of-list listener
-        mPullRefreshListView.setOnLastItemVisibleListener(new PullToRefreshBase.OnLastItemVisibleListener() {
-
-            @Override
-            public void onLastItemVisible() {
-                //showMoreView();
-            }
-        });
-        //mPullRefreshListView.setOnScrollListener(this);
-        mListView.addFooterView(footerView);
-        //mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-        if (mAdapter == null) {
-            mAdapter = new TimeLineAdapter();
-        }
-        mListView.setAdapter(mAdapter);
+         super._onActivityCreated(savedInstanceState);
 
         //loadData();
         if (! hasAttach) {   //不在onAttach中处理,因为refresh可能先调用,以保证数据初始化.
@@ -181,7 +87,7 @@ public class UserTimelineFragment extends StatusListFragment {
     @Override
     protected void loadData() {
         if (mAdapter == null) {
-            mAdapter = new TimeLineAdapter();
+            mAdapter = new LayoutAdapter(getActivity());
         }
         if (mDataList != null && mDataList.size() > 0) {
             mAdapter.notifyDataSetChanged();
@@ -255,35 +161,5 @@ public class UserTimelineFragment extends StatusListFragment {
         if (! isLoading) {   //这里多了一个当前查询的用户id
             newTask(new Object[]{isRefresh, sinceId, maxId, count, page, userId, isHomeStore}, null);
         }
-    }
-
-    /**
-     * 需要注意,在主页时,需要缓存图片数据.所以cache为false,其它的不缓存,比如随便看看.
-     *
-     * @param position
-     * @param convertView
-     * @param parent
-     * @return
-     */
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
-
-        ThreadBeanItemView itemView = null;
-        Status status = mDataList.get(position);
-
-        boolean updateFlag = true;
-        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag = false;
-        }
-
-        if (convertView == null) {
-            itemView = new ThreadBeanItemView(getActivity(), mListView, mCacheDir, status, updateFlag, false, showLargeBitmap, showBitmap);
-        } else {
-            itemView = (ThreadBeanItemView) convertView;
-        }
-        itemView.update(status, updateFlag, false, showLargeBitmap, showBitmap);
-
-        return itemView;
     }
 }

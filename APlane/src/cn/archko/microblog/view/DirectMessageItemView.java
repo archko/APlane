@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.ui.UserFragmentActivity;
@@ -42,7 +41,6 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
 
     public static final String TAG = "DirectMessageItemView";
     protected Context mContext;
-    protected ListView parent;
     protected String mCacheDir;    //图片缓存目录
     private TextView mName;
     private TextView mContentFirst;    //微博的内容
@@ -76,12 +74,11 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
         setChecked(! checked);
     }
 
-    public DirectMessageItemView(Context context, ListView view, String cacheDir, DirectMessage directMessage,
+    public DirectMessageItemView(Context context, String cacheDir,
         boolean updateFlag, boolean cache, boolean showBitmap) {
         super(context);
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.comment_item, this);
 
-        parent = view;
         mCacheDir = cacheDir;
         mContext = context;
 
@@ -92,8 +89,6 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
 
         mSourceFrom = (TextView) findViewById(R.id.source_from);
         mCreateAt = (TextView) findViewById(R.id.send_time);
-
-        //update(directMessage, updateFlag, cache, showBitmap);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
         float pref_title_font_size = prefs.getInt(PreferenceUtils.PREF_TITLE_FONT_SIZE, 14);

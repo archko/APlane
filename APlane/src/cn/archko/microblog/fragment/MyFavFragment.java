@@ -16,6 +16,7 @@ import cn.archko.microblog.R;
 import cn.archko.microblog.action.SFavAction;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
 import cn.archko.microblog.fragment.impl.SinaMyFavStatusImpl;
+import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.FavItemView;
 import com.andrew.apollo.utils.PreferenceUtils;
@@ -78,7 +79,6 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
         super.onActivityCreated(savedInstanceState);
 
         setHasOptionsMenu(true);
-        mListView.setItemsCanFocus(false);
     }
 
     /**
@@ -89,7 +89,6 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
      * @param parent
      * @return
      */
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
 
@@ -102,7 +101,7 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
         }
 
         if (convertView == null) {
-            itemView = new FavItemView(getActivity(), mListView, mCacheDir, status, updateFlag, true, showLargeBitmap, showBitmap);
+            itemView = new FavItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
         } else {
             itemView = (FavItemView) convertView;
         }
@@ -111,12 +110,16 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
         return itemView;
     }
 
+    public  View getView(SimpleViewHolder holder, final int position){return null;}
+
+    public  View newView(ViewGroup parent, int viewType){return null;}
+
     @Override
     public void onStop() {
         super.onStop();
         if (null != mMode) {
-            mListView.clearChoices();
-            mListView.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
+            //mListView.clearChoices();
+            //mListView.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
             mMode.finish();
             mMode = null;
         }
@@ -398,8 +401,8 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
     private void turnOnActionMode() {
         WeiboLog.d(TAG, "turnOnActionMode");
         mMode = getActivity().startActionMode(new StatusActionMode());
-        ListView lv = mListView;
-        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        /*ListView lv = mListView;
+        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);*/
     }
 
     //TODO 在这里用有些问题，比如应用 Mode时，不能将列表选中项清空。不能在第一次长按时选中某项。
@@ -467,7 +470,7 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
             return;
         }
 
-        ListView lv = mListView;
+        /*ListView lv = mListView;
 
         ArrayList<Long> checkedIds = new ArrayList<Long>();
 
@@ -501,20 +504,20 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
                 e.printStackTrace();
             }
             mMode.finish();
-        }
+        }*/
     }
 
     private void actionModeInvertSelection() {
-        ListView lv = mListView;
+        /*ListView lv = mListView;
 
         for (int i = 0; i < lv.getCount(); i++) {
             lv.setItemChecked(i, ! lv.isItemChecked(i));
         }
-        mMode.invalidate();
+        mMode.invalidate();*/
     }
 
     void clearSelection() {
-        ListView lv = mListView;
+        /*ListView lv = mListView;
         // Uncheck all
         int count = lv.getAdapter().getCount();
         for (int i = 0; i < count; i++) {
@@ -522,6 +525,6 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
         }
         lv.clearChoices();
         lv.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();*/
     }
 }

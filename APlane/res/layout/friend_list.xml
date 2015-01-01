@@ -4,16 +4,20 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:gravity="center_vertical">
 
-    <!--<eu.erikw.PullToRefreshListView-->
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
-        android:id="@+id/statusList"
-        android:listSelector="@drawable/list_selector_holo_light"
-        android:layout_width="match_parent" android:layout_height="match_parent"
-        android:cacheColorHint="@color/transparent" android:dividerHeight="0dp"
-        android:drawSelectorOnTop="false" android:fastScrollEnabled="true"
-        android:fadingEdge="none" android:smoothScrollbar="true"
-        android:footerDividersEnabled="false"
-        android:headerDividersEnabled="false"/>
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/statusList"
+            android:cacheColorHint="@android:color/transparent"
+            android:overScrollFooter="@null"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView android:id="@+id/empty_txt"
         android:visibility="gone" android:text="@string/list_pre_empty_txt"

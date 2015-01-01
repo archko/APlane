@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.ImageAdapter;
@@ -37,9 +36,9 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
     public TagsViewGroup mTagsViewGroup;
     public ImageAdapter mAdapter;
 
-    public ThreadBeanItemView(Context context, ListView view, String cacheDir, Status status, boolean updateFlag,
+    public ThreadBeanItemView(Context context, String cacheDir, boolean updateFlag,
         boolean cache, boolean showLargeBitmap, boolean showBitmap) {
-        super(context, view, cacheDir, status, updateFlag);
+        super(context, cacheDir, updateFlag);
 
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.home_time_line_item, this);
 

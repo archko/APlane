@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,7 +38,6 @@ public class UserGridItemView extends LinearLayout {
     private TextView mGridviewLineOne;
     private TextView mGridviewLineTwo;
 
-    private AbsListView parent;
     private String portraitUrl = null;
     private String mCacheDir;    //图片缓存目录
     private User user;    //微博
@@ -48,7 +46,7 @@ public class UserGridItemView extends LinearLayout {
     private int followingType = - 1;   //0表示未关注,1表示已关注,-1表示未知
     //protected DisplayImageOptions options;
 
-    public UserGridItemView(Context context, AbsListView view, String cacheDir, User user, boolean updateFlag) {
+    public UserGridItemView(Context context, String cacheDir, boolean updateFlag) {
         super(context);
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.ak_user_grid_item, this);
 
@@ -57,7 +55,6 @@ public class UserGridItemView extends LinearLayout {
         mGridviewLineOne = (TextView) findViewById(R.id.gridview_line_one);
         mGridviewLineTwo = (TextView) findViewById(R.id.gridview_line_two);
 
-        parent = view;
         mContext = context;
         mCacheDir = cacheDir;
 

@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import cn.archko.microblog.fragment.HomeGridFragment;
 import cn.archko.microblog.fragment.TestFragment;
-import cn.archko.microblog.fragment.TestHomeFragment;
 import cn.archko.microblog.fragment.place.PlaceNearbyPhotosGridFragment;
 
 import java.util.ArrayList;
@@ -28,8 +26,6 @@ public class TestApiActivity extends ListActivity {
         mListView = getListView();
 
         ArrayList<ApiBean> beans = new ArrayList<ApiBean>();
-        addApi(HomeGridFragment.class, beans);
-        addApi(TestHomeFragment.class, beans);
         addApi(PlaceNearbyPhotosGridFragment.class, beans);
         addApi(TestFragment.class, beans);
 

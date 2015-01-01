@@ -43,53 +43,6 @@ public abstract class AbstractLocalListFragment <T> extends AbsBaseListFragment<
         }
     }
 
-    /**
-     * 线程中的操作。
-     * 只是获取微博信息。需要传入五个参数
-     * Long id = (Long) params[0];起始id
-     * Long mid = (Long) params[1];最大id
-     * Integer c = (Integer) params[2];数量
-     * Integer p = (Integer) params[3];页面索引
-     * Boolean isRefresh=(Boolean) params[4];是否刷新
-     * Boolean isHomeStore=(Boolean) params[5];是否是主页数据，需要存储
-     *
-     * @param params
-     * @return
-     */
-    /*public Object[] baseBackgroundOperation(Object... objects) {
-        try {
-            WeiboLog.v(TAG, "baseBackgroundOperation:"+objects);
-            SStatusData<T> sStatusData=(SStatusData<T>) getStatuses(-1l, -1l, -1, -1);
-
-            return new Object[]{true, sStatusData, false};
-        } catch (WeiboException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }*/
-
-    /**
-     * 线程结束后的操作。
-     *
-     * @param resultObj
-     */
-    /*public void basePostOperation(Object[] result) {
-        WeiboLog.v(TAG, "basePostOperation");
-        if (mRefreshListener!=null) {
-            mRefreshListener.onRefreshFinished();
-        }
-
-        isLoading=false;
-
-        SStatusData<T> sStatusData=(SStatusData<T>) result[1];
-
-        //only remove footerView when load succefully
-        //footerView.removeAllViews();
-
-        refreshNewData(sStatusData, true);
-
-        refreshAdapter(true, false);
-    }*/
     @Override
     public void fetchMore() {
         super.fetchMore();

@@ -14,7 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import com.andrew.apollo.utils.ApolloUtils;
@@ -37,7 +36,6 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
 
     private static final String TAG = "BaseItemView";
     protected Context mContext;
-    protected ListView parent;
     protected String mCacheDir;    //图片缓存目录
 
     protected ImageView mPortrait;    //微博作者头像
@@ -70,9 +68,8 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
     int mResId;
     //protected DisplayImageOptions options;
 
-    public BaseItemView(Context context, ListView view, String cacheDir, Status status, boolean updateFlag) {
+    public BaseItemView(Context context, String cacheDir, boolean updateFlag) {
         super(context);
-        parent = view;
         mCacheDir = cacheDir;
         mContext = context;
         sliderColors = new int[ 8 ];

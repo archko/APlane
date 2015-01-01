@@ -2,13 +2,15 @@ package cn.archko.microblog.fragment.place;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import cn.archko.microblog.R;
-import cn.archko.microblog.fragment.StaggeredGridFragment;
+import cn.archko.microblog.fragment.RecyclerViewFragment;
 import cn.archko.microblog.fragment.impl.SinaPlaceStatusImpl;
+import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.WeiboOperation;
@@ -37,7 +39,7 @@ import java.util.Date;
  * @description: 公共的位置微博列博Fragment。
  * @author: archko 12-9-12
  */
-public class PlaceStatusGridFragment extends StaggeredGridFragment {
+public class PlaceStatusGridFragment extends RecyclerViewFragment {
 
     public static final String TAG = "PlaceStatusListFragment";
 
@@ -84,7 +86,7 @@ public class PlaceStatusGridFragment extends StaggeredGridFragment {
         mLocClient.start();
         mIsStart = true;
 
-        mPullRefreshListView.setRefreshing();
+        mSwipeLayout.setRefreshing(true);
         if (mRefreshListener != null) {
             mRefreshListener.onRefreshStarted();
         }
@@ -191,24 +193,49 @@ public class PlaceStatusGridFragment extends StaggeredGridFragment {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
+    public View getView(SimpleViewHolder holder, final int position) {
+        //WeiboLog.d(TAG, "getView.pos:" + position + " holder:" + holder);
 
-        PlaceItemView itemView = null;
-        Status status = mDataList.get(position);
+        View convertView=holder.baseItemView;
+        PlaceItemView itemView=null;
+        Status status=mDataList.get(position);
 
-        boolean updateFlag = true;
-        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag = false;
+        boolean updateFlag=true;
+        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            updateFlag=false;
         }
 
-        if (convertView == null) {
-            itemView = new PlaceItemView(getActivity(), mListView, mCacheDir, status, updateFlag, true, showLargeBitmap, showBitmap);
+        if (convertView==null) {
+            itemView=new PlaceItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
         } else {
-            itemView = (PlaceItemView) convertView;
+            itemView=(PlaceItemView) convertView;
         }
-        itemView.update(status, updateFlag, false, showLargeBitmap, showBitmap);
+        itemView.update(status, updateFlag, true, showLargeBitmap, showBitmap);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemClick(view);
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                prepareMenu(up);
+                return true;
+            }
+        });
 
+        return itemView;
+    }
+
+    public View newView(ViewGroup parent, int viewType) {
+        //WeiboLog.d(TAG, "newView:" + parent + " viewType:" + viewType);
+        PlaceItemView itemView=null;
+        boolean updateFlag=true;
+        if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
+            updateFlag=false;
+        }
+        itemView=new PlaceItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
         return itemView;
     }
 

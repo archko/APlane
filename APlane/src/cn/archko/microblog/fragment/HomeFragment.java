@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * @description: 主页, 显示登录用户与其关注对象所发的微博.
  * @author: archko 11-11-17
  */
-public class HomeFragment extends StatusListFragment {
+public class HomeFragment extends RecyclerViewFragment {
 
     public static final String TAG = "HomeFragment";
     /**
@@ -217,7 +217,7 @@ public class HomeFragment extends StatusListFragment {
         super.refreshAdapter(load, isRefresh);
         isGroupUpdated = false;
         if (isRefresh && load) {
-            mListView.setSelection(1);
+            scrollToHeader();
             clearHomeNotify();
         }
         isRefreshData = false;

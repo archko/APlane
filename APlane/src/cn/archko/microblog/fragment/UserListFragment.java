@@ -2,6 +2,7 @@ package cn.archko.microblog.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.AbsListView;
 import android.widget.PopupMenu;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
+import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.ui.NewStatusActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.WeiboOperation;
@@ -34,12 +36,6 @@ public abstract class UserListFragment extends AbsBaseListFragment<User> {   //T
         //mStatusImpl=new SinaPlaceUserImpl();
     }
 
-    /*@Override
-    public SStatusData<User> getStatuses(Long sinceId, Long maxId, int c, int p)
-        throws WeiboException {
-        return null;
-    }*/
-
     @Override
     public void fetchMore() {
         super.fetchMore();
@@ -52,32 +48,53 @@ public abstract class UserListFragment extends AbsBaseListFragment<User> {   //T
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
+    public View getView(SimpleViewHolder holder, final int position) {
+        //WeiboLog.d(TAG, "getView.pos:" + position + " holder:" + holder);
 
+        View convertView=holder.baseItemView;
         UserItemView itemView = null;
         User user = mDataList.get(position);
 
-        boolean updateFlag = true;
-        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag = false;
+        boolean updateFlag=true;
+        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            updateFlag=false;
         }
 
         if (convertView == null) {
-            itemView = new UserItemView(getActivity(), mListView, mCacheDir, user, updateFlag);
+            itemView = new UserItemView(getActivity(), mCacheDir, updateFlag);
         } else {
             itemView = (UserItemView) convertView;
         }
         itemView.update(user, updateFlag, false);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemClick(view);
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                prepareMenu(up);
+                return true;
+            }
+        });
 
         return itemView;
     }
 
-    //--------------------- 用户操作 ---------------------
+    public View newView(ViewGroup parent, int viewType) {
+        //WeiboLog.d(TAG, "newView:" + parent + " viewType:" + viewType);
+        UserItemView itemView=null;
+        boolean updateFlag=true;
+        if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
+            updateFlag=false;
+        }
+        itemView=new UserItemView(getActivity(), mCacheDir, updateFlag);
+        return itemView;
+    }
 
-    /*public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        showToast("重构未完成!");
-    }*/
+    //--------------------- 用户操作 ---------------------
 
     //--------------------- popupMenu ---------------------
     public void onCreateCustomMenu(PopupMenu menuBuilder) {

@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.impl.SinaTaskImpl;
+import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.service.SendTaskService;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
@@ -110,7 +112,8 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
      * @return
      */
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(SimpleViewHolder holder, final int position) {
+        View convertView=holder.baseItemView;
         DraftItemView itemView = null;
         SendTask draft = mDataList.get(position);
 
@@ -120,7 +123,28 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
             itemView = (DraftItemView) convertView;
         }
         itemView.update(draft);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemClick(view);
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                prepareMenu(up);
+                return true;
+            }
+        });
 
+        return itemView;
+    }
+
+    @Override
+    public View newView(ViewGroup parent, int viewType) {
+        //WeiboLog.d(TAG, "newView:" + parent + " viewType:" + viewType);
+        DraftItemView itemView=null;
+        itemView=new DraftItemView(getActivity());
         return itemView;
     }
 

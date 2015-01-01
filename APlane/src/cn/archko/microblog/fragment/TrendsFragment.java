@@ -1,6 +1,8 @@
 package cn.archko.microblog.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
 import cn.archko.microblog.recycler.RecycleHolder;
+import cn.archko.microblog.recycler.SimpleViewHolder;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.me.microblog.App;
@@ -39,8 +42,6 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
     int[] to = {android.R.id.text1, android.R.id.text2};
     int nextCursor = - 1;//下一页索引，第一页为-1，不是0
     long userId;//要查询的关注列表的用户id
-    protected PullToRefreshListView mPullRefreshListView;
-    protected ListView mListView;
     String mType = types[ 1 ];
 
     @Override
@@ -57,13 +58,9 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
 
     @Override
     public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RelativeLayout root = (RelativeLayout) inflater.inflate(R.layout.friend_list, null);
-        mEmptyTxt = (TextView) root.findViewById(R.id.empty_txt);
-        mPullRefreshListView = (PullToRefreshListView) root.findViewById(R.id.statusList);
-        mListView = mPullRefreshListView.getRefreshableView();
-        mPullRefreshListView.setMode(PullToRefreshBase.Mode.DISABLED);
-        mListView.setRecyclerListener(new RecycleHolder());
-        mListView.setOnScrollListener(this);
+        RelativeLayout root=(RelativeLayout) inflater.inflate(R.layout.ak_layout_recycler_view, null);
+        mEmptyTxt=(TextView) root.findViewById(R.id.empty_txt);
+        mRecyclerView=(RecyclerView) root.findViewById(R.id.statusList);
 
         return root;
     }
@@ -164,12 +161,22 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
 
         List<Trend> list = addValue(sStatusData);
 
-        mListView.clearChoices();
+        //mListView.clearChoices();
         mDataList.clear();
         mDataList.addAll(list);
         WeiboLog.i(TAG, "notify data changed." + mDataList.size() + " isRefresh:");
 
         refreshAdapter(true, false);
+    }
+
+    @Override
+    public View getView(SimpleViewHolder holder, int position) {
+        return null;
+    }
+
+    @Override
+    public View newView(ViewGroup parent, int viewType) {
+        return null;
     }
 
     private List<Trend> addValue(Trends trends) {
@@ -199,11 +206,10 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
      * @param parent
      * @return
      */
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = ((LayoutInflater) getActivity().getSystemService("layout_inflater")).
+            convertView = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
                 inflate(android.R.layout.simple_list_item_2, null);
 
             // Creates a ViewHolder and store references to the two children views

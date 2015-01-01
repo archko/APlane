@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +24,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.impl.SinaAccountImpl;
+import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.andrew.apollo.utils.PreferenceUtils;
@@ -107,7 +109,7 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
     @Override
     public void addNewData() {
         WeiboLog.d(TAG, "add new account.");
-        mPullRefreshListView.onRefreshComplete();
+        mSwipeLayout.setRefreshing(fastScroll);
         FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
         Fragment prev = getActivity().getFragmentManager().findFragmentByTag("dialog");
         if (prev != null) {
@@ -129,9 +131,8 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
      * @return
      */
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
-
+    public View getView(SimpleViewHolder holder, final int position) {
+        View convertView=holder.baseItemView;
         AUItemView itemView = null;
         OauthBean oauthBean = mDataList.get(position);
 
@@ -141,7 +142,28 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
             itemView = (AUItemView) convertView;
         }
         itemView.update(oauthBean);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemClick(view);
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                prepareMenu(up);
+                return true;
+            }
+        });
 
+        return itemView;
+    }
+
+    @Override
+    public View newView(ViewGroup parent, int viewType) {
+        //WeiboLog.d(TAG, "newView:" + parent + " viewType:" + viewType);
+        AUItemView itemView=null;
+        itemView=new AUItemView(getActivity());
         return itemView;
     }
 

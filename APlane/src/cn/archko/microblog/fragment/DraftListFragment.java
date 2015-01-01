@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.impl.SinaDraftImpl;
+import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.ui.NewStatusActivity;
 import com.me.microblog.App;
 import com.me.microblog.bean.Draft;
@@ -75,7 +77,7 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
     @Override
     public void addNewData() {
         WeiboLog.d(TAG, "pull up to refresh.");
-        mPullRefreshListView.onRefreshComplete();
+        mSwipeLayout.setRefreshing(fastScroll);
     }
 
     @Override
@@ -95,9 +97,8 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
      * @return
      */
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
-
+    public View getView(SimpleViewHolder holder, final int position) {
+        View convertView=holder.baseItemView;
         DraftItemView itemView = null;
         Draft draft = mDataList.get(position);
 
@@ -107,7 +108,28 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
             itemView = (DraftItemView) convertView;
         }
         itemView.update(draft);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemClick(view);
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                prepareMenu(up);
+                return true;
+            }
+        });
 
+        return itemView;
+    }
+
+    @Override
+    public View newView(ViewGroup parent, int viewType) {
+        //WeiboLog.d(TAG, "newView:" + parent + " viewType:" + viewType);
+        DraftItemView itemView=null;
+        itemView=new DraftItemView(getActivity());
         return itemView;
     }
 

@@ -3,7 +3,6 @@ package cn.archko.microblog.view;
 import android.content.Context;
 import android.view.View;
 import android.widget.Checkable;
-import android.widget.ListView;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.utils.AKUtils;
@@ -32,11 +31,9 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
 
     //protected DisplayImageOptions options;
 
-    public FavItemView(Context context, ListView view, String cacheDir, Favorite status, boolean updateFlag,
+    public FavItemView(Context context, String cacheDir, boolean updateFlag,
         boolean cache, boolean showLargeBitmap, boolean showBitmap) {
-        super(context, view, cacheDir, null, updateFlag, cache, showLargeBitmap, showBitmap);
-
-        //update(status, updateFlag, cache, showLargeBitmap, showBitmap);
+        super(context,cacheDir, updateFlag, cache, showLargeBitmap, showBitmap);
     }
 
     @Override

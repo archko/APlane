@@ -1,31 +1,19 @@
 package cn.archko.microblog.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
-import cn.archko.microblog.recycler.RecyclerViewHolder;
 import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.ThreadBeanItemView;
-import com.andrew.apollo.cache.ImageCache;
 import com.me.microblog.bean.SendTask;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
@@ -39,225 +27,9 @@ import java.util.Date;
 /**
  * @author: archko 30-12-12
  */
-public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> implements SwipeRefreshLayout.OnRefreshListener {
+public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
 
     public static final String TAG="RecyclerViewFragment";
-    private RecyclerView mRecyclerView;
-    LayoutAdapter mAdapter;
-    SwipeRefreshLayout mSwipeLayout;
-    private boolean mLastItemVisible;
-
-    @Override
-    public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RelativeLayout root=(RelativeLayout) inflater.inflate(R.layout.ak_layout_recycler_view, null);
-        mEmptyTxt=(TextView) root.findViewById(R.id.empty_txt);
-        mRecyclerView=(RecyclerView) root.findViewById(R.id.statusList);
-
-        // ------------------------------------------------------------------
-
-        up=(ImageView) root.findViewById(R.id.up);
-        down=(ImageView) root.findViewById(R.id.down);
-        up.setOnClickListener(navClickListener);
-        down.setOnClickListener(navClickListener);
-
-        up.setBackgroundColor(Color.TRANSPARENT);
-        down.setBackgroundColor(Color.TRANSPARENT);
-        zoomLayout=(RelativeLayout) root.findViewById(R.id.zoomLayout);
-        zoomAnim=AnimationUtils.loadAnimation(getActivity(), R.anim.zoom);
-
-        mHeader=inflater.inflate(R.layout.ak_overlay_header, null);
-
-        mSwipeLayout=(SwipeRefreshLayout) root.findViewById(R.id.swipe_container);
-        mSwipeLayout.setOnRefreshListener(this);
-        mSwipeLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
-            android.R.color.holo_green_light,
-            android.R.color.holo_orange_light,
-            android.R.color.holo_red_light);
-
-        mRecyclerView.setRecyclerListener(new RecyclerViewHolder());
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int scrollState) {
-                //WeiboLog.d(TAG, "onScrollStateChanged.scrollState:"+scrollState+" mLastItemVisible:"+mLastItemVisible);
-                if (scrollState==RecyclerView.SCROLL_STATE_IDLE) {
-                    ImageCache.getInstance(getActivity()).setPauseDiskCache(false);
-                    if (mLastItemVisible) {
-                        //mAdapter.getFooterView().setVisibility(View.VISIBLE);
-                        showMoreView();
-                    } else {
-                        //mAdapter.getFooterView().setVisibility(View.GONE);
-                    }
-                    mAdapter.notifyDataSetChanged();
-                } else {
-                    ImageCache.getInstance(getActivity()).setPauseDiskCache(true);
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                isEndOfList();
-            }
-        });
-        footerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMoreProgressBar.setVisibility(View.VISIBLE);
-                mSwipeLayout.setRefreshing(true);
-                fetchMore();
-            }
-        });
-
-        return root;
-    }
-
-    public void _onActivityCreated(Bundle savedInstanceState) {
-        WeiboLog.v(TAG, "onActivityCreated");
-
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLongClickable(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        /*final ItemClickSupport itemClick = ItemClickSupport.addTo(mRecyclerView);
-
-        itemClick.setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerView parent, View view, int pos, long id) {
-                int position = pos;
-                if (position == - 1) {
-                    WeiboLog.v("选中的是头部，不可点击");
-                    return;
-                }
-
-                selectedPos = position;
-                WeiboLog.v(TAG, "itemClick:" + pos + " selectedPos:" + selectedPos);
-
-                if (view == footerView) {   //if (mAdapter.getCount()>0&&position>=mAdapter.getCount()) {
-                    mMoreProgressBar.setVisibility(View.VISIBLE);
-                    fetchMore();
-                    return;
-                }
-                RecyclerViewFragment.this.itemClick(view);
-            }
-        });
-
-        itemClick.setOnItemLongClickListener(new ItemClickSupport.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(RecyclerView parent, View view, int pos, long id) {
-                WeiboLog.v(TAG, "itemLongClick:" + pos);
-                int position = pos;
-                selectedPos = position;
-
-                if (mAdapter.getCount() > 0 && position >= mAdapter.getCount()) {
-                    WeiboLog.v(TAG, "footerView.click.");
-                    return true;
-                }
-
-                if (view != footerView) {
-                    //showButtonBar(view);
-                    return RecyclerViewFragment.this.itemLongClick(view);
-                }
-                return true;
-            }
-        });*/
-
-        //final Drawable divider = getResources().getDrawable(R.drawable.divider);
-        //mRecyclerView.addItemDecoration(new DividerItemDecoration(divider));
-
-        mAdapter=new LayoutAdapter(getActivity());
-        //showMoreView();
-        mAdapter.addFooterView(footerView);
-        mRecyclerView.setAdapter(mAdapter);
-
-        WeiboLog.v(TAG, "isLoading:"+isLoading+" status:"+(null==mDataList ? "null" : mDataList.size()));
-        mSwipeLayout.setRefreshing(true);
-        loadData();
-    }
-
-    /**
-     * 需要注意,在主页时,需要缓存图片数据.所以cache为true,其它的不缓存,比如随便看看.
-     *
-     * @param position
-     * @param convertView
-     * @param parent
-     * @return
-     */
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
-
-        ThreadBeanItemView itemView=null;
-        Status status=mDataList.get(position);
-
-        boolean updateFlag=true;
-        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag=false;
-        }
-
-        if (convertView==null) {
-            itemView=new ThreadBeanItemView(getActivity(), mListView, mCacheDir, status, updateFlag, true, showLargeBitmap, showBitmap);
-        } else {
-            itemView=(ThreadBeanItemView) convertView;
-        }
-        itemView.update(status, updateFlag, true, showLargeBitmap, showBitmap);
-
-        return itemView;
-    }
-
-    @Override
-    public void onRefresh() {
-        /*if (mSwipeLayout.getCurrentPullMode() == SwipeRefreshLayoutUpDown.PullMode.PULL_FROM_START) {
-            pullToRefreshData();
-        } else if (mSwipeLayout.getCurrentPullMode() == SwipeRefreshLayoutUpDown.PullMode.PULL_FROM_END) {
-            pullUpRefreshData();
-        }*/
-        pullToRefreshData();
-    }
-
-    private boolean isEndOfList() {
-        if (mRecyclerView.getChildCount()==0) {
-            mLastItemVisible=false;
-            return false;
-        }
-
-        int totalCount=mAdapter.getCount()-1;
-        int lastItemPositionOnScreen=((LinearLayoutManager) mRecyclerView.getLayoutManager()).findLastVisibleItemPosition();
-        //WeiboLog.d(TAG, "lastItemPositionOnScreen:"+lastItemPositionOnScreen+" total:"+totalCount);
-        if (totalCount!=lastItemPositionOnScreen) {
-            mLastItemVisible=false;
-            return false;
-        }
-
-        final int lastItemBottomPosition=mRecyclerView.getChildAt(mRecyclerView.getChildCount()-1).getBottom();
-        //WeiboLog.d(TAG, "lastItemBottomPosition:"+lastItemBottomPosition+" height:"+mRecyclerView.getHeight());
-        if (lastItemBottomPosition<=mRecyclerView.getHeight()) {
-            mLastItemVisible=true;
-            return true;
-        }
-
-        mLastItemVisible=false;
-        return false;
-    }
-
-    protected void navClick(View view) {
-        if (view.getId()==R.id.up) {
-            showZoom();
-            if (showNavPageBtn) {
-                int scrollY=mRecyclerView.getScrollY();
-                scrollY-=mRecyclerView.getHeight();
-                mRecyclerView.scrollBy(0, scrollY);
-            } else {
-                mRecyclerView.smoothScrollToPosition(0);
-            }
-        } else if (view.getId()==R.id.down) {
-            showZoom();
-            if (showNavPageBtn) {
-                int scrollY=mRecyclerView.getScrollY();
-                scrollY+=mRecyclerView.getHeight();
-                mRecyclerView.scrollBy(0, scrollY);
-            } else {
-                mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount()-1);
-            }
-        }
-    }
 
     //--------------------- 数据获取 ---------------------
 
@@ -274,11 +46,6 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
             st=(Status) mDataList.get(mAdapter.getCount()-1);
             fetchData(-1, st.id, false, false);
         }
-    }
-
-    public void refresh() {
-        mSwipeLayout.setRefreshing(true);
-        pullToRefreshData();
     }
 
     //--------------------- 微博操作 ---------------------
@@ -479,7 +246,7 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
         }
 
         if (convertView==null) {
-            itemView=new ThreadBeanItemView(getActivity(), null, mCacheDir, status, updateFlag, true, showLargeBitmap, showBitmap);
+            itemView=new ThreadBeanItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
         } else {
             itemView=(ThreadBeanItemView) convertView;
         }
@@ -501,116 +268,17 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> i
         return itemView;
     }
 
-    protected View newView(ViewGroup parent, int viewType) {
+    public View newView(ViewGroup parent, int viewType) {
         //WeiboLog.d(TAG, "newView:" + parent + " viewType:" + viewType);
         ThreadBeanItemView itemView=null;
         boolean updateFlag=true;
-        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+        if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
-        itemView=new ThreadBeanItemView(getActivity(), null, mCacheDir, null, updateFlag, true, showLargeBitmap, showBitmap);
+        itemView=new ThreadBeanItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
         return itemView;
     }
 
-    public void refreshAdapter(boolean load, boolean isRefresh) {
-        //WeiboLog.d(TAG, "refreshAdapter.load:"+load+" isRefresh:"+isRefresh);
-        if (load) {
-            mAdapter.notifyDataSetChanged();
-        }
-        mSwipeLayout.setRefreshing(false);
-
-        if (isRefresh) {
-            mRecyclerView.smoothScrollToPosition(0);
-        }
-
-        if (mDataList.size()>0) {
-            if (mEmptyTxt.getVisibility()==View.VISIBLE) {
-                mEmptyTxt.setVisibility(View.GONE);
-            }
-        } else {
-            mEmptyTxt.setText(R.string.list_empty_txt);
-            mEmptyTxt.setVisibility(View.VISIBLE);
-        }
-    }
-
     //------------------------------------------
-    public class LayoutAdapter extends RecyclerView.Adapter<SimpleViewHolder> {
-
-        protected static final int TYPE_HEADERVIEW=0x001;
-        protected static final int TYPE_FOOTERVIEW=0x002;
-        private final Context mContext;
-        protected View footerView;
-
-        public View getFooterView() {
-            return footerView;
-        }
-
-        public void addFooterView(View footerView) {
-            this.footerView=footerView;
-        }
-
-        public void removeFooterView() {
-            this.footerView=null;
-        }
-
-        public LayoutAdapter(Context context) {
-            mContext=context;
-        }
-
-        @Override
-        public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View mView;
-            switch (viewType) {
-                /*case TYPE_HEADERVIEW:
-                    //mView=getHeaderView();
-                    break;*/
-                case TYPE_FOOTERVIEW:
-                    mView=getFooterView();
-                    break;
-                default:
-                    mView=RecyclerViewFragment.this.newView(parent, viewType);
-                    break;
-            }
-            //mView=RecyclerViewFragment.this.newView(parent, viewType);
-            // LayoutInflater.from(mContext).inflate(R.layout.test_row_staggered_demo, parent, false);
-            return new SimpleViewHolder(mView);
-        }
-
-        @Override
-        public void onBindViewHolder(SimpleViewHolder holder, int position) {
-            int itemType=getItemViewType(position);
-            if (itemType==TYPE_FOOTERVIEW) {
-
-            } else {
-                RecyclerViewFragment.this.getView(holder, position);
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return mDataList.size()+(footerView==null ? 0 : 1);
-        }
-
-        public int getCount() {
-            return mDataList.size();
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            int count=getItemCount()-1;
-            /*if (isHeaderView(position)) {
-                return TYPE_HEADERVIEW;
-            } else*/
-            if (isFooterView(position, count)) {
-                return TYPE_FOOTERVIEW;
-            } else {
-                return super.getItemViewType(position);
-            }
-        }
-
-        private boolean isFooterView(int position, int count) {
-            return position==count&&footerView!=null;
-        }
-    }
 
 }

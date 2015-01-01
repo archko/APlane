@@ -3,34 +3,27 @@ package cn.archko.microblog.fragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
+import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.ui.NewStatusActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.UserGridItemView;
 import com.andrew.apollo.utils.ApolloUtils;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.me.microblog.App;
 import com.me.microblog.bean.User;
 import com.me.microblog.core.sina.SinaUserApi;
 import com.me.microblog.util.Constants;
-import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-/*import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;*/
 
 /**
  * @version 1.00.00  用户的网格，这个是超类，需要修改原来的ListView的行为。这里包含了所有的用户列表，
@@ -44,8 +37,6 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
     protected int nextCursor = - 1;//下一页索引，第一页为-1，不是0
     protected long mUserId = - 1l; //查看用户的id
     protected boolean isFollowing = false;    //是否正在处理关系,默认只一个一个处理,不并行处理.
-    protected PullToRefreshGridView mPullRefreshGridView;
-    protected GridView mGridView;
     /**
      * 类型是自己，表示查看的用户是登录者
      */
@@ -87,37 +78,19 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         weibo_count = Constants.WEIBO_COUNT_MIN;
     }
 
-    public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (! hasAttach) {   //不在onAttach中处理,因为refresh可能先调用,以保证数据初始化.
+            hasAttach = true;
+        }
+    }
+
+    /*public View _onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.ak_user_grid, null);
         mEmptyTxt = (TextView) root.findViewById(R.id.empty_txt);
-        mPullRefreshGridView = (PullToRefreshGridView) root.findViewById(R.id.pull_refresh_grid);
-        mGridView = mPullRefreshGridView.getRefreshableView();
-        mGridView.setDrawSelectorOnTop(false);
-        mGridView.setOnScrollListener(this);
-        //mGridView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
-        mGridView.setSelector(R.color.transparent);
-
-        /*SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String themeId=options.getString(PrefsActivity.PREF_THEME, "0");
-        if ("0".equals(themeId)) {
-        } else if ("1".equals(themeId)) {
-        } else if ("2".equals(themeId)) {
-        } else if ("3".equals(themeId)) {
-        }*/
-
-        // ------------------------------------------------------------------
-        /*nav_up=(ImageView) root.findViewById(R.id.nav_up);
-        nav_down=(ImageView) root.findViewById(R.id.nav_down);
-        nav_up.setOnClickListener(navClickListener);
-        nav_down.setOnClickListener(navClickListener);
-
-        nav_up.setBackgroundColor(Color.TRANSPARENT);
-        nav_down.setBackgroundColor(Color.TRANSPARENT);
-        zoomLayout=(RelativeLayout) root.findViewById(R.id.zoomLayout);
-        zoomAnim=AnimationUtils.loadAnimation(getActivity(), R.anim.zoom);*/
-        //initGridView();
         return root;
-    }
+    }*/
 
     private void initGridView() {
         // Set up the helpers
@@ -138,56 +111,6 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         }
     }
 
-    public void _onActivityCreated(Bundle savedInstanceState) {
-        WeiboLog.d(TAG, "onActivityCreated");
-        mPullRefreshGridView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<GridView>() {
-
-            @Override
-            public void onPullDownToRefresh(PullToRefreshBase<GridView> refreshView) {
-                pullToRefreshData();
-            }
-
-            @Override
-            public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {
-                fetchMore();
-            }
-        });
-        //mGridView.setOnScrollListener(this);
-        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                WeiboLog.d(TAG, "itemClick:" + pos);
-                selectedPos = pos;
-
-                itemClick(view);
-            }
-        });
-        mGridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                WeiboLog.d(TAG, "itemLongClick:" + pos);
-                selectedPos = pos;
-                //showButtonBar(view);
-                itemLongClick(view);
-                return true;
-            }
-        });
-
-        if (mAdapter == null) {
-            mAdapter = new TimeLineAdapter();
-        }
-
-        mGridView.setAdapter(mAdapter);
-
-        //loadData();
-        if (! hasAttach) {   //不在onAttach中处理,因为refresh可能先调用,以保证数据初始化.
-            hasAttach = true;
-            //refresh();
-        }
-    }
-
     @Override
     public void refresh() {
         WeiboLog.i(TAG, "isLoading:" + isLoading + " status:" + (null == mDataList ? "null" : mDataList.size()));
@@ -198,24 +121,49 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
+    public View getView(SimpleViewHolder holder, final int position) {
+        //WeiboLog.d(TAG, "getView.pos:" + position + " holder:" + holder);
 
+        View convertView=holder.baseItemView;
         UserGridItemView itemView = null;
         User user = mDataList.get(position);
 
-        boolean updateFlag = true;
-        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag = false;
+        boolean updateFlag=true;
+        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            updateFlag=false;
         }
 
         if (convertView == null) {
-            itemView = new UserGridItemView(getActivity(), mGridView, mCacheDir, user, updateFlag);
+            itemView = new UserGridItemView(getActivity(), mCacheDir, updateFlag);
         } else {
             itemView = (UserGridItemView) convertView;
         }
         itemView.update(user, updateFlag, false);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemClick(view);
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                prepareMenu(up);
+                return true;
+            }
+        });
 
+        return itemView;
+    }
+
+    public View newView(ViewGroup parent, int viewType) {
+        //WeiboLog.d(TAG, "newView:" + parent + " viewType:" + viewType);
+        UserGridItemView itemView=null;
+        boolean updateFlag=true;
+        if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
+            updateFlag=false;
+        }
+        itemView=new UserGridItemView(getActivity(), mCacheDir, updateFlag);
         return itemView;
     }
 
@@ -236,44 +184,6 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
             User st;
             st = (User) mAdapter.getItem(mAdapter.getCount() - 1);
             fetchData(- 1, st.id, false, false);
-        }
-    }
-
-    /**
-     * 线程执行前期的操作
-     */
-    public void basePreOperation() {
-        mPullRefreshGridView.setRefreshing();
-        if (mRefreshListener != null) {
-            mRefreshListener.onRefreshStarted();
-        }
-
-        if (null == mDataList || mDataList.size() < 1) {
-            mEmptyTxt.setText(R.string.list_pre_empty_txt);
-            mEmptyTxt.setVisibility(View.VISIBLE);
-        }
-
-        isLoading = true;
-    }
-
-    @Override
-    public void refreshAdapter(boolean load, boolean isRefresh) {
-        WeiboLog.d(TAG, "refreshAdapter.load:" + load + " isRefresh:" + isRefresh);
-        mPullRefreshGridView.onRefreshComplete();
-        if (load) {
-            mAdapter.notifyDataSetChanged();
-        }
-
-        if (isRefresh) {
-            mPullRefreshGridView.setLastUpdatedLabel(getString(R.string.pull_to_refresh_label) + DateUtils.longToDateTimeString(System.currentTimeMillis()));
-        }
-
-        if (mDataList.size() > 0) {
-            if (mEmptyTxt.getVisibility() == View.VISIBLE) {
-                mEmptyTxt.setVisibility(View.GONE);
-            }
-        } else {
-            mEmptyTxt.setVisibility(View.VISIBLE);
         }
     }
 

@@ -1,6 +1,7 @@
 package cn.archko.microblog.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
 import cn.archko.microblog.fragment.impl.SinaDMImpl;
 import cn.archko.microblog.listeners.CommentListener;
+import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.ui.SkinFragmentActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.WeiboOperation;
@@ -113,7 +115,7 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
     @Override
     public void fetchMore() {
         super.fetchMore();
-        WeiboLog.v(TAG, "fetchMore.lastItem:" + lastItem + " selectedPos:" + selectedPos);
+        WeiboLog.v(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
         if (mAdapter.getCount() > 0) {
             DirectMessage st;
             st = (DirectMessage) mAdapter.getItem(mAdapter.getCount() - 1);
@@ -122,22 +124,50 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(SimpleViewHolder holder, final int position) {
+        //WeiboLog.d(TAG, "getView.pos:" + position + " holder:" + holder);
+
+        View convertView=holder.baseItemView;
         DirectMessageItemView itemView = null;
         DirectMessage directMessage = mDataList.get(position);
-        boolean updateFlag = true;
-        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag = false;
+
+        boolean updateFlag=true;
+        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            updateFlag=false;
         }
 
         if (convertView == null) {
-            itemView = new DirectMessageItemView(getActivity(), mListView, mCacheDir, directMessage, updateFlag, true, showBitmap);
+            itemView = new DirectMessageItemView(getActivity(), mCacheDir, updateFlag, true, showBitmap);
         } else {
             itemView = (DirectMessageItemView) convertView;
         }
 
         itemView.update(directMessage, updateFlag, true, showBitmap);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemClick(view);
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                prepareMenu(up);
+                return true;
+            }
+        });
 
+        return itemView;
+    }
+
+    public View newView(ViewGroup parent, int viewType) {
+        //WeiboLog.d(TAG, "newView:" + parent + " viewType:" + viewType);
+        DirectMessageItemView itemView=null;
+        boolean updateFlag=true;
+        if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
+            updateFlag=false;
+        }
+        itemView=new DirectMessageItemView(getActivity(), mCacheDir, updateFlag, true, showBitmap);
         return itemView;
     }
 

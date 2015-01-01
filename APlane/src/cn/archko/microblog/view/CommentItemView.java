@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.ui.UserFragmentActivity;
@@ -44,7 +43,6 @@ public class CommentItemView extends BaseItemView implements View.OnClickListene
 
     public static final String TAG = "CommentItemView";
     protected Context mContext;
-    protected ListView parent;
     protected String mCacheDir;    //图片缓存目录
     private TextView mName;
     private TextView mContentFirst;    //微博的内容
@@ -71,12 +69,11 @@ public class CommentItemView extends BaseItemView implements View.OnClickListene
      * @param showBitmap         是否显示图像
      * @param showSencondContent 是否显示tv_content_sencond布局,如果是在详细页面,就不需要,私信也可以考虑下.
      */
-    public CommentItemView(Context context, ListView view, String cacheDir, Comment comment, boolean updateFlag,
+    public CommentItemView(Context context, String cacheDir, boolean updateFlag,
         boolean cache, boolean showBitmap, boolean showSencondContent) {
-        super(context, view, cacheDir, null, updateFlag);
+        super(context, cacheDir, updateFlag);
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.comment_item, this);
 
-        parent = view;
         mCacheDir = cacheDir;
         mContext = context;
 
@@ -94,7 +91,6 @@ public class CommentItemView extends BaseItemView implements View.OnClickListene
         mCreateAt = (TextView) findViewById(R.id.send_time);
 
         isShowBitmap = showBitmap;
-        //update(comment, updateFlag, cache, showBitmap);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         float pref_title_font_size = prefs.getInt(PreferenceUtils.PREF_TITLE_FONT_SIZE, 14);

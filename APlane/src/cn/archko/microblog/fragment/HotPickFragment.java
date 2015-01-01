@@ -3,10 +3,7 @@ package cn.archko.microblog.fragment;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import cn.archko.microblog.R;
-import cn.archko.microblog.view.ThreadBeanItemView;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.SStatusData;
@@ -20,7 +17,7 @@ import com.me.microblog.util.WeiboLog;
  * @author: archko 12-9-12
  */
 @Deprecated
-public class HotPickFragment extends StatusListFragment {
+public class HotPickFragment extends RecyclerViewFragment {
 
     public static final String TAG = "HotPickFragment";
     /**
@@ -60,36 +57,6 @@ public class HotPickFragment extends StatusListFragment {
                 mEmptyTxt.setVisibility(View.VISIBLE);
             }
         }
-    }
-
-    /**
-     * 需要注意,在主页时,需要缓存图片数据.所以cache为false,其它的不缓存,比如随便看看.
-     *
-     * @param position
-     * @param convertView
-     * @param parent
-     * @return
-     */
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
-
-        ThreadBeanItemView itemView = null;
-        Status status = mDataList.get(position);
-
-        boolean updateFlag = true;
-        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag = false;
-        }
-
-        if (convertView == null) {
-            itemView = new ThreadBeanItemView(getActivity(), mListView, mCacheDir, status, updateFlag, false, showLargeBitmap, showBitmap);
-        } else {
-            itemView = (ThreadBeanItemView) convertView;
-        }
-        itemView.update(status, updateFlag, false, showLargeBitmap, showBitmap);
-
-        return itemView;
     }
 
     /**

@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Checkable;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -29,6 +30,7 @@ import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
 import cn.archko.microblog.fragment.impl.AbsStatusImpl;
 import cn.archko.microblog.listeners.OnPickPhotoListener;
+import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.ui.ImageViewerActivity;
 import cn.archko.microblog.utils.BitmapThread;
 import cn.archko.microblog.utils.TakePictureUtil;
@@ -56,6 +58,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
     private static final int MENU_ADD = Menu.FIRST + 100;
     private static final int MENU_SAVE = Menu.FIRST + 101;
     public static final String KEY_PHOTO = "key_photo";
+    protected TimeLineAdapter mAdapter;
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -163,7 +166,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         /*mDataList=new ArrayList<UploadImage>();
         loadTestData();*/
         if (mAdapter == null) {
-            mAdapter = new AbsBaseListFragment.TimeLineAdapter();
+            mAdapter = new TimeLineAdapter();
         }
         if (null == mDataList || mDataList.size() < 1) {
             NotifyUtils.showToast("您可以开始添加图片了.");
@@ -214,7 +217,6 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         mDataList.add(image);
     }
 
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ItemView itemView = null;
 
@@ -229,6 +231,10 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         return itemView;
     }
 
+    public  View getView(SimpleViewHolder holder, final int position){return null;}
+
+    public  View newView(ViewGroup parent, int viewType){return null;}
+
     public void _onActivityCreated(Bundle savedInstanceState) {
         WeiboLog.v(TAG, "onActivityCreated");
 
@@ -237,9 +243,6 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 int position = pos;
-                if (mListView.getHeaderViewsCount() > 0) {
-                    position--;
-                }
                 if (position == - 1) {
                     WeiboLog.v("选中的是头部，不可点击");
                     return;
@@ -260,9 +263,6 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
                 WeiboLog.v(TAG, "itemLongClick:" + pos);
                 int position = pos;
-                if (mListView.getHeaderViewsCount() > 0) {
-                    position--;
-                }
                 selectedPos = position;
 
                 if (mAdapter.getCount() > 0 && position >= mAdapter.getCount()) {
@@ -588,6 +588,32 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         @Override
         public void toggle() {
             setChecked(! checked);
+        }
+    }              //--------------------- adapter ---------------------
+    public class TimeLineAdapter extends BaseAdapter {
+
+        public TimeLineAdapter() {
+            WeiboLog.v(TAG, "TimeLineAdapter:");
+        }
+
+        @Override
+        public int getCount() {
+            return mDataList.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return mDataList.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return PickImageFragment.this.getView(position, convertView, parent);
         }
     }
 }

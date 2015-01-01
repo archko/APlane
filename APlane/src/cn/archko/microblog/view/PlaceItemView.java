@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.ImageAdapter;
@@ -38,9 +37,9 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
     private TagsViewGroup mTagsViewGroup;
     ImageAdapter mAdapter;
 
-    public PlaceItemView(Context context, ListView view, String cacheDir, Status status, boolean updateFlag,
+    public PlaceItemView(Context context, String cacheDir, boolean updateFlag,
         boolean cache, boolean showLargeBitmap, boolean showBitmap) {
-        super(context, view, cacheDir, status, updateFlag);
+        super(context,cacheDir, updateFlag);
 
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.home_time_line_item, this);
 
@@ -62,8 +61,6 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
 
         mLoctationlayout = (LinearLayout) findViewById(R.id.loctation_ll);
         mLocation = (TextView) findViewById(R.id.location);
-
-        //update(status, updateFlag, cache, showLargeBitmap, showBitmap);
 
         isShowLargeBitmap = showLargeBitmap;
         isShowBitmap = showBitmap;
