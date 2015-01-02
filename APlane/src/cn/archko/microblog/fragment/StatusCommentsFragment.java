@@ -260,6 +260,7 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
         WeiboLog.d(TAG, "refresh:" + hasInitialed);
         if (! hasInitialed) {
             hasInitialed = true;
+            mSwipeLayout.setRefreshing(true);
             pullToRefreshData();
         }
     }

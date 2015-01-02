@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
@@ -134,6 +138,23 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
     }
 
     protected void showMoreView() {
+        WeiboLog.v(TAG, "showMoreView");
+        if (null==mLoadingLayout) {
+            WeiboLog.d(TAG, "null==mLoadingLayout.");
+            mLoadingLayout=(RelativeLayout) LayoutInflater.from(getActivity().getApplicationContext())
+                .inflate(R.layout.ak_grid_more_item, null);
+            mMoreProgressBar=(ProgressBar) mLoadingLayout.findViewById(R.id.progress_bar);
+            mMoreTxt=(TextView) mLoadingLayout.findViewById(R.id.more_txt);
+        }
+
+        mMoreTxt.setText(R.string.more);
+        footerView.removeAllViews();
+        RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+        );
+        footerView.addView(mLoadingLayout, layoutParams);
+
+        mMoreProgressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override

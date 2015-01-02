@@ -3,8 +3,6 @@ package cn.archko.microblog.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -205,55 +203,4 @@ public class UserGridItemView extends LinearLayout {
             }
         }
     }
-
-    Handler mHandler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            /*Bundle bundle=msg.getData();
-
-            String imgUrl=(String) msg.obj;
-            WeiboLog.v(TAG, "imgUrl:"+imgUrl+" bundle:"+bundle);
-            Bitmap bitmap;//=BitmapFactory.decodeFile(bundle.getString("name"));
-            bitmap=bundle.getParcelable("name");
-            if (bitmap!=null&&!bitmap.isRecycled()) {
-                ImageCache2.getInstance().addBitmapToMemCache(imgUrl, bitmap);
-
-                WeakReference<View> viewWeakReference=DownloadPool.downloading.get(imgUrl);
-
-                if (null==viewWeakReference||viewWeakReference.get()==null) {
-                    DownloadPool.downloading.remove(imgUrl);
-                    WeiboLog.i(TAG, "listview is null:"+imgUrl);
-                    return;
-                }
-
-                AbsListView listView=(AbsListView) viewWeakReference.get();
-
-                //从第一个可见的项开始更新.
-                int childCount=listView.getChildCount();
-                if (0>=childCount) {
-                    DownloadPool.downloading.remove(imgUrl);
-                    WeiboLog.i(TAG, "listview has no children.");
-                    return;
-                }
-
-                UserGridItemView itemView;
-                View view;
-                for (int i=0; i<childCount; i++) {
-                    view=listView.getChildAt(i);
-                    if (view instanceof UserGridItemView) {
-                        itemView=(UserGridItemView) view;
-                        if (itemView.portraitUrl!=null&&itemView.portraitUrl.equals(imgUrl)) {
-                            itemView.mPortrait.setImageBitmap(bitmap);
-                            break;
-                        }
-                    }
-                }
-            } else {
-                WeiboLog.d(TAG, "bitmap is null:"+imgUrl);
-            }
-            DownloadPool.downloading.remove(imgUrl);*/
-        }
-    };
 }

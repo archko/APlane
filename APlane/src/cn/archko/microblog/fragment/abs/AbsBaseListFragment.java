@@ -263,7 +263,23 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
             android.R.color.holo_red_light);
 
         mRecyclerView.setRecyclerListener(new RecyclerViewHolder());
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRecyclerView.setOnScrollListener(getScrollListener());
+        footerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (null!=mMoreProgressBar) {
+                    mMoreProgressBar.setVisibility(View.VISIBLE);
+                }
+                mSwipeLayout.setRefreshing(true);
+                fetchMore();
+            }
+        });
+
+        return root;
+    }
+
+    public RecyclerView.OnScrollListener getScrollListener() {
+        return new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int scrollState) {
                 //WeiboLog.d(TAG, "onScrollStateChanged.scrollState:"+scrollState+" mLastItemVisible:"+mLastItemVisible);
@@ -285,17 +301,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 
             }
-        });
-        footerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMoreProgressBar.setVisibility(View.VISIBLE);
-                mSwipeLayout.setRefreshing(true);
-                fetchMore();
-            }
-        });
-
-        return root;
+        };
     }
 
     public void scrollToHeader() {
@@ -342,7 +348,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
         loadData();
     }
 
-    private boolean isEndOfList() {
+    public boolean isEndOfList() {
         if (mRecyclerView.getChildCount()==0) {
             mLastItemVisible=false;
             return false;
@@ -351,7 +357,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
         int totalCount=mAdapter.getCount()-1;
         int lastItemPositionOnScreen=((LinearLayoutManager) mRecyclerView.getLayoutManager()).findLastVisibleItemPosition();
         //WeiboLog.d(TAG, "lastItemPositionOnScreen:"+lastItemPositionOnScreen+" total:"+totalCount);
-        if (totalCount!=lastItemPositionOnScreen) {
+        if (totalCount>lastItemPositionOnScreen) {
             mLastItemVisible=false;
             return false;
         }
@@ -675,6 +681,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      * @param isRefresh 是否是刷新数据。
      */
     public void refreshAdapter(boolean load, boolean isRefresh) {
+        isLoading=false;
         WeiboLog.d(TAG, "refreshAdapter.load:"+load+" isRefresh:"+isRefresh);
         if (load) {
             mAdapter.notifyDataSetChanged();
@@ -794,6 +801,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
                     break;*/
                 case TYPE_FOOTERVIEW:
                     mView=getFooterView();
+                    WeiboLog.d(TAG, "getFooterView");
                     break;
                 default:
                     mView=AbsBaseListFragment.this.newView(parent, viewType);

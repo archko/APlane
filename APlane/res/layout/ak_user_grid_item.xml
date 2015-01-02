@@ -6,6 +6,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:makeramen="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/ak_item_selector_light"
+    android:paddingTop="2dp" android:paddingBottom="2dp"
     tools:ignore="ContentDescription" android:gravity="center_horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">

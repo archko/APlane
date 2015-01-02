@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -117,7 +116,10 @@ public class UserFragmentActivity extends SkinFragmentActivity {
     }
 
     protected void postSlidingTabLayout() {
-        if (getRequestedOrientation()==ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+        int changeConfig=getChangingConfigurations();
+        int orientation=getResources().getConfiguration().orientation;
+        //WeiboLog.v(TAG, "changeConfig:"+changeConfig+" orientation:"+orientation);
+        if (orientation==Configuration.ORIENTATION_PORTRAIT) {
             mSlidingTabLayout.setMatchWidth(true);
         } else {
             mSlidingTabLayout.setMatchWidth(false);
@@ -359,7 +361,7 @@ public class UserFragmentActivity extends SkinFragmentActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation==ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+        if (newConfig.orientation==Configuration.ORIENTATION_PORTRAIT) {
             mSlidingTabLayout.setMatchWidth(true);
         } else {
             mSlidingTabLayout.setMatchWidth(false);

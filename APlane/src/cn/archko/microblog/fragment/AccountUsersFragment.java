@@ -99,7 +99,7 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
      */
     protected void showMoreView() {
         super.showMoreView();
-        mMoreProgressBar.setVisibility(View.GONE);
+        mMoreProgressBar.setVisibility(View.INVISIBLE);
         mMoreTxt.setText(R.string.more_add_account_user);
     }
 
