@@ -283,7 +283,9 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int scrollState) {
                 //WeiboLog.d(TAG, "onScrollStateChanged.scrollState:"+scrollState+" mLastItemVisible:"+mLastItemVisible);
-                if (scrollState==RecyclerView.SCROLL_STATE_IDLE) {
+                if (scrollState==RecyclerView.SCROLL_STATE_SETTLING) {
+                    ImageCache.getInstance(getActivity()).setPauseDiskCache(true);
+                } else if (scrollState==RecyclerView.SCROLL_STATE_IDLE) {
                     ImageCache.getInstance(getActivity()).setPauseDiskCache(false);
                     isEndOfList();
                     if (mLastItemVisible) {
@@ -293,7 +295,13 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
                     }
                     mAdapter.notifyDataSetChanged();
                 } else {
-                    ImageCache.getInstance(getActivity()).setPauseDiskCache(true);
+                    ImageCache.getInstance(getActivity()).setPauseDiskCache(false);
+                    isEndOfList();
+                    if (mLastItemVisible) {
+                        showMoreView();
+                        //scrollToFooter();
+                    } else {
+                    }
                 }
             }
 
