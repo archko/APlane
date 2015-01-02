@@ -2,7 +2,10 @@ package com.andrew.apollo.utils;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
+import cn.archko.microblog.R;
 import com.me.microblog.App;
 
 /**
@@ -31,7 +34,7 @@ public final class ThemeUtils {
      */
     public void themeActionBar(ActionBar actionBar, Context context) {
         String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        /*if ("1".equals(themeId)) {
+        if ("1".equals(themeId)) {
             BitmapDrawable bg=(BitmapDrawable) context.getResources().getDrawable(R.drawable.bg_striped_split_img);
             bg.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
             actionBar.setBackgroundDrawable(bg);
@@ -55,7 +58,7 @@ public final class ThemeUtils {
             //Drawable bgSplit=(Drawable) context.getResources().getDrawable(R.drawable.abs__ab_bottom_solid_dark_holo);
             //bgSplit.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
             actionBar.setSplitBackgroundDrawable(null);
-        }*/
+        }
     }
 
     /**

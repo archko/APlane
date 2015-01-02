@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 import cn.archko.microblog.R;
@@ -138,7 +137,7 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
         final Comment bean = mDataList.get(position);
 
         boolean updateFlag=true;
-        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+        if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
 
@@ -152,12 +151,13 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemClick(view);
+                itemClick(position, view);
             }
         });
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+                selectedPos=position;
                 prepareMenu(up);
                 return true;
             }
@@ -269,7 +269,8 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
      *
      * @param achor 用于显示QuickAction
      */
-    protected void itemClick(View achor) {
+    protected void itemClick(int pos, View achor) {
+        selectedPos=pos;
         //showButtonBar(achor);
         replyComment();
     }

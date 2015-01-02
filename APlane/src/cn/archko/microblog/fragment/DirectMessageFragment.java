@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 import cn.archko.microblog.R;
@@ -39,7 +38,7 @@ import com.me.microblog.util.WeiboLog;
  */
 public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
 
-    public static final String TAG = "DirectMessageFragment";
+    public static final String TAG="DirectMessageFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,11 +47,11 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
     }
 
     public void initApi() {
-        mStatusImpl = new SinaDMImpl();
+        mStatusImpl=new SinaDMImpl();
 
-        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
         try {
-            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.dmApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
@@ -64,7 +63,7 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
     @Override
     public void onResume() {
         super.onResume();
-        weibo_count = Constants.WEIBO_COUNT_MIN;
+        weibo_count=Constants.WEIBO_COUNT_MIN;
     }
 
     //--------------------- 微博操作 ---------------------
@@ -89,10 +88,10 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
      */
     @Override
     protected void loadData() {
-        if (mDataList != null && mDataList.size() > 0) {
+        if (mDataList!=null&&mDataList.size()>0) {
             mAdapter.notifyDataSetChanged();
         } else {
-            if (! isLoading) {
+            if (!isLoading) {
                 //fetchData(-1, -1, true);
                 loadLocalData();
             } else {
@@ -106,8 +105,8 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
      * 从缓存中查询数据.
      */
     void loadLocalData() {
-        if (! isLoading) {
-            Object[] params = new Object[]{false, currentUserId};
+        if (!isLoading) {
+            Object[] params=new Object[]{false, currentUserId};
             newTaskNoNet(params, null);
         }
     }
@@ -116,10 +115,10 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
     public void fetchMore() {
         super.fetchMore();
         WeiboLog.v(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
-        if (mAdapter.getCount() > 0) {
+        if (mAdapter.getCount()>0) {
             DirectMessage st;
-            st = (DirectMessage) mAdapter.getItem(mAdapter.getCount() - 1);
-            fetchData(- 1, st.id, false, false);
+            st=(DirectMessage) mAdapter.getItem(mAdapter.getCount()-1);
+            fetchData(-1, st.id, false, false);
         }
     }
 
@@ -128,30 +127,31 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
         //WeiboLog.d(TAG, "getView.pos:" + position + " holder:" + holder);
 
         View convertView=holder.baseItemView;
-        DirectMessageItemView itemView = null;
-        DirectMessage directMessage = mDataList.get(position);
+        DirectMessageItemView itemView=null;
+        DirectMessage directMessage=mDataList.get(position);
 
         boolean updateFlag=true;
-        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+        if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
 
-        if (convertView == null) {
-            itemView = new DirectMessageItemView(getActivity(), mCacheDir, updateFlag, true, showBitmap);
+        if (convertView==null) {
+            itemView=new DirectMessageItemView(getActivity(), mCacheDir, updateFlag, true, showBitmap);
         } else {
-            itemView = (DirectMessageItemView) convertView;
+            itemView=(DirectMessageItemView) convertView;
         }
 
         itemView.update(directMessage, updateFlag, true, showBitmap);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemClick(view);
+                itemClick(position, view);
             }
         });
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+                selectedPos=position;
                 prepareMenu(up);
                 return true;
             }
@@ -176,9 +176,9 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
     CommentListener mCommentListener;
 
     void initDialog() {
-        if (null == mCommentDialog) {
-            mCommentDialog = new CommentDialog(getActivity());
-            mCommentListener = new CommentListener() {
+        if (null==mCommentDialog) {
+            mCommentDialog=new CommentDialog(getActivity());
+            mCommentListener=new CommentListener() {
 
                 @Override
                 public void cancel() {
@@ -193,22 +193,22 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
 
                             @Override
                             public void run() {
-                                DirectMessage message = mDataList.get(selectedPos);
-                                long uid = message.senderId;
+                                DirectMessage message=mDataList.get(selectedPos);
+                                long uid=message.senderId;
                                 try {
                                     //SWeiboApi2 sWeiboApi2=(SWeiboApi2) App.getMicroBlog(App.getAppContext());
-                                    SinaDMApi sWeiboApi2 = new SinaDMApi();
+                                    SinaDMApi sWeiboApi2=new SinaDMApi();
                                     sWeiboApi2.updateToken();
-                                    DirectMessage result = sWeiboApi2.sendDirectMessage(uid, content);
-                                    if (null != result) {
+                                    DirectMessage result=sWeiboApi2.sendDirectMessage(uid, content);
+                                    if (null!=result) {
                                         mCommentDialog.dismiss();
                                         showUIToast(R.string.dm_new_suc);
                                     } else {
                                         showUIToast(R.string.dm_new_failed);
                                     }
                                 } catch (WeiboException e) {
-                                    int code = e.getStatusCode();
-                                    if (code == WeiboException.EX_CODE_TOKEN_EXPIRE) {
+                                    int code=e.getStatusCode();
+                                    if (code==WeiboException.EX_CODE_TOKEN_EXPIRE) {
                                         showUIToast(R.string.dm_new_token_isexpired);
                                     }
                                     e.printStackTrace();
@@ -239,7 +239,7 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
 
     //--------------------- popupMenu ---------------------
     public void onCreateCustomMenu(PopupMenu menuBuilder) {
-        int index = 0;
+        int index=0;
         menuBuilder.getMenu().add(0, Constants.OP_ID_REPLY_DM, index++, R.string.opb_reply_dm);
         menuBuilder.getMenu().add(0, Constants.OP_ID_OPB_DESTROY_DM, index++, R.string.opb_destroy_dm);
         menuBuilder.getMenu().add(0, Constants.OP_ID_VIEW_USER, index++, R.string.user_view_user);
@@ -250,8 +250,8 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
     @Override
     public void onPrepareCustomMenu(PopupMenu menuBuilder) {
         try {
-            DirectMessage message = mDataList.get(selectedPos);
-            if (message.senderId == currentUserId) {
+            DirectMessage message=mDataList.get(selectedPos);
+            if (message.senderId==currentUserId) {
                 menuBuilder.getMenu().findItem(Constants.OP_ID_REPLY_DM).setVisible(false);
             } else {
                 menuBuilder.getMenu().findItem(Constants.OP_ID_REPLY_DM).setVisible(true);
@@ -263,7 +263,7 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        int menuId = item.getItemId();
+        int menuId=item.getItemId();
         switch (menuId) {
             case Constants.OP_ID_REPLY_DM: {   //回复私信
                 replyComment();
@@ -278,33 +278,33 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
                 break;
             }
             case Constants.OP_ID_VIEW_USER: {
-                final DirectMessage message = mDataList.get(selectedPos);
-                String sn = message.senderScreenName;
-                long uid = message.senderId;
-                if (uid == currentUserId) {
-                    sn = message.recipientScreenName;
-                    uid = message.recipientId;
+                final DirectMessage message=mDataList.get(selectedPos);
+                String sn=message.senderScreenName;
+                long uid=message.senderId;
+                if (uid==currentUserId) {
+                    sn=message.recipientScreenName;
+                    uid=message.recipientId;
                 }
                 WeiboOperation.toViewStatusUser(getActivity(), sn, uid, UserFragmentActivity.TYPE_USER_INFO);
                 break;
             }
             case Constants.OP_ID_STATUS: {
-                final DirectMessage message = mDataList.get(selectedPos);
-                String sn = message.senderScreenName;
-                long uid = message.senderId;
-                if (uid == currentUserId) {
-                    sn = message.recipientScreenName;
-                    uid = message.recipientId;
+                final DirectMessage message=mDataList.get(selectedPos);
+                String sn=message.senderScreenName;
+                long uid=message.senderId;
+                if (uid==currentUserId) {
+                    sn=message.recipientScreenName;
+                    uid=message.recipientId;
                 }
                 WeiboOperation.toViewStatusUser(getActivity(), sn, uid, UserFragmentActivity.TYPE_USER_TIMELINE);
                 break;
             }
             case Constants.OP_ID_AT: {
                 try {
-                    final DirectMessage message = mDataList.get(selectedPos);
-                    String sn = message.senderScreenName;
-                    if (message.senderId == currentUserId) {
-                        sn = message.recipientScreenName;
+                    final DirectMessage message=mDataList.get(selectedPos);
+                    String sn=message.senderScreenName;
+                    if (message.senderId==currentUserId) {
+                        sn=message.recipientScreenName;
                     }
                     WeiboOperation.toAtUser(getActivity(), sn);
                 } catch (Exception e) {
@@ -316,7 +316,8 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
     }
 
     @Override
-    protected void itemClick(View achor) {
+    protected void itemClick(int pos, View achor) {
+        selectedPos=pos;
         replyComment();
     }
 
@@ -324,9 +325,9 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
      * 回复评论
      */
     protected void replyComment() {
-        WeiboLog.i(TAG, "replyDirectMessage:" + selectedPos);
+        WeiboLog.i(TAG, "replyDirectMessage:"+selectedPos);
         try {
-            DirectMessage message = mDataList.get(selectedPos);
+            DirectMessage message=mDataList.get(selectedPos);
             initDialog();
             mCommentDialog.setCustomTitle(R.string.dm_new);
             //mCommentDialog.setContent(message.sender.screenName);
@@ -353,7 +354,7 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
     @Override
     public void refreshAdapter(boolean load, boolean isRefresh) {
         super.refreshAdapter(load, isRefresh);
-        if (isRefresh && load) {
+        if (isRefresh&&load) {
             clearHomeNotify();
         }
     }
@@ -373,10 +374,10 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
      * 清除主页的消息计数通知
      */
     private void clearHomeNotify() {
-        int newDm = mPrefs.getInt(Constants.PREF_SERVICE_DM, 0);
+        int newDm=mPrefs.getInt(Constants.PREF_SERVICE_DM, 0);
         mPrefs.edit().remove(Constants.PREF_SERVICE_DM).commit();
         try {
-            SkinFragmentActivity parent = (SkinFragmentActivity) getActivity();
+            SkinFragmentActivity parent=(SkinFragmentActivity) getActivity();
             parent.refreshSidebar();
 
             newOperationTask(new Object[]{Constants.REMIND_DM}, null);
@@ -394,13 +395,13 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
     @Override
     protected Object[] baseBackgroundOperation2(Object... params) {
         try {
-            String type = (String) params[ 0 ];
-            SStatusData sStatusData = new SStatusData();
+            String type=(String) params[0];
+            SStatusData sStatusData=new SStatusData();
             //String rs=((SWeiboApi2) App.getMicroBlog(getActivity())).setUnread(type);
-            SinaUnreadApi sinaUnreadApi = new SinaUnreadApi();
+            SinaUnreadApi sinaUnreadApi=new SinaUnreadApi();
             sinaUnreadApi.updateToken();
-            String rs = sinaUnreadApi.setUnread(type);
-            sStatusData.errorMsg = rs;
+            String rs=sinaUnreadApi.setUnread(type);
+            sStatusData.errorMsg=rs;
             return new Object[]{sStatusData};
         } catch (Exception e) {
             e.printStackTrace();
@@ -417,13 +418,13 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
     @Override
     protected void basePostOperation2(Object[] resultObj) {
         try {
-            SStatusData sStatusData = (SStatusData) resultObj[ 0 ];
-            WeiboLog.i(TAG, TAG + sStatusData);
-            if (null == sStatusData) {
+            SStatusData sStatusData=(SStatusData) resultObj[0];
+            WeiboLog.i(TAG, TAG+sStatusData);
+            if (null==sStatusData) {
                 return;
             }
 
-            if (sStatusData.errorCode > 0 && ! TextUtils.isEmpty(sStatusData.errorMsg)) {
+            if (sStatusData.errorCode>0&&!TextUtils.isEmpty(sStatusData.errorMsg)) {
                 NotifyUtils.showToast(sStatusData.errorMsg);
             }
         } catch (Exception e) {

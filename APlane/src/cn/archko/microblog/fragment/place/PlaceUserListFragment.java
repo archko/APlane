@@ -224,12 +224,13 @@ public class PlaceUserListFragment extends UserListFragment {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemClick(view);
+                itemClick(position, view);
             }
         });
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+                selectedPos=position;
                 prepareMenu(up);
                 return true;
             }

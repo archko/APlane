@@ -272,7 +272,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
                     isEndOfList();
                     if (mLastItemVisible) {
                         showMoreView();
-                        scrollToFooter();
+                        //scrollToFooter();
                     } else {
                     }
                     mAdapter.notifyDataSetChanged();
@@ -300,7 +300,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
 
     public void scrollToHeader() {
         if (mAdapter.getCount()>0) {
-            mRecyclerView.smoothScrollToPosition(0);
+            mRecyclerView.scrollToPosition(0);
         }
     }
 
@@ -374,7 +374,8 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      *
      * @param achor 用于显示QuickAction
      */
-    protected void itemClick(View achor) {
+    protected void itemClick(int pos, View achor) {
+        selectedPos=pos;
     }
 
     /**
@@ -382,7 +383,8 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      *
      * @param achor 用于显示QuickAction
      */
-    protected boolean itemLongClick(View achor) {
+    protected boolean itemLongClick(int pos, View achor) {
+        selectedPos=pos;
         //showButtonBar(achor);
         /*View view=up;
         if (up.getVisibility()==View.GONE) {    //竖向时，菜单项会因为内容太长而显示部分。

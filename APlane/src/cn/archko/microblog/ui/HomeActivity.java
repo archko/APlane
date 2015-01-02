@@ -113,7 +113,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         //设置ActionBar 浮动到view 上层来
-        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        //requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         //设置ActionBar 背景色 透明
         //getActionBar().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
         super.onCreate(savedInstanceState);

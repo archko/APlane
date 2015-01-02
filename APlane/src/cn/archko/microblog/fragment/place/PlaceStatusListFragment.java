@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.RecyclerViewFragment;
 import cn.archko.microblog.fragment.impl.SinaPlaceStatusImpl;
@@ -39,7 +38,7 @@ import java.util.Date;
  */
 public class PlaceStatusListFragment extends RecyclerViewFragment {
 
-    public static final String TAG = "PlaceStatusListFragment";
+    public static final String TAG="PlaceStatusListFragment";
 
     /*protected double longitude=0.0;
     protected double latitude=0.0;
@@ -47,7 +46,7 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
     /**
      * 数据是否加载成功,对于位置来说,使用百度定位,它会在20秒内再执行一次定位,所以要去除不必要的加载.
      */
-    protected boolean isLoaded = false;
+    protected boolean isLoaded=false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,11 +56,11 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
 
     @Override
     public void initApi() {
-        mStatusImpl = new SinaPlaceStatusImpl();
+        mStatusImpl=new SinaPlaceStatusImpl();
 
-        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
         try {
-            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
@@ -76,10 +75,10 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
     protected void startMap() {
         WeiboLog.d(TAG, "startMap.");
         mLocClient.start();
-        mIsStart = true;
+        mIsStart=true;
 
         mSwipeLayout.setRefreshing(true);
-        if (mRefreshListener != null) {
+        if (mRefreshListener!=null) {
             mRefreshListener.onRefreshStarted();
         }
     }
@@ -87,13 +86,13 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
     protected void stopMap() {
         WeiboLog.d(TAG, "stopMap.");
         mLocClient.stop();
-        mIsStart = false;
+        mIsStart=false;
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        WeiboLog.d(TAG, "onPause:" + this);
+        WeiboLog.d(TAG, "onPause:"+this);
         try {
             mLocClient.unRegisterLocationListener(myListener);
         } catch (Exception e) {
@@ -122,7 +121,7 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
     @Override
     public void refreshAdapter(boolean load, boolean isRefresh) {
         super.refreshAdapter(load, isRefresh);
-        isLoaded = true;
+        isLoaded=true;
     }
 
     /**
@@ -130,17 +129,17 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
      */
     @Override
     protected void pullToRefreshData() {
-        isRefreshing = true;
-        if ((((App) App.getAppContext()).mLocationTimestamp - System.currentTimeMillis()) > 600000 ||
-            (((App) App.getAppContext()).latitude == 0.0 || ((App) App.getAppContext()).longitude == 0.0)) {
+        isRefreshing=true;
+        if ((((App) App.getAppContext()).mLocationTimestamp-System.currentTimeMillis())>600000||
+            (((App) App.getAppContext()).latitude==0.0||((App) App.getAppContext()).longitude==0.0)) {
             WeiboLog.i(TAG, "pullToRefreshData.没有找到地点,需要重新定位.");
             startMap();
-            isRefreshing = false;
+            isRefreshing=false;
             return;
         }
 
         //page=1;
-        fetchData(- 1, - 1, true, false);
+        fetchData(-1, -1, true, false);
     }
 
     /**
@@ -149,18 +148,18 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
      */
     @Override
     protected void loadData() {
-        if ((((App) App.getAppContext()).mLocationTimestamp - System.currentTimeMillis()) > 600000 ||
-            (((App) App.getAppContext()).latitude == 0.0 || ((App) App.getAppContext()).longitude == 0.0)) {
+        if ((((App) App.getAppContext()).mLocationTimestamp-System.currentTimeMillis())>600000||
+            (((App) App.getAppContext()).latitude==0.0||((App) App.getAppContext()).longitude==0.0)) {
             WeiboLog.i(TAG, "loadData.没有找到地点,需要重新定位.");
             startMap();
             return;
         }
 
-        if (mDataList != null && mDataList.size() > 0) {
+        if (mDataList!=null&&mDataList.size()>0) {
             mAdapter.notifyDataSetChanged();
         } else {
-            if (! isLoading) {
-                fetchData(- 1, - 1, true, false);
+            if (!isLoading) {
+                fetchData(-1, -1, true, false);
             } else {
                 mEmptyTxt.setText(R.string.list_pre_empty_txt);
                 mEmptyTxt.setVisibility(View.VISIBLE);
@@ -171,11 +170,11 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
     @Override
     public void fetchMore() {
         super.fetchMore();
-        WeiboLog.d(TAG, "fetchMore.lastItem:" + lastItem + " selectedPos:" + selectedPos);
-        if (mAdapter.getCount() > 0) {
+        WeiboLog.d(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
+        if (mAdapter.getCount()>0) {
             Status st;
-            st = (Status) mAdapter.getItem(mAdapter.getCount() - 1);
-            fetchData(- 1, st.id, false, false);
+            st=(Status) mAdapter.getItem(mAdapter.getCount()-1);
+            fetchData(-1, st.id, false, false);
         }
     }
 
@@ -188,7 +187,7 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
         Status status=mDataList.get(position);
 
         boolean updateFlag=true;
-        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+        if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
 
@@ -201,12 +200,13 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemClick(view);
+                itemClick(position, view);
             }
         });
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+                selectedPos=position;
                 prepareMenu(up);
                 return true;
             }
@@ -233,25 +233,25 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
      *
      * @param achor 用于显示QuickAction
      */
-    protected void itemClick(View achor) {
-        super.itemClick(achor);
+    protected void itemClick(int pos, View achor) {
+        super.itemClick(pos, achor);
     }
 
     /**
      * 创建收藏.
      */
     protected void createFavorite() {
-        WeiboLog.i(TAG, "selectedPos:" + selectedPos);
-        if (selectedPos == - 1) {
+        WeiboLog.i(TAG, "selectedPos:"+selectedPos);
+        if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
             return;
         }
 
         try {
-            Status status = mDataList.get(selectedPos);
-            if (null != status) {
-                String type = "0";
-                Long statusId = status.id;
+            Status status=mDataList.get(selectedPos);
+            if (null!=status) {
+                String type="0";
+                Long statusId=status.id;
                 /*OperationTask task=new OperationTask();
                 task.execute(new Object[]{type, statusId});*/
             }
@@ -265,7 +265,7 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
      */
     protected void commentStatus() {
         try {
-            Status status = mDataList.get(selectedPos);
+            Status status=mDataList.get(selectedPos);
 
             WeiboOperation.toCommentStatus(getActivity(), status);
         } catch (Exception e) {
@@ -278,7 +278,7 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
      */
     protected void repostStatus() {
         try {
-            Status status = mDataList.get(selectedPos);
+            Status status=mDataList.get(selectedPos);
 
             WeiboOperation.toRepostStatus(getActivity(), status);
         } catch (Exception e) {
@@ -291,16 +291,16 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
      */
     protected void deleteStatus() {
         WeiboLog.d(TAG, "not implemented.");
-        if (selectedPos == - 1) {
+        if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
             return;
         }
 
         try {
-            Status status = mDataList.get(selectedPos);
-            if (null != status) {
-                String type = "0";
-                Long statusId = status.id;
+            Status status=mDataList.get(selectedPos);
+            if (null!=status) {
+                String type="0";
+                Long statusId=status.id;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -312,15 +312,15 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
      */
     protected void viewStatusUser() {
         WeiboLog.d(TAG, "not implemented.");
-        if (selectedPos == - 1) {
+        if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
             return;
         }
 
         try {
-            Status status = mDataList.get(selectedPos);
-            if (null != status) {
-                User user = status.user;
+            Status status=mDataList.get(selectedPos);
+            if (null!=status) {
+                User user=status.user;
                 WeiboOperation.toViewStatusUser(getActivity(), user, UserFragmentActivity.TYPE_USER_INFO);
             }
         } catch (Exception e) {
@@ -333,23 +333,23 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
      */
     protected void quickRepostStatus() {
         WeiboLog.d(TAG, "quickRepostStatus.");
-        if (selectedPos == - 1) {
+        if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
             return;
         }
 
         try {
-            Status status = mDataList.get(selectedPos);
+            Status status=mDataList.get(selectedPos);
             //WeiboOperation.quickRepostStatus(status.id);
-            Intent taskService = new Intent(getActivity(), SendTaskService.class);
-            SendTask task = new SendTask();
-            task.uid = currentUserId;
-            task.userId = currentUserId;
-            task.content = "";
-            task.source = String.valueOf(status.id);
-            task.data = "0";
-            task.type = TwitterTable.SendQueueTbl.SEND_TYPE_REPOST_STATUS;
-            task.createAt = new Date().getTime();
+            Intent taskService=new Intent(getActivity(), SendTaskService.class);
+            SendTask task=new SendTask();
+            task.uid=currentUserId;
+            task.userId=currentUserId;
+            task.content="";
+            task.source=String.valueOf(status.id);
+            task.data="0";
+            task.type=TwitterTable.SendQueueTbl.SEND_TYPE_REPOST_STATUS;
+            task.createAt=new Date().getTime();
             taskService.putExtra("send_task", task);
             getActivity().startService(taskService);
             NotifyUtils.showToast("转发任务添加到队列服务中了。");
@@ -360,19 +360,19 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
 
     //--------------------- geo ---------------------
     private LocationClient mLocClient;
-    public MyLocationListenner myListener = new MyLocationListenner();
+    public MyLocationListenner myListener=new MyLocationListenner();
     private boolean mIsStart;
 
     /**
      * 获取地理位置，由地图api获取
      */
     private void initLocation() {
-        mLocClient = new LocationClient(App.getAppContext());
+        mLocClient=new LocationClient(App.getAppContext());
         mLocClient.registerLocationListener(myListener);
     }
 
     private void setLocationOption() {
-        LocationClientOption option = new LocationClientOption();
+        LocationClientOption option=new LocationClientOption();
         //option.setOpenGps();                //打开gps
         //option.setCoorType("");        //设置坐标类型
         //option.setAddrType("all");        //设置地址信息，仅设置为“all”时有地址信息，默认无地址信息
@@ -387,11 +387,11 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
-            if (location == null) {
+            if (location==null) {
                 return;
             }
 
-            StringBuilder sb = new StringBuilder(256);
+            StringBuilder sb=new StringBuilder(256);
             sb.append("time : ");
             sb.append(location.getTime());
             sb.append("\nerror code : ");
@@ -402,12 +402,12 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
             sb.append(location.getLongitude());
             sb.append("\nradius : ");
             sb.append(location.getRadius());
-            if (location.getLocType() == BDLocation.TypeGpsLocation) {
+            if (location.getLocType()==BDLocation.TypeGpsLocation) {
                 sb.append("\nspeed : ");
                 sb.append(location.getSpeed());
                 sb.append("\nsatellite : ");
                 sb.append(location.getSatelliteNumber());
-            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
+            } else if (location.getLocType()==BDLocation.TypeNetWorkLocation) {
                 sb.append("\n省：");
                 sb.append(location.getProvince());
                 sb.append("\n市：");
@@ -420,22 +420,22 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
             sb.append("\nsdk version : ");
             sb.append(mLocClient.getVersion());
             //logMsg(sb.toString());
-            WeiboLog.v(TAG, " sb:" + sb.toString());
+            WeiboLog.v(TAG, " sb:"+sb.toString());
 
-            ((App) App.getAppContext()).longitude = location.getLongitude();
-            ((App) App.getAppContext()).latitude = location.getLatitude();
-            ((App) App.getAppContext()).mLocationTimestamp = System.currentTimeMillis();
+            ((App) App.getAppContext()).longitude=location.getLongitude();
+            ((App) App.getAppContext()).latitude=location.getLatitude();
+            ((App) App.getAppContext()).mLocationTimestamp=System.currentTimeMillis();
 
             stopMap();
-            WeiboLog.v(TAG, " geo:" + sb.toString());
+            WeiboLog.v(TAG, " geo:"+sb.toString());
             pullToRefreshData();
         }
 
         public void onReceivePoi(BDLocation poiLocation) {
-            if (poiLocation == null) {
+            if (poiLocation==null) {
                 return;
             }
-            StringBuffer sb = new StringBuffer(256);
+            StringBuffer sb=new StringBuffer(256);
             sb.append("Poi time : ");
             sb.append(poiLocation.getTime());
             sb.append("\nerror code : ");
@@ -446,7 +446,7 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
             sb.append(poiLocation.getLongitude());
             sb.append("\nradius : ");
             sb.append(poiLocation.getRadius());
-            if (poiLocation.getLocType() == BDLocation.TypeNetWorkLocation) {
+            if (poiLocation.getLocType()==BDLocation.TypeNetWorkLocation) {
                 sb.append("\naddr : ");
                 sb.append(poiLocation.getAddrStr());
             }

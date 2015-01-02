@@ -3,13 +3,12 @@ package cn.archko.microblog.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.RecyclerView;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 import cn.archko.microblog.R;
@@ -41,31 +40,31 @@ import java.util.ArrayList;
  */
 public class MyFavFragment extends AbsBaseListFragment<Favorite> {
 
-    public static final String TAG = "MyFavFragment";
-    long mUserId = - 1l;
+    public static final String TAG="MyFavFragment";
+    long mUserId=-1l;
 
-    boolean isDeleting = false;
+    boolean isDeleting=false;
     private ActionMode mMode;
 
     //--------------------- 数据加载 ---------------------
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mUserId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
+        mUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
 
-        WeiboLog.v(TAG, "onCreate:" + this);
-        mStatusImpl = new SinaMyFavStatusImpl();
-        weibo_count = 15; //加载15条数据
-        page = 1;     //收藏默认从1开始页码
+        WeiboLog.v(TAG, "onCreate:"+this);
+        mStatusImpl=new SinaMyFavStatusImpl();
+        weibo_count=15; //加载15条数据
+        page=1;     //收藏默认从1开始页码
     }
 
     @Override
     public void initApi() {
-        mStatusImpl = new SinaMyFavStatusImpl();
+        mStatusImpl=new SinaMyFavStatusImpl();
 
-        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
         try {
-            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
@@ -92,36 +91,40 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
     public View getView(int position, View convertView, ViewGroup parent) {
         //WeiboLog.d(TAG, "getView.pos:"+position+" getCount():"+getCount()+" lastItem:");
 
-        FavItemView itemView = null;
-        Favorite status = mDataList.get(position);
+        FavItemView itemView=null;
+        Favorite status=mDataList.get(position);
 
-        boolean updateFlag = true;
-        if (mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-            updateFlag = false;
+        boolean updateFlag=true;
+        if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
+            updateFlag=false;
         }
 
-        if (convertView == null) {
-            itemView = new FavItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
+        if (convertView==null) {
+            itemView=new FavItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
         } else {
-            itemView = (FavItemView) convertView;
+            itemView=(FavItemView) convertView;
         }
         itemView.update(status, updateFlag, true, showLargeBitmap, showBitmap);
 
         return itemView;
     }
 
-    public  View getView(SimpleViewHolder holder, final int position){return null;}
+    public View getView(SimpleViewHolder holder, final int position) {
+        return null;
+    }
 
-    public  View newView(ViewGroup parent, int viewType){return null;}
+    public View newView(ViewGroup parent, int viewType) {
+        return null;
+    }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (null != mMode) {
+        if (null!=mMode) {
             //mListView.clearChoices();
             //mListView.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
             mMode.finish();
-            mMode = null;
+            mMode=null;
         }
     }
 
@@ -131,10 +134,10 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
     @Override
     protected void loadData() {
         //super.loadData();   //TODO 需要保存本地数据，暂时先不存储
-        if (mDataList != null && mDataList.size() > 0) {
+        if (mDataList!=null&&mDataList.size()>0) {
             mAdapter.notifyDataSetChanged();
         } else {
-            if (! isLoading) {
+            if (!isLoading) {
                 loadLocalData();
             } else {
                 mEmptyTxt.setText(R.string.list_pre_empty_txt);
@@ -147,8 +150,8 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
      * 从缓存中查询数据.
      */
     void loadLocalData() {
-        if (! isLoading) {
-            Object[] params = new Object[]{false, currentUserId};
+        if (!isLoading) {
+            Object[] params=new Object[]{false, currentUserId};
             newTaskNoNet(params, null);
         }
     }
@@ -162,22 +165,22 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
      * @param isHomeStore 是否是主页,只有主页有存储
      */
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        WeiboLog.i("sinceId:" + sinceId + ", maxId:" + maxId + ", isRefresh:" + isRefresh + ", isHomeStore:" + isHomeStore);
-        if (! App.hasInternetConnection(getActivity())) {
+        WeiboLog.i("sinceId:"+sinceId+", maxId:"+maxId+", isRefresh:"+isRefresh+", isHomeStore:"+isHomeStore);
+        if (!App.hasInternetConnection(getActivity())) {
             NotifyUtils.showToast(R.string.network_error);
-            if (mRefreshListener != null) {
+            if (mRefreshListener!=null) {
                 mRefreshListener.onRefreshFinished();
             }
             refreshAdapter(false, false);
             return;
         }
 
-        int count = weibo_count;
-        if (! isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
+        int count=weibo_count;
+        if (!isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
             count++;
         }
 
-        if (! isLoading) {
+        if (!isLoading) {
             newTask(new Object[]{isRefresh, mUserId, sinceId, maxId, count, page, isHomeStore}, null);
         }
     }
@@ -191,10 +194,10 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
     @Override
     public void fetchMore() {
         super.fetchMore();
-        WeiboLog.v(TAG, "fetchMore.lastItem:" + lastItem + " selectedPos:" + selectedPos);
-        if (mAdapter.getCount() > 0) {
+        WeiboLog.v(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
+        if (mAdapter.getCount()>0) {
             page++;
-            fetchData(- 1, - 1, false, false);
+            fetchData(-1, -1, false, false);
         }
     }
 
@@ -203,13 +206,13 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
      */
     @Override
     protected void viewOriginalStatus(View achor) {
-        if (selectedPos >= mDataList.size()) {
+        if (selectedPos>=mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;
         }
 
         try {
-            Favorite favorite = mDataList.get(selectedPos);
+            Favorite favorite=mDataList.get(selectedPos);
 
             WeiboOperation.toViewOriginalStatus(getActivity(), favorite.mStatus);
         } catch (Exception e) {
@@ -220,14 +223,14 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
     //--------------------- 微博操作 ---------------------
     @Override
     public void onCreateCustomMenu(PopupMenu menuBuilder) {
-        int index = 0;
+        int index=0;
         menuBuilder.getMenu().add(0, Constants.OP_ID_QUICK_REPOST, index++, R.string.opb_destroy_fav);
         menuBuilder.getMenu().add(0, Constants.OP_ID_COMMENT, index++, R.string.opb_destroy_batch);
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        int menuId = item.getItemId();
+        int menuId=item.getItemId();
         switch (menuId) {
             case Constants.OP_ID_QUICK_REPOST: {
                 quickRepostStatus();
@@ -257,28 +260,28 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
         return false;
     }
 
-    Handler mStatusHandler = new Handler() {
+    Handler mStatusHandler=new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
-            isDeleting = false;
-            if (! isResumed()) {
+            isDeleting=false;
+            if (!isResumed()) {
                 WeiboLog.w(TAG, "已经结束了Fragment，不需要通知消息");
                 return;
             }
 
             switch (msg.what) {
                 case ActionResult.ACTION_SUCESS: {
-                    ActionResult actionResult = (ActionResult) msg.obj;
-                    Object obj = actionResult.obj;
+                    ActionResult actionResult=(ActionResult) msg.obj;
+                    Object obj=actionResult.obj;
                     if (obj instanceof Favorite) {
                         NotifyUtils.showToast(String.format(getResources().getString(R.string.fav_delete_suc), 1));
-                        ArrayList<Long> ids = new ArrayList<Long>(1);
-                        Favorite f = (Favorite) obj;
+                        ArrayList<Long> ids=new ArrayList<Long>(1);
+                        Favorite f=(Favorite) obj;
                         ids.add(f.mStatus.id);
                         updateList(ids);
                     } else if (obj instanceof ArrayList) {
-                        ArrayList<Long> ids = (ArrayList<Long>) obj;
+                        ArrayList<Long> ids=(ArrayList<Long>) obj;
                         NotifyUtils.showToast(String.format(getResources().getString(R.string.fav_delete_suc), ids.size()));
 
                         updateList(ids);
@@ -287,14 +290,14 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
                 }
 
                 case ActionResult.ACTION_FALL:
-                    ActionResult actionResult = (ActionResult) msg.obj;
+                    ActionResult actionResult=(ActionResult) msg.obj;
                     NotifyUtils.showToast(actionResult.reslutMsg, Toast.LENGTH_LONG);
-                    WeiboLog.d(TAG, "delete status failed." + actionResult.reslutMsg);
+                    WeiboLog.d(TAG, "delete status failed."+actionResult.reslutMsg);
 
-                    ArrayList<Long> sucIds = (ArrayList<Long>) actionResult.obj;
-                    ArrayList<Long> failedIds = (ArrayList<Long>) (actionResult.results)[ 0 ];
-                    WeiboLog.i(TAG, "成功：" + sucIds.size() + " 失败:" + failedIds.size());
-                    NotifyUtils.showToast("成功：" + sucIds.size() + "个 失败:" + failedIds.size() + "个");
+                    ArrayList<Long> sucIds=(ArrayList<Long>) actionResult.obj;
+                    ArrayList<Long> failedIds=(ArrayList<Long>) (actionResult.results)[0];
+                    WeiboLog.i(TAG, "成功："+sucIds.size()+" 失败:"+failedIds.size());
+                    NotifyUtils.showToast("成功："+sucIds.size()+"个 失败:"+failedIds.size()+"个");
 
                     updateList(sucIds);
                     break;
@@ -311,30 +314,31 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
          * @param dataList 原来的数据
          */
         private void updateList(ArrayList<Long> sucIds) {
-            if (sucIds.size() > 0) {
+            if (sucIds.size()>0) {
                 clearSelection();
-                ArrayList<Favorite> dataList = mDataList;
+                ArrayList<Favorite> dataList=mDataList;
                 for (Long id : sucIds) {
                     for (Favorite favorite : dataList) {
-                        if (id == favorite.mStatus.id) {
+                        if (id==favorite.mStatus.id) {
                             dataList.remove(favorite);
                             break;
                         }
                     }
                 }
-                WeiboLog.d(TAG, "新的数据集合为：" + dataList.size());
+                WeiboLog.d(TAG, "新的数据集合为："+dataList.size());
             }
         }
     };
 
     @Override
-    protected void itemClick(View achor) {
+    protected void itemClick(int pos, View achor) {
+        selectedPos=pos;
         if (isDeleting) {
             NotifyUtils.showToast("正在处理删除操作，不能查看！");
             return;
         }
 
-        if (null == mMode) {
+        if (null==mMode) {
             viewOriginalStatus(achor);
         }
     }
@@ -344,14 +348,14 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
      *
      * @param achor 用于显示QuickAction
      */
-    protected boolean itemLongClick(View achor) {
+    protected boolean itemLongClick(int pos, View achor) {
         if (isDeleting) {
             NotifyUtils.showToast("正在处理删除操作，不能查看！");
             return true;
         }
 
-        if (null == mMode) {
-            return super.itemLongClick(achor);
+        if (null==mMode) {
+            return super.itemLongClick(pos, achor);
         }
 
         return false;
@@ -362,11 +366,11 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
      */
     protected void quickRepostStatus() {
         WeiboLog.d(TAG, "delete status.");
-        if (selectedPos == - 1) {
+        if (selectedPos==-1) {
             return;
         }
 
-        if (! App.hasInternetConnection(getActivity())) {
+        if (!App.hasInternetConnection(getActivity())) {
             NotifyUtils.showToast(R.string.network_error);
 
             return;
@@ -374,11 +378,11 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
 
         try {
             NotifyUtils.showToast("开始删除，请稍等！");
-            Favorite favorite = mDataList.get(selectedPos);
-            SFavAction action = new SFavAction();
+            Favorite favorite=mDataList.get(selectedPos);
+            SFavAction action=new SFavAction();
 
-            isDeleting = true;
-            AsyncActionTask task = new AsyncActionTask(getActivity(), action);
+            isDeleting=true;
+            AsyncActionTask task=new AsyncActionTask(getActivity(), action);
             task.execute(0, favorite.mStatus.id, mStatusHandler);
         } catch (Exception e) {
             e.printStackTrace();
@@ -400,7 +404,7 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
     //--------------------- action mode ---------------------
     private void turnOnActionMode() {
         WeiboLog.d(TAG, "turnOnActionMode");
-        mMode = getActivity().startActionMode(new StatusActionMode());
+        mMode=getActivity().startActionMode(new StatusActionMode());
         /*ListView lv = mListView;
         lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);*/
     }
@@ -413,12 +417,12 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
             WeiboLog.v(TAG, "onCreateActionMode");
             getActivity().getMenuInflater().inflate(R.menu.status_mode_menu, menu);
 
-            int selectId = R.drawable.ic_action_select_invert_light;
-            String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+            int selectId=R.drawable.ic_action_select_invert_light;
+            String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
             if ("0".equals(themeId)) {
             } else if ("1".equals(themeId)) {
             } else if ("2".equals(themeId)) {
-                selectId = R.drawable.ic_action_select_invert_light;
+                selectId=R.drawable.ic_action_select_invert_light;
             }
             menu.findItem(R.id.invert_selection).setIcon(selectId);
             return true;
@@ -441,12 +445,12 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            WeiboLog.d(TAG, "onActionItemClicked:" + item);
-            int itemId = item.getItemId();
-            if (itemId == R.id.delete) {
+            WeiboLog.d(TAG, "onActionItemClicked:"+item);
+            int itemId=item.getItemId();
+            if (itemId==R.id.delete) {
                 actionModeDelete();
                 return true;
-            } else if (itemId == R.id.invert_selection) {
+            } else if (itemId==R.id.invert_selection) {
                 actionModeInvertSelection();
                 return true;
             }
@@ -458,13 +462,13 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
         public void onDestroyActionMode(ActionMode mode) {
             WeiboLog.d(TAG, "onDestroyActionMode");
 
-            mMode = null;
+            mMode=null;
             clearSelection();
         }
     }
 
     private void actionModeDelete() {
-        if (! App.hasInternetConnection(getActivity())) {
+        if (!App.hasInternetConnection(getActivity())) {
             NotifyUtils.showToast(R.string.network_error);
 
             return;

@@ -145,12 +145,13 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemClick(view);
+                itemClick(position, view);
             }
         });
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+                selectedPos=position;
                 prepareMenu(up);
                 return true;
             }
@@ -238,7 +239,8 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
      *
      * @param achor 用于显示QuickAction
      */
-    protected void itemClick(View achor) {
+    protected void itemClick(int pos, View achor) {
+        selectedPos=pos;
         //showButtonBar(achor);
         prepareMenu(up);
     }

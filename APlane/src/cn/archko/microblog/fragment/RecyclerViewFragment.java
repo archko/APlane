@@ -43,7 +43,7 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
         WeiboLog.v(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
         if (mAdapter.getCount()>0) {
             Status st;
-            st=(Status) mDataList.get(mAdapter.getCount()-1);
+            st=(Status) mAdapter.getItem(mAdapter.getCount()-1);
             fetchData(-1, st.id, false, false);
         }
     }
@@ -55,7 +55,8 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
      *
      * @param achor 用于显示QuickAction
      */
-    protected void itemClick(View achor) {
+    protected void itemClick(int pos, View achor) {
+        selectedPos=pos;
         viewOriginalStatus(achor);
     }
 
@@ -241,7 +242,7 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
         Status status=mDataList.get(position);
 
         boolean updateFlag=true;
-        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+        if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
 
@@ -254,12 +255,13 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemClick(view);
+                itemClick(position, view);
             }
         });
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+                selectedPos=position;
                 prepareMenu(up);
                 return true;
             }

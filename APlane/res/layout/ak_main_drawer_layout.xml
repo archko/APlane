@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:dividerHeight="0.2dp"
-        android:layout_width="214dp" android:paddingTop="?android:attr/actionBarSize"
+        android:layout_width="214dp"
         android:scrollbars="none" android:footerDividersEnabled="false"
         android:fadingEdge="none" android:fastScrollEnabled="false"
         android:cacheColorHint="#0000" android:background="@color/holo_light_bg_view"

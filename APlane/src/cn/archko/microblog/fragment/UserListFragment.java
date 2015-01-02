@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.PopupMenu;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
@@ -56,7 +55,7 @@ public abstract class UserListFragment extends AbsBaseListFragment<User> {   //T
         User user = mDataList.get(position);
 
         boolean updateFlag=true;
-        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+        if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
 
@@ -69,12 +68,13 @@ public abstract class UserListFragment extends AbsBaseListFragment<User> {   //T
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemClick(view);
+                itemClick(position, view);
             }
         });
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+                selectedPos=position;
                 prepareMenu(up);
                 return true;
             }
@@ -166,7 +166,8 @@ public abstract class UserListFragment extends AbsBaseListFragment<User> {   //T
     }
 
     @Override
-    protected void itemClick(View achor) {
+    protected void itemClick(int pos, View achor) {
+        selectedPos=pos;
         //showButtonBar(achor);
         viewStatusUser();
     }

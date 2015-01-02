@@ -37,7 +37,7 @@ public class PlaceNearbyUsersFragment extends PlaceUserListFragment {
      * 查看Status原文信息,包括评论，但这里是一个位置微博。可能会有些不一样.
      */
     @Override
-    protected void itemClick(View achor) {
-        super.itemClick(achor);
+    protected void itemClick(int pos, View achor) {
+        super.itemClick(pos, achor);
     }
 }

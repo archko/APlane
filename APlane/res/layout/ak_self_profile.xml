@@ -7,9 +7,9 @@
     tools:ignore="ContentDescription"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <View
+    <!--<View
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"/>
+        android:layout_height="?android:attr/actionBarSize"/>-->
     <RelativeLayout
         android:layout_width="match_parent" android:layout_height="wrap_content">
         <ImageView android:id="@+id/iv_portrait"

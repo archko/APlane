@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 import cn.archko.microblog.R;
@@ -189,7 +188,7 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
         Comment status=mDataList.get(position);
 
         boolean updateFlag=true;
-        if (mScrollState==AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+        if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
 
@@ -202,12 +201,13 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemClick(view);
+                itemClick(position, view);
             }
         });
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+                selectedPos=position;
                 prepareMenu(up);
                 return true;
             }
@@ -388,7 +388,8 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
     }
 
     @Override
-    protected void itemClick(View achor) {
+    protected void itemClick(int pos, View achor) {
+        selectedPos=pos;
         //showButtonBar(achor);
         //replyComment();
         //prepareMenu(up);

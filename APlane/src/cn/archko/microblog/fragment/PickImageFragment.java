@@ -148,7 +148,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
                 WeiboLog.d(TAG, "itemClick:" + pos);
                 selectedPos = pos;
 
-                itemClick(view);
+                itemClick(pos, view);
             }
         });
         mGridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -158,7 +158,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
                 WeiboLog.d(TAG, "itemLongClick:" + pos);
                 selectedPos = pos;
                 //showButtonBar(view);
-                itemLongClick(view);
+                itemLongClick(pos, view);
                 return true;
             }
         });
@@ -254,7 +254,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
                 if (view == footerView) {
                     return;
                 }
-                itemClick(view);
+                itemClick(position, view);
             }
         });
         mGridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -271,7 +271,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
                 }
 
                 if (view != footerView) {
-                    return itemLongClick(view);
+                    return itemLongClick(position, view);
                 }
                 return true;
             }
@@ -371,12 +371,13 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
     }
 
     @Override
-    protected void itemClick(View achor) {
+    protected void itemClick(int pos, View achor) {
+        selectedPos=pos;
         prepareMenu(achor);
     }
 
     @Override
-    protected boolean itemLongClick(View achor) {
+    protected boolean itemLongClick(int pos, View achor) {
         return false;
     }
 

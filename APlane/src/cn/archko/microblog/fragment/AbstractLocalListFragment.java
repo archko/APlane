@@ -18,24 +18,24 @@ import com.me.microblog.util.WeiboLog;
  * 覆盖basePostOperation方法，因为它与网络数据相关，而且当数据为空时，会在footerview中显示
  * @author: archko 12-10-17
  */
-public abstract class AbstractLocalListFragment <T> extends AbsBaseListFragment<T> {
+public abstract class AbstractLocalListFragment<T> extends AbsBaseListFragment<T> {
 
-    public static final String TAG = "AccountUsersFragment";
+    public static final String TAG="AccountUsersFragment";
 
     protected void pullToRefreshData() {
-        isRefreshing = true;
-        newTaskNoNet(new Object[]{true, - 1l, - 1l, 1, page, false}, null);
+        isRefreshing=true;
+        newTaskNoNet(new Object[]{true, -1l, -1l, 1, page, false}, null);
     }
 
     //TODO 需要强制刷新数据，避免编辑后的问题。
     @Override
     protected void loadData() {
-        if (mDataList != null && mDataList.size() > 0) {
+        if (mDataList!=null&&mDataList.size()>0) {
             mAdapter.notifyDataSetChanged();
         } else {
-            if (! isLoading) {
+            if (!isLoading) {
                 //newTask(new Object[]{}, null);
-                newTaskNoNet(new Object[]{true, - 1l, - 1l, 1, page, false}, null);
+                newTaskNoNet(new Object[]{true, -1l, -1l, 1, page, false}, null);
             } else {
                 mEmptyTxt.setText(R.string.list_pre_empty_txt);
                 mEmptyTxt.setVisibility(View.VISIBLE);
@@ -83,8 +83,8 @@ public abstract class AbstractLocalListFragment <T> extends AbsBaseListFragment<
      *
      * @param achor 用于显示QuickAction
      */
-    protected void itemClick(View achor) {
-        super.itemClick(achor);
+    protected void itemClick(int pos, View achor) {
+        super.itemClick(pos, achor);
     }
 
     /**

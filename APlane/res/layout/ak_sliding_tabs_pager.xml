@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.bulletnoid.android.widget.SwipeAwayLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:padding="0dip" android:id="@+id/root"
+        android:layout_width="match_parent" android:layout_height="match_parent">
+
+        <cn.archko.microblog.view.SlidingTabLayout
+            android:id="@+id/sliding_tabs" android:background="#f5f5f5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <include android:id="@+id/shadow" layout="@layout/top_shadow"/>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+</com.bulletnoid.android.widget.SwipeAwayLayout>

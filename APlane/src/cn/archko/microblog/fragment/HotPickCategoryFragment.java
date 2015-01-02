@@ -14,8 +14,6 @@ import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
 import cn.archko.microblog.fragment.abs.FragmentCallback;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.me.microblog.util.WeiboLog;
 
 /**
@@ -35,7 +33,6 @@ public class HotPickCategoryFragment extends AbstractBaseFragment {
     static final String[] keys = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
     static final String[] names = {"娱乐", "搞笑", "美女", "视频", "星座", "各种萌", "时尚", "名车", "美食", "音乐"};
 
-    protected PullToRefreshListView mPullRefreshListView;
     protected ListView mListView;
     TimeLineAdapter mAdapter;
 
@@ -57,19 +54,6 @@ public class HotPickCategoryFragment extends AbstractBaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         RelativeLayout root = (RelativeLayout) inflater.inflate(R.layout.friend_list, null);
-        mPullRefreshListView = (PullToRefreshListView) root.findViewById(R.id.statusList);
-        mListView = mPullRefreshListView.getRefreshableView();
-        mPullRefreshListView.setMode(PullToRefreshBase.Mode.DISABLED);
-        /*mListView.setLockScrollWhileRefreshing(true);
-        SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String themeId=options.getString(PrefsActivity.PREF_THEME, "0");
-        if ("0".equals(themeId)) {
-            mListView.setHeaderContainerBackground(R.color.abs__background_holo_light);
-        } else if ("1".equals(themeId)) {
-            mListView.setHeaderContainerBackground(R.color.abs__background_holo_light);
-        } else if ("2".equals(themeId)) {
-        } else if ("3".equals(themeId)) {
-        }*/
 
         return root;
     }
