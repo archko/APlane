@@ -16,7 +16,6 @@ import cn.archko.microblog.action.SFavAction;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
 import cn.archko.microblog.fragment.impl.SinaMyFavStatusImpl;
 import cn.archko.microblog.recycler.SimpleViewHolder;
-import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.FavItemView;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
@@ -205,7 +204,7 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
      * 查看Status原文信息,包括评论.
      */
     @Override
-    protected void viewOriginalStatus(View achor) {
+    public void viewOriginalStatus(View achor) {
         if (selectedPos>=mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;
@@ -213,8 +212,7 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
 
         try {
             Favorite favorite=mDataList.get(selectedPos);
-
-            WeiboOperation.toViewOriginalStatus(getActivity(), favorite.mStatus);
+            mWeiboController.viewOriginalStatus(achor,favorite.mStatus, getActivity());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -364,7 +362,7 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
     /**
      * 快速转发,因为自己发布的收藏不能转发,所以在这里用于删除.
      */
-    protected void quickRepostStatus() {
+    public void quickRepostStatus() {
         WeiboLog.d(TAG, "delete status.");
         if (selectedPos==-1) {
             return;
@@ -393,7 +391,7 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
      * 跳转到到评论界面 因为自己发布的微博不能转发,所以在这里用于批量删除.
      * 批量删除用ActionMode来处理.
      */
-    protected void commentStatus() {
+    public void commentStatus() {
         WeiboLog.d(TAG, "batch delete status.");
         turnOnActionMode();
         /*ListView listView=mListView;

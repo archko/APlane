@@ -20,7 +20,6 @@ import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
 import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.ui.NewStatusActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
-import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.UserGridItemView;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.me.microblog.App;
@@ -379,7 +378,7 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         try {
             User user=mDataList.get(selectedPos);
 
-            WeiboOperation.toViewStatusUser(getActivity(), user, UserFragmentActivity.TYPE_USER_INFO);
+            mWeiboController.viewUser(user, getActivity(), UserFragmentActivity.TYPE_USER_INFO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -409,8 +408,8 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
 
             User user=mDataList.get(selectedPos);
             WeiboLog.d(TAG, "viewUserStatuses."+user.screenName);
-            WeiboOperation.toViewStatusUser(getActivity(), user, UserFragmentActivity.TYPE_USER_TIMELINE);
             //getActivity().finish(); //这里结束当前的Activity,因为可能造成内存不足.
+            mWeiboController.viewUser(user, getActivity(), UserFragmentActivity.TYPE_USER_TIMELINE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -420,8 +419,8 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         try {
             User user=mDataList.get(selectedPos);
             //intent.putExtra("screen_name", user.screenName);
-            WeiboOperation.toViewStatusUser(getActivity(), user, UserFragmentActivity.TYPE_USER_FOLLOWERS);
             //getActivity().finish(); //这里结束当前的Activity,因为可能造成内存不足.
+            mWeiboController.viewUser(user, getActivity(), UserFragmentActivity.TYPE_USER_FOLLOWERS);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -431,8 +430,8 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         try {
             User user=mDataList.get(selectedPos);
             //intent.putExtra("screen_name", user.screenName);
-            WeiboOperation.toViewStatusUser(getActivity(), user, UserFragmentActivity.TYPE_USER_FRIENDS);
             //getActivity().finish(); //这里结束当前的Activity,因为可能造成内存不足.
+            mWeiboController.viewUser(user, getActivity(), UserFragmentActivity.TYPE_USER_FRIENDS);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -454,24 +453,6 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
     //--------------------- 微博操作 ---------------------
 
     /**
-     * 创建收藏.
-     */
-    protected void createFavorite() {
-    }
-
-    /**
-     * 跳转到到评论界面
-     */
-    protected void commentStatus() {
-    }
-
-    /**
-     * 到转发界面
-     */
-    protected void repostStatus() {
-    }
-
-    /**
      * 删除，需要根据不同的类型的列表处理。不是所有的微博都可以删除
      */
     protected void deleteStatus() {
@@ -480,7 +461,7 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
     /**
      * 查看用户信息
      */
-    protected void viewStatusUser() {
+    public void viewStatusUser() {
         WeiboLog.d(TAG, "viewStatusUser.");
         if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
@@ -489,18 +470,10 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
 
         try {
             User user=mDataList.get(selectedPos);
-            if (null!=user) {
-                WeiboOperation.toViewStatusUser(getActivity(), user, UserFragmentActivity.TYPE_USER_INFO);
-            }
+            mWeiboController.viewUser(user, getActivity(), UserFragmentActivity.TYPE_USER_INFO);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * 快速转发
-     */
-    protected void quickRepostStatus() {
     }
 
     //TODO需要处理token过期的状况。

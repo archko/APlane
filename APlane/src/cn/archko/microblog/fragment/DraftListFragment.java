@@ -234,7 +234,7 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
     /**
      * 快速转发，在这里是编辑草稿
      */
-    protected void quickRepostStatus() {
+    public void quickRepostStatus() {
         if (selectedPos >= mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;
@@ -255,7 +255,7 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
     /**
      * 跳转到到评论界面，在这里是删除草稿
      */
-    protected void commentStatus() {
+    public void commentStatus() {
         if (selectedPos >= mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;

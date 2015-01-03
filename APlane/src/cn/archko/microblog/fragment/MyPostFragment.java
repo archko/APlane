@@ -315,7 +315,7 @@ public class MyPostFragment extends RecyclerViewFragment {
     /**
      * 快速转发,因为自己发布的微博不能转发,所以在这里用于删除.
      */
-    protected void quickRepostStatus() {
+    public void quickRepostStatus() {
         WeiboLog.d(TAG, "delete status.");
         if (selectedPos==-1) {
             return;
@@ -344,7 +344,7 @@ public class MyPostFragment extends RecyclerViewFragment {
      * 跳转到到评论界面 因为自己发布的微博不能转发,所以在这里用于批量删除.
      * 批量删除用ActionMode来处理.
      */
-    protected void commentStatus() {
+    public void commentStatus() {
         WeiboLog.d(TAG, "batch delete status.");
         turnOnActionMode();
         /*ListView listView=mListView;

@@ -414,7 +414,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
      * 修改
      */
     @Override
-    protected void quickRepostStatus() {
+    public void quickRepostStatus() {
         UploadImage image = mDataList.get(selectedPos);
         WeiboLog.d("修改:" + image);
         if (null == takePictureUtil) {
@@ -430,7 +430,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
      * 删除
      */
     @Override
-    protected void commentStatus() {
+    public void commentStatus() {
         UploadImage image = mDataList.get(selectedPos);
         WeiboLog.d("删除:" + image);
         mDataList.remove(selectedPos);
@@ -443,7 +443,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
      * @param achor
      */
     @Override
-    protected void viewOriginalStatus(View achor) {
+    public void viewOriginalStatus(View achor) {
         Intent intent = new Intent(getActivity(), ImageViewerActivity.class);
         UploadImage image = mDataList.get(selectedPos);
         String[] imageUrls = new String[]{image.path};

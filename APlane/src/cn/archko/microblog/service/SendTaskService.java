@@ -4,16 +4,28 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Binder;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 import cn.archko.microblog.R;
+import cn.archko.microblog.ui.HomeActivity;
+import com.me.microblog.App;
 import com.me.microblog.bean.SendTask;
-import com.me.microblog.thread.SendTaskPool;
+import com.me.microblog.util.SqliteWrapper;
 import com.me.microblog.util.WeiboLog;
+
+import java.lang.ref.WeakReference;
 
 /**
  * 队列服务，用于处理队列操作，发新微博，评论，回复，转发等。
@@ -23,14 +35,25 @@ import com.me.microblog.util.WeiboLog;
  */
 public class SendTaskService extends Service {
 
-    public static final String TAG = "SendTaskService";
-    private MyBinder myBinder = new MyBinder();
+    public static final String TAG="SendTaskService";
+    private MyBinder myBinder=new MyBinder();
     private NotificationManager mNM;
     SharedPreferences settings;
 
-    public SendTaskPool mSendTaskPool = null;
-    public static final int TYPE_ORI_TASK = 0;
-    public static final int TYPE_RESTART_TASK = 1;
+    //---------------------------
+
+    public static final String ACTION_NEW_TASK="cn.archko.microblog.service.new_task";
+    public static final String ACTION_STOP_TASK="cn.archko.microblog.service.stop_task";
+
+    public static final int MSG_START_TASK=0;
+    public static final int MSG_RESTART_TASK=1;
+    public static final int MSG_STOP_TASK=-10;
+
+    public static final int TYPE_ORI_TASK=0;
+    public static final int TYPE_RESTART_TASK=1;
+
+    private ServiceHandler mServiceHandler;
+    private SendTaskHandler mTaskHandler;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -60,14 +83,68 @@ public class SendTaskService extends Service {
 
     }
 
+    private static final class ServiceHandler extends Handler {
+
+        private final WeakReference<SendTaskService> mService;
+
+        /**
+         * Constructor of <code>ServiceHandler</code>
+         *
+         * @param service The service to use.
+         * @param looper  The thread to run on.
+         */
+        public ServiceHandler(final SendTaskService service, final Looper looper) {
+            super(looper);
+            mService=new WeakReference<SendTaskService>(service);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void handleMessage(final Message msg) {
+            final SendTaskService service=mService.get();
+            if (service==null) {
+                WeiboLog.d(TAG, "service == null");
+                return;
+            }
+
+            switch (msg.what) {
+                case MSG_STOP_TASK: {
+                    WeiboLog.d(TAG, "handle stop");
+                    service.stopTask();
+                }
+
+                case MSG_START_TASK:
+                default: {
+                    service.doTask((Intent) msg.obj);
+                }
+
+                break;
+            }
+        }
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         WeiboLog.d(TAG, "onCreate");
-        mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNM=(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        settings = PreferenceManager.getDefaultSharedPreferences(this);
-        initSendTaskPool();
+        settings=PreferenceManager.getDefaultSharedPreferences(this);
+        final HandlerThread thread=new HandlerThread("ServiceHandler",
+            android.os.Process.THREAD_PRIORITY_BACKGROUND);
+        thread.start();
+
+        // Initialize the handler
+        mServiceHandler=new ServiceHandler(this, thread.getLooper());
+        initTaskHandler();
+
+        IntentFilter filter=new IntentFilter();
+        filter.setPriority(Integer.MAX_VALUE);
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        filter.addAction(SendTaskService.ACTION_NEW_TASK);
+        registerReceiver(mServiceReceiver, filter);
     }
 
     @Override
@@ -80,50 +157,48 @@ public class SendTaskService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        unregisterReceiver(mServiceReceiver);
 
-        destroySendTaskPool();
+        if (null!=mServiceHandler) {
+            mServiceHandler.removeCallbacksAndMessages(null);
+            mServiceHandler.getLooper().quit();
+            mServiceHandler=null;
+        }
+        stopTaskHandler();
     }
 
     /**
      * 初始化任务线程
      */
-    private void initSendTaskPool() {
-        if (this.mSendTaskPool != null) {
-            return;
-        }
-
-        WeiboLog.d(TAG, "initSendTaskPool.");
-        SendTaskPool sendTaskPool = new SendTaskPool(this);
-        this.mSendTaskPool = sendTaskPool;
-        this.mSendTaskPool.setPriority(Thread.MIN_PRIORITY);
-        this.mSendTaskPool.setName("SendTaskPool");
-        this.mSendTaskPool.start();
+    private void initTaskHandler() {
+        final HandlerThread uploadHandler=new HandlerThread("UploadHandler",
+            android.os.Process.THREAD_PRIORITY_BACKGROUND);
+        uploadHandler.start();
+        mTaskHandler=new SendTaskHandler(this, uploadHandler.getLooper());
     }
 
     /**
      * 销毁任务线程
      */
-    private void destroySendTaskPool() {
-        if (this.mSendTaskPool == null) {
-            return;
+    private void stopTaskHandler() {
+        if (null!=mTaskHandler) {
+            mTaskHandler.removeCallbacksAndMessages(null);
+            mTaskHandler.getLooper().quit();
+            mTaskHandler=null;
         }
-
-        WeiboLog.d(TAG, "destroySendTaskPool.");
-        mSendTaskPool.setStop(true);
-        this.mSendTaskPool = null;
     }
 
     @Override
     public void onStart(Intent intent, int startId) {
-        WeiboLog.d(TAG, "onStart:" + " startId:" + startId);
+        WeiboLog.d(TAG, "onStart:"+" startId:"+startId);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        WeiboLog.d(TAG, "onStartCommand,flags:" + flags + " startId:" + startId);
+        WeiboLog.d(TAG, "onStartCommand,flags:"+flags+" startId:"+startId);
 
-        addTaskToQueue(intent);
+        addTaskToQueue(intent, startId);
         // We want this service to continue running until it is explicitly
         // stopped, so return sticky.
         return START_STICKY;
@@ -133,41 +208,77 @@ public class SendTaskService extends Service {
      * 添加任务到队列中。
      *
      * @param intent
+     * @param startId
      */
-    void addTaskToQueue(Intent intent) {
-        if (null == mSendTaskPool) {
-            initSendTaskPool();
-        }
+    void addTaskToQueue(Intent intent, int startId) {
+        Message msg=mServiceHandler.obtainMessage();
+        msg.arg1=startId;
+        msg.what=MSG_START_TASK;
+        msg.obj=intent;
+        mServiceHandler.sendMessage(msg);
+    }
 
-        if (intent == null || null == intent.getSerializableExtra("send_task")) {
+    /**
+     * 处理任务
+     *
+     * @param obj
+     */
+    public void doTask(Intent obj) {
+        saveTask(obj);
+        //store new task from intent
+        //WeiboLog.d(TAG, "doTask:" + obj);
+        //start upload thread
+        if (null==mTaskHandler) {
+            initTaskHandler();
+        }
+        Message msg=mTaskHandler.obtainMessage();
+        msg.what=MSG_START_TASK;
+        msg.obj=obj;
+        doTask(msg);
+    }
+
+    /**
+     * 将任务存储到数据库中.
+     *
+     * @param intent
+     */
+    private void saveTask(Intent intent) {
+        if (intent==null||null==intent.getSerializableExtra("send_task")) {
             return;
         }
-
-        SendTask task = (SendTask) intent.getSerializableExtra("send_task");
-        int type = intent.getIntExtra("type", TYPE_ORI_TASK);
-        WeiboLog.d(TAG, "添加任务:" + task);
-        if (null != task) {
-            if (type == TYPE_ORI_TASK) {
-                mSendTaskPool.Push(task);
-            } else {
-                mSendTaskPool.restart(task);
-            }
+        SendTask task=(SendTask) intent.getSerializableExtra("send_task");
+        int type=intent.getIntExtra("type", TYPE_ORI_TASK);
+        WeiboLog.d(TAG, "添加任务:"+task);
+        if (type==TYPE_ORI_TASK) {
+            SendTaskHandler.addTask(task);
+        } else {
+            SqliteWrapper.updateSendTask(App.getAppContext(), SendTask.CODE_INIT, "", task);
         }
     }
 
-    void doNotify() {
+    public void doTask(Message msg) {
+        mTaskHandler.sendMessage(msg);
+    }
+
+    public void stopTask() {
+        WeiboLog.d(TAG, "stopTask");
+        stopTaskHandler();
+    }
+
+    public void doNotify(int msgId) {
         // 创建一个通知
-        Notification notification = new Notification(R.drawable.logo, "", System.currentTimeMillis());
+        Notification notification=new Notification(R.drawable.logo, "", System.currentTimeMillis());
         // 指定这个通知的布局文件
-        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.custom_remoteview);
+        RemoteViews remoteViews=new RemoteViews(getPackageName(), R.layout.custom_remoteview);
 
         // 设置通知显示的内容
-        remoteViews.setTextViewText(R.id.title, "");
+        remoteViews.setTextViewText(R.id.title, getString(msgId));
 
+        notification.tickerText=getString(msgId);
         // 将内容指定给通知
-        notification.contentView = remoteViews;
+        notification.contentView=remoteViews;
         // 指定点击通知后跳到那个Activity
-        notification.contentIntent = PendingIntent.getActivity(this, 0, null, PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.contentIntent=PendingIntent.getActivity(this, 0, new Intent(this, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
         // //或者启动一个Service
         // notification.contentIntent=PendingIntent.getService(
@@ -182,7 +293,7 @@ public class SendTaskService extends Service {
         // PendingIntent.FLAG_UPDATE_CURRENT);
 
         // 指定通知可以清除
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        notification.flags|=Notification.FLAG_AUTO_CANCEL;
         // 指定通知不能清除
         // notification.flags|=Notification.FLAG_NO_CLEAR;
         // 通知显示的时候播放默认声音
@@ -211,9 +322,37 @@ public class SendTaskService extends Service {
         //notification.ledARGB=0xaabbccdd;
         //notification.ledOffMS=0;
         //notification.ledOnMS=1;
-        //notification.flags|=Notification.FLAG_SHOW_LIGHTS;
+        notification.flags|=Notification.FLAG_SHOW_LIGHTS;
 
         // 向NotificationManager注册一个notification，并用NOTIFICATION_ID作为管理的唯一标示
         mNM.notify(R.string.local_service_started, notification);
     }
+
+    private final BroadcastReceiver mServiceReceiver=new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action=intent.getAction();
+
+            if (action.equalsIgnoreCase(SendTaskService.ACTION_NEW_TASK)) {
+                addTaskToQueue(null, 0);
+            } else if (action.equalsIgnoreCase(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                /*if (intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)) {
+                    WeiboLog.i(TAG, "netWork has lost");
+                }
+
+                NetworkInfo tmpInfo = (NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
+                WeiboLog.i(TAG, tmpInfo.toString() + " {isConnected = " + tmpInfo.isConnected() + "}");*/
+
+                if (App.hasInternetConnection(App.getAppContext())) {
+                    addTaskToQueue(null, 0);
+                } else {
+                    WeiboLog.d(TAG, "receiv network changed");
+                    stopTask();
+                }
+            } else if (ACTION_STOP_TASK.equals(action)) {
+                WeiboLog.d(TAG, "receiv stop action");
+                stopTask();
+            }
+        }
+    };
 }

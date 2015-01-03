@@ -2,9 +2,16 @@ package com.me.microblog.bean;
 
 import java.io.Serializable;
 
+/**
+ * @author archko
+ */
 public class SendTask implements Serializable {
 
     public static final long serialVersionUID = 3894560643019408213L;
+    /**
+     * 初始化状态,如果任务失败了,在任务列表中需要重新启动,修改为此状态,则后台服务就可以执行了.
+     */
+    public static final int CODE_INIT=0;
 
     public long id;
     /**

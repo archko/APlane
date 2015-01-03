@@ -5,14 +5,11 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.UserListFragment;
 import cn.archko.microblog.fragment.impl.SinaPlaceUserImpl;
 import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.ui.NewStatusActivity;
-import cn.archko.microblog.ui.UserFragmentActivity;
-import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.UserItemView;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -252,43 +249,6 @@ public class PlaceUserListFragment extends UserListFragment {
     }
 
     //--------------------- 用户操作 ---------------------
-    protected void viewUserStatuses() {
-        try {
-            if (selectedPos >= mAdapter.getCount()) {
-                WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
-                return;
-            }
-
-            User user = mDataList.get(selectedPos);
-            WeiboLog.d(TAG, "viewUserStatuses." + user.screenName);
-            WeiboOperation.toViewStatusUser(getActivity(), user, UserFragmentActivity.TYPE_USER_TIMELINE);
-            //getActivity().finish(); //这里结束当前的Activity,因为可能造成内存不足.
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    protected void viewUserFollows() {
-        try {
-            User user = mDataList.get(selectedPos);
-            //intent.putExtra("screen_name", user.screenName);
-            WeiboOperation.toViewStatusUser(getActivity(), user, UserFragmentActivity.TYPE_USER_FOLLOWERS);
-            //getActivity().finish(); //这里结束当前的Activity,因为可能造成内存不足.
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    protected void viewUserFriends() {
-        try {
-            User user = mDataList.get(selectedPos);
-            //intent.putExtra("screen_name", user.screenName);
-            WeiboOperation.toViewStatusUser(getActivity(), user, UserFragmentActivity.TYPE_USER_FRIENDS);
-            //getActivity().finish(); //这里结束当前的Activity,因为可能造成内存不足.
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     //TODO需要处理token过期的状况。
 
@@ -312,56 +272,6 @@ public class PlaceUserListFragment extends UserListFragment {
     }
 
     //--------------------- 微博操作 ---------------------
-
-    /**
-     * 创建收藏.
-     */
-    protected void createFavorite() {
-    }
-
-    /**
-     * 跳转到到评论界面
-     */
-    protected void commentStatus() {
-    }
-
-    /**
-     * 到转发界面
-     */
-    protected void repostStatus() {
-    }
-
-    /**
-     * 删除，需要根据不同的类型的列表处理。不是所有的微博都可以删除
-     */
-    protected void deleteStatus() {
-    }
-
-    /**
-     * 查看用户信息
-     */
-    protected void viewStatusUser() {
-        WeiboLog.d(TAG, "viewStatusUser.");
-        if (selectedPos == - 1) {
-            NotifyUtils.showToast("您需要先选中一个项!");
-            return;
-        }
-
-        try {
-            User user = mDataList.get(selectedPos);
-            if (null != user) {
-                WeiboOperation.toViewStatusUser(getActivity(), user, UserFragmentActivity.TYPE_USER_INFO);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 快速转发
-     */
-    protected void quickRepostStatus() {
-    }
 
     //--------------------- geo ---------------------
     private LocationClient mLocClient;

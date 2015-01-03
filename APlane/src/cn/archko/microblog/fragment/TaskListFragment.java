@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -286,7 +285,7 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
     /**
      * 快速转发，在这里是编辑任务
      */
-    protected void quickRepostStatus() {
+    public void quickRepostStatus() {
         if (selectedPos >= mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;
@@ -305,7 +304,7 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
     /**
      * 跳转到到评论界面，在这里是删除任务
      */
-    protected void commentStatus() {
+    public void commentStatus() {
         if (selectedPos >= mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;
@@ -329,7 +328,7 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
      * 在这里用于删除所有的任务。
      */
     @Override
-    protected void viewStatusUser() {
+    public void viewStatusUser() {
         try {
             int res = SqliteWrapper.deleteAllSendTask(App.getAppContext(), currentUserId);
             if (res > 0) {
@@ -346,7 +345,7 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
      * 达里是重新执行任务，必须是失败的任务才能重新执行。
      */
     @Override
-    protected void repostStatus() {
+    public void repostStatus() {
         if (selectedPos >= mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;

@@ -1,7 +1,6 @@
 package cn.archko.microblog.sliding.app;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -89,26 +88,17 @@ public class SidebarAdapter extends BaseAdapter {
         }
     }
 
-    private LayoutInflater mInflater;
-    private FragmentManager mFragmentManager;
     Context mContext;
     private List<SidebarEntry> entries;
-    //private HashMap<String, Fragment> mFragments;
     private final SparseArray<WeakReference<Fragment>> mFragmentArray = new SparseArray<WeakReference<Fragment>>();
 
-    public SidebarAdapter(FragmentManager fm, Context ctx) {
-        mInflater = LayoutInflater.from(App.getAppContext());
-        mFragmentManager = fm;
+    public SidebarAdapter(Context ctx) {
         mContext = ctx;
         entries = new ArrayList<SidebarEntry>();
-        //mFragments=new HashMap<String, Fragment>();
     }
 
     public void addEntry(SidebarEntry entry, boolean init) {
         entries.add(entry);
-        /*if (entry.isHome&&init) {
-            getFragment(entry, entries.size()-1);
-        }*/
     }
 
     void onInitFinished() {
@@ -422,10 +412,6 @@ public class SidebarAdapter extends BaseAdapter {
             entry = new SidebarAdapter.SidebarEntry(Constants.TAB_ID_PLACE_NEARBY_PHOTOS, mContext.getString(R.string.tab_label_place_nearby_photos),
                 R.drawable.location, PlaceNearbyPhotosFragment.class, false);
             addEntry(entry, init);
-
-            /*entry=new SidebarAdapter.SidebarEntry(Constants.TAB_ID_PLACE_NEARBY_PHOTOS, mContext.getString(R.string.tab_label_place_nearby_photos)+"2",
-                R.drawable.location, PlaceNearbyPhotosGridFragment.class, false);
-            addEntry(entry, init);*/
         }
 
         //附近的用户

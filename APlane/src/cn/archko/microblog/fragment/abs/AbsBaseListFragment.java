@@ -137,7 +137,6 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WeiboLog.v(TAG, "onCreate:");
 
         footerView=new RelativeLayout(getActivity());
         mResolver=App.getAppContext().getContentResolver();
@@ -204,14 +203,12 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
     @Override
     public void onDestroy() {
         super.onDestroy();
-        WeiboLog.v(TAG, "onDestroy:"+this);
         state=false;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        WeiboLog.v(TAG, "onDestroyView:"+this);
         mLoadingLayout=null;
         if (null!=footerView&&null!=footerView.getParent()) {
             ((ViewGroup) footerView.getParent()).removeView(footerView);
@@ -809,7 +806,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
                     break;*/
                 case TYPE_FOOTERVIEW:
                     mView=getFooterView();
-                    WeiboLog.d(TAG, "getFooterView");
+                    //WeiboLog.d(TAG, "getFooterView");
                     break;
                 default:
                     mView=AbsBaseListFragment.this.newView(parent, viewType);

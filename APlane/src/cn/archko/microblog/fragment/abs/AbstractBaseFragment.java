@@ -12,7 +12,9 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 import cn.archko.microblog.R;
+import cn.archko.microblog.controller.AKSinaWeiboController;
 import cn.archko.microblog.listeners.FragmentListListener;
+import cn.archko.microblog.listeners.IAKWeiboController;
 import com.andrew.apollo.utils.ThemeUtils;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
@@ -30,26 +32,26 @@ import java.io.File;
  * @description: 基础的Fragment，
  * @author: archko 11-11-17
  */
-public abstract class AbstractBaseFragment extends Fragment implements FragmentListListener,
+public abstract class AbstractBaseFragment<T> extends Fragment implements FragmentListListener,
     PopupMenu.OnMenuItemClickListener {
 
-    public static final String TAG = "AbstractBaseFragment";
-    public static final int THREAD_INIT = 1;
-    public static final int THREAD_RUNNING = 2;
-    public static final int THREAD_CANCELED = 3;
-    public static final int THREAD_FINISHED = 4;
-    public static final int THREAD_DEAD = 5;
+    public static final String TAG="AbstractBaseFragment";
+    public static final int THREAD_INIT=1;
+    public static final int THREAD_RUNNING=2;
+    public static final int THREAD_CANCELED=3;
+    public static final int THREAD_FINISHED=4;
+    public static final int THREAD_DEAD=5;
     /**
      * 需要维护线程的状态，因为当阻塞时，退出Activity，线程返回后继续操作会引起异常。
      */
-    protected int mThreadStatus = THREAD_INIT;
+    protected int mThreadStatus=THREAD_INIT;
     protected CommonTask mCommonTask;
     protected QueryTask mQueryTask;
     protected OperationTask mOperationTask;
     /**
      * 当前登录用户的id
      */
-    public long currentUserId = - 1l;
+    public long currentUserId=-1l;
 
     //---------------------  ---------------------
     public SharedPreferences mPrefs;
@@ -57,15 +59,16 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
     /**
      * 用于主题设置背景的,需要子类初始化.
      */
-    public View mRoot;
+    protected View mRoot;
 
     /**
      * 监听器用于显示进度
      */
-    public OnRefreshListener mRefreshListener;
+    protected OnRefreshListener mRefreshListener;
+    protected IAKWeiboController mWeiboController;
     //--------------------- 认证 ---------------------
     public Oauth2Handler mOauth2Handler;
-    public OauthCallback mOauthCallback = new OauthCallback() {
+    public OauthCallback mOauthCallback=new OauthCallback() {
         @Override
         public void postOauthSuc(Object[] params) {
             postOauth(params);
@@ -86,30 +89,51 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mOauth2Handler = new Oauth2Handler(getActivity(), mOauthCallback);
+        mPrefs=PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mOauth2Handler=new Oauth2Handler(getActivity(), mOauthCallback);
 
-        long aUserId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
-        this.currentUserId = aUserId;
+        long aUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
+        this.currentUserId=aUserId;
 
-        mCacheDir = ((App) getActivity().getApplicationContext()).mCacheDir;
-        File file = new File(mCacheDir);
-        if (! file.exists()) {
+        mCacheDir=((App) getActivity().getApplicationContext()).mCacheDir;
+        File file=new File(mCacheDir);
+        if (!file.exists()) {
             file.mkdir();
         }
-        WeiboLog.v(TAG, "onCreate:" + this);
+
+        mWeiboController=new AKSinaWeiboController();
+        WeiboLog.v(TAG, "onCreate:"+this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        WeiboLog.v(TAG, "onPause:" + this);
+        WeiboLog.v(TAG, "onPause:"+this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        WeiboLog.v(TAG, "onResume:" + this);
+        WeiboLog.v(TAG, "onResume:"+this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        WeiboLog.v(TAG, "onDestroyView:"+this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        WeiboLog.v(TAG, "onDetach:"+this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        WeiboLog.v(TAG, "onDestroy:"+this);
+        mThreadStatus=THREAD_DEAD;
     }
 
     /**
@@ -127,12 +151,12 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        WeiboLog.v(TAG, "onAttach:" + this);
+        WeiboLog.v(TAG, "onAttach:"+this);
         try {
-            mRefreshListener = (OnRefreshListener) activity;
+            mRefreshListener=(OnRefreshListener) activity;
         } catch (ClassCastException e) {
             //throw new ClassCastException(activity.toString()+" must implement OnRefreshListener");
-            mRefreshListener = null;
+            mRefreshListener=null;
         }
     }
 
@@ -141,43 +165,43 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
     /**
      * 查看Status原文信息,包括评论.
      */
-    protected void viewOriginalStatus(View achor) {
+    public void viewOriginalStatus(View achor) {
     }
 
     /**
      * 创建收藏.
      */
-    protected void createFavorite() {
+    public void createFavorite() {
     }
 
     /**
      * 跳转到到评论界面
      */
-    protected void commentStatus() {
+    public void commentStatus() {
     }
 
     /**
      * 到转发界面
      */
-    protected void repostStatus() {
+    public void repostStatus() {
     }
 
     /**
      * 删除，需要根据不同的类型的列表处理。不是所有的微博都可以删除
      */
-    protected void viewStatusUser() {
+    public void viewStatusUser() {
     }
 
     /**
      * 快速转发
      */
-    protected void quickRepostStatus() {
+    public void quickRepostStatus() {
         //throw new IllegalArgumentException("not implemented!");
     }
 
     //--------------------- theme ---------------------
     public void themeBackground() {
-        if (null != mRoot) {
+        if (null!=mRoot) {
             ThemeUtils.getsInstance().themeBackground(mRoot, getActivity());
         }
     }
@@ -186,23 +210,16 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
     /**
      * 列表选中的位置
      */
-    public int selectedPos = 0;
+    public int selectedPos=0;
     /*MenuBuilder mMenuBuilder=null;
     MenuPopupHelper mMenuHelper=null;*/
-    PopupWindowListener mPopupWindowListener = new PopupWindowListener() {
+    PopupWindowListener mPopupWindowListener=new PopupWindowListener() {
         @Override
         public void show(View view, int pos) {
-            selectedPos = pos;
+            selectedPos=pos;
             prepareMenu(view);
         }
     };
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        WeiboLog.v(TAG, "onDestroy:" + this);
-        mThreadStatus = THREAD_DEAD;
-    }
 
     //---------------------------------
 
@@ -214,9 +231,9 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
      */
     protected void newTask(Object[] params, String msg) {
         WeiboLog.d(TAG, "newTask:");
-        if (! App.hasInternetConnection(getActivity())) {
+        if (!App.hasInternetConnection(getActivity())) {
             NotifyUtils.showToast(R.string.network_error, Toast.LENGTH_LONG);
-            if (mRefreshListener != null) {
+            if (mRefreshListener!=null) {
                 mRefreshListener.onRefreshFailed();
             }
             basePostOperation(null);
@@ -224,26 +241,26 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
             return;
         }
 
-        if (mThreadStatus == THREAD_RUNNING || (mCommonTask != null && mCommonTask.getStatus() == AsyncTask.Status.RUNNING)) {
-            if (! TextUtils.isEmpty(msg)) {
+        if (mThreadStatus==THREAD_RUNNING||(mCommonTask!=null&&mCommonTask.getStatus()==AsyncTask.Status.RUNNING)) {
+            if (!TextUtils.isEmpty(msg)) {
                 NotifyUtils.showToast(msg, Toast.LENGTH_SHORT);
             }
             return;
         }
 
-        App app = (App) App.getAppContext();
-        if (app.getOauthBean().oauthType == Oauth2.OAUTH_TYPE_WEB) {
-            mCommonTask = new CommonTask();
+        App app=(App) App.getAppContext();
+        if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB) {
+            mCommonTask=new CommonTask();
             mCommonTask.execute(params);
         } else {
-            if (System.currentTimeMillis() >= app.getOauthBean().expireTime && app.getOauthBean().expireTime != 0) {
+            if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
                 WeiboLog.i(TAG, "web认证，token过期了.");
                 NotifyUtils.showToast("token过期了,需要重新认证，如果认证失败，请注销再登陆！");
                 //oauth2(params);
                 mOauth2Handler.oauth2(params);
             } else {
                 WeiboLog.d(TAG, "web认证，但token有效。");
-                mCommonTask = new CommonTask();
+                mCommonTask=new CommonTask();
                 mCommonTask.execute(params);
             }
         }
@@ -258,14 +275,14 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
     protected void newTaskNoNet(Object[] params, String msg) {
         WeiboLog.d(TAG, "newTaskNoNet:");
 
-        if (mThreadStatus == THREAD_RUNNING || (mQueryTask != null && mQueryTask.getStatus() == AsyncTask.Status.RUNNING)) {
-            if (! TextUtils.isEmpty(msg)) {
+        if (mThreadStatus==THREAD_RUNNING||(mQueryTask!=null&&mQueryTask.getStatus()==AsyncTask.Status.RUNNING)) {
+            if (!TextUtils.isEmpty(msg)) {
                 NotifyUtils.showToast(msg, Toast.LENGTH_SHORT);
             }
             return;
         }
 
-        mQueryTask = new QueryTask();
+        mQueryTask=new QueryTask();
         mQueryTask.execute(params);
     }
 
@@ -275,7 +292,7 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
      * @param oauthCode 认证失败的代码,如果是特定的,就需要重新登录.
      */
     public void oauthFailed(int oauthCode) {
-        if (oauthCode == Constants.USER_PASS_IS_NULL) {
+        if (oauthCode==Constants.USER_PASS_IS_NULL) {
             NotifyUtils.showToast(com.me.microblog.R.string.oauth_runtime_user_pass_is_null);
         } else {
             NotifyUtils.showToast(com.me.microblog.R.string.oauth_runtime_failed);
@@ -284,7 +301,7 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
 
     public void postOauth(Object[] params) {
         NotifyUtils.showToast(R.string.oauth_runtime_suc);
-        mCommonTask = new CommonTask();
+        mCommonTask=new CommonTask();
         mCommonTask.execute(params);
     }
 
@@ -294,7 +311,7 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mThreadStatus = THREAD_RUNNING;
+            mThreadStatus=THREAD_RUNNING;
             basePreOperation();
         }
 
@@ -304,12 +321,12 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
         }
 
         protected void onPostExecute(Object[] resultObj) {
-            if (mThreadStatus == THREAD_DEAD || isCancelled() || ! isResumed()) {
+            if (mThreadStatus==THREAD_DEAD||isCancelled()||!isResumed()) {
                 WeiboLog.i("程序退出，线程死亡。");
                 return;
             }
 
-            mThreadStatus = THREAD_FINISHED;
+            mThreadStatus=THREAD_FINISHED;
             basePostOperation(resultObj);
         }
     }
@@ -344,7 +361,7 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mThreadStatus = THREAD_RUNNING;
+            mThreadStatus=THREAD_RUNNING;
             baseQueryPreOperation();
         }
 
@@ -359,12 +376,12 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
         }
 
         protected void onPostExecute(Object[] resultObj) {
-            if (mThreadStatus == THREAD_DEAD || isCancelled() || ! isResumed()) {
+            if (mThreadStatus==THREAD_DEAD||isCancelled()||!isResumed()) {
                 WeiboLog.i("程序退出，线程死亡。");
                 return;
             }
 
-            mThreadStatus = THREAD_FINISHED;
+            mThreadStatus=THREAD_FINISHED;
             basePostOperation(resultObj);
         }
     }
@@ -405,7 +422,7 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
      */
     protected void newOperationTask(Object[] params, String msg) {
         WeiboLog.d(TAG, "newTask:");
-        if (! App.hasInternetConnection(getActivity())) {
+        if (!App.hasInternetConnection(getActivity())) {
             NotifyUtils.showToast(R.string.network_error, Toast.LENGTH_LONG);
             /*if (mRefreshListener!=null) {
                 mRefreshListener.onRefreshFailed();
@@ -419,17 +436,17 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
             return;
         }*/
 
-        App app = (App) App.getAppContext();
-        if (app.getOauthBean().oauthType == Oauth2.OAUTH_TYPE_WEB) {
-            mOperationTask = new OperationTask();
+        App app=(App) App.getAppContext();
+        if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB) {
+            mOperationTask=new OperationTask();
             mOperationTask.execute(params);
         } else {
-            if (System.currentTimeMillis() >= app.getOauthBean().expireTime && app.getOauthBean().expireTime != 0) {
+            if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
                 WeiboLog.i(TAG, "web认证，token过期了.");
                 //mOauth2Handler.oauth2(params);
             } else {
                 WeiboLog.d(TAG, "web认证，但token有效。");
-                mOperationTask = new OperationTask();
+                mOperationTask=new OperationTask();
                 mOperationTask.execute(params);
             }
         }
@@ -449,7 +466,7 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
         }
 
         protected void onPostExecute(Object[] resultObj) {
-            if (isCancelled() || ! isResumed()) {
+            if (isCancelled()||!isResumed()) {
                 WeiboLog.i("程序退出，线程死亡。");
                 return;
             }
@@ -490,7 +507,7 @@ public abstract class AbstractBaseFragment extends Fragment implements FragmentL
      * @param anchorView 菜单显示的锚点View。
      */
     public void prepareMenu(View anchorView) {
-        PopupMenu popupMenu = new PopupMenu(getActivity(), anchorView);
+        PopupMenu popupMenu=new PopupMenu(getActivity(), anchorView);
 
         onCreateCustomMenu(popupMenu);
         onPrepareCustomMenu(popupMenu);

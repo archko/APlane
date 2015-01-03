@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -248,7 +247,7 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
     /**
      * 快速转发，在这里是设置默认帐户
      */
-    protected void quickRepostStatus() {
+    public void quickRepostStatus() {
         if (selectedPos >= mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;
@@ -266,7 +265,7 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
     /**
      * 跳转到到评论界面，在这里是删除帐户，默认帐户不能删除。
      */
-    protected void commentStatus() {
+    public void commentStatus() {
         if (selectedPos >= mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
             return;

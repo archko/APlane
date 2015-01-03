@@ -24,7 +24,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
-import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.smiley.AKSmileyParser;
 import cn.archko.microblog.ui.PrefsActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
@@ -36,7 +35,6 @@ import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.AKSpannableStringBuilder;
-import com.me.microblog.bean.SendTask;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
 import com.me.microblog.cache.ImageCache2;
@@ -55,7 +53,6 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Date;
 import java.util.regex.Matcher;
 
 /*import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -331,8 +328,8 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     /**
      * 创建收藏.
      */
-    protected void createFavorite() {
-        Status status = mStatus;
+    public void createFavorite() {
+        /*Status status = mStatus;
         Intent taskService = new Intent(getActivity(), SendTaskService.class);
         SendTask task = new SendTask();
         task.uid = currentUserId;
@@ -343,28 +340,15 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         task.createAt = new Date().getTime();
         taskService.putExtra("send_task", task);
         getActivity().startService(taskService);
-        NotifyUtils.showToast("新收藏任务添加到队列服务中了。");
+        NotifyUtils.showToast("新收藏任务添加到队列服务中了。");*/
+        mWeiboController.createFavorite(mStatus, currentUserId,TwitterTable.SendQueueTbl.SEND_TYPE_ADD_FAV,getActivity());
     }
-
-    /**
-     * 跳转到到评论界面
-     */
-    /*protected void commentStatus() {
-        WeiboOperation.toCommentStatus(App.getAppContext(), mStatus);
-    }*/
-
-    /**
-     * 到转发界面
-     */
-    /*protected void repostStatus() {
-        WeiboOperation.toRepostStatus(App.getAppContext(), mStatus);
-    }*/
 
     /**
      * 快速转发
      */
-    protected void quickRepostStatus() {
-        Intent taskService = new Intent(getActivity(), SendTaskService.class);
+    public void quickRepostStatus() {
+        /*Intent taskService = new Intent(getActivity(), SendTaskService.class);
         SendTask task = new SendTask();
         task.uid = currentUserId;
         task.userId = currentUserId;
@@ -375,8 +359,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         task.createAt = new Date().getTime();
         taskService.putExtra("send_task", task);
         getActivity().startService(taskService);
-        NotifyUtils.showToast("转发任务添加到队列服务中了。");
-        //WeiboOperation.quickRepostStatus(mStatus.id);
+        NotifyUtils.showToast("转发任务添加到队列服务中了。");*/
+        mStatus.text="";
+        mWeiboController.quickRepostStatus(mStatus, currentUserId, getActivity());
     }
 
     @Override
@@ -684,10 +669,10 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         int menuId = item.getItemId();
         if (menuId == Constants.OP_ID_VIEW_USER) {
             Status status = mStatus;
-            WeiboOperation.toViewStatusUser(getActivity(), status.user, UserFragmentActivity.TYPE_USER_INFO);
+            mWeiboController.viewUser(status.user, getActivity(), UserFragmentActivity.TYPE_USER_INFO);
         } else if (menuId == Constants.OP_ID_STATUS) {
             Status status = mStatus;
-            WeiboOperation.toViewStatusUser(getActivity(), status.user, UserFragmentActivity.TYPE_USER_TIMELINE);
+            mWeiboController.viewUser(status.user, getActivity(), UserFragmentActivity.TYPE_USER_TIMELINE);
         } else if (menuId == Constants.OP_ID_AT) {
             try {
                 Status status = mStatus;

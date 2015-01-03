@@ -1,28 +1,20 @@
 package cn.archko.microblog.fragment;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.PopupMenu;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
 import cn.archko.microblog.recycler.SimpleViewHolder;
-import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.ui.UserFragmentActivity;
-import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.ThreadBeanItemView;
-import com.me.microblog.bean.SendTask;
 import com.me.microblog.bean.Status;
-import com.me.microblog.bean.User;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-
-import java.util.Date;
 
 /**
  * @author: archko 30-12-12
@@ -45,37 +37,6 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
             Status st;
             st=(Status) mAdapter.getItem(mAdapter.getCount()-1);
             fetchData(-1, st.id, false, false);
-        }
-    }
-
-    //--------------------- 微博操作 ---------------------
-
-    /**
-     * 查看Status原文信息,包括评论.
-     *
-     * @param achor 用于显示QuickAction
-     */
-    protected void itemClick(int pos, View achor) {
-        selectedPos=pos;
-        viewOriginalStatus(achor);
-    }
-
-    /**
-     * 查看Status原文信息,包括评论.
-     */
-    @Override
-    protected void viewOriginalStatus(View achor) {
-        if (selectedPos>=mDataList.size()) {
-            WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
-            return;
-        }
-
-        try {
-            Status status=mDataList.get(selectedPos);
-
-            WeiboOperation.toViewOriginalStatus(getActivity(), status);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -121,117 +82,90 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
         }
         return true;
     }
+    //--------------------- 微博操作 ---------------------
+
+    /**
+     * 查看Status原文信息,包括评论.
+     *
+     * @param achor 用于显示QuickAction
+     */
+    protected void itemClick(int pos, View achor) {
+        selectedPos=pos;
+        viewOriginalStatus(achor);
+    }
+
+    /**
+     * 查看Status原文信息,包括评论.
+     */
+    @Override
+    public void viewOriginalStatus(View achor) {
+        if (selectedPos>=mDataList.size()) {
+            WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            return;
+        }
+
+        Status status=mDataList.get(selectedPos);
+
+        mWeiboController.viewOriginalStatus(achor, status, getActivity());
+    }
 
     /**
      * 创建收藏.
      */
-    protected void createFavorite() {
+    public void createFavorite() {
         WeiboLog.d(TAG, "selectedPos:"+selectedPos);
         if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
             return;
         }
 
-        try {
-            Status status=mDataList.get(selectedPos);
-            if (null!=status) {
-                /*String type="0";
-                Long statusId=status.id;
-                OperationTask task=new OperationTask();
-                task.execute(new Object[]{type, statusId});*/
-                Intent taskService=new Intent(getActivity(), SendTaskService.class);
-                SendTask task=new SendTask();
-                task.uid=currentUserId;
-                task.userId=currentUserId;
-                task.content=status.text;
-                task.source=String.valueOf(status.id);
-                task.type=TwitterTable.SendQueueTbl.SEND_TYPE_ADD_FAV;
-                task.createAt=new Date().getTime();
-                taskService.putExtra("send_task", task);
-                getActivity().startService(taskService);
-                NotifyUtils.showToast("新收藏任务添加到队列服务中了。");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Status status=mDataList.get(selectedPos);
+        mWeiboController.createFavorite(status, currentUserId, TwitterTable.SendQueueTbl.SEND_TYPE_ADD_FAV, getActivity());
     }
 
     /**
      * 跳转到到评论界面
      */
-    protected void commentStatus() {
-        try {
-            Status status=mDataList.get(selectedPos);
-
-            WeiboOperation.toCommentStatus(getActivity(), status);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void commentStatus() {
+        Status status=mDataList.get(selectedPos);
+        mWeiboController.commentStatus(status, getActivity());
     }
 
     /**
      * 到转发界面
      */
-    protected void repostStatus() {
-        try {
-            Status status=mDataList.get(selectedPos);
+    public void repostStatus() {
+        Status status=mDataList.get(selectedPos);
 
-            WeiboOperation.toRepostStatus(getActivity(), status);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        mWeiboController.repostStatus(status, getActivity());
     }
 
     /**
      * 查看用户信息
      */
-    protected void viewStatusUser() {
+    public void viewStatusUser() {
         WeiboLog.d(TAG, "not implemented.");
         if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
             return;
         }
 
-        try {
-            Status status=mDataList.get(selectedPos);
-            if (null!=status) {
-                User user=status.user;
-                WeiboOperation.toViewStatusUser(getActivity(), user, UserFragmentActivity.TYPE_USER_INFO);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Status status=mDataList.get(selectedPos);
+        mWeiboController.viewStatusUser(status, getActivity(), UserFragmentActivity.TYPE_USER_INFO);
     }
 
     /**
      * 快速转发
      */
-    protected void quickRepostStatus() {
+    public void quickRepostStatus() {
         WeiboLog.d(TAG, "quickRepostStatus.");
         if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
             return;
         }
 
-        try {
-            Status status=mDataList.get(selectedPos);
-            //WeiboOperation.quickRepostStatus(status.id);
-            Intent taskService=new Intent(getActivity(), SendTaskService.class);
-            SendTask task=new SendTask();
-            task.uid=currentUserId;
-            task.userId=currentUserId;
-            task.content="";
-            task.source=String.valueOf(status.id);
-            task.data="0";
-            task.type=TwitterTable.SendQueueTbl.SEND_TYPE_REPOST_STATUS;
-            task.text=status.text;
-            task.createAt=new Date().getTime();
-            taskService.putExtra("send_task", task);
-            getActivity().startService(taskService);
-            NotifyUtils.showToast("转发任务添加到队列服务中了。");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Status status=mDataList.get(selectedPos);
+        mWeiboController.quickRepostStatus(status, currentUserId, getActivity());
     }
 
     public View getView(SimpleViewHolder holder, final int position) {

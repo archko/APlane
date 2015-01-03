@@ -1,6 +1,5 @@
 package cn.archko.microblog.fragment;
 
-import android.os.Bundle;
 import android.view.View;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
@@ -68,58 +67,5 @@ public abstract class AbstractLocalListFragment<T> extends AbsBaseListFragment<T
         super.showMoreView();
         mMoreProgressBar.setVisibility(View.GONE);
         mMoreTxt.setText(R.string.more_add_account_user);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        //showMoreView();
-    }
-
-    //--------------------- 微博操作 ---------------------
-
-    /**
-     * 查看Status原文信息,包括评论.
-     *
-     * @param achor 用于显示QuickAction
-     */
-    protected void itemClick(int pos, View achor) {
-        super.itemClick(pos, achor);
-    }
-
-    /**
-     * 创建收藏.
-     */
-    protected void createFavorite() {
-    }
-
-    /**
-     * 跳转到到评论界面
-     */
-    protected void commentStatus() {
-    }
-
-    /**
-     * 到转发界面
-     */
-    protected void repostStatus() {
-    }
-
-    /**
-     * 删除，需要根据不同的类型的列表处理。不是所有的微博都可以删除
-     */
-    protected void deleteStatus() {
-    }
-
-    /**
-     * 查看用户信息
-     */
-    protected void viewStatusUser() {
-    }
-
-    /**
-     * 快速转发
-     */
-    protected void quickRepostStatus() {
     }
 }

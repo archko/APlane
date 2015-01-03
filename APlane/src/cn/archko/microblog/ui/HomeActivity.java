@@ -140,7 +140,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         //mRightDrawer=(ListView) findViewById(R.id.right_drawer);
 
         // set the Behind View
-        mSidebarAdapter = new SidebarAdapter(getFragmentManager(), HomeActivity.this);
+        mSidebarAdapter = new SidebarAdapter(HomeActivity.this);
         int home = mSidebarAdapter.addFragment(true);
         mDrawer.setAdapter(mSidebarAdapter);
         //mRightDrawer.setAdapter(mSidebarAdapter);
