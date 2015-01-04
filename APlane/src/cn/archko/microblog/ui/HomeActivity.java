@@ -22,7 +22,6 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,7 +33,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.action.GroupAction;
-import cn.archko.microblog.fragment.HomeFragment;
+import cn.archko.microblog.controller.UpdateHelper;
 import cn.archko.microblog.fragment.HomeRecyclerViewFragment;
 import cn.archko.microblog.fragment.PrefsFragment;
 import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
@@ -55,9 +54,6 @@ import com.me.microblog.core.ImageManager;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UmengUpdateListener;
-import com.umeng.update.UpdateResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,6 +84,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
      * 是否已经选中一个位置了.第一次为未选中.
      */
     boolean hasFocused = false;
+    UpdateHelper mUpdateHelper=new UpdateHelper(this);
 
     /**
      * 根据屏幕设置下载图片的分辨率，因为内存的限制，不处理横屏时的大小，全部按照竖屏处理
@@ -570,7 +567,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
             startActivity(intent);
             overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
         } else if (itemId == R.id.menu_update) {
-            checkUpdate();
+            mUpdateHelper.checkUpdate();
         } else if (itemId == R.id.menu_exit) {
             mode = PrefsFragment.MODE_EXIT;
             //exitConfirm(R.string.exit_title, R.string.exit_msg);
@@ -615,8 +612,8 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
             } else {
                 SharedPreferences.Editor editor = mPrefs.edit();
                 editor.putLong(Constants.UPDATE_TIMESTAMP, now);
-                editor.commit();
-                checkUpdate();
+                editor.apply();
+                mUpdateHelper.checkUpdate();
             }
         }
     }
@@ -857,51 +854,6 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         }
     }
 
-    //--------------------- 自动更新操作 ---------------------
-    private void checkUpdate() {
-        UmengUpdateAgent.setUpdateOnlyWifi(false); // 目前我们默认在Wi-Fi接入情况下才进行自动提醒。如需要在其他网络环境下进行更新自动提醒，则请添加该行代码
-        UmengUpdateAgent.setUpdateAutoPopup(false);
-        UmengUpdateAgent.setUpdateListener(updateListener);
-
-        /*UmengUpdateAgent.setOnDownloadListener(new UmengDownloadListener() {
-
-            @Override
-            public void OnDownloadEnd(int result) {
-                WeiboLog.i(TAG, "download result : "+result);
-                showToast("download result : "+result);
-            }
-
-        });*/
-
-        UmengUpdateAgent.update(HomeActivity.this);
-    }
-
-    UmengUpdateListener updateListener = new UmengUpdateListener() {
-        @Override
-        public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
-            if (isFinishing()) {
-                return;
-            }
-
-            switch (updateStatus) {
-                case 0: // has update
-                    WeiboLog.i("callback result");
-                    UmengUpdateAgent.showUpdateDialog(HomeActivity.this, updateInfo);
-                    break;
-                case 1: // has no update
-                    //showToast("没有更新");
-                    break;
-                case 2: // none wifi
-                    //showToast("没有wifi连接， 只在wifi下更新");
-                    break;
-                case 3: // time out
-                    //showToast("超时");
-                    break;
-            }
-
-        }
-    };
-
     //--------------------- 分组操作 ---------------------
 
     ArrayAdapter<Group> mGroupAdapter;
@@ -940,16 +892,6 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         mActionBar.setListNavigationCallbacks(mGroupAdapter, navigationListener);*/
     }
 
-    ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-            WeiboLog.d("Selected: " + itemPosition);
-            navigation(itemPosition);
-            return true;
-        }
-    };
-
     void navigation(int itemPosition) {
         final Fragment current = getFragmentManager().findFragmentById(R.id.fragment_placeholder);
         WeiboLog.v(TAG, "current:" + current.getTag());
@@ -959,10 +901,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
                 @Override
                 public void run() {
                     try {
-                        if (current instanceof HomeFragment) {
-                            HomeFragment homeFragment = (HomeFragment) current;
-                            homeFragment.updateGroupTimeline(mGroupList.get(pos));
-                        } else if (current instanceof HomeRecyclerViewFragment) {
+                        if (current instanceof HomeRecyclerViewFragment) {
                             HomeRecyclerViewFragment homeFragment = (HomeRecyclerViewFragment) current;
                             homeFragment.updateGroupTimeline(mGroupList.get(pos));
                         }

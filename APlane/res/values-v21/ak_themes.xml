@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.AK" parent="android:Theme.Material">
+    </style>
+
+    <style name="Theme.AK.Light" parent="android:Theme.Material.Light">
+        <item name="android:actionBarTabStyle">@style/Widget.Styled.ActionBar.TabView</item>
+    </style>
+
+    <style name="Theme.AK.NoActionBar" parent="android:Theme.Material.NoActionBar">
+    </style>
+
+    <style name="Theme.AK.Light.NoActionBar" parent="android:Theme.Material.Light.NoActionBar">
+    </style>
+
+    <style name="Theme.AK.Light.OverlayActionBar" parent="android:Theme.Material.Light">
+        <item name="android:actionBarTabStyle">@style/Widget.Styled.ActionBar.TabView</item>
+    </style>
+</resources>

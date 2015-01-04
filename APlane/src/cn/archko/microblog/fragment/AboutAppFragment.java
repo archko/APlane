@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.archko.microblog.R;
+import cn.archko.microblog.controller.UpdateHelper;
 import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
 import cn.archko.microblog.ui.NewStatusActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
@@ -61,7 +62,7 @@ public class AboutAppFragment extends AbstractBaseFragment {
                 intent.setAction(Constants.INTENT_NEW_BLOG);
                 startActivity(intent);
             } else if (id == R.id.chk_udpate_btn) {
-                checkUpdate();
+                new UpdateHelper(getActivity()).checkUpdate();
             } else if (id == R.id.feedback_btn) {
                 NotifyUtils.showToast("not implemented!");
                 //WeiboUtil.openUrlByDefaultBrowser(getActivity(), getString(R.string.about_app_feedback_url));
@@ -151,46 +152,4 @@ public class AboutAppFragment extends AbstractBaseFragment {
             NotifyUtils.showToast("follow AKWBO successfully!");
         }
     }
-
-    //--------------------- 自动更新操作 ---------------------
-    private void checkUpdate() {
-        UmengUpdateAgent.setUpdateOnlyWifi(false); // 目前我们默认在Wi-Fi接入情况下才进行自动提醒。如需要在其他网络环境下进行更新自动提醒，则请添加该行代码
-        UmengUpdateAgent.setUpdateAutoPopup(false);
-        UmengUpdateAgent.setUpdateListener(updateListener);
-
-        /*UmengUpdateAgent.setOnDownloadListener(new UmengDownloadListener() {
-
-            @Override
-            public void OnDownloadEnd(int result) {
-                WeiboLog.i(TAG, "download result : "+result);
-                showToast("download result : "+result);
-            }
-        });*/
-
-        UmengUpdateAgent.update(getActivity());
-    }
-
-    UmengUpdateListener updateListener = new UmengUpdateListener() {
-        @Override
-        public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
-            switch (updateStatus) {
-                case 0: // has update
-                    WeiboLog.i("callback result");
-                    if (isResumed()) {
-                        UmengUpdateAgent.showUpdateDialog(getActivity(), updateInfo);
-                    }
-                    break;
-                case 1: // has no update
-                    NotifyUtils.showToast("没有更新");
-                    break;
-                case 2: // none wifi
-                    NotifyUtils.showToast("没有wifi连接， 只在wifi下更新");
-                    break;
-                case 3: // time out
-                    NotifyUtils.showToast("超时");
-                    break;
-            }
-
-        }
-    };
 }
