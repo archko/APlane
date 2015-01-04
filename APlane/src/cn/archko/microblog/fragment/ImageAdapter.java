@@ -195,13 +195,18 @@ public class ImageAdapter extends BaseAdapter {
             //tmp=ImageCache2.getInstance().getBitmapFromMemCache(mPictureUrl);
             if (picture.getScaleType() != ImageView.ScaleType.FIT_XY) {
                 RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) picture.getLayoutParams();
+                int width=(mContext.getResources().getDimensionPixelOffset(R.dimen.home_timeline_img_width));
+                int height=(mContext.getResources().getDimensionPixelOffset(R.dimen.home_timeline_img_height));
                 if (null == lp) {
-                    lp = new RelativeLayout.LayoutParams(DisplayUtils.convertDpToPx(62), DisplayUtils.convertDpToPx(80));
+                    lp = new RelativeLayout.LayoutParams((width), (height));
+                    picture.setLayoutParams(lp);
                 } else {
-                    lp.width = DisplayUtils.convertDpToPx(62);
-                    lp.height = DisplayUtils.convertDpToPx(80);
+                    if (lp.width!=width||lp.height!=height) {
+                        lp.width = width;
+                        lp.height = height;
+                        picture.setLayoutParams(lp);
+                    }
                 }
-                picture.setLayoutParams(lp);
                 picture.setScaleType(ImageView.ScaleType.FIT_XY);
             }
         } else {
@@ -210,16 +215,16 @@ public class ImageAdapter extends BaseAdapter {
                 if (null == lp) {
                     lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 } else {
-                    lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    if (lp.width!=ViewGroup.LayoutParams.WRAP_CONTENT||lp.height!=ViewGroup.LayoutParams.WRAP_CONTENT) {
+                        lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    }
                 }
                 picture.setScaleType(ImageView.ScaleType.CENTER_CROP);
             }
             if (! mPictureUrl.endsWith("gif")) {
                 mPictureUrl = mPictureUrl.replace("thumbnail", "bmiddle");
             }
-            /*LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
-            tmp=lruCache.get(mPictureUrl);*/
         }
 
         //WeiboLog.v(TAG, "cached.tmp:"+tmp+" mPictureUrl:"+mPictureUrl);
@@ -239,50 +244,5 @@ public class ImageAdapter extends BaseAdapter {
             imageLoader.displayImage(mPictureUrl, picture, options);*/
             ApolloUtils.getImageFetcher(mContext).startLoadImage(mPictureUrl, picture);
         }
-    }
-
-    Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            updateBitmap(msg);
-        }
-    };
-
-    public void updateBitmap(Message msg) {
-        /*Bundle bundle=msg.getData();
-
-        String imgUrl=(String) msg.obj;
-
-        Bitmap bitmap;//=BitmapFactory.decodeFile(bundle.getString("name"));
-        bitmap=bundle.getParcelable("name");
-        if (TextUtils.isEmpty(imgUrl)||"null".equals(imgUrl)||null==bitmap) {
-            WeiboLog.w(TAG, "图片url不对，"+imgUrl);
-            return;
-        }
-
-        if (bitmap!=null&&!bitmap.isRecycled()) {
-            if (!isShowLargeBitmap) {   //大图暂时不缓存内存，但是缓存小图
-                ImageCache2.getInstance().addBitmapToMemCache(imgUrl, bitmap);
-            } else {
-                LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
-                lruCache.put(imgUrl, bitmap);
-            }
-
-            WeakReference<View> viewWeakReference=DownloadPool.downloading.get(imgUrl);
-
-            if (null==viewWeakReference||viewWeakReference.get()==null) {
-                DownloadPool.downloading.remove(imgUrl);
-                WeiboLog.i(TAG, "listview is null:"+imgUrl);
-                return;
-            }
-
-            ImageView itemView=(ImageView) viewWeakReference.get();
-
-            itemView.setImageBitmap(bitmap);
-        } else {
-            WeiboLog.d(TAG, "bitmap is null:"+imgUrl);
-        }
-        DownloadPool.downloading.remove(imgUrl);*/
     }
 }

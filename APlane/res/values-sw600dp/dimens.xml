@@ -9,4 +9,6 @@
     <dimen name="gridview_image_width">164dp</dimen>
     <dimen name="gridview_image_height">164dp</dimen>
 
+    <dimen name="home_timeline_img_width">112dp</dimen>
+    <dimen name="home_timeline_img_height">120dp</dimen>
 </resources>

@@ -18,7 +18,7 @@
 
     <cn.archko.microblog.view.TagsViewGroup android:id="@+id/tags"
         android:layout_below="@id/tv_content_first" android:layout_alignParentRight="true"
-        style="@style/tags" android:layout_marginRight="16dp"/>
+        style="@style/tags" android:layout_marginRight="10dp"/>
 
     <LinearLayout android:id="@+id/tv_content_sencond_layout"
         android:layout_width="match_parent"

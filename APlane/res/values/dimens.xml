@@ -79,4 +79,7 @@
     <dimen name="sidebar_width">208dp</dimen>
 
     <dimen name="profile_width_height">48dp</dimen>
+
+    <dimen name="home_timeline_img_width">86dp</dimen>
+    <dimen name="home_timeline_img_height">90dp</dimen>
 </resources>

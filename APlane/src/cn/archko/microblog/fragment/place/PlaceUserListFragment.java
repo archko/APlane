@@ -85,7 +85,7 @@ public class PlaceUserListFragment extends UserListFragment {
                     }
                     return;
                 }
-                AKLocation akLocation = new AKLocation(bdLocation.getLatitude(), bdLocation.getLongitude());
+                AKLocation akLocation = new AKLocation(bdLocation.getLongitude(), bdLocation.getLatitude());
                 akLocation.mLocationTimestamp=System.currentTimeMillis();
                 ((App)App.getAppContext()).setLocation(akLocation);
                 if (isResumed()) {
@@ -110,7 +110,7 @@ public class PlaceUserListFragment extends UserListFragment {
     protected void pullToRefreshData() {
         isRefreshing = true;
         AKLocation akLocation = ((App) App.getAppContext()).getLocation(600000);
-        if (akLocation != null && akLocation.latitude == 0.0 && akLocation.longitude == 0.0) {
+        if (akLocation == null || akLocation.latitude == 0.0 || akLocation.longitude == 0.0) {
             WeiboLog.i(TAG, "pullToRefreshData.没有找到地点,需要重新定位.");
             startMap();
             isRefreshing=false;
@@ -127,7 +127,7 @@ public class PlaceUserListFragment extends UserListFragment {
     @Override
     protected void loadData() {
         AKLocation akLocation = ((App) App.getAppContext()).getLocation(600000);
-        if (akLocation != null && akLocation.latitude == 0.0 && akLocation.longitude == 0.0) {
+        if (akLocation == null || akLocation.latitude == 0.0 || akLocation.longitude == 0.0) {
             WeiboLog.i(TAG, "loadData.没有找到地点,需要重新定位.");
             startMap();
             return;
