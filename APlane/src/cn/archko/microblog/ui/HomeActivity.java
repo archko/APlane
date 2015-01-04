@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -478,6 +479,14 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
             android.os.Process.killProcess(android.os.Process.myPid());
         } else {
             try {
+                ComponentName componentName = WeiboUtils.getTaskComponent(this);
+                WeiboLog.d(TAG, "启动桌面:" + componentName);
+                if (null != componentName) {
+                    Intent home = new Intent();
+                    home.setComponent(componentName);
+                    startActivity(home);
+                    return;
+                }
                 Intent home = new Intent(Intent.ACTION_MAIN);
                 home.addCategory("android.intent.category.HOME");
                 home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

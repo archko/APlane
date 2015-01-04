@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
@@ -473,5 +474,35 @@ public class WeiboUtils {
         } else {
             WeiboLog.d(TAG, "result:" + tempData);
         }
+    }
+
+    //----------------------------------------------
+
+    public static ComponentName getTaskComponent(Context context) {
+        int intGetTaskCounter = 5;
+        PackageManager pm = context.getApplicationContext().getPackageManager();
+        List allAppList = pm.getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
+        pm.getInstalledPackages(0);
+
+        ActivityManager mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        int intTaskNum = 0;
+        //以getRunningTasks()取得进程TaskInfo
+        List<ActivityManager.RunningTaskInfo> mRunningTasks = mActivityManager.getRunningTasks(intGetTaskCounter);
+        intTaskNum = mRunningTasks.size();
+        WeiboLog.d("task", "task任务数量：" + intTaskNum);
+        //SLLog.d("task", "task可用内存："+fileSize(getAvailableRAM()));
+        return listTask(mRunningTasks);
+    }
+
+    public static ComponentName listTask(List<ActivityManager.RunningTaskInfo> tasks) {
+        for (ActivityManager.RunningTaskInfo taskInfo : tasks) {
+            int numAct = taskInfo.numActivities;
+            System.out.println("task:" + taskInfo.topActivity + " 活动数量:" + numAct + " base:" + taskInfo.baseActivity);
+            if (taskInfo.baseActivity.getPackageName().contains("launch")) {
+                return taskInfo.baseActivity;
+            }
+        }
+
+        return null;
     }
 }
