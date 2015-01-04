@@ -247,13 +247,15 @@ public class AddAccountDialogFragment extends DialogFragment {
             WeiboLog.d("bean:" + oauthBean + " params:" + params);
             if (oauthBean != null) {
                 WeiboLog.d(TAG, "认证成功。");
-                String username = (String) params[ 0 ];
-                String password = (String) params[ 1 ];
-                if (type == 1) {
-                    username = password = "";
+                if (null != params) {
+                    String username = (String) params[ 0 ];
+                    String password = (String) params[ 1 ];
+                    if (type == 1) {
+                        username = password = "";
+                    }
+                    oauthBean.name = username;
+                    oauthBean.pass = password;
                 }
-                oauthBean.name = username;
-                oauthBean.pass = password;
 
                 Uri uri = SqliteWrapper.addAccount(App.getAppContext(), oauthBean, "-1");
                 WeiboLog.d(TAG, "保存新用户：" + uri + " bean:" + oauthBean);
