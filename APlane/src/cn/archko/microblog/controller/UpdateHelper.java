@@ -13,12 +13,18 @@ import com.umeng.update.UpdateResponse;
 public class UpdateHelper {
 
     private Activity mActivity;
+    boolean mShowTip=false;
 
     public UpdateHelper(Activity activity) {
-        this.mActivity = activity;
+        this.mActivity=activity;
     }
 
     public void checkUpdate() {
+        checkUpdate(false);
+    }
+
+    public void checkUpdate(boolean showTip) {
+        mShowTip=showTip;
         UmengUpdateAgent.setUpdateOnlyWifi(false); // 目前我们默认在Wi-Fi接入情况下才进行自动提醒。如需要在其他网络环境下进行更新自动提醒，则请添加该行代码
         UmengUpdateAgent.setUpdateAutoPopup(false);
         UmengUpdateAgent.setUpdateListener(mUpdateListener);
@@ -36,7 +42,7 @@ public class UpdateHelper {
         UmengUpdateAgent.update(mActivity);
     }
 
-    UmengUpdateListener mUpdateListener = new UmengUpdateListener() {
+    UmengUpdateListener mUpdateListener=new UmengUpdateListener() {
         @Override
         public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
             if (mActivity.isFinishing()) {
@@ -49,13 +55,19 @@ public class UpdateHelper {
                     UmengUpdateAgent.showUpdateDialog(mActivity, updateInfo);
                     break;
                 case 1: // has no update
-                    NotifyUtils.showToast("没有更新");
+                    if (mShowTip) {
+                        NotifyUtils.showToast("没有更新");
+                    }
                     break;
                 case 2: // none wifi
-                    NotifyUtils.showToast("没有wifi连接， 只在wifi下更新");
+                    if (mShowTip) {
+                        NotifyUtils.showToast("没有wifi连接， 只在wifi下更新");
+                    }
                     break;
                 case 3: // time out
-                    NotifyUtils.showToast("超时");
+                    if (mShowTip) {
+                        NotifyUtils.showToast("超时");
+                    }
                     break;
             }
 

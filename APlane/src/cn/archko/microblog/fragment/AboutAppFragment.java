@@ -62,7 +62,7 @@ public class AboutAppFragment extends AbstractBaseFragment {
                 intent.setAction(Constants.INTENT_NEW_BLOG);
                 startActivity(intent);
             } else if (id == R.id.chk_udpate_btn) {
-                new UpdateHelper(getActivity()).checkUpdate();
+                new UpdateHelper(getActivity()).checkUpdate(true);
             } else if (id == R.id.feedback_btn) {
                 NotifyUtils.showToast("not implemented!");
                 //WeiboUtil.openUrlByDefaultBrowser(getActivity(), getString(R.string.about_app_feedback_url));
