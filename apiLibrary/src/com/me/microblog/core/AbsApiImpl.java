@@ -25,7 +25,7 @@ import java.util.List;
  */
 public abstract class AbsApiImpl {
 
-    public final String OAUTH2_BASEURL = "https://api.weibo.com/2/";
+    public static final String OAUTH2_BASEURL = "https://api.weibo.com/2/";
     public String mAccessToken = "";
     public static final String USERAGENT = "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.4) Gecko/20091111 Gentoo Firefox/3.5.4";
     protected static final String ACCEPTENCODING = "gzip,deflate";

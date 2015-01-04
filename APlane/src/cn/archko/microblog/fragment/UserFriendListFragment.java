@@ -71,8 +71,8 @@ public class UserFriendListFragment extends DialogFragment implements AdapterVie
      * 0表示搜索当前的数据库,1表示搜索用户的好友
      */
     int mSearchMode = 0;
-    private final int MODE_LOCALE = 0;
-    private final int MODE_NET = 1;
+    private static final int MODE_LOCALE = 0;
+    private static final int MODE_NET = 1;
     protected int nextCursor = 0;//下一页索引，第一页为 0
 
     @Override

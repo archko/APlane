@@ -17,8 +17,6 @@ import com.me.microblog.util.WeiboLog;
  */
 public class EmptyFragmentActivity extends SkinFragmentActivity implements OnRefreshListener {
 
-    protected ActionBar mActionBar;
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

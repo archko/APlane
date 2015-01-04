@@ -42,19 +42,10 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
 public class CommentItemView extends BaseItemView implements View.OnClickListener {
 
     public static final String TAG = "CommentItemView";
-    protected Context mContext;
-    protected String mCacheDir;    //图片缓存目录
     private TextView mName;
     private TextView mContentFirst;    //微博的内容
-    protected TextView mContentSencond;  //转发微博内容
-    protected LinearLayout mContentSecondLayout;
-    private ImageView mPortrait;    //微博作者头像
-    protected TextView mSourceFrom;    //来自
-    protected TextView mCreateAt;  //发表时间
-    protected String mPortraitUrl = null;
     Comment mComment;
 
-    protected boolean isShowBitmap = true;
     //protected DisplayImageOptions options;
 
     /**

@@ -55,7 +55,6 @@ public class CommentStatusActivity extends BaseOauthFragmentActivity {
     Status mStatus;
     boolean isPostingComment = false;
     InputMethodManager imm;
-    ActionBar mActionBar;
 
     /**
      * 评论的内容

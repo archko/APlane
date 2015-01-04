@@ -76,7 +76,6 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
     User mUser = null;
     private Button followButton, atButton;
-    long currentUserId = - 1;
 
     LinearLayout statusBtn, friendsBtn, followersBtn;
 

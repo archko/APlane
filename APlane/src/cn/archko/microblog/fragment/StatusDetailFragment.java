@@ -70,7 +70,6 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     /**
      * 当前登录用户的id
      */
-    public long currentUserId = - 1l;
     private ImageView mPortrait;
     private TextView mName;
     TextView mRepostNum, mCommentNum, mCreateAt, mSourceFrom;
@@ -120,7 +119,6 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     int lastItem = 0;   //ListView中最后一项位置
     boolean autoLoading = true;   //暂时无用
     int page = 1;//当前页序号,需要靠它识别已经加载的页.
-    String mCacheDir;
     //ImageView mStatusPictureLay;
     String mBmiddlePic; //中等图片url。
     TextView mRetRepostNum, mRetCommentNum;

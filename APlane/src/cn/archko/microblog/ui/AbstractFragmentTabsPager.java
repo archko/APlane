@@ -30,7 +30,6 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
     protected ActionTabsAdapter mTabsAdapter;
     protected ActionBar.TabListener mTabListener;
     protected int currentTabIdx = 0;
-    protected ActionBar mActionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

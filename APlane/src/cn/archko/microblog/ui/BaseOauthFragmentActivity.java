@@ -1,6 +1,5 @@
 package cn.archko.microblog.ui;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -16,9 +15,8 @@ import com.me.microblog.util.Constants;
 public class BaseOauthFragmentActivity extends SkinFragmentActivity implements
     PopupMenu.OnMenuItemClickListener, OnRefreshListener {
 
-    public final int MENU_FIRST = Menu.FIRST;
-    public final int MENU_SECOND = Menu.FIRST + 1;
-    SharedPreferences mPrefs;
+    public static final int MENU_FIRST = Menu.FIRST;
+    public static final int MENU_SECOND = Menu.FIRST + 1;
     /**
      * 当前登录用户的id
      */

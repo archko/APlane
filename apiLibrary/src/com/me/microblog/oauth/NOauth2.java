@@ -25,8 +25,8 @@ import java.util.Map;
 public class NOauth2 extends BaseOauth2 {
 
     public static final String CONSUMER_KEY = "5mQDrc7XQaC2MLGC";
-    public final String AUTHENTICATIONURL = "https://api.t.163.com/oauth2/authorize";
-    public final String CALLBACK_URL = "http://archko.com";
+    public static final String AUTHENTICATIONURL = "https://api.t.163.com/oauth2/authorize";
+    public static final String CALLBACK_URL = "http://archko.com";
 
     public String getCallbackUrl() {
         return CALLBACK_URL;

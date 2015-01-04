@@ -26,7 +26,6 @@ public class HotPickCategoryFragment extends AbstractBaseFragment {
 
     FragmentCallback mFragmentCallback;
     //String category=keys[0];
-    int selectedPos = 0;
     /**
      * oauth2的热门用户分类也不同了。
      */

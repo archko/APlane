@@ -16,8 +16,6 @@ import cn.archko.microblog.fragment.abs.OnRefreshListener;
  */
 public class TaskQueueActivity extends SkinFragmentActivity implements OnRefreshListener {
 
-    protected ActionBar mActionBar;
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
