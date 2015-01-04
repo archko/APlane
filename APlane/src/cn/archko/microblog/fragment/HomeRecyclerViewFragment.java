@@ -1,13 +1,10 @@
 package cn.archko.microblog.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.impl.SinaHomeStatusImpl;
-import cn.archko.microblog.service.WeiboService;
 import cn.archko.microblog.ui.PrefsActivity;
 import cn.archko.microblog.ui.SkinFragmentActivity;
 import com.me.microblog.App;
@@ -81,8 +78,6 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
     @Override
     public void clear() {
         super.clear();
-        /*App app=(App) App.getAppContext();
-        app.mDownloadPool.cleanAllQuery();*/
     }
 
     /**
@@ -146,10 +141,6 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
     protected void loadData() {
         WeiboLog.d(TAG, "home.loaddata:"+mDataList);
         if (mDataList != null && mDataList.size() > 0) {
-            //setListShown(true);
-
-            //mProgressContainer.setVisibility(View.GONE);
-            //mListContainer.setVisibility(View.VISIBLE);
             mAdapter.notifyDataSetChanged();
         } else {
             if (! isLoading) {
@@ -192,7 +183,6 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
         if (isRefresh) {
             int len = list.size();
             NotifyUtils.showToast("为您更新了" + len + "条最新信息！", Toast.LENGTH_LONG);
-            //mListView.clearChoices();
             if (list.size() < weibo_count) {
                 mDataList.addAll(0, list);
             } else {
@@ -220,7 +210,6 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
             clearHomeNotify();
         }
         isRefreshData = false;
-        //notifyService(false);
     }
 
     /**
@@ -243,33 +232,6 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
         if (! isLoading) {
             Object[] params = new Object[]{false, currentUserId};
             newTaskNoNet(params, null);
-        }
-    }
-
-    /**
-     * 发出通知，让服务不需要检索新的微博。
-     *
-     * @param isStop 是否停止，在获取新微博时停止服务，结束后再打开服务
-     */
-    @Deprecated
-    private void notifyService(boolean isStop) {
-        WeiboLog.d("notifyService.isStop:" + isStop + " isRefreshData:" + isRefreshData);
-        /*Intent i = new Intent();
-        i.setAction(Constants.SERVICE_NOTIFY_RETASK);
-        getActivity().sendBroadcast(i);*/
-        boolean chk_new_status = PreferenceManager.getDefaultSharedPreferences(getActivity())
-            .getBoolean(PrefsActivity.PREF_AUTO_CHK_NEW_STATUS, true);
-        if (! chk_new_status) {
-            WeiboLog.d(TAG, "no chk_new_status.");
-            return;
-        }
-
-        Intent intent = new Intent(getActivity(), WeiboService.class);
-        intent.setAction(WeiboService.REFRESH);
-        if (isStop) {
-            getActivity().stopService(intent);
-        } else {
-            getActivity().startService(intent);
         }
     }
 

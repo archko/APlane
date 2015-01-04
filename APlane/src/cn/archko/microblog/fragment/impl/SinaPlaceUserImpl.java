@@ -3,6 +3,7 @@ package cn.archko.microblog.fragment.impl;
 import cn.archko.microblog.R;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
+import com.me.microblog.bean.AKLocation;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.User;
 import com.me.microblog.core.sina.SinaPlaceApi;
@@ -36,8 +37,9 @@ public class SinaPlaceUserImpl extends AbsStatusImpl<User> {
                 Integer p = (Integer) params[ 4 ];
                 WeiboLog.d(TAG, "loadData." + c);
 
-                sStatusData = sWeiboApi2.getPlacesNearbyUsers(((App) App.getAppContext()).latitude,
-                    ((App) App.getAppContext()).longitude, ((App) App.getAppContext()).range, c, p);
+                AKLocation akLocation = ((App) App.getAppContext()).getLocation();
+                sStatusData = sWeiboApi2.getPlacesNearbyUsers(akLocation.latitude,
+                    akLocation.longitude, akLocation.range, c, p);
             } catch (WeiboException e) {
                 e.printStackTrace();
             }

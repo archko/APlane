@@ -19,6 +19,7 @@ import com.me.microblog.util.WeiboLog;
 public class PublicFragment extends RecyclerViewFragment {
 
     public static final String TAG = "PublicFragment";
+    private static final int MAX_PAGE = 4;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,16 +42,6 @@ public class PublicFragment extends RecyclerViewFragment {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        /*if (null!=mDataList&&mDataList.size()>weibo_count) {
-            List list=mDataList.subList(0, weibo_count);
-            mDataList.clear();
-            mDataList.addAll(list);
-        }*/
-    }
-
     //--------------------- 数据加载 ---------------------
     @Override
     public void fetchMore() {
@@ -63,7 +54,7 @@ public class PublicFragment extends RecyclerViewFragment {
         }
 
         boolean isRefresh = false;
-        if (count >= weibo_count * 3) {   //refresh list
+        if (count >= weibo_count * MAX_PAGE) {   //refresh list
             isRefresh = true;
         }
         Status st;

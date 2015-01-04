@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import com.me.microblog.bean.AKLocation;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.oauth.OauthBean;
 import com.me.microblog.thread.DownloadPool;
@@ -224,21 +225,6 @@ public class App extends Application {
         WeiboLog.i(TAG, "onLowMemory");
     }
 
-    private void initDownloadPool(int threadCount) {
-        if (this.mDownloadPool != null) {
-            this.mDownloadPool.setThreadCount(threadCount);
-            return;
-        }
-
-        WeiboLog.d(TAG, "initDownloadPool.");
-        DownloadPool downloadPool = new DownloadPool(this);
-        downloadPool.setThreadCount(threadCount);
-        this.mDownloadPool = downloadPool;
-        this.mDownloadPool.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-        this.mDownloadPool.setName("DownloadPool");
-        this.mDownloadPool.start();
-    }
-
     public static void initImageLoader(Context context) {
         // This configuration tuning is custom. You can tune every option, you may tune some of them,
         // or you can create default configuration by
@@ -300,14 +286,22 @@ public class App extends Application {
         return false;
     }
 
-    /**
-     * 经纬度,供附近的Fragment使用的,
-     */
-    public double longitude = 0.0;
-    public double latitude = 0.0;
-    public int range = 10000;
-    /**
-     * 定位的时间.如果地图定位没有自动更新,就需要手动更新.
-     */
-    public long mLocationTimestamp = 0;
+    private AKLocation mLocation;
+
+    public AKLocation getLocation() {
+        return mLocation;
+    }
+
+    public AKLocation getLocation(long time) {
+        if (null != mLocation) {
+            if (System.currentTimeMillis() - mLocation.mLocationTimestamp < time) {
+                return mLocation;
+            }
+        }
+        return null;
+    }
+
+    public void setLocation(AKLocation mAkLocation) {
+        this.mLocation = mAkLocation;
+    }
 }

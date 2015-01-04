@@ -29,6 +29,7 @@ import java.util.ArrayList;
  * @description: 主页, 显示登录用户与其关注对象所发的微博.
  * @author: archko 11-11-17
  */
+@Deprecated
 public class HomeFragment extends RecyclerViewFragment {
 
     public static final String TAG = "HomeFragment";

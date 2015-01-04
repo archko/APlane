@@ -8,14 +8,16 @@ import android.view.ViewGroup;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.RecyclerViewFragment;
 import cn.archko.microblog.fragment.impl.SinaPlaceStatusImpl;
+import cn.archko.microblog.location.BaiduLocation;
+import cn.archko.microblog.location.Command;
+import cn.archko.microblog.location.LocationCommand;
 import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.view.PlaceItemView;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
+import com.me.microblog.bean.AKLocation;
 import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.Status;
 import com.me.microblog.core.AbsApiImpl;
@@ -33,9 +35,6 @@ public class PlaceStatusGridFragment extends RecyclerViewFragment {
 
     public static final String TAG="PlaceStatusListFragment";
 
-    /*protected double longitude=0.0;
-    protected double latitude=0.0;
-    protected int range=10000;*/
     /**
      * 数据是否加载成功,对于位置来说,使用百度定位,它会在20秒内再执行一次定位,所以要去除不必要的加载.
      */
@@ -73,53 +72,38 @@ public class PlaceStatusGridFragment extends RecyclerViewFragment {
      */
     protected void startMap() {
         WeiboLog.d(TAG, "startMap.");
-        mLocClient.start();
-        mIsStart=true;
 
         mSwipeLayout.setRefreshing(true);
         if (mRefreshListener!=null) {
             mRefreshListener.onRefreshStarted();
         }
-    }
+        final BaiduLocation location = new BaiduLocation();
+        //下面这个应该放在EmployeeBaiduLocation里面处理的.
+        location.setMyListener(new BDLocationListener() {
 
-    protected void stopMap() {
-        WeiboLog.d(TAG, "stopMap.");
-        mLocClient.stop();
-        mIsStart=false;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        WeiboLog.d(TAG, "onPause:"+this);
-        try {
-            mLocClient.unRegisterLocationListener(myListener);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        WeiboLog.d(TAG, "onResume:"+this);
+            @Override
+            public void onReceiveLocation(BDLocation bdLocation) {
+                if (bdLocation == null) {
+                    if (isResumed()) {
+                        refreshAdapter(false, true);
+                    }
+                    return;
+                }
+                AKLocation akLocation = new AKLocation(bdLocation.getLatitude(), bdLocation.getLongitude());
+                akLocation.mLocationTimestamp=System.currentTimeMillis();
+                ((App)App.getAppContext()).setLocation(akLocation);
+                if (isResumed()) {
+                    pullToRefreshData();
+                }
+            }
+        });
+        Command command = new LocationCommand(location);
+        command.execute();
     }
 
     @Override
     protected SStatusData getData(Object... params) throws WeiboException {
         return null;
-    }
-
-    @Override
-    public void _onActivityCreated(Bundle savedInstanceState) {
-        initLocation();
-        setLocationOption();
-
-        /*if (!isLoaded) {
-            startMap();
-        }*/
-
-        super._onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -134,8 +118,8 @@ public class PlaceStatusGridFragment extends RecyclerViewFragment {
     @Override
     protected void pullToRefreshData() {
         isRefreshing=true;
-        if ((((App) App.getAppContext()).mLocationTimestamp-System.currentTimeMillis())>600000||
-            (((App) App.getAppContext()).latitude==0.0||((App) App.getAppContext()).longitude==0.0)) {
+        AKLocation akLocation = ((App) App.getAppContext()).getLocation(600000);
+        if (akLocation != null && akLocation.latitude == 0.0 && akLocation.longitude == 0.0) {
             WeiboLog.i(TAG, "pullToRefreshData.没有找到地点,需要重新定位.");
             startMap();
             isRefreshing=false;
@@ -152,8 +136,8 @@ public class PlaceStatusGridFragment extends RecyclerViewFragment {
      */
     @Override
     protected void loadData() {
-        if ((((App) App.getAppContext()).mLocationTimestamp-System.currentTimeMillis())>600000||
-            (((App) App.getAppContext()).latitude==0.0||((App) App.getAppContext()).longitude==0.0)) {
+        AKLocation akLocation = ((App) App.getAppContext()).getLocation(600000);
+        if (akLocation != null && akLocation.latitude == 0.0 && akLocation.longitude == 0.0) {
             WeiboLog.i(TAG, "loadData.没有找到地点,需要重新定位.");
             startMap();
             return;
@@ -250,102 +234,6 @@ public class PlaceStatusGridFragment extends RecyclerViewFragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    //--------------------- geo ---------------------
-    private LocationClient mLocClient;
-    public MyLocationListenner myListener=new MyLocationListenner();
-    private boolean mIsStart;
-
-    /**
-     * 获取地理位置，由地图api获取
-     */
-    private void initLocation() {
-        mLocClient=new LocationClient(App.getAppContext());
-        mLocClient.registerLocationListener(myListener);
-    }
-
-    private void setLocationOption() {
-        LocationClientOption option=new LocationClientOption();
-        //option.setOpenGps();                //打开gps
-        //option.setCoorType("");        //设置坐标类型
-        //option.setAddrType("all");        //设置地址信息，仅设置为“all”时有地址信息，默认无地址信息
-        option.setScanSpan(1);    //设置定位模式，小于1秒则一次定位;大于等于1秒则定时定位
-        mLocClient.setLocOption(option);
-    }
-
-    /**
-     * 监听函数，又新位置的时候，格式化成字符串，输出到屏幕中
-     */
-    public class MyLocationListenner implements BDLocationListener {
-
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            if (location==null) {
-                return;
-            }
-
-            StringBuilder sb=new StringBuilder(256);
-            sb.append("time : ");
-            sb.append(location.getTime());
-            sb.append("\nerror code : ");
-            sb.append(location.getLocType());
-            sb.append("\nlatitude : ");
-            sb.append(location.getLatitude());
-            sb.append("\nlontitude : ");
-            sb.append(location.getLongitude());
-            sb.append("\nradius : ");
-            sb.append(location.getRadius());
-            if (location.getLocType()==BDLocation.TypeGpsLocation) {
-                sb.append("\nspeed : ");
-                sb.append(location.getSpeed());
-                sb.append("\nsatellite : ");
-                sb.append(location.getSatelliteNumber());
-            } else if (location.getLocType()==BDLocation.TypeNetWorkLocation) {
-                sb.append("\n省：");
-                sb.append(location.getProvince());
-                sb.append("\n市：");
-                sb.append(location.getCity());
-                sb.append("\n区/县：");
-                sb.append(location.getDistrict());
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());
-            }
-            sb.append("\nsdk version : ");
-            sb.append(mLocClient.getVersion());
-            //logMsg(sb.toString());
-            WeiboLog.v(TAG, " sb:"+sb.toString());
-
-            ((App) App.getAppContext()).longitude=location.getLongitude();
-            ((App) App.getAppContext()).latitude=location.getLatitude();
-            ((App) App.getAppContext()).mLocationTimestamp=System.currentTimeMillis();
-
-            stopMap();
-            WeiboLog.v(TAG, " geo:"+sb.toString());
-            pullToRefreshData();
-        }
-
-        public void onReceivePoi(BDLocation poiLocation) {
-            if (poiLocation==null) {
-                return;
-            }
-            StringBuffer sb=new StringBuffer(256);
-            sb.append("Poi time : ");
-            sb.append(poiLocation.getTime());
-            sb.append("\nerror code : ");
-            sb.append(poiLocation.getLocType());
-            sb.append("\nlatitude : ");
-            sb.append(poiLocation.getLatitude());
-            sb.append("\nlontitude : ");
-            sb.append(poiLocation.getLongitude());
-            sb.append("\nradius : ");
-            sb.append(poiLocation.getRadius());
-            if (poiLocation.getLocType()==BDLocation.TypeNetWorkLocation) {
-                sb.append("\naddr : ");
-                sb.append(poiLocation.getAddrStr());
-            }
-            //logMsg(sb.toString());
         }
     }
 }
