@@ -12,8 +12,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Selection;
@@ -30,14 +28,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.DraftListFragment;
 import cn.archko.microblog.fragment.PickImageFragment;
 import cn.archko.microblog.fragment.SearchDialogFragment;
 import cn.archko.microblog.fragment.abs.AtUserListener;
-import cn.archko.microblog.fragment.abs.OnRefreshListener;
 import cn.archko.microblog.listeners.OnPickPhotoListener;
+import cn.archko.microblog.location.BaiduLocation;
+import cn.archko.microblog.location.Command;
+import cn.archko.microblog.location.LocationCommand;
 import cn.archko.microblog.service.SendTaskService;
 import cn.archko.microblog.view.AutoCompleteView;
 import cn.archko.microblog.view.EmojiPanelView;
@@ -45,9 +44,8 @@ import com.andrew.apollo.utils.PreferenceUtils;
 import com.andrew.apollo.utils.ThemeUtils;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.me.microblog.App;
+import com.me.microblog.bean.AKLocation;
 import com.me.microblog.bean.AtUser;
 import com.me.microblog.bean.Draft;
 import com.me.microblog.bean.SendTask;
@@ -57,13 +55,12 @@ import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * @author root
  */
-public class NewStatusActivity extends BaseOauthFragmentActivity implements ActionBar.OnNavigationListener, OnPickPhotoListener {
+public class NewStatusActivity extends SkinFragmentActivity implements ActionBar.OnNavigationListener, OnPickPhotoListener {
 
     private static final String TAG = "NewStatusActivity";
     private ActionBar mActionBar;
@@ -88,38 +85,12 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
     Button mCrop, mRotate, mFilter;
     private Button mEditPhoto;
 
+    AKLocation mLocation;
+
     private String imgUrl = "";
     boolean isDone = false;
-    /**
-     * 自动完成的用户名
-     */
-    ArrayList<String> mAtNames = null;
-    Handler mHandler = new Handler();
-    /**
-     * 话题列表
-     */
-    ArrayList<String> trendList = null;
-    /**
-     * 经度，为0时就是不发位置
-     */
-    double longitude = 0.0;
-    /**
-     * 纬度，为0时就是不发位置
-     */
-    double latitude = 0.0;
-    /**
-     * 地理位置是否启用，默认是启用的，可以取消。
-     */
-    //boolean isGeoEnabled=true;
-
-    /*GridView mEmotionGridview;
-    private GridAdapter mEmotionAdapter;*/
     EmojiPanelView mEmojiPanelView;
     InputMethodManager imm;
-    /**
-     * 监听器用于显示进度
-     */
-    OnRefreshListener mRefreshListener;
 
     /**
      * 草稿
@@ -138,13 +109,6 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
     public static final int MODE_PICK_PHOTO = 1;
     int mode = MODE_NORMAL;
     //--------------------- 认证 ---------------------
-
-    /**
-     * 认证失败后的操作
-     */
-    void oauthFailed() {
-        NotifyUtils.showToast(R.string.new_status_failed, Toast.LENGTH_LONG);
-    }
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
 
@@ -174,21 +138,17 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             }
 
             case R.id.btn_location: {
-                //Toast.makeText(this, "不好意思,暂时不能发位置.稍后加入!", Toast.LENGTH_LONG).show();
-                //isGeoEnabled=false;
                 getLocation();
                 break;
             }
 
             case R.id.btn_trend: {
-                //mEmotionGridview.setVisibility(View.GONE);
                 mEmojiPanelView.setVisibility(View.GONE);
                 autoCompleteTrends();
                 break;
             }
 
             case R.id.btn_at: {
-                //mEmotionGridview.setVisibility(View.GONE);
                 mEmojiPanelView.setVisibility(View.GONE);
                 autoCompleteAt();
                 break;
@@ -197,10 +157,8 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             case R.id.btn_emo: {
                 int emoVisible = mEmojiPanelView.getVisibility();
                 if (emoVisible == View.VISIBLE) {
-                    //mEmotionGridview.setVisibility(View.GONE);
                     mEmojiPanelView.setVisibility(View.GONE);
                 } else {
-                    //mEmotionGridview.setVisibility(View.VISIBLE);
                     mEmojiPanelView.setVisibility(View.VISIBLE);
                     imm.hideSoftInputFromWindow(content.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                 }
@@ -363,7 +321,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
 
         initData();
 
-        initLocation();
+        startMap();
 
         mVisibleAdapter = ArrayAdapter.createFromResource(this, R.array.status_visible_arr, android.R.layout.simple_spinner_item);
         mVisibleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -467,17 +425,6 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         mRotate.setOnClickListener(clickListener);
         mFilter.setOnClickListener(clickListener);
         mEditPhoto.setOnClickListener(clickListener);
-
-        /*mEmotionAdapter=new EmojiPanelView.GridAdapter(this);
-        mEmotionAdapter.setList(AKSmileyParser.getInstance(this).mSmileyTexts);
-        mEmotionGridview.setAdapter(mEmotionAdapter);
-        mEmotionGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                refreshText(position);
-            }
-        });*/
         mEmojiPanelView.setContent(content);
     }
 
@@ -536,17 +483,8 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * 获取地理位置，由地图api获取
-     */
-    private void initLocation() {
-        mLocClient = new LocationClient(getApplicationContext());
-        mLocClient.registerLocationListener(myListener);
-    }
-
     void clearLocation() {
-        longitude = 0.0d;
-        latitude = 0.0d;
+        mLocation=null;
         mLocResultBtn.setText(null);
         mClearLocBtn.setVisibility(View.GONE);
         mLocResultBtn.setVisibility(View.GONE);
@@ -555,18 +493,7 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
     void getLocation() {
         clearLocation();
         mLocProgressBar.setVisibility(View.VISIBLE);
-        setLocationOption();
         startMap();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        try {
-            mLocClient.unRegisterLocationListener(myListener);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -678,7 +605,9 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         task.uid = currentUserId;
         task.userId = currentUserId;
         task.content = content;
-        task.data = latitude + "-" + longitude;
+        if (null!=mLocation) {
+            task.data = mLocation.latitude + "-" + mLocation.longitude;
+        }
         task.type = TwitterTable.SendQueueTbl.SEND_TYPE_STATUS;
         task.imgUrl = imgUrl;
         task.createAt = new Date().getTime();
@@ -738,10 +667,6 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         content.setText(txt);
         content.setSelection(start + 2);
 
-        /*queryNames();
-        if (mAtNames.size()>0) {
-            updateAdapter(mAtNames);
-        }*/
         showCompleteFragment(0);
     }
 
@@ -759,7 +684,6 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         content.setText(txt);
         content.setSelection(start + 2);
 
-        //getTrends();
         showCompleteFragment(2);
     }
 
@@ -895,154 +819,41 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
         NewStatusActivity.this.finish();
     }
 
-    //--------------------- geo ---------------------
-    private LocationClient mLocClient;
-    public MyLocationListenner myListener = new MyLocationListenner();
-    private boolean mIsStart;
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    private void stopMap() {
-        WeiboLog.d(TAG, "stopMap.");
-        mLocClient.stop();
-        mIsStart = false;
-    }
-
     private void startMap() {
         WeiboLog.d(TAG, "startMap.");
-        mLocClient.start();
-        mIsStart = true;
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
+        final BaiduLocation location = new BaiduLocation();
+        //下面这个应该放在EmployeeBaiduLocation里面处理的.
+        location.setMyListener(new BDLocationListener() {
 
-    private void setLocationOption() {
-        LocationClientOption option = new LocationClientOption();
-        //option.setOpenGps();                //打开gps
-        //option.setCoorType("");        //设置坐标类型
-        option.setScanSpan(1);    //设置定位模式，小于1秒则一次定位;大于等于1秒则定时定位
-        mLocClient.setLocOption(option);
-    }
-
-    /**
-     * 监听函数，又新位置的时候，格式化成字符串，输出到屏幕中
-     */
-    public class MyLocationListenner implements BDLocationListener {
-
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            if (location == null) {
-                return;
+            @Override
+            public void onReceiveLocation(BDLocation bdLocation) {
+                if (bdLocation == null) {
+                    return;
+                }
+                AKLocation akLocation = new AKLocation(bdLocation.getLongitude(), bdLocation.getLatitude());
+                akLocation.mLocationTimestamp=System.currentTimeMillis();
+                akLocation.addr=bdLocation.getAddrStr();
+                ((App)App.getAppContext()).setLocation(akLocation);
+                if (!isFinishing()) {
+                    mLocation=akLocation;
+                    String log = String.format(
+                        "纬度:%f 经度:%f",
+                        bdLocation.getLongitude(), bdLocation.getLatitude());
+                    mLocResultBtn.setText(TextUtils.isEmpty(bdLocation.getAddrStr()) ? log : bdLocation.getAddrStr());
+                    mClearLocBtn.setVisibility(View.VISIBLE);
+                    mLocResultBtn.setVisibility(View.VISIBLE);
+                    mLocProgressBar.setVisibility(View.GONE);
+                }
             }
-
-            StringBuilder sb = new StringBuilder(256);
-            sb.append("time : ");
-            sb.append(location.getTime());
-            sb.append("\nerror code : ");
-            sb.append(location.getLocType());
-            sb.append("\nlatitude : ");
-            sb.append(location.getLatitude());
-            sb.append("\nlontitude : ");
-            sb.append(location.getLongitude());
-            sb.append("\nradius : ");
-            sb.append(location.getRadius());
-            if (location.getLocType() == BDLocation.TypeGpsLocation) {
-                sb.append("\nspeed : ");
-                sb.append(location.getSpeed());
-                sb.append("\nsatellite : ");
-                sb.append(location.getSatelliteNumber());
-            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
-                sb.append("\n省：");
-                sb.append(location.getProvince());
-                sb.append("\n市：");
-                sb.append(location.getCity());
-                sb.append("\n区/县：");
-                sb.append(location.getDistrict());
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());
-            }
-            sb.append("\nsdk version : ");
-            sb.append(mLocClient.getVersion());
-            //logMsg(sb.toString());
-            WeiboLog.v(TAG, " sb:" + sb.toString());
-
-            sb.setLength(0);
-            sb.append(location.getCity()).append(location.getDistrict()).append(location.getAddrStr());
-            longitude = location.getLongitude();
-            latitude = location.getLatitude();
-            String log = String.format(
-                "纬度:%f 经度:%f",
-                location.getLongitude(), location.getLatitude());
-            mLocResultBtn.setText(TextUtils.isEmpty(location.getAddrStr()) ? log : location.getAddrStr());
-            mClearLocBtn.setVisibility(View.VISIBLE);
-            mLocResultBtn.setVisibility(View.VISIBLE);
-            mLocProgressBar.setVisibility(View.GONE);
-
-            stopMap();
-            WeiboLog.v(TAG, " geo:" + sb.toString());
-        }
-
-        public void onReceivePoi(BDLocation poiLocation) {
-            if (poiLocation == null) {
-                return;
-            }
-            StringBuffer sb = new StringBuffer(256);
-            sb.append("Poi time : ");
-            sb.append(poiLocation.getTime());
-            sb.append("\nerror code : ");
-            sb.append(poiLocation.getLocType());
-            sb.append("\nlatitude : ");
-            sb.append(poiLocation.getLatitude());
-            sb.append("\nlontitude : ");
-            sb.append(poiLocation.getLongitude());
-            sb.append("\nradius : ");
-            sb.append(poiLocation.getRadius());
-            if (poiLocation.getLocType() == BDLocation.TypeNetWorkLocation) {
-                sb.append("\naddr : ");
-                sb.append(poiLocation.getAddrStr());
-            }
-            //logMsg(sb.toString());
-        }
+        });
+        Command command = new LocationCommand(location);
+        command.execute();
     }
 
     //--------------------- 图片 ---------------------
-    /**
-     * 编辑
-     */
-    public static final int EDIT_PHOTO_PICKED_WITH_DATA = 3029;
-
-    public static final int CAMERA_WITH_DATA_TO_THUMB = 3025;
-    /*用来标识请求照相功能的 activity*/
-    public static final int CAMERA_WITH_DATA = 3023;
-    /*用来标识请求 gallery 的 activity*/
-    public static final int PHOTO_PICKED_WITH_DATA = 3021;
-    /*拍照的照片存储位置*/
-    private static final File PHOTO_DIR = new File(Environment.getExternalStorageDirectory() + "/DCIM/Camera");
-    private File mCurrentPhotoFile;//照相机拍照得到的图片
     private static final int MAX_IMAGE_SIZE = 5000000;
     Uri mPhotoUri = null;
-
-    /**
-     * 编辑照片
-     */
-    /*private void doEditPhoto() {
-        try { // 启动 gallery 去剪辑这个照片
-            Intent intent=new Intent("android.intent.action.EDIT");
-            intent.setDataAndType(mPhotoUri, "image*//*");
-            startActivityForResult(intent, EDIT_PHOTO_PICKED_WITH_DATA);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, "没有找到相关的编辑程序，现在裁剪。", Toast.LENGTH_LONG).show();
-            startCropPhoto();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 
     /**
      * 处理从相册中选择图片
@@ -1080,211 +891,4 @@ public class NewStatusActivity extends BaseOauthFragmentActivity implements Acti
             }
         }
     }
-
-    /*private void doPickPhotoAction() {
-        // Wrap our context to inflate list items using correct theme
-        final Context dialogContext=new ContextThemeWrapper(NewStatusActivity.this, android.R.style.Theme_Light);
-        String cancel=getString(R.string.new_back);
-        String[] choices;
-        choices=new String[2];
-        choices[0]=getString(R.string.new_take_photo);            //拍照 
-        choices[1]=getString(R.string.new_pick_photo);        //从相册中选择 
-        final ListAdapter adapter=new ArrayAdapter<String>(dialogContext, android.R.layout.simple_list_item_1, choices);
-        final AlertDialog.Builder builder=new AlertDialog.Builder(dialogContext);
-        builder.setTitle(R.string.app_name);
-        builder.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                switch (which) {
-                    case 0: {
-                        String status=Environment.getExternalStorageState();
-                        if (status.equals(Environment.MEDIA_MOUNTED)) {//判断是否有 SD 卡
-                            doTakePhoto();
-                            // 用户点击了从照相机 获取
-                        } else {
-                            NotifyUtils.showToast(R.string.new_no_sdcard, Toast.LENGTH_SHORT);
-                        }
-                        break;
-                    }
-
-                    case 1:
-                        doPickPhotoFromGallery();// 从相册中去获 取
-                        break;
-                }
-            }
-        });
-        builder.setNegativeButton(cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.create().show();
-    }*/
-
-    /**
-     * 拍照获取图片
-     */
-    /*protected void doTakePhoto() {
-        try {
-            // Launch camera to take photo for selected contact
-            PHOTO_DIR.mkdirs();
-            // 创建照片的存储目录 
-            mCurrentPhotoFile=new File(PHOTO_DIR, getPhotoFileName());
-            // 给新照的照片文件命名
-
-            final Intent intent=getTakePickIntent(mCurrentPhotoFile);
-            startActivityForResult(intent, CAMERA_WITH_DATA);
-        } catch (ActivityNotFoundException e) {
-            NotifyUtils.showToast(R.string.new_photo_picker_not_found, Toast.LENGTH_LONG);
-        }
-    }
-
-    public static Intent getTakePickIntent(File f) {
-        Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE, null);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-        return intent;
-    }*/
-
-    /**
-     * 用当前时间给取得的图片命名,需要注意，如果文件名有空格，这货还取不到返回值
-     */
-    /*private String getPhotoFileName() {
-        Date date=new Date(System.currentTimeMillis());
-        SimpleDateFormat dateFormat=new SimpleDateFormat("'IMG'_yyyyMMdd_HHmmss");
-        return dateFormat.format(date)+".jpg";
-    }
-
-    // 请求 Gallery 程序
-    protected void doPickPhotoFromGallery() {
-        try {
-            // Launch picker to choose photo for selected contact
-            //final Intent intent=getPhotoPickIntent();
-            //startActivityForResult(intent, PHOTO_PICKED_WITH_DATA);
-            Intent choosePictureIntent=new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(choosePictureIntent, CAMERA_WITH_DATA_TO_THUMB);
-        } catch (ActivityNotFoundException e) {
-            NotifyUtils.showToast(R.string.new_photo_picker_not_found, Toast.LENGTH_LONG);
-        }
-    }
-
-    // 封装请求 Gallery 的 intent 
-    public static Intent getPhotoPickIntent() {
-        Intent intent=new Intent(Intent.ACTION_GET_CONTENT, null);
-        intent.setType("image*//*");
-        intent.putExtra("crop", "true");
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        intent.putExtra("outputX", 80);
-        intent.putExtra("outputY", 80);
-        intent.putExtra("return-data", true);
-        return intent;
-    }
-
-    protected void doCropPhoto() {
-        doCropPhoto(mCurrentPhotoFile);
-    }
-
-    protected void doCropPhoto(File f) {
-        try { // 启动 gallery 去剪辑这个照片
-            final Intent intent=getCropImageIntent(Uri.fromFile(f));
-            startActivityForResult(intent, PHOTO_PICKED_WITH_DATA);
-        } catch (Exception e) {
-            //Toast.makeText(this, R.string.photoPickerNotFoundText, Toast.LENGTH_LONG).show();
-        }
-    }*/
-
-    /**
-     * 裁剪，直接使用uri来处理。在没有图片编辑软件后调用这个裁剪功能。
-     */
-    /*protected void startCropPhoto() {
-        try { // 启动 gallery 去剪辑这个照片
-            final Intent intent=getCropImageIntent(mPhotoUri);
-            startActivityForResult(intent, PHOTO_PICKED_WITH_DATA);
-        } catch (Exception e) {
-            Toast.makeText(this, "系统没有裁剪的程序！", Toast.LENGTH_LONG).show();
-        }
-    }*/
-
-    /**
-     * Constructs an intent for image cropping. 调用图片剪辑程序
-     */
-    /*public static Intent getCropImageIntent(Uri photoUri) {
-        Intent intent=new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(photoUri, "image*//*");
-        intent.putExtra("crop", "true");
-        *//*intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        intent.putExtra("outputX", 80);
-        intent.putExtra("outputY", 80);*//*
-        intent.putExtra("return-data", true);
-        return intent;
-    }
-
-    void showPhoto(Uri imageFileUri) throws FileNotFoundException {
-        Display currentDisplay=getWindowManager().getDefaultDisplay();
-        int dw=currentDisplay.getWidth();
-        int dh=currentDisplay.getHeight()/2-100;
-
-        // Load up the image's dimensions not the image itself
-        BitmapFactory.Options bmpFactoryOptions=new BitmapFactory.Options();
-        bmpFactoryOptions.inJustDecodeBounds=true;
-        Bitmap bmp=BitmapFactory.decodeStream(
-            getContentResolver().openInputStream(imageFileUri), null,
-            bmpFactoryOptions);
-
-        int heightRatio=(int) Math.ceil(bmpFactoryOptions.outHeight/(float) dh);
-        int widthRatio=(int) Math.ceil(bmpFactoryOptions.outWidth/(float) dw);
-
-        if (heightRatio>1&&widthRatio>1) {
-            if (heightRatio>widthRatio) {
-                bmpFactoryOptions.inSampleSize=heightRatio;
-            } else {
-                bmpFactoryOptions.inSampleSize=widthRatio;
-            }
-        }
-
-        bmpFactoryOptions.inJustDecodeBounds=false;
-        bmp=BitmapFactory.decodeStream(
-            getContentResolver().openInputStream(imageFileUri), null,
-            bmpFactoryOptions);
-
-        mPreview.setImageBitmap(bmp);
-
-        mPreview.setVisibility(View.VISIBLE);
-        mCloseImage.setVisibility(View.VISIBLE);
-        mImageOperaBar.setVisibility(View.VISIBLE);
-    }
-
-    void showPhoto(String filename) {
-        Display currentDisplay=getWindowManager().getDefaultDisplay();
-        int dw=currentDisplay.getWidth();
-        int dh=currentDisplay.getHeight()/2-100;
-
-        // Load up the image's dimensions not the image itself
-        BitmapFactory.Options bmpFactoryOptions=new BitmapFactory.Options();
-        bmpFactoryOptions.inJustDecodeBounds=true;
-        Bitmap bmp=BitmapFactory.decodeFile(filename, bmpFactoryOptions);
-
-        int heightRatio=(int) Math.ceil(bmpFactoryOptions.outHeight/(float) dh);
-        int widthRatio=(int) Math.ceil(bmpFactoryOptions.outWidth/(float) dw);
-
-        if (heightRatio>1&&widthRatio>1) {
-            if (heightRatio>widthRatio) {
-                bmpFactoryOptions.inSampleSize=heightRatio;
-            } else {
-                bmpFactoryOptions.inSampleSize=widthRatio;
-            }
-        }
-
-        bmpFactoryOptions.inJustDecodeBounds=false;
-        bmp=BitmapFactory.decodeFile(filename, bmpFactoryOptions);
-
-        mPreview.setImageBitmap(bmp);
-
-        mPreview.setVisibility(View.VISIBLE);
-        mCloseImage.setVisibility(View.VISIBLE);
-        mImageOperaBar.setVisibility(View.VISIBLE);
-    }*/
 }

@@ -9,7 +9,7 @@
         android:layout_width="@dimen/gridview_image_width"
         android:layout_height="@dimen/gridview_image_height"
         android:src="@drawable/user_default_photo"
-        android:scaleType="center"
+        android:scaleType="centerCrop"
         android:focusable="false" android:padding="@dimen/gridview_item_ccontainer_padding_left"/>
 
 </LinearLayout>

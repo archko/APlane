@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
@@ -12,6 +13,7 @@ import cn.archko.microblog.R;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.andrew.apollo.utils.ThemeUtils;
 import com.me.microblog.App;
+import com.me.microblog.util.Constants;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -21,11 +23,19 @@ import com.umeng.analytics.MobclickAgent;
 public class SkinFragmentActivity extends Activity implements PopupMenu.OnMenuItemClickListener {
 
     //--------------------- popupMenu ---------------------
+
+    public static final int MENU_FIRST = Menu.FIRST;
+    public static final int MENU_SECOND = Menu.FIRST + 1;
+
     /*MenuBuilder mMenu=null;
     MenuPopupHelper mMenuHelper=null;*/
     protected ActionBar mActionBar;
     public SharedPreferences mPrefs;
     public String mThemeId = "0";
+    /**
+     * 当前登录用户的id
+     */
+    protected long currentUserId = - 1l;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +53,12 @@ public class SkinFragmentActivity extends Activity implements PopupMenu.OnMenuIt
 
         ThemeUtils.getsInstance().themeActionBar(getActionBar(), this);
         //MobclickAgent.onError(this);
+
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        long aUserId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
+        this.currentUserId = aUserId;
+
+        mActionBar = getActionBar();
     }
 
     @Override

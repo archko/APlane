@@ -14,6 +14,7 @@ public class AKLocation implements Serializable {
      * 定位的时间.如果地图定位没有自动更新,就需要手动更新.
      */
     public long mLocationTimestamp = 0;
+    public String addr;
 
     public AKLocation() {
     }

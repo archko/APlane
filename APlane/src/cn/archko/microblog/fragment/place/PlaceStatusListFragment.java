@@ -82,6 +82,7 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
                 }
                 AKLocation akLocation = new AKLocation(bdLocation.getLongitude(), bdLocation.getLatitude());
                 akLocation.mLocationTimestamp=System.currentTimeMillis();
+                akLocation.addr=bdLocation.getAddrStr();
                 ((App)App.getAppContext()).setLocation(akLocation);
                 if (isResumed()) {
                     pullToRefreshData();

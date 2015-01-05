@@ -20,7 +20,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -56,7 +55,7 @@ import java.util.Date;
  *
  * @author root date:2011-8-9
  */
-public class ViewStatusDetailActivity extends BaseOauthFragmentActivity implements LazyViewPager.OnPageChangeListener {
+public class ViewStatusDetailActivity extends SkinFragmentActivity implements LazyViewPager.OnPageChangeListener {
 
     public static final String TAG = "ViewStatusDetailActivity";
     private Status mStatus = null;

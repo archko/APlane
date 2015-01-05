@@ -49,6 +49,7 @@ import java.util.ArrayList;
 
 /**
  * 发布微博的多图多图的对话框
+ * TODO 需要处理程序被回收的状况,之后用PhotoHelper替换照片的选择.
  *
  * @author: archko 11-1-12 :上午7:48
  */
@@ -590,7 +591,9 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         public void toggle() {
             setChecked(! checked);
         }
-    }              //--------------------- adapter ---------------------
+    }
+
+    //--------------------- adapter ---------------------
     public class TimeLineAdapter extends BaseAdapter {
 
         public TimeLineAdapter() {

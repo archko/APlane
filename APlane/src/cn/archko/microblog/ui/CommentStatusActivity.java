@@ -49,7 +49,7 @@ import java.util.Date;
  * @author root date:2011-8-9
  * @author archko date:2012-5-12
  */
-public class CommentStatusActivity extends BaseOauthFragmentActivity {
+public class CommentStatusActivity extends SkinFragmentActivity {
 
     public static final String TAG = "CommentStatusActivity";
     Status mStatus;
