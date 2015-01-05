@@ -14,6 +14,7 @@ import cn.archko.microblog.ui.AccountUserActivity;
 import cn.archko.microblog.ui.NewStatusActivity;
 import cn.archko.microblog.ui.PrefsActivity;
 import cn.archko.microblog.ui.SearchActivity;
+import cn.archko.microblog.ui.StaggeredLocalActivity;
 import cn.archko.microblog.utils.AKUtils;
 import com.andrew.apollo.utils.ThemeUtils;
 import com.me.microblog.util.Constants;
@@ -52,6 +53,8 @@ public class PrefsFragment extends AbstractBaseFragment {
         layout = (RelativeLayout) view.findViewById(R.id.menu_logout);
         layout.setOnClickListener(clickListener);
         layout = (RelativeLayout) view.findViewById(R.id.menu_exit);
+        layout.setOnClickListener(clickListener);
+        layout = (RelativeLayout) view.findViewById(R.id.menu_cache);
         layout.setOnClickListener(clickListener);
 
         ThemeUtils.getsInstance().themeBackground(view, getActivity());
@@ -92,26 +95,11 @@ public class PrefsFragment extends AbstractBaseFragment {
         } else if (id == R.id.menu_exit) {
             mode = MODE_EXIT;
             exitConfirm(R.string.exit_title, R.string.exit_msg);
+        } else if (id == R.id.menu_cache) {
+            Intent intent=new Intent(getActivity(), StaggeredLocalActivity.class);
+            getActivity().startActivity(intent);
         }
     }
-
-    /**
-     * 注销
-     */
-    /*protected void logout() {
-        WeiboUtil.logout(getActivity());
-        ((App) App.getAppContext()).logout();
-
-        Intent intent=new Intent(getActivity(), SendTaskService.class);
-        getActivity().stopService(intent);
-
-        WeiboLog.d(TAG, "logout.");
-        Intent loginIntent=new Intent(getActivity(), LoginActivity.class);
-        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        loginIntent.putExtra("mode", "1");
-        startActivity(loginIntent);
-        getActivity().finish();
-    }*/
 
     /**
      * 反馈信息，也是发新微博
@@ -154,14 +142,4 @@ public class PrefsFragment extends AbstractBaseFragment {
                 }
             }).create().show();
     }
-
-    /*private void exit() {
-        Intent intent=new Intent(getActivity(), WeiboService.class);
-        getActivity().stopService(intent);
-        intent=new Intent(getActivity(), SendTaskService.class);
-        getActivity().stopService(intent);
-        ((App) App.getAppContext()).logout();
-        getActivity().finish();
-        android.os.Process.killProcess(android.os.Process.myPid());
-    }*/
 }

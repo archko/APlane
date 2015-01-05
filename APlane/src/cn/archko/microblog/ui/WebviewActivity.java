@@ -306,7 +306,7 @@ public class WebviewActivity extends SkinFragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        /*mWebView.clearView();
-        mWebView.destroy();*/
+        //mWebView.clearView();
+        mWebView.destroy();
     }
 }

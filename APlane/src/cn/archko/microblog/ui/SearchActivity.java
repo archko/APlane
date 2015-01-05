@@ -45,7 +45,7 @@ import java.util.Map;
  * @description: 这是一个主界面，采用Fragment与修改过的ViewPager
  * @author: archko 11-12-25
  */
-public class SearchActivity extends BaseOauthActivity implements OnRefreshListener {
+public class SearchActivity extends SkinFragmentActivity implements OnRefreshListener {
 
     public static final String TAG = "SearchActivity";
     private SharedPreferences mPreferences;

@@ -189,6 +189,10 @@
             android:theme="@style/Theme.AK" android:hardwareAccelerated="false"
             android:taskAffinity="cn.archko.microblog.webview"></activity>
 
+        <activity android:name=".ui.StaggeredLocalActivity" android:excludeFromRecents="true"
+            android:theme="@style/Theme.AK"
+            android:taskAffinity="cn.archko.microblog.webview"></activity>
+
         <provider android:exported="true" android:name="com.me.microblog.db.TwitterProvider" android:authorities="cn.archko.microblog"
             android:readPermission="cn.archko.microblog.provider.READ_DATABASE"
             android:writePermission="cn.archko.microblog.provider.WRITE_DATABASE">
