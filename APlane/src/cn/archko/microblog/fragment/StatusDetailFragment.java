@@ -1017,7 +1017,6 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         }
         mAdapter.setUpdateFlag(updateFlag);
         mAdapter.setCache(cache);
-        mAdapter.setShowLargeBitmap(showLargeBitmap);
         mAdapter.setImageUrls(thumbs);
         mAdapter.notifyDataSetChanged();
 

@@ -136,12 +136,12 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
         }
 
         if (convertView==null) {
-            itemView=new DirectMessageItemView(getActivity(), mCacheDir, updateFlag, true, showBitmap);
+            itemView=new DirectMessageItemView(getActivity(), mCacheDir, updateFlag, true);
         } else {
             itemView=(DirectMessageItemView) convertView;
         }
 
-        itemView.update(directMessage, updateFlag, true, showBitmap);
+        itemView.update(directMessage, updateFlag, true);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -167,7 +167,7 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
         if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
-        itemView=new DirectMessageItemView(getActivity(), mCacheDir, updateFlag, true, showBitmap);
+        itemView=new DirectMessageItemView(getActivity(), mCacheDir, updateFlag, true);
         return itemView;
     }
 

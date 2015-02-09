@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.ImageAdapter;
+import cn.archko.microblog.settings.AppSettings;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.utils.WeiboOperation;
@@ -38,7 +39,7 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
     ImageAdapter mAdapter;
 
     public PlaceItemView(Context context, String cacheDir, boolean updateFlag,
-        boolean cache, boolean showLargeBitmap, boolean showBitmap) {
+        boolean cache) {
         super(context, cacheDir, updateFlag);
 
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.home_time_line_item, this);
@@ -61,9 +62,6 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
 
         mLoctationlayout=(LinearLayout) findViewById(R.id.loctation_ll);
         mLocation=(TextView) findViewById(R.id.location);
-
-        isShowLargeBitmap=showLargeBitmap;
-        isShowBitmap=showBitmap;
 
         SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(mContext);
         float pref_title_font_size=options.getInt(PreferenceUtils.PREF_TITLE_FONT_SIZE, 14);
@@ -95,13 +93,11 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
     }
 
     @Override
-    public void update(final Status bean, boolean updateFlag, boolean cache, boolean showLargeBitmap,
-        boolean showBitmap) {
+    public void update(final Status bean, boolean updateFlag, boolean cache) {
         if (mStatus==bean) {
             WeiboLog.v(TAG, "相同的内容不更新。");
             if (updateFlag) {   //需要加载数据,否则会无法更新列表的图片.
                 loadPicture(updateFlag, cache);
-                isShowBitmap=showBitmap;
                 loadPortrait(updateFlag, cache);
             }
             return;
@@ -256,7 +252,8 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
             }
         }*/
 
-        if (!isShowBitmap||null==thumbs||thumbs.length==0) {
+        AppSettings appSettings=AppSettings.current();
+        if (!appSettings.showBitmap||null==thumbs||thumbs.length==0) {
             mTagsViewGroup.setAdapter(null);
             mTagsViewGroup.setVisibility(GONE);
             //WeiboLog.v(TAG, "setAdapter.没有图片需要显示。"+mStatus.text);
@@ -273,7 +270,6 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
         {
             mAdapter.setUpdateFlag(updateFlag);
             mAdapter.setCache(cache);
-            mAdapter.setShowLargeBitmap(isShowLargeBitmap);
             mAdapter.setImageUrls(mStatus.thumbs);
             //mAdapter.notifyDataSetInvalidated();
         }

@@ -181,11 +181,11 @@ public class PlaceStatusGridFragment extends RecyclerViewFragment {
         }
 
         if (convertView==null) {
-            itemView=new PlaceItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
+            itemView=new PlaceItemView(getActivity(), mCacheDir, updateFlag, true);
         } else {
             itemView=(PlaceItemView) convertView;
         }
-        itemView.update(status, updateFlag, true, showLargeBitmap, showBitmap);
+        itemView.update(status, updateFlag, true);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -211,7 +211,7 @@ public class PlaceStatusGridFragment extends RecyclerViewFragment {
         if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
-        itemView=new PlaceItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
+        itemView=new PlaceItemView(getActivity(), mCacheDir, updateFlag, true);
         return itemView;
     }
 

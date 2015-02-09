@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.service.WeiboService;
+import cn.archko.microblog.settings.AppSettings;
 import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.view.SeekBarPref;
 import com.andrew.apollo.utils.ApolloUtils;
@@ -314,6 +315,7 @@ public class PrefsActivity extends PreferenceActivity implements
                     WeiboLog.d(PREF_TAG, "tc:"+threadCount);
                     //((App) App.getAppContext()).mDownloadPool.setThreadCount(threadCount);
                 }
+                AppSettings.init();
             }
         });
     }

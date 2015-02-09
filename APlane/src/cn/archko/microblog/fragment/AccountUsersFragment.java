@@ -108,7 +108,7 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
     @Override
     public void addNewData() {
         WeiboLog.d(TAG, "add new account.");
-        mSwipeLayout.setRefreshing(fastScroll);
+        mSwipeLayout.setRefreshing(true);
         FragmentTransaction ft=getActivity().getFragmentManager().beginTransaction();
         Fragment prev=getActivity().getFragmentManager().findFragmentByTag("dialog");
         if (prev!=null) {

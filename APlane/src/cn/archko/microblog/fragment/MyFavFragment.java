@@ -99,11 +99,11 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
         }
 
         if (convertView==null) {
-            itemView=new FavItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
+            itemView=new FavItemView(getActivity(), mCacheDir, updateFlag, true);
         } else {
             itemView=(FavItemView) convertView;
         }
-        itemView.update(status, updateFlag, true, showLargeBitmap, showBitmap);
+        itemView.update(status, updateFlag, true);
 
         return itemView;
     }

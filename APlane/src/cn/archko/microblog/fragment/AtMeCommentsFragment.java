@@ -193,11 +193,11 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
         }
 
         if (convertView==null) {
-            itemView=new CommentItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
+            itemView=new CommentItemView(getActivity(), mCacheDir, updateFlag, true, true);
         } else {
             itemView=(CommentItemView) convertView;
         }
-        itemView.update(status, updateFlag, true, showBitmap);
+        itemView.update(status, updateFlag, true);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -224,7 +224,7 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
         if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
-        itemView=new CommentItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
+        itemView=new CommentItemView(getActivity(), mCacheDir, updateFlag, true, true);
         return itemView;
     }
 

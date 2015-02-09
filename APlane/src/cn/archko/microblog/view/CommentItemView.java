@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.archko.microblog.R;
+import cn.archko.microblog.settings.AppSettings;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.utils.WeiboOperation;
@@ -61,7 +62,7 @@ public class CommentItemView extends BaseItemView implements View.OnClickListene
      * @param showSencondContent 是否显示tv_content_sencond布局,如果是在详细页面,就不需要,私信也可以考虑下.
      */
     public CommentItemView(Context context, String cacheDir, boolean updateFlag,
-        boolean cache, boolean showBitmap, boolean showSencondContent) {
+        boolean cache, boolean showSencondContent) {
         super(context, cacheDir, updateFlag);
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.comment_item, this);
 
@@ -80,8 +81,6 @@ public class CommentItemView extends BaseItemView implements View.OnClickListene
 
         mSourceFrom=(TextView) findViewById(R.id.source_from);
         mCreateAt=(TextView) findViewById(R.id.send_time);
-
-        isShowBitmap=showBitmap;
 
         SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(mContext);
         float pref_title_font_size=prefs.getInt(PreferenceUtils.PREF_TITLE_FONT_SIZE, 14);
@@ -130,7 +129,7 @@ public class CommentItemView extends BaseItemView implements View.OnClickListene
      * @param cache      是否缓存图片
      * @param showBitmap 是否显示图片
      */
-    public void update(final Comment comment, boolean updateFlag, boolean cache, boolean showBitmap) {
+    public void update(final Comment comment, boolean updateFlag, boolean cache) {
         if (mComment==comment) {
             WeiboLog.v(TAG, "相同的内容不更新。");
             if (updateFlag) {   //需要加载数据,否则会无法更新列表的图片.
@@ -193,7 +192,8 @@ public class CommentItemView extends BaseItemView implements View.OnClickListene
      * @param cache      是否缓存头像.
      */
     protected void loadPortrait(boolean updateFlag, boolean cache) {
-        if (isShowBitmap) {
+        AppSettings appSettings=AppSettings.current();
+        if (appSettings.showBitmap) {
             User user=mComment.user;
             if (null==user||TextUtils.isEmpty(user.profileImageUrl)) {
                 mPortrait.setImageResource(R.drawable.user_default_photo);

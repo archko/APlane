@@ -73,7 +73,6 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
     public void onResume() {
         super.onResume();
         //这里为是否显示列表的评论者头像。
-        showBitmap=mPrefs.getBoolean(PrefsActivity.PREF_COMMENT_USER_BM, true);
         weibo_count=Constants.WEIBO_COUNT_MIN;
     }
 
@@ -142,12 +141,12 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
         }
 
         if (null==convertView) {
-            itemView=new CommentItemView(getActivity(), mCacheDir, updateFlag, false, showBitmap, false);
+            itemView=new CommentItemView(getActivity(), mCacheDir, updateFlag, false, false);
         } else {
             itemView=(CommentItemView) convertView;
         }
 
-        itemView.update(bean, updateFlag, false, showBitmap);
+        itemView.update(bean, updateFlag, false);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -173,7 +172,7 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
         if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
-        itemView=new CommentItemView(getActivity(), mCacheDir, updateFlag, false, showBitmap, false);
+        itemView=new CommentItemView(getActivity(), mCacheDir, updateFlag, false, false);
         return itemView;
     }
 
@@ -226,7 +225,7 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
     public void refreshAdapter(boolean load, boolean isRefresh) {
         WeiboLog.d(TAG, "refreshAdapter.load:"+load+" isRefresh:"+isRefresh);
         try {
-            mSwipeLayout.setRefreshing(fastScroll);
+            mSwipeLayout.setRefreshing(true);
         } catch (Exception e) {
             e.printStackTrace();
         }

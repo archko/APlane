@@ -35,7 +35,7 @@
         android:anyDensity="true"/>
 
     <application android:icon="@drawable/logo"
-        android:label="@string/app_name" android:name="com.me.microblog.App"
+        android:label="@string/app_name" android:name=".AApp"
         android:theme="@style/Theme.AK.Light"
         android:allowBackup="true"
         android:taskAffinity="cn.archko.microblog" android:largeHeap="true">
@@ -185,7 +185,8 @@
 
             android:taskAffinity="cn.archko.microblog.webview"></activity>
 
-        <activity android:name=".ui.ImageViewerActivity" android:excludeFromRecents="true" android:screenOrientation="sensor"
+        <activity android:name=".ui.ImageViewerActivity" android:excludeFromRecents="true"
+            android:screenOrientation="sensor"
             android:theme="@style/Theme.AK" android:hardwareAccelerated="false"
             android:taskAffinity="cn.archko.microblog.webview"></activity>
 
@@ -193,7 +194,8 @@
             android:theme="@style/Theme.AK"
             android:taskAffinity="cn.archko.microblog.webview"></activity>
 
-        <provider android:exported="true" android:name="com.me.microblog.db.TwitterProvider" android:authorities="cn.archko.microblog"
+        <provider android:exported="true" android:name="com.me.microblog.db.TwitterProvider"
+            android:authorities="cn.archko.microblog"
             android:readPermission="cn.archko.microblog.provider.READ_DATABASE"
             android:writePermission="cn.archko.microblog.provider.WRITE_DATABASE">
         </provider>

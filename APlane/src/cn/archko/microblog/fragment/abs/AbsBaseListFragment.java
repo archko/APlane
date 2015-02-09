@@ -22,6 +22,7 @@ import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.recycler.RecyclerViewHolder;
 import cn.archko.microblog.recycler.SimpleViewHolder;
+import cn.archko.microblog.settings.AppSettings;
 import cn.archko.microblog.ui.PrefsActivity;
 import com.andrew.apollo.cache.ImageCache;
 import com.me.microblog.App;
@@ -103,27 +104,6 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      */
     protected boolean isLoading=false;
     /**
-     * 是否在列表中显示大的位图，只有在下面的显示列表图片时，才有效。
-     */
-    protected boolean showLargeBitmap=false;
-    /**
-     * 是否显示列表图片
-     */
-    protected boolean showBitmap=true;
-    /**
-     * 是否显示快速滚动块。
-     * 在增加上下导航按钮后，快速滚动似乎不是那么必要的
-     */
-    protected boolean fastScroll=true;
-    /**
-     * 是否显示上下导航按钮
-     */
-    protected boolean showNavBtn=true;
-    /**
-     * 是否显示上下导航按钮
-     */
-    protected boolean showNavPageBtn=true;
-    /**
      * 是否已经添加到Activity中,新的fragment会有这样的问题.
      */
     protected boolean hasAttach=false;
@@ -167,27 +147,14 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
     @Override
     public void onResume() {
         super.onResume();
-        boolean slb, sb;
 
-        slb="1".equals(mPrefs.getString(PrefsActivity.PREF_RESOLUTION, getString(R.string.default_resolution)));
-        sb=mPrefs.getBoolean(PrefsActivity.PREF_SHOW_BITMAP, true);
-
-        if (showLargeBitmap!=slb||showBitmap!=sb) {
-            notifyChanged();
-        }
-        showLargeBitmap=slb;
-        showBitmap=sb;
-
-        showNavBtn=mPrefs.getBoolean(PrefsActivity.PREF_SHOW_NAV_BTN, true);
-        showNavPageBtn=mPrefs.getBoolean(PrefsActivity.PREF_SHOW_NAV_PAGE_BTN, true);
-
-        WeiboLog.d(TAG, "onResume:"+showNavBtn+" showLargeBitmap:"+showLargeBitmap);
+        AppSettings appSettings=AppSettings.current();
+        WeiboLog.d(TAG, "onResume:"+appSettings.showBitmap+" showLargeBitmap:"+appSettings.showLargeBitmap);
 
         if (null!=zoomLayout) {
-            if (showNavBtn) {
+            if (appSettings.showNavBtn) {
                 showZoom();
             } else {
-                showNavPageBtn=false;
                 zoomHandler.removeCallbacks(zoomRunnable);
                 zoomLayout.clearAnimation();
                 zoomLayout.setVisibility(View.GONE);
@@ -259,7 +226,8 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
             android.R.color.holo_orange_light,
             android.R.color.holo_red_light);
 
-        if (showLargeBitmap) {
+        AppSettings appSettings=AppSettings.current();
+        if (appSettings.showLargeBitmap) {
             mRecyclerView.setRecyclerListener(new RecyclerViewHolder());
         }
         mRecyclerView.setOnScrollListener(getScrollListener());
@@ -729,9 +697,10 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      * @param view
      */
     protected void navClick(View view) {
+        AppSettings appSettings=AppSettings.current();
         if (view.getId()==R.id.up) {
             showZoom();
-            if (showNavPageBtn) {
+            if (appSettings.showNavPageBtn) {
                 int scrollY=mRecyclerView.getScrollY();
                 scrollY-=mRecyclerView.getHeight();
                 mRecyclerView.scrollBy(0, scrollY);
@@ -740,7 +709,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
             }
         } else if (view.getId()==R.id.down) {
             showZoom();
-            if (showNavPageBtn) {
+            if (appSettings.showNavPageBtn) {
                 int scrollY=mRecyclerView.getScrollY();
                 scrollY+=mRecyclerView.getHeight();
                 mRecyclerView.scrollBy(0, scrollY);

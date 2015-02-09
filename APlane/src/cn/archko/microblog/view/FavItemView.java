@@ -32,8 +32,8 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
     //protected DisplayImageOptions options;
 
     public FavItemView(Context context, String cacheDir, boolean updateFlag,
-        boolean cache, boolean showLargeBitmap, boolean showBitmap) {
-        super(context, cacheDir, updateFlag, cache, showLargeBitmap, showBitmap);
+        boolean cache) {
+        super(context, cacheDir, updateFlag, cache);
     }
 
     @Override
@@ -64,13 +64,11 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
      * @param showLargeBitmap 是否显示列表大图，默认显示小图
      * @param showBitmap      是否显示列表图片，默认显示。
      */
-    public void update(final Favorite bean, boolean updateFlag, boolean cache, boolean showLargeBitmap,
-        boolean showBitmap) {
+    public void update(final Favorite bean, boolean updateFlag, boolean cache) {
         if (mFavorite==bean) {
             WeiboLog.v(TAG, "相同的内容不更新。");
             if (updateFlag) {   //需要加载数据,否则会无法更新列表的图片.
                 loadPicture(updateFlag, cache);
-                isShowBitmap=showBitmap;
                 loadPortrait(updateFlag, cache);
             }
             return;

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.archko.microblog.R;
+import cn.archko.microblog.settings.AppSettings;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
@@ -58,8 +59,6 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
     protected Status mStatus;    //微博
     protected Status mRetweetedStatus;    //转发的微博
 
-    protected boolean isShowLargeBitmap=false;
-    protected boolean isShowBitmap=true;
     protected LinearLayout mLoctationlayout;    //位置布局
     protected TextView mLocation;   //位置信息
     protected SAnnotation sAnnotation;
@@ -111,8 +110,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
      * @param showBitmap      是否显示列表图片，默认显示。
      */
     @Override
-    public void update(final Status bean, boolean updateFlag, boolean cache, boolean showLargeBitmap,
-        boolean showBitmap) {
+    public void update(final Status bean, boolean updateFlag, boolean cache) {
         /*if (mStatus==bean) {
             WeiboLog.v(TAG, "相同的内容不更新。");
             if (updateFlag) {   //需要加载数据,否则会无法更新列表的图片.
@@ -234,7 +232,8 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
      * @param cache      是否缓存头像.
      */
     protected void loadPortrait(boolean updateFlag, boolean cache) {
-        if (isShowBitmap) {
+        AppSettings appSettings=AppSettings.current();
+        if (appSettings.showBitmap) {
             User user=mStatus.user;
             if (null==user||TextUtils.isEmpty(user.profileImageUrl)) {
                 mPortrait.setImageResource(R.drawable.user_default_photo);

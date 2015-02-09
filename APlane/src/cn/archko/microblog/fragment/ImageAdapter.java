@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import cn.archko.microblog.R;
+import cn.archko.microblog.settings.AppSettings;
 import cn.archko.microblog.ui.ImageViewerActivity;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
@@ -34,12 +35,12 @@ public class ImageAdapter extends BaseAdapter {
     String[] imageUrls;
     String mCacheDir;
     boolean updateFlag=true;
-    boolean isShowLargeBitmap=false;
     boolean cache=true;
     int mResId;
     //DisplayImageOptions options;
     int imageWidth;
     int imageHeight;
+    AppSettings appSettings=AppSettings.current();
 
     public ImageAdapter(Context c, String cacheDir, String[] thumbs) {
         mContext=c;
@@ -73,10 +74,6 @@ public class ImageAdapter extends BaseAdapter {
 
     public void setUpdateFlag(boolean updateFlag) {
         this.updateFlag=updateFlag;
-    }
-
-    public void setShowLargeBitmap(boolean showLargeBitmap) {
-        isShowLargeBitmap=showLargeBitmap;
     }
 
     public void setCache(boolean cache) {
@@ -192,7 +189,7 @@ public class ImageAdapter extends BaseAdapter {
     private void loadPicture(ImageView picture, String mPictureUrl, int pos) {
         Bitmap tmp=null;
 
-        if (!isShowLargeBitmap) {
+        if (!appSettings.showLargeBitmap) {
             if (picture.getScaleType()!=ImageView.ScaleType.FIT_XY) {
                 RelativeLayout.LayoutParams lp=(RelativeLayout.LayoutParams) picture.getLayoutParams();
                 int width=imageWidth;
@@ -236,7 +233,7 @@ public class ImageAdapter extends BaseAdapter {
                 return;
             }
 
-            if (isShowLargeBitmap) {
+            if (appSettings.showLargeBitmap) {
                 cache=true; //大图要缓存sdcard中，不然每次都下载，太慢了。
             }
             picture.setImageResource(mResId);

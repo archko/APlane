@@ -99,11 +99,11 @@ public class MyPostFragment extends RecyclerViewFragment {
         }
 
         if (convertView==null) {
-            itemView=new ActionModeItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
+            itemView=new ActionModeItemView(getActivity(), mCacheDir, updateFlag, true);
         } else {
             itemView=(ActionModeItemView) convertView;
         }
-        itemView.update(status, updateFlag, true, showLargeBitmap, showBitmap);
+        itemView.update(status, updateFlag, true);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,7 +129,7 @@ public class MyPostFragment extends RecyclerViewFragment {
         if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
-        itemView=new ActionModeItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
+        itemView=new ActionModeItemView(getActivity(), mCacheDir, updateFlag, true);
         return itemView;
     }
 

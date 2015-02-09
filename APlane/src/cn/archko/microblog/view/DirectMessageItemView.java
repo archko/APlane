@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.archko.microblog.R;
+import cn.archko.microblog.settings.AppSettings;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.andrew.apollo.utils.ApolloUtils;
@@ -50,8 +51,6 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
     protected String mPortraitUrl=null;
     DirectMessage mDirectMessage;
 
-    protected boolean isShowBitmap=true;
-
     private boolean checked=false;
     //protected DisplayImageOptions options;
 
@@ -75,7 +74,7 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
     }
 
     public DirectMessageItemView(Context context, String cacheDir,
-        boolean updateFlag, boolean cache, boolean showBitmap) {
+        boolean updateFlag, boolean cache) {
         super(context);
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.comment_item, this);
 
@@ -122,11 +121,10 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
         }
     }
 
-    public void update(final DirectMessage directMessage, boolean updateFlag, boolean cache, boolean showBitmap) {
+    public void update(final DirectMessage directMessage, boolean updateFlag, boolean cache) {
         if (mDirectMessage==directMessage) {
             WeiboLog.v(TAG, "相同的内容不更新。");
             if (updateFlag) {   //需要加载数据,否则会无法更新列表的图片.
-                isShowBitmap=showBitmap;
                 loadPortrait(updateFlag, cache);
             }
             return;
@@ -159,7 +157,8 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
      * @param cache      是否缓存头像.
      */
     protected void loadPortrait(boolean updateFlag, boolean cache) {
-        if (isShowBitmap) {
+        AppSettings appSettings=AppSettings.current();
+        if (appSettings.showBitmap) {
             String profileImgUrl=mDirectMessage.sender.profileImageUrl;
             if (TextUtils.isEmpty(profileImgUrl)) {
                 mPortrait.setImageResource(R.drawable.user_default_photo);

@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.ImageAdapter;
+import cn.archko.microblog.settings.AppSettings;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.utils.WeiboOperation;
@@ -36,7 +37,7 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
     public ImageAdapter mAdapter;
 
     public ThreadBeanItemView(Context context, String cacheDir, boolean updateFlag,
-        boolean cache, boolean showLargeBitmap, boolean showBitmap) {
+        boolean cache) {
         super(context, cacheDir, updateFlag);
 
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.home_time_line_item, this);
@@ -59,9 +60,6 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
 
         mLoctationlayout=(LinearLayout) findViewById(R.id.loctation_ll);
         mLocation=(TextView) findViewById(R.id.location);
-
-        isShowLargeBitmap=showLargeBitmap;
-        isShowBitmap=showBitmap;
 
         SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(mContext);
         float pref_title_font_size=options.getInt(PreferenceUtils.PREF_TITLE_FONT_SIZE, 14);
@@ -103,8 +101,7 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
      * @param showBitmap      是否显示列表图片，默认显示。
      */
     @Override
-    public void update(final Status bean, boolean updateFlag, boolean cache, boolean showLargeBitmap,
-        boolean showBitmap) {
+    public void update(final Status bean, boolean updateFlag, boolean cache) {
         if (mStatus==bean) {
             WeiboLog.v(TAG, "相同的内容不更新。"+updateFlag);
             if (updateFlag) {   //需要加载数据,否则会无法更新列表的图片.
@@ -114,7 +111,6 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
                     adapter.setUpdateFlag(true);
                     adapter.notifyDataSetChanged();
                 }
-                isShowBitmap=showBitmap;
                 loadPortrait(updateFlag, cache);
             }
             return;
@@ -255,7 +251,8 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
         } else {
         }
 
-        if (!isShowBitmap||null==thumbs||thumbs.length==0) {
+        AppSettings appSettings=AppSettings.current();
+        if (!appSettings.showBitmap||null==thumbs||thumbs.length==0) {
             //mTagsViewGroup.setAdapter(null);
             if (mTagsViewGroup.getVisibility()==VISIBLE) {
                 mTagsViewGroup.setVisibility(GONE);
@@ -270,7 +267,6 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
         }
         mAdapter.setUpdateFlag(updateFlag);
         mAdapter.setCache(cache);
-        mAdapter.setShowLargeBitmap(isShowLargeBitmap);
         mAdapter.setImageUrls(thumbs);
         mAdapter.notifyDataSetChanged();
     }

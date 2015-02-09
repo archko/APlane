@@ -181,11 +181,11 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
         }
 
         if (convertView==null) {
-            itemView=new ThreadBeanItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
+            itemView=new ThreadBeanItemView(getActivity(), mCacheDir, updateFlag, true);
         } else {
             itemView=(ThreadBeanItemView) convertView;
         }
-        itemView.update(status, updateFlag, true, showLargeBitmap, showBitmap);
+        itemView.update(status, updateFlag, true);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -211,7 +211,7 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
         if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
-        itemView=new ThreadBeanItemView(getActivity(), mCacheDir, updateFlag, true, showLargeBitmap, showBitmap);
+        itemView=new ThreadBeanItemView(getActivity(), mCacheDir, updateFlag, true);
         return itemView;
     }
 

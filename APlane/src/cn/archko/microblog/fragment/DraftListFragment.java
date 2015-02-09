@@ -76,7 +76,7 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
     @Override
     public void addNewData() {
         WeiboLog.d(TAG, "pull up to refresh.");
-        mSwipeLayout.setRefreshing(fastScroll);
+        mSwipeLayout.setRefreshing(true);
     }
 
     @Override
