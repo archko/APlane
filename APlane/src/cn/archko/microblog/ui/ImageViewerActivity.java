@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
+import cn.archko.microblog.bean.ImageBean;
 import cn.archko.microblog.view.AKSnapImageView;
 import com.me.microblog.WeiboUtils;
 import com.me.microblog.util.DateUtils;
@@ -26,7 +28,9 @@ import com.me.microblog.util.WeiboLog;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @description:
@@ -36,11 +40,12 @@ public class ImageViewerActivity extends Activity {
 
     private ViewPager mViewPager;
     SamplePagerAdapter mPagerAdapter;
-    String[] mUrls;
+    List<ImageBean> mImageBeans;
     int mSelectedIdx;
     ImageView mSave;
     TextView mTxtPager;
     int mTotal=1;
+    Handler mHandler=new Handler();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,16 +57,29 @@ public class ImageViewerActivity extends Activity {
             NotifyUtils.showToast("null==getIntent");
             return;
         }
+
+        String[] mUrls;
         mUrls=getIntent().getStringArrayExtra("thumbs");
-        mSelectedIdx=getIntent().getIntExtra("pos", 0);
-        WeiboLog.d("mSelectedIdx:"+mSelectedIdx);
 
         if (null==mUrls) {
             WeiboLog.e("null==url");
-            NotifyUtils.showToast("null==url");
-            return;
+            mImageBeans=getIntent().getParcelableArrayListExtra("thumb_list");
+            if (null==mImageBeans) {
+                NotifyUtils.showToast("no urls.");
+                return;
+            }
         }
+        mSelectedIdx=getIntent().getIntExtra("pos", 0);
+        WeiboLog.d("mSelectedIdx:"+mSelectedIdx);
+
         mTotal=mUrls.length;
+        mImageBeans=new ArrayList<ImageBean>();
+        ImageBean tmp;
+        for (int i=0; i<mTotal; i++) {
+            tmp=new ImageBean();
+            tmp.thumb=mUrls[i];
+            mImageBeans.add(tmp);
+        }
 
         setContentView(R.layout.imageviewer);
         mViewPager=(ViewPager) findViewById(R.id.viewpager);
@@ -116,15 +134,18 @@ public class ImageViewerActivity extends Activity {
                 NotifyUtils.showToast("正在下载中...");
                 return;
             }
-            String path=imageView.getBmidPath();
-            if (!TextUtils.isEmpty(path)) {
-                File file=new File(path);
-                if (file.exists()) {
-                    WeiboLog.d("保存文件:"+path);
-                    new SaveImageTask().execute(path);
-                } else {
-                    WeiboLog.d("保存失败."+path);
-                    NotifyUtils.showToast("保存失败.");
+            ImageBean bean=imageView.getImageBean();
+            if (null!=bean) {
+                String path=bean.path;
+                if (!TextUtils.isEmpty(path)) {
+                    File file=new File(path);
+                    if (file.exists()) {
+                        WeiboLog.d("保存文件:"+path);
+                        new SaveImageTask().execute(path);
+                    } else {
+                        WeiboLog.d("保存失败."+path);
+                        NotifyUtils.showToast("保存失败.");
+                    }
                 }
             } else {
                 WeiboLog.d("保存失败,路径为空.");
@@ -145,13 +166,13 @@ public class ImageViewerActivity extends Activity {
 
         @Override
         public int getCount() {
-            return mUrls.length;
+            return mImageBeans.size();
         }
 
         @Override
         public View instantiateItem(ViewGroup container, int position) {
             AKSnapImageView itemView=null;
-            String bean=mUrls[position];
+            ImageBean bean=mImageBeans.get(position);
             final WeakReference<AKSnapImageView> mWeakFragment=mFragmentArray.get(position);
             if (mWeakFragment!=null&&mWeakFragment.get()!=null) {
                 itemView=mWeakFragment.get();
@@ -208,9 +229,14 @@ public class ImageViewerActivity extends Activity {
                 WeakReference<AKSnapImageView> viewWeakReference=mFragmentArray.get(key);
                 if (null!=viewWeakReference&&null!=viewWeakReference.get()) {
                     WeiboLog.d("size:"+size+" key:"+key+" view:"+viewWeakReference.get());
-                    AKSnapImageView imagePageView=(AKSnapImageView) viewWeakReference.get();
+                    final AKSnapImageView imagePageView=(AKSnapImageView) viewWeakReference.get();
                     if (key==i) {
-                        imagePageView.loadLargeBitmap();
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                imagePageView.loadLargeBitmap();
+                            }
+                        }, 200L);
                     } else {
                         imagePageView.loadThumb();
                     }

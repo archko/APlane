@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
@@ -16,12 +18,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import cn.archko.microblog.R;
+import cn.archko.microblog.bean.ImageBean;
 import cn.archko.microblog.ui.PrefsActivity;
 import com.andrew.apollo.cache.ImageCache;
+import com.andrew.apollo.cache.Scheme;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtils;
 import com.me.microblog.cache.ImageCache2;
-import com.me.microblog.core.BaseApi;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.DisplayUtils;
 import com.me.microblog.util.WeiboLog;
@@ -40,34 +43,52 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * 查看图片的View没有缓存的View,抓拍的
+ * 查看图片的View没有缓存的View
+ * 调用loadLargeBitmap(),实现加载大图.
+ * 调用loadThumb(),加载小图.
+ * 加载方式与顺序:
+ * 1.设置Bean.
+ * 2.根据当前的类型,加载大图或小图.mImageShowType.
+ * 2.1 加载大图.计算路径,key.获取文件,如果存在,解码,显示大图.如果不存在,先加载小图.显示小图,下载.
+ * 这里存在一种状况,如果正在下载,也是存在文件的.所以,需要检测是否正在下载.
+ * 2.2 加载小图.计算key,获取缓存图片.显示小图.如果不存在,不显示.
+ * 当移出视线范围时,应该加载小图,依然保持下载线程.而销毁时,取消下载线程,且删除未下载完成的文件.
  *
  * @author: archko 12-6-24
  */
 public class AKSnapImageView extends LinearLayout implements View.OnClickListener {
 
     private static final String TAG="AKSnapImageView";
-    private String bmiddlePic;
-    private String mThumbPath;   //缩略存储路径.
-    private String mBmidPath;   //缩略存储路径.
+
+    private static final int MSG_PROGRESS=1;
+    private static final int MSG_MAX_PROGESS=2;
+    private static final int MSG_FAILED=3;
+    private static final int MSG_SUCCESS=4;
+
+    private static final int CONNECT_TIMEOUT=80000;
+    private static final int READ_TIMEOUT=240000;
+
+    private static final int IMG_SHOW_TYPE_THUMB=1;
+    private static final int IMG_SHOW_TYPE_ORI=2;
+    private static final int IMG_TYPE_PNG=1;
+    private static final int IMG_TYPE_GIF=2;
+
     protected Context mContext;
     protected String mCacheDir;    //图片缓存目录
 
-    String imageBean;
-    View mWebViewParent;
-    MyWebView myWebView;
-    PhotoView imageView;
-    TextProgressBar textProgressBar;
-    public boolean loadPictureRunning=false;
-    DownloadThread mDownloadThread;
-    boolean mShouldDownloadImage=true; //是否需要下载
+    private ImageBean mImageBean;
+    private View mWebViewParent;
+    private MyWebView myWebView;
+    private PhotoView imageView;
+    private TextProgressBar textProgressBar;
+    private UploadHandler mUploadHandler;
     /**
      * 是否下载完成了.用于保存数据用的.
      */
-    boolean mImageDownloaded=false;
-    int mBitmapType=0;
+    private boolean mImageDownloaded=false;
+    private int mImageShowType=IMG_SHOW_TYPE_THUMB;
 
-    public AKSnapImageView(Context context, String bean) {
+    public AKSnapImageView(Context context, ImageBean bean) {
         super(context);
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.imageviewer_all, this);
         mWebViewParent=findViewById(R.id.lay_webview_parent);
@@ -89,71 +110,50 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         });
 
         mContext=context;
-        //update(bean);
 
         setOnClickListener(this);
+        mImageBean=bean;
     }
 
     public boolean isImageDownloaded() {
         return mImageDownloaded;
     }
 
-    public String getBmidPath() {
-        return mBmidPath;
+    public ImageBean getImageBean() {
+        return mImageBean;
     }
 
-    public void update(String bean) {
+    public void update(ImageBean bean) {
         WeiboLog.v(TAG, "update:"+bean);
-        if (TextUtils.isEmpty(bean)) {
+        if (null==bean||TextUtils.isEmpty(bean.thumb)) {
             WeiboLog.d(TAG, "TextUtils.isEmpty(bean)."+bean);
             return;
         }
 
-        if (!bean.startsWith("http")) {
-            File file=new File(bean);
+        mImageBean=bean;
+
+        /*Scheme scheme=Scheme.ofUri(bean.thumb);
+        if (scheme==Scheme.FILE) {
+            File file=new File(bean.thumb);
             if (file.exists()) {
-                mBmidPath=bean;
-                loadView(bean);
-                updateBitmap(null);
+                if (bean.thumb.endsWith("gif")) {
+                    loadWebview(bean.thumb);
+                } else {
+                    loadImageView(bean.thumb);
+                }
             }
-        }
-
-        if (null!=imageBean&&imageBean.equals(bean)) {
             return;
-        }
+        }*/
 
-        imageBean=bean;
-
-        SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(mContext);
-        boolean showOriginal=mPrefs.getBoolean(PrefsActivity.PREF_IMAGEVIEWER, true);
-        if (!showOriginal) {
-            bmiddlePic=bean.replace("thumbnail", "bmiddle");
-        } else {
-            bmiddlePic=bean.replace("thumbnail", "large");
-        }
-
-        String dir=App.mCacheDir+Constants.PICTURE_DIR;
-        if (bean.endsWith("gif")) {
-            dir=App.mCacheDir+Constants.GIF;
-        }
-
-        String name=WeiboUtils.getWeiboUtil().getMd5(bean)+WeiboUtils.getExt(bean);
-        mThumbPath=dir+name;
-
-        name=WeiboUtils.getWeiboUtil().getMd5(bmiddlePic)+WeiboUtils.getExt(bmiddlePic);
-        mBmidPath=dir+name;
-
-        //loadView(bean);
+        //loadView();
     }
 
     /**
      * 启动加载缩略图模式
      */
     public void loadThumb() {
-        mBitmapType=0;
-        WeiboLog.v(TAG, "loadThumb:"+imageBean);
-
-        stopDownload();
+        mImageShowType=IMG_SHOW_TYPE_THUMB;
+        WeiboLog.v(TAG, "loadThumb:"+mImageBean);
 
         if (imageView.getVisibility()==GONE) {
             imageView.setVisibility(VISIBLE);
@@ -164,54 +164,50 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         }
 
         Bitmap bitmap;
-        bitmap=ImageCache.getInstance(mContext).getCachedBitmap(imageBean);
+        bitmap=ImageCache.getInstance(mContext).getCachedBitmap(mImageBean.thumb);
         if (null!=bitmap) {
-            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            if (ImageView.ScaleType.FIT_CENTER!=imageView.getScaleType()) {
+                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            }
             imageView.setImageBitmap(bitmap);
         } else {
             imageView.setImageBitmap(null);
         }
     }
 
-    private void stopDownload() {
-        mShouldDownloadImage=false;
-    }
-
     /**
      * 启动加载大图模式
      */
     public void loadLargeBitmap() {
-        mBitmapType=1;
-        mShouldDownloadImage=true;
-        WeiboLog.v(TAG, "loadLargeBitmap:"+bmiddlePic);
+        mImageShowType=IMG_SHOW_TYPE_ORI;
+        //WeiboLog.v(TAG, "loadLargeBitmap:"+mImageBean);
+        String thumb=mImageBean.thumb;
+        Scheme scheme=Scheme.ofUri(thumb);
+        if (scheme==Scheme.FILE) {
+            File file=new File(thumb);
+            if (file.exists()) {
+                if (thumb.endsWith("gif")) {
+                    loadWebview(thumb);
+                } else {
+                    loadImageView(thumb);
+                }
+            }
+            return;
+        }
 
         textProgressBar.setVisibility(View.VISIBLE);
-        if (imageBean.endsWith("gif")) {
-            loadWebview();
+        /*if (mImageBean.thumb.endsWith("gif")) {
+            loadWebview(bmiddlePic);
         } else {
-            loadImageView();
-        }
+            loadImageView(bmiddlePic);
+        }*/
+        loadView();
     }
 
     /**
-     * 加载图片布局.仅用于本地图片.
-     *
-     * @param bean
+     * 释放所有的资源.但不关闭Activity
      */
-    private void loadView(String bean) {
-        if (bean.endsWith("gif")) {
-            loadWebview();
-        } else {
-            loadImageView();
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        close();
-    }
-
-    private void close() {
+    public void release() {
         if (null!=myWebView) {
             removeAllViews();
             //removeView(myWebView);  //remove it first,dettach view, and close.
@@ -221,77 +217,121 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         if (null!=imageView) {
             imageView.setImageBitmap(null);
         }
+    }
+
+    /**
+     * 关闭Activity
+     */
+    public void close() {
+        release();
 
         if (mContext instanceof Activity) {
-
             Activity activity=(Activity) mContext;
             activity.finish();
         }
     }
 
+    public void stopDownload() {
+        if (null!=mUploadHandler) {
+            mUploadHandler.removeCallbacksAndMessages(null);
+            mUploadHandler.getLooper().quit();
+            mUploadHandler=null;
+        }
+    }
+
+    /**
+     * 加载图片布局.仅用于本地图片.
+     *
+     * @param bean
+     */
+    private void loadView() {
+        String bean=mImageBean.thumb;
+        SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(mContext);
+        boolean showOriginal=mPrefs.getBoolean(PrefsActivity.PREF_IMAGEVIEWER, true);
+        String url;
+        if (!showOriginal) {
+            url=mImageBean.thumb.replace("thumbnail", "bmiddle");
+        } else {
+            url=mImageBean.thumb.replace("thumbnail", "large");
+        }
+        if (bean.endsWith("gif")) {
+            loadWebview(url);
+        } else {
+            loadImageView(url);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        close();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        release();
+    }
+
     /**
      * 加载大图
+     *
+     * @param url
      */
-    private void loadImageView() {
+    private void loadImageView(String url) {
         mImageDownloaded=false;
 
-        //Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(imageBean);
         Bitmap bitmap;
-        //bitmap=ImageLoader.getInstance().getMemoryCache().get(ImageLoader.getInstance().getKey(imageBean, imageView));
-        bitmap=ImageCache.getInstance(mContext).getCachedBitmap(imageBean);
+        bitmap=ImageCache.getInstance(mContext).getCachedBitmap(mImageBean.thumb);
 
         if (null==bitmap) {
-            //bitmap=ImageLoader.getInstance().getMemoryCache().get(ImageLoader.getInstance().getKey(bmiddlePic, imageView));
-            bitmap=ImageCache.getInstance(mContext).getCachedBitmap(bmiddlePic);
+            bitmap=ImageCache.getInstance(mContext).getCachedBitmap(url);
         }
 
         if (null!=bitmap&&!bitmap.isRecycled()) {
             int screenHeight=getHeight();
             WeiboLog.v(TAG, "loadImageView:"+screenHeight+" bheight:"+bitmap.getHeight());
-            /*if (screenHeight<bitmap.getHeight()) {
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            } else {
-            }*/
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             imageView.setImageBitmap(bitmap);
         }
 
-        WeiboLog.d(TAG, "loadImageView:"+loadPictureRunning+" bmid:"+bmiddlePic+" bitmap:"+bitmap);
-        if (!TextUtils.isEmpty(bmiddlePic)) {
+        WeiboLog.d(TAG, "loadImageView:"+" bmid:"+url+" bitmap:"+bitmap);
+        if (!TextUtils.isEmpty(url)) {
             downloadImage();
         }
     }
 
     /**
      * 加载gif大图
+     *
+     * @param url
      */
-    private void loadWebview() {
+    private void loadWebview(String url) {
         mImageDownloaded=false;
-        /*File file=new File(mThumbPath);
-        if (file.exists()) {
-            WeiboLog.d(TAG, "loadWebview:"+mThumbPath);
-            BitmapFactory.Options opts=new BitmapFactory.Options();
-            opts.inJustDecodeBounds=true;
-            BitmapFactory.decodeFile(file.getAbsolutePath(), opts);
-            setMeasureSpec(myWebView, AKUtils.convertDpToPx(opts.outWidth), AKUtils.convertDpToPx(opts.outHeight));
-            myWebView.loadUrl("file://"+file.getAbsolutePath());
-        }*/
         imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-        WeiboLog.d(TAG, "loadWebview:"+loadPictureRunning+" bmid:"+bmiddlePic);
-        if (!TextUtils.isEmpty(bmiddlePic)) {
+        WeiboLog.v(TAG, "loadWebview:"+" bmid:"+url);
+        if (!TextUtils.isEmpty(url)) {
             downloadImage();
         }
     }
 
     private void downloadImage() {
-        if (!loadPictureRunning) {
-            textProgressBar.setProgress(0);
-            mDownloadThread=new DownloadThread(new WeakReference<AKSnapImageView>(this));
-            mDownloadThread.start();
+        textProgressBar.setProgress(0);
+            /*mDownloadThread=new DownloadThread(new WeakReference<AKSnapImageView>(this));
+            mDownloadThread.start();*/
+        if (null!=mUploadHandler) {
+            mUploadHandler.removeCallbacksAndMessages(null);
+            mUploadHandler.sendEmptyMessage(111);
+            mUploadHandler.getLooper().quit();
         } else {
-            WeiboLog.d("is downloading...");
+            //mUploadHandler.setAkSnapImageView(new WeakReference<AKSnapImageView>(this));
         }
+        final HandlerThread uploadHandler=new HandlerThread("UploadHandler",
+            android.os.Process.THREAD_PRIORITY_BACKGROUND);
+        uploadHandler.start();
+        mUploadHandler=new UploadHandler(uploadHandler.getLooper(), new WeakReference<AKSnapImageView>(this));
+        mUploadHandler.sendEmptyMessage(0);
+
     }
 
     private void setMeasureSpec(MyWebView webView, int w, int h) {
@@ -309,44 +349,57 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         //}
     }
 
-    Handler mHandler=new Handler() {
+    private Handler mHandler=new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            try {
-                int what=msg.what;
-                Integer progress=(Integer) msg.obj;
-                switch (what) {
-                    case 1:
-                        textProgressBar.setProgress(progress);
-                        break;
-
-                    case 2:
-                        textProgressBar.setMax(progress);
-                        break;
-
-                    case 3:
-                        textProgressBar.setText("下载失败");
-                        break;
-
-                    case 4:
-                        updateBitmap(msg);
-                        break;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            handleViewMessage(msg);
         }
     };
 
-    public void updateBitmap(Message msg) {
-        WeiboLog.w(TAG, "updateBitmap."+mBitmapType);
-        if (mBitmapType==0) {
-            return;
-        }
+    private void handleViewMessage(Message msg) {
+        try {
+            int what=msg.what;
+            switch (what) {
+                case MSG_PROGRESS: {
+                    Integer progress=(Integer) msg.obj;
+                    textProgressBar.setProgress(progress);
+                    break;
+                }
 
+                case MSG_MAX_PROGESS: {
+                    Integer progress=(Integer) msg.obj;
+                    textProgressBar.setMax(progress);
+                    break;
+                }
+
+                case MSG_FAILED:
+                    textProgressBar.setText("下载失败");
+                    break;
+
+                case MSG_SUCCESS:
+                    updateBitmap(msg);
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateBitmap(Message msg) {
+        WeiboLog.w(TAG, "updateBitmap."+mImageShowType);
         mImageDownloaded=true;
         textProgressBar.setVisibility(View.GONE);
-        File file=new File(mBmidPath);
+        if (mImageShowType==IMG_SHOW_TYPE_THUMB) {
+            WeiboLog.d(TAG, "only show thumbs.");
+            return;
+        }
+        int imgType=msg.arg1;
+        if (imgType==IMG_TYPE_PNG) {
+            showPNG((Bitmap) msg.obj);
+        } else {
+            showGif((String) msg.obj);
+        }
+        /*File file=new File(mBmidPath);
         if (file.exists()) {
             if (null!=mBmidPath&&mBmidPath.endsWith("gif")) {
                 WeiboLog.d(TAG, "loadWebview:"+mBmidPath);
@@ -400,39 +453,111 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
             }
         } else {
             WeiboLog.w(TAG, "file not exist.");
+        }*/
+    }
+
+    void showPNG(Bitmap bitmap) {
+        WeiboLog.d(TAG, "loadImageview:"+mImageBean);
+        mWebViewParent.setVisibility(GONE);
+        if (null!=imageView) {
+            if (null!=bitmap) {
+                int screenHeight=getHeight();
+                WeiboLog.v(TAG, "width："+bitmap.getWidth()+" height:"+bitmap.getHeight()+" screenHeight:"+screenHeight);
+                try {
+                    if (screenHeight<bitmap.getHeight()) {
+                        imageView.setScaleType(ImageView.ScaleType.CENTER);
+                    } else {
+                        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    }
+                    imageView.setImageBitmap(bitmap);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+            }
         }
     }
 
-    class DownloadThread extends Thread {
+    void showGif(String path) {
+        WeiboLog.d(TAG, "loadWebview:"+mImageBean);
+        File file=new File(path);
+        if (null!=myWebView&&null!=file&&file.exists()) {
+            try {
+                mWebViewParent.setVisibility(VISIBLE);
+                BitmapFactory.Options opts=new BitmapFactory.Options();
+                opts.inJustDecodeBounds=true;
+                BitmapFactory.decodeFile(file.getAbsolutePath(), opts);
+                setMeasureSpec(myWebView, DisplayUtils.convertDpToPx(opts.outWidth), DisplayUtils.convertDpToPx(opts.outHeight));
+                myWebView.loadUrl("file://"+file.getAbsolutePath());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        imageView.setVisibility(GONE);
+    }
+
+    class UploadHandler extends Handler {
 
         WeakReference<AKSnapImageView> akSnapImageView;
+        String url;
+        String path;
+        private boolean mShouldDownloadImage=true;
+        boolean isRunning=false;
 
-        DownloadThread(WeakReference<AKSnapImageView> akSnapImageView) {
+        public UploadHandler(final Looper looper, WeakReference<AKSnapImageView> akSnapImageView) {
+            super(looper);
+            this.akSnapImageView=akSnapImageView;
+            initImageParams();
+        }
+
+        private void initImageParams() {
+            ImageBean bean=mImageBean;
+            SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(mContext);
+            boolean showOriginal=mPrefs.getBoolean(PrefsActivity.PREF_IMAGEVIEWER, true);
+            String bmiddlePic;
+            if (!showOriginal) {
+                bmiddlePic=bean.thumb.replace("thumbnail", "bmiddle");
+            } else {
+                bmiddlePic=bean.thumb.replace("thumbnail", "large");
+            }
+
+            String dir=App.mCacheDir+Constants.PICTURE_DIR;
+            if (bean.thumb.endsWith("gif")) {
+                dir=App.mCacheDir+Constants.GIF;
+            }
+
+            String name=WeiboUtils.getWeiboUtil().getMd5(bean.thumb)+WeiboUtils.getExt(bean.thumb);
+            name=WeiboUtils.getWeiboUtil().getMd5(bmiddlePic)+WeiboUtils.getExt(bmiddlePic);
+            path=dir+name;
+            url=bmiddlePic;
+        }
+
+        public UploadHandler(final Looper looper, WeakReference<AKSnapImageView> akSnapImageView, String url, String path) {
+            super(looper);
+            this.akSnapImageView=akSnapImageView;
+            this.url=url;
+            this.path=path;
+        }
+
+        public void setAkSnapImageView(WeakReference<AKSnapImageView> akSnapImageView) {
             this.akSnapImageView=akSnapImageView;
         }
 
-        @Override
         public void run() {
-            loadPictureRunning=true;
-            WeiboLog.v(TAG, "DownloadThread: path:"+mBmidPath+" bmid:"+bmiddlePic+" thumb:"+imageBean);
-            final File file=new File(mBmidPath);
+            //WeiboLog.v(TAG, "DownloadThread: path:"+path+" bmid:"+url+" thumb:"+mImageBean);
+            final File file=new File(path);
             if (file.exists()) {
-                Message msg;
-                msg=Message.obtain();
-                msg.what=4;
-                sendMessage(msg);
-                loadPictureRunning=false;
+                //WeiboLog.v(TAG, "already exists.");
+                downloadSuccess(file);
+                isRunning=false;
                 return;
             }
 
             //download image and save
             //return result true or false.
-            boolean result=downloadFile(bmiddlePic, file);
+            boolean result=downloadFile(url, file);
             if (result) {
-                Message msg;
-                msg=Message.obtain();
-                msg.what=4;
-                sendMessage(msg);
+                downloadSuccess(file);
             } else {
                 try {
                     file.delete();
@@ -441,21 +566,55 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                 }
                 Message msg;
                 msg=Message.obtain();
-                msg.what=3;
-                sendMessage(msg);
+                msg.what=MSG_FAILED;
+                sendProgressMessage(msg);
             }
-            loadPictureRunning=false;
+            isRunning=false;
         }
 
-        void sendMessage(Message msg) {
-            if (null!=akSnapImageView&&akSnapImageView.get()!=null&&null!=mHandler) {
-                mHandler.sendMessage(msg);
+        private void downloadSuccess(File file) {
+            //WeiboLog.v(TAG, "downloadSuccess");
+            Message msg;
+            msg=Message.obtain();
+            int imgType=url.endsWith("gif") ? IMG_TYPE_GIF : IMG_TYPE_PNG;
+            msg.arg1=imgType;
+            Bitmap bitmap=null;
+            if (imgType==IMG_TYPE_PNG) {
+                bitmap=null;
+                try {
+                    bitmap=ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(file.getAbsolutePath());
+                } catch (OutOfMemoryError e) {
+                    System.gc();
+                    e.printStackTrace();
+                }
+                msg.obj=bitmap;
             } else {
-                mShouldDownloadImage=false;
+                msg.obj=path;
+            }
+            msg.what=MSG_SUCCESS;
+            sendProgressMessage(msg);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            int what=msg.what;
+            if (what==111) {
+                if (null!=path) {
+                    File file=new File(path);
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                }
+            } else if (what==0) {
+                if (!isRunning) {
+                    isRunning=true;
+                    run();
+                }
             }
         }
 
         public boolean downloadFile(String downloadUrl, File saveFilePath) {
+            //WeiboLog.v(TAG, "downloadFile");
             int fileSize=-1;
             int downFileSize=0;
             boolean result=false;
@@ -476,11 +635,11 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
 
                 // 读取超时时间 毫秒级
                 try {
-                    conn.setReadTimeout(180000);
-                    conn.setConnectTimeout(6000);
+                    conn.setReadTimeout(READ_TIMEOUT);
+                    conn.setConnectTimeout(CONNECT_TIMEOUT);
                     conn.setRequestMethod("GET");
-                    conn.setRequestProperty("Connection", "Keep-Alive");
-                    conn.setRequestProperty("User-Agent", BaseApi.USERAGENT);
+                    //conn.setRequestProperty("Connection", "Keep-Alive");
+                    //conn.setRequestProperty("User-Agent", BaseApi.USERAGENT);
                     conn.setDoInput(true);
                     conn.connect();
                     if (conn.getResponseCode()==HttpURLConnection.HTTP_OK) {
@@ -492,7 +651,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                         Message msg;
 
                         msg=Message.obtain();
-                        msg.what=2;
+                        msg.what=MSG_MAX_PROGESS;
                         msg.obj=fileSize;
 
                         while ((i=is.read(buffer))!=-1) {
@@ -512,19 +671,14 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                             fos.write(buffer, 0, i);
 
                             msg=Message.obtain();
-                            msg.what=1;
+                            msg.what=MSG_PROGRESS;
                             msg.obj=progress*2;
-                            //mHandler.sendMessage(msg);
-                            sendMessage(msg);
+                            sendProgressMessage(msg);
                         }
                         fos.flush();
                         fos.close();
                         is.close();
 
-                        /*msg=Message.obtain();
-                        msg.what=3;
-                        //mHandler.sendMessage(msg);
-                        sendMessage(msg);*/
                         WeiboLog.d(TAG, "下载完成."+fileSize);
                         result=true;
                     } else {
@@ -542,6 +696,14 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                 WeiboLog.e(TAG, "downloadFile catch Exception:", e);
             }
             return result;
+        }
+
+        void sendProgressMessage(Message msg) {
+            if (null!=akSnapImageView&&akSnapImageView.get()!=null&&null!=mHandler) {
+                mHandler.sendMessage(msg);
+            } else {
+                mShouldDownloadImage=false;
+            }
         }
     }
 
