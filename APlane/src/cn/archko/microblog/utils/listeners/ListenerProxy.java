@@ -15,12 +15,12 @@ public class ListenerProxy {
     /**
      * All objects
      */
-    private final List<WeakReference<Object>> references = new LinkedList<WeakReference<Object>>();
+    private final List<WeakReference<Object>> references=new LinkedList<WeakReference<Object>>();
 
     /**
      * Real listeners.
      */
-    private final Map<Class<?>, List<WeakReference<Object>>> realListeners = new HashMap<Class<?>, List<WeakReference<Object>>>();
+    private final Map<Class<?>, List<WeakReference<Object>>> realListeners=new HashMap<Class<?>, List<WeakReference<Object>>>();
 
     /**
      * Supported interfaces.
@@ -43,17 +43,17 @@ public class ListenerProxy {
         }
 
         for (final Class<?> listener : listenerInterfaces) {
-            if (listener == null) {
+            if (listener==null) {
                 throw new IllegalArgumentException("Listener class cannot be null");
             }
-            if (! listener.isInterface()) {
+            if (!listener.isInterface()) {
                 throw new IllegalArgumentException("Listener class should be an interface");
             }
         }
 
-        interfaces = listenerInterfaces;
+        interfaces=listenerInterfaces;
 
-        proxy = Proxy.newProxyInstance(this.getClass().getClassLoader(), interfaces, new Handler());
+        proxy=Proxy.newProxyInstance(this.getClass().getClassLoader(), interfaces, new Handler());
     }
 
     /**
@@ -62,10 +62,10 @@ public class ListenerProxy {
      * @param listener the listener to add
      */
     public void addListener(final Object listener) {
-        if (listener != null) {
-            WeakReference<Object> ref = new WeakReference<Object>(listener);
+        if (listener!=null) {
+            WeakReference<Object> ref=new WeakReference<Object>(listener);
             for (WeakReference<Object> r : references) {
-                if (r.get() == listener) {
+                if (r.get()==listener) {
                     return;
                 }
             }
@@ -73,9 +73,9 @@ public class ListenerProxy {
             references.add(ref);
             for (final Class<?> listenerClass : interfaces) {
                 if (listenerClass.isInstance(listener)) {
-                    List<WeakReference<Object>> list = realListeners.get(listenerClass);
-                    if (list == null) {
-                        list = new LinkedList<WeakReference<Object>>();
+                    List<WeakReference<Object>> list=realListeners.get(listenerClass);
+                    if (list==null) {
+                        list=new LinkedList<WeakReference<Object>>();
                         realListeners.put(listenerClass, list);
                     }
                     list.add(ref);
@@ -90,20 +90,20 @@ public class ListenerProxy {
      * @param listener the listener to remove
      */
     public void removeListener(final Object listener) {
-        if (listener != null) {
-            WeakReference<Object> ref = null;
+        if (listener!=null) {
+            WeakReference<Object> ref=null;
             for (WeakReference<Object> r : references) {
-                if (r.get() == listener) {
-                    ref = r;
+                if (r.get()==listener) {
+                    ref=r;
                     break;
                 }
             }
-            if (ref != null) {
+            if (ref!=null) {
                 references.remove(ref);
                 for (final Class<?> listenerClass : interfaces) {
                     if (listenerClass.isInstance(listener)) {
-                        final List<WeakReference<Object>> list = realListeners.get(listenerClass);
-                        if (list != null) {
+                        final List<WeakReference<Object>> list=realListeners.get(listenerClass);
+                        if (list!=null) {
                             list.remove(ref);
                         }
                     }
@@ -151,13 +151,13 @@ public class ListenerProxy {
          * @see java.lang.reflect.InvocationHandler#invoke(Object, java.lang.reflect.Method, Object[])
          */
         public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-            final Class<?> listenerClass = method.getDeclaringClass();
-            final List<WeakReference<Object>> list = realListeners.get(listenerClass);
+            final Class<?> listenerClass=method.getDeclaringClass();
+            final List<WeakReference<Object>> list=realListeners.get(listenerClass);
 
             if (isNotEmpty(list)) {
                 for (final WeakReference<Object> ref : list) {
-                    Object listener = ref.get();
-                    if (listener != null) {
+                    Object listener=ref.get();
+                    if (listener!=null) {
                         method.invoke(listener, args);
                     }
                 }
@@ -168,7 +168,7 @@ public class ListenerProxy {
     }
 
     public static boolean isEmpty(final Object[] array) {
-        return length(array) == 0;
+        return length(array)==0;
     }
 
     /**
@@ -176,10 +176,10 @@ public class ListenerProxy {
      * @return real array length or <code>0</code> if reference is <code>null</code>
      */
     public static int length(final Object[] arr) {
-        return arr != null ? arr.length : 0;
+        return arr!=null ? arr.length : 0;
     }
 
     public static boolean isNotEmpty(final Collection<?> c) {
-        return c != null && ! c.isEmpty();
+        return c!=null&&!c.isEmpty();
     }
 }

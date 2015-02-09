@@ -212,7 +212,7 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
 
         try {
             Favorite favorite=mDataList.get(selectedPos);
-            mWeiboController.viewOriginalStatus(achor,favorite.mStatus, getActivity());
+            mWeiboController.viewOriginalStatus(achor, favorite.mStatus, getActivity());
         } catch (Exception e) {
             e.printStackTrace();
         }

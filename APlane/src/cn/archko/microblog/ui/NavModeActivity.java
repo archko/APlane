@@ -13,7 +13,7 @@ import cn.archko.microblog.R;
  */
 public class NavModeActivity extends SkinFragmentActivity {
 
-    public static final String TAG = "NavModeActivity";
+    public static final String TAG="NavModeActivity";
 
     //----------------------------
     protected SharedPreferences mPreferences;
@@ -22,23 +22,23 @@ public class NavModeActivity extends SkinFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mPreferences=PreferenceManager.getDefaultSharedPreferences(this);
 
-        int theme = R.style.Theme_AK_Light;
+        int theme=R.style.Theme_AK_Light;
 
         setTheme(theme);
         getActionBar().hide();
     }
 
     protected void startIntent() {
-        boolean navTab = false;//mPreferences.getBoolean(PrefsActivity.PREF_NAV_TAB, false);
+        boolean navTab=false;//mPreferences.getBoolean(PrefsActivity.PREF_NAV_TAB, false);
 
-        Intent intent = null;
+        Intent intent=null;
         if (navTab) {
             //intent=new Intent(NavModeActivity.this, FragmentTabActivity.class);
             //intent=new Intent(NavModeActivity.this, HomeTabActivity.class);
         } else {
-            intent = new Intent(NavModeActivity.this, HomeActivity.class);
+            intent=new Intent(NavModeActivity.this, HomeActivity.class);
         }
         startActivity(intent);
 

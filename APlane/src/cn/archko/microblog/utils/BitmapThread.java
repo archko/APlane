@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class BitmapThread {
 
-    public static final String TAG = "BitmapThread";
+    public static final String TAG="BitmapThread";
     Handler mHandler;
     private List<UploadImage> mQuery;
 
@@ -41,11 +41,11 @@ public class BitmapThread {
 
         Log.d(TAG, "initThread:");
         synchronized (this) {
-            final Thread previewThread = new Thread() {
+            final Thread previewThread=new Thread() {
                 @Override
                 public void run() {
                     Looper.prepare();
-                    mHandler = new Handler() {
+                    mHandler=new Handler() {
                         @Override
                         public void handleMessage(Message msg) {
                             internalhandleMessage(msg);
@@ -110,39 +110,39 @@ public class BitmapThread {
 
     private void decodeBitmap(Message msg) {
         try {
-            Object[] objects = (Object[]) msg.obj;
-            ArrayList<UploadImage> uploadImages = (ArrayList<UploadImage>) objects[ 0 ];
-            Handler handler = (Handler) objects[ 1 ];
-            UploadImage image = null;
+            Object[] objects=(Object[]) msg.obj;
+            ArrayList<UploadImage> uploadImages=(ArrayList<UploadImage>) objects[0];
+            Handler handler=(Handler) objects[1];
+            UploadImage image=null;
 
-            for (int i = 0; i < uploadImages.size(); i++) {
-                image = uploadImages.get(i);
-                if (null != image) {
-                    Bitmap bitmap = PickImageFragment.bitmapLruCache.get(image.path);
-                    if (null != bitmap) {
+            for (int i=0; i<uploadImages.size(); i++) {
+                image=uploadImages.get(i);
+                if (null!=image) {
+                    Bitmap bitmap=PickImageFragment.bitmapLruCache.get(image.path);
+                    if (null!=bitmap) {
                     } else {
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inJustDecodeBounds = true;
+                        BitmapFactory.Options options=new BitmapFactory.Options();
+                        options.inJustDecodeBounds=true;
                         BitmapFactory.decodeFile(image.path, options);
-                        options.inSampleSize = BitmapUtils.computeSampleSizeLarger(options.outWidth, options.outHeight, 120);
-                        WeiboLog.d("inSampleSize:" + options.inSampleSize + " width:" + options.outWidth + " height:" + options.outHeight);
-                        options.inPreferredConfig = Bitmap.Config.RGB_565;
-                        options.inJustDecodeBounds = false;
-                        bitmap = BitmapFactory.decodeFile(image.path, options);
+                        options.inSampleSize=BitmapUtils.computeSampleSizeLarger(options.outWidth, options.outHeight, 120);
+                        WeiboLog.d("inSampleSize:"+options.inSampleSize+" width:"+options.outWidth+" height:"+options.outHeight);
+                        options.inPreferredConfig=Bitmap.Config.RGB_565;
+                        options.inJustDecodeBounds=false;
+                        bitmap=BitmapFactory.decodeFile(image.path, options);
                     }
 
-                    if (null != bitmap) {
+                    if (null!=bitmap) {
                         PickImageFragment.bitmapLruCache.put(image.path, bitmap);
-                        Message message = Message.obtain(handler);
+                        Message message=Message.obtain(handler);
                         //message.obj=bitmap;
-                        message.what = 1;
+                        message.what=1;
                         handler.sendMessage(message);
                     }
                 }
             }
 
-            Message message = Message.obtain(handler);
-            message.what = 1;
+            Message message=Message.obtain(handler);
+            message.what=1;
             handler.sendMessage(message);
         } catch (Exception e) {
             e.printStackTrace();
@@ -153,13 +153,13 @@ public class BitmapThread {
      * 资源释放
      */
     public void release() {
-        if (null != mHandler) {
+        if (null!=mHandler) {
             mHandler.sendEmptyMessage(2);
         }
     }
 
     private void internalRelease() {
-        if (this.mHandler != null) {
+        if (this.mHandler!=null) {
             this.mHandler.removeCallbacksAndMessages(null);
         }
         quitLooper();

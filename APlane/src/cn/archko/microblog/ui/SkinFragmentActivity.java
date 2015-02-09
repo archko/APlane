@@ -24,27 +24,27 @@ public class SkinFragmentActivity extends Activity implements PopupMenu.OnMenuIt
 
     //--------------------- popupMenu ---------------------
 
-    public static final int MENU_FIRST = Menu.FIRST;
-    public static final int MENU_SECOND = Menu.FIRST + 1;
+    public static final int MENU_FIRST=Menu.FIRST;
+    public static final int MENU_SECOND=Menu.FIRST+1;
 
     /*MenuBuilder mMenu=null;
     MenuPopupHelper mMenuHelper=null;*/
     protected ActionBar mActionBar;
     public SharedPreferences mPrefs;
-    public String mThemeId = "0";
+    public String mThemeId="0";
     /**
      * 当前登录用户的id
      */
-    protected long currentUserId = - 1l;
+    protected long currentUserId=-1l;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /*if (!Util.isHoneycombOrLater()) {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
         }*/
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mPrefs=PreferenceManager.getDefaultSharedPreferences(this);
 
-        String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         applyThemeId(themeId);
 
         //requestWindowFeature(com.actionbarsherlock.view.Window.FEATURE_PROGRESS);
@@ -54,11 +54,11 @@ public class SkinFragmentActivity extends Activity implements PopupMenu.OnMenuIt
         ThemeUtils.getsInstance().themeActionBar(getActionBar(), this);
         //MobclickAgent.onError(this);
 
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        long aUserId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
-        this.currentUserId = aUserId;
+        mPrefs=PreferenceManager.getDefaultSharedPreferences(this);
+        long aUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
+        this.currentUserId=aUserId;
 
-        mActionBar = getActionBar();
+        mActionBar=getActionBar();
     }
 
     @Override
@@ -79,21 +79,21 @@ public class SkinFragmentActivity extends Activity implements PopupMenu.OnMenuIt
      * @param themeId 主题的id
      */
     public void applyThemeId(String themeId) {
-        int theme = R.style.Theme_AK;
+        int theme=R.style.Theme_AK;
         if ("0".equals(themeId)) {
-            mThemeId = "0";
+            mThemeId="0";
         } else if ("1".equals(themeId)) {
-            theme = R.style.Theme_AK;
-            mThemeId = "1";
+            theme=R.style.Theme_AK;
+            mThemeId="1";
         } else if ("2".equals(themeId)) {
-            theme = R.style.Theme_AK_Light;
-            mThemeId = "2";
+            theme=R.style.Theme_AK_Light;
+            mThemeId="2";
         } else if ("3".equals(themeId)) {
             //theme=R.style.Theme_AndroidDevelopers;
-            mThemeId = "3";
+            mThemeId="3";
         }
-        mThemeId = "2";
-        theme = R.style.Theme_AK_Light;
+        mThemeId="2";
+        theme=R.style.Theme_AK_Light;
         setTheme(theme);
     }
 
@@ -111,7 +111,7 @@ public class SkinFragmentActivity extends Activity implements PopupMenu.OnMenuIt
      * @param anchorView 菜单显示的锚点View。
      */
     public void prepareMenu(View anchorView) {
-        PopupMenu popupMenu = new PopupMenu(this, anchorView);
+        PopupMenu popupMenu=new PopupMenu(this, anchorView);
 
         onCreateCustomMenu(popupMenu);
         onPrepareCustomMenu(popupMenu);

@@ -22,15 +22,15 @@ import com.me.microblog.util.WeiboLog;
  */
 public class UserTimelineFragment extends RecyclerViewFragment {
 
-    public static final String TAG = "UserTimelineFragment";
-    long userId = - 1;
+    public static final String TAG="UserTimelineFragment";
+    long userId=-1;
     String userScreenName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        WeiboLog.v(TAG, "onCreate:" + this);
+        WeiboLog.v(TAG, "onCreate:"+this);
         /*Intent intent=getActivity().getIntent();
         userId=intent.getLongExtra("user_id", -1);
         userScreenName=intent.getStringExtra("screen_name");
@@ -45,11 +45,11 @@ public class UserTimelineFragment extends RecyclerViewFragment {
 
     @Override
     public void initApi() {
-        mStatusImpl = new SinaUserStatusImpl();
+        mStatusImpl=new SinaUserStatusImpl();
 
-        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
         try {
-            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
@@ -60,13 +60,13 @@ public class UserTimelineFragment extends RecyclerViewFragment {
 
     public void _onActivityCreated(Bundle savedInstanceState) {
         WeiboLog.v(TAG, "onActivityCreated");
-         super._onActivityCreated(savedInstanceState);
+        super._onActivityCreated(savedInstanceState);
 
         //loadData();
-        if (! hasAttach) {   //不在onAttach中处理,因为refresh可能先调用,以保证数据初始化.
-            hasAttach = true;
-            int type = getActivity().getIntent().getIntExtra("type", UserFragmentActivity.TYPE_USER_INFO);
-            if (type == UserFragmentActivity.TYPE_USER_TIMELINE) {
+        if (!hasAttach) {   //不在onAttach中处理,因为refresh可能先调用,以保证数据初始化.
+            hasAttach=true;
+            int type=getActivity().getIntent().getIntExtra("type", UserFragmentActivity.TYPE_USER_INFO);
+            if (type==UserFragmentActivity.TYPE_USER_TIMELINE) {
                 refresh();
             }
         }
@@ -74,31 +74,31 @@ public class UserTimelineFragment extends RecyclerViewFragment {
 
     @Override
     public void refresh() {
-        WeiboLog.v(TAG, "isLoading:" + isLoading + " status:" + (null == mDataList ? "null" : mDataList.size()));
+        WeiboLog.v(TAG, "isLoading:"+isLoading+" status:"+(null==mDataList ? "null" : mDataList.size()));
         loadData();
     }
 
     @Override
     protected void loadData() {
-        if (mAdapter == null) {
-            mAdapter = new LayoutAdapter(getActivity());
+        if (mAdapter==null) {
+            mAdapter=new LayoutAdapter(getActivity());
         }
-        if (mDataList != null && mDataList.size() > 0) {
+        if (mDataList!=null&&mDataList.size()>0) {
             mAdapter.notifyDataSetChanged();
         } else {
             if (hasAttach) {
-                Intent intent = getActivity().getIntent();
-                userId = intent.getLongExtra("user_id", - 1);
-                userScreenName = intent.getStringExtra("screen_name");
-                if (userId == - 1) {
+                Intent intent=getActivity().getIntent();
+                userId=intent.getLongExtra("user_id", -1);
+                userScreenName=intent.getStringExtra("screen_name");
+                if (userId==-1) {
                     WeiboLog.d(TAG, "用户的id错误，无法查看其微博信息。");
                     NotifyUtils.showToast("用户的id错误，无法查看其微博信息。");
 
                     return;
                 }
 
-                if (! isLoading) {
-                    fetchData(- 1, - 1, true, false);
+                if (!isLoading) {
+                    fetchData(-1, -1, true, false);
                 } else {
                     mEmptyTxt.setText(R.string.list_pre_empty_txt);
                     mEmptyTxt.setVisibility(View.VISIBLE);
@@ -110,20 +110,20 @@ public class UserTimelineFragment extends RecyclerViewFragment {
     @Override
     public void fetchMore() {
         super.fetchMore();
-        WeiboLog.v(TAG, "fetchMore.lastItem:" + lastItem + " selectedPos:" + selectedPos);
-        int count = mAdapter.getCount();
-        if (count < 1) {
+        WeiboLog.v(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
+        int count=mAdapter.getCount();
+        if (count<1) {
             WeiboLog.w(TAG, "no other data");
             return;
         }
 
-        boolean isRefresh = false;
-        if (count >= weibo_count * 3) {   //refresh list
-            isRefresh = true;
+        boolean isRefresh=false;
+        if (count>=weibo_count*3) {   //refresh list
+            isRefresh=true;
         }
         Status st;
-        st = (Status) mAdapter.getItem(mAdapter.getCount() - 1);
-        fetchData(- 1, st.id, isRefresh, false);
+        st=(Status) mAdapter.getItem(mAdapter.getCount()-1);
+        fetchData(-1, st.id, isRefresh, false);
     }
 
     /**
@@ -135,24 +135,24 @@ public class UserTimelineFragment extends RecyclerViewFragment {
      * @param isHomeStore 是否是主页,只有主页有存储
      */
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        WeiboLog.i(TAG, "sinceId:" + sinceId + ", maxId:" + maxId + ", isRefresh:" + isRefresh + ", isHomeStore:" + isHomeStore + " userId:" + userId);
-        if (! App.hasInternetConnection(getActivity())) {
+        WeiboLog.i(TAG, "sinceId:"+sinceId+", maxId:"+maxId+", isRefresh:"+isRefresh+", isHomeStore:"+isHomeStore+" userId:"+userId);
+        if (!App.hasInternetConnection(getActivity())) {
             NotifyUtils.showToast(R.string.network_error);
-            if (mRefreshListener != null) {
+            if (mRefreshListener!=null) {
                 mRefreshListener.onRefreshFinished();
             }
             refreshAdapter(false, false);
             return;
         }
 
-        int count = weibo_count;
-        if (! isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
+        int count=weibo_count;
+        if (!isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
             //count++;
         } else {
             //page=1;
         }
 
-        if (! isLoading) {   //这里多了一个当前查询的用户id
+        if (!isLoading) {   //这里多了一个当前查询的用户id
             newTask(new Object[]{isRefresh, sinceId, maxId, count, page, userId, isHomeStore}, null);
         }
     }

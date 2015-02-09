@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import cn.archko.microblog.service.SendTaskService;
-import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.me.microblog.bean.SendTask;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.util.NotifyUtils;
-import com.me.microblog.util.WeiboLog;
 
 import java.util.Date;
 

@@ -52,7 +52,7 @@ public class WebviewActivity extends SkinFragmentActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActionBar = getActionBar();
+        mActionBar=getActionBar();
         mActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         mActionBar.setDisplayShowTitleEnabled(true);
         mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -64,18 +64,18 @@ public class WebviewActivity extends SkinFragmentActivity {
 
         setContentView(R.layout.ak_webview);
 
-        mWebView = (WebView) findViewById(R.id.webview);
-        mUrl = (EditText) findViewById(R.id.url_et);
-        url_layout = findViewById(R.id.url_layout);
-        mEmptyTxt = (TextView) findViewById(R.id.empty_txt);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        mGo = (ImageButton) findViewById(R.id.webview_forward);
+        mWebView=(WebView) findViewById(R.id.webview);
+        mUrl=(EditText) findViewById(R.id.url_et);
+        url_layout=findViewById(R.id.url_layout);
+        mEmptyTxt=(TextView) findViewById(R.id.empty_txt);
+        mProgressBar=(ProgressBar) findViewById(R.id.progress_bar);
+        mGo=(ImageButton) findViewById(R.id.webview_forward);
         mGo.setOnClickListener(clickListener);
 
         setCustomActionBar();
         changeOriention(getResources().getConfiguration().orientation);
 
-        WebSettings settings = mWebView.getSettings();
+        WebSettings settings=mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
@@ -85,7 +85,7 @@ public class WebviewActivity extends SkinFragmentActivity {
         settings.setSavePassword(true);
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
-        WebViewClient wvc = new WebViewClient() {
+        WebViewClient wvc=new WebViewClient() {
 
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -125,7 +125,7 @@ public class WebviewActivity extends SkinFragmentActivity {
         };
         mWebView.setWebViewClient(wvc);
 
-        WebChromeClient webChromeClient = new WebChromeClient() {
+        WebChromeClient webChromeClient=new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
@@ -135,26 +135,26 @@ public class WebviewActivity extends SkinFragmentActivity {
         };
         mWebView.setWebChromeClient(webChromeClient);
 
-        String url = getIntent().getStringExtra("url");
-        mOriginUrl = url;
-        if (! TextUtils.isEmpty(url)) {
+        String url=getIntent().getStringExtra("url");
+        mOriginUrl=url;
+        if (!TextUtils.isEmpty(url)) {
             mWebView.loadUrl(url);
         }
 
         mUrl.clearFocus();
-        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm=(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mUrl.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
 
-        SwipeAwayLayout view_root = (SwipeAwayLayout) findViewById(R.id.view_root);
+        SwipeAwayLayout view_root=(SwipeAwayLayout) findViewById(R.id.view_root);
         view_root.setSwipeOrientation(SwipeAwayLayout.LEFT_RIGHT);
 
         view_root.setOnSwipeAwayListener(new SwipeAwayLayout.OnSwipeAwayListener() {
             @Override
             public void onSwipedAway(int mCloseOrientation) {
                 finish();
-                int animId = R.anim.exit_left;
-                if (mCloseOrientation == SwipeAwayLayout.RIGHT_ONLY) {
-                    animId = R.anim.exit_to_left;
+                int animId=R.anim.exit_left;
+                if (mCloseOrientation==SwipeAwayLayout.RIGHT_ONLY) {
+                    animId=R.anim.exit_to_left;
                 }
                 overridePendingTransition(0, animId);
             }
@@ -163,8 +163,8 @@ public class WebviewActivity extends SkinFragmentActivity {
         mWebView.setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-                Uri uri = Uri.parse(url);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                Uri uri=Uri.parse(url);
+                Intent intent=new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
                 finish();
             }
@@ -173,25 +173,25 @@ public class WebviewActivity extends SkinFragmentActivity {
 
     private void setCustomActionBar() {
         WeiboLog.d("setCustomActionBar");
-        View cusActionBar = getLayoutInflater().inflate(R.layout.ak_webview_nav, null);
+        View cusActionBar=getLayoutInflater().inflate(R.layout.ak_webview_nav, null);
         mActionBar.setCustomView(cusActionBar);
         mActionBar.setDisplayShowCustomEnabled(true);
-        mEdit = (ImageButton) cusActionBar.findViewById(R.id.menu_edit);
-        mRefresh = (ImageButton) cusActionBar.findViewById(R.id.menu_refresh);
-        mStop = (ImageButton) cusActionBar.findViewById(R.id.menu_stop);
-        mBack = (ImageButton) cusActionBar.findViewById(R.id.menu_back);
-        mForward = (ImageButton) cusActionBar.findViewById(R.id.menu_forward);
+        mEdit=(ImageButton) cusActionBar.findViewById(R.id.menu_edit);
+        mRefresh=(ImageButton) cusActionBar.findViewById(R.id.menu_refresh);
+        mStop=(ImageButton) cusActionBar.findViewById(R.id.menu_stop);
+        mBack=(ImageButton) cusActionBar.findViewById(R.id.menu_back);
+        mForward=(ImageButton) cusActionBar.findViewById(R.id.menu_forward);
 
-        String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        int refreshId = R.drawable.navigation_refresh_light;
-        int backId = R.drawable.navigation_back_light;
-        int forwardId = R.drawable.navigation_forward_light;
+        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        int refreshId=R.drawable.navigation_refresh_light;
+        int backId=R.drawable.navigation_back_light;
+        int forwardId=R.drawable.navigation_forward_light;
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
         } else {
-            refreshId = R.drawable.navigation_refresh_light;
-            backId = R.drawable.navigation_back_light;
-            forwardId = R.drawable.navigation_forward_light;
+            refreshId=R.drawable.navigation_refresh_light;
+            backId=R.drawable.navigation_back_light;
+            forwardId=R.drawable.navigation_forward_light;
         }
 
         mRefresh.setImageResource(refreshId);
@@ -206,7 +206,7 @@ public class WebviewActivity extends SkinFragmentActivity {
         mForward.setOnClickListener(clickListener);
     }
 
-    View.OnClickListener clickListener = new View.OnClickListener() {
+    View.OnClickListener clickListener=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             clickMethod(v);
@@ -214,39 +214,39 @@ public class WebviewActivity extends SkinFragmentActivity {
     };
 
     private void clickMethod(View v) {
-        int itemId = v.getId();
-        if (itemId == R.id.menu_edit) {
-            if (url_layout.getVisibility() == View.VISIBLE) {
+        int itemId=v.getId();
+        if (itemId==R.id.menu_edit) {
+            if (url_layout.getVisibility()==View.VISIBLE) {
                 url_layout.setVisibility(View.GONE);
             } else {
                 url_layout.setVisibility(View.VISIBLE);
             }
-        } else if (itemId == R.id.menu_refresh) {
+        } else if (itemId==R.id.menu_refresh) {
             NotifyUtils.showToast("reload.");
-            String url = mUrl.getText().toString();
-            if (! TextUtils.isEmpty(url)) {
+            String url=mUrl.getText().toString();
+            if (!TextUtils.isEmpty(url)) {
                 mWebView.loadUrl(url);
             } else {
                 mWebView.loadUrl(mOriginUrl);
             }
-        } else if (itemId == R.id.menu_stop) {
+        } else if (itemId==R.id.menu_stop) {
             mWebView.stopLoading();
             NotifyUtils.showToast("Stop loading.");
-        } else if (itemId == R.id.menu_back) {
+        } else if (itemId==R.id.menu_back) {
             if (mWebView.canGoBack()) {
                 mWebView.goBack();
             } else {
                 NotifyUtils.showToast("can not go back.");
             }
-        } else if (itemId == R.id.menu_forward) {
+        } else if (itemId==R.id.menu_forward) {
             if (mWebView.canGoForward()) {
                 mWebView.goForward();
             } else {
                 NotifyUtils.showToast("can not go forward.");
             }
-        } else if (itemId == R.id.webview_forward) {
-            String url = mUrl.getText().toString();
-            if (! TextUtils.isEmpty(url)) {
+        } else if (itemId==R.id.webview_forward) {
+            String url=mUrl.getText().toString();
+            if (!TextUtils.isEmpty(url)) {
                 mWebView.loadUrl(url);
             }
         }
@@ -259,11 +259,11 @@ public class WebviewActivity extends SkinFragmentActivity {
     }
 
     private void changeOriention(int orientation) {
-        WeiboLog.d("changeOriention:" + orientation);
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        WeiboLog.d("changeOriention:"+orientation);
+        if (orientation==Configuration.ORIENTATION_PORTRAIT) {
             mActionBar.show();
             DisplayUtils.setFullscreen(getWindow(), false);
-        } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        } else if (orientation==Configuration.ORIENTATION_LANDSCAPE) {
             mActionBar.hide();
             DisplayUtils.setFullscreen(getWindow(), true);
         }
@@ -272,7 +272,7 @@ public class WebviewActivity extends SkinFragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.clear();
-        MenuItem actionItem = menu.add(0, Menu.FIRST, 0, R.string.webview_out_app);
+        MenuItem actionItem=menu.add(0, Menu.FIRST, 0, R.string.webview_out_app);
 
         // Items that show as actions should favor the "if room" setting, which will
         // prevent too many buttons from crowding the bar. Extra items will show in the
@@ -284,10 +284,10 @@ public class WebviewActivity extends SkinFragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == android.R.id.home) {
+        int itemId=item.getItemId();
+        if (itemId==android.R.id.home) {
             finish();
-        } else if (itemId == Menu.FIRST) {
+        } else if (itemId==Menu.FIRST) {
             WeiboUtils.openUrlByDefaultBrowser(WebviewActivity.this, mOriginUrl);
         }
 

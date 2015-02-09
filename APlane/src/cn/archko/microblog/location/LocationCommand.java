@@ -5,13 +5,13 @@ package cn.archko.microblog.location;
  */
 public class LocationCommand implements Command {
 
-    boolean onlyOnce = true;
-    boolean openGps = true;
-    int scanSpan = 1;
+    boolean onlyOnce=true;
+    boolean openGps=true;
+    int scanSpan=1;
     AbsReceiver mAbsReceiver;
 
     public LocationCommand(AbsReceiver absReceiver) {
-        this.mAbsReceiver = absReceiver;
+        this.mAbsReceiver=absReceiver;
     }
 
     public boolean isOnlyOnce() {
@@ -19,7 +19,7 @@ public class LocationCommand implements Command {
     }
 
     public void setOnlyOnce(boolean onlyOnce) {
-        this.onlyOnce = onlyOnce;
+        this.onlyOnce=onlyOnce;
     }
 
     public boolean isOpenGps() {
@@ -27,7 +27,7 @@ public class LocationCommand implements Command {
     }
 
     public void setOpenGps(boolean openGps) {
-        this.openGps = openGps;
+        this.openGps=openGps;
     }
 
     public int getScanSpan() {
@@ -35,12 +35,12 @@ public class LocationCommand implements Command {
     }
 
     public void setScanSpan(int scanSpan) {
-        this.scanSpan = scanSpan;
+        this.scanSpan=scanSpan;
     }
 
     @Override
     public void execute() {
-        if (null != mAbsReceiver) {
+        if (null!=mAbsReceiver) {
             mAbsReceiver.action(this);
         }
     }

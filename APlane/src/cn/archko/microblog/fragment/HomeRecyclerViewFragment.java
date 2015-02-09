@@ -28,34 +28,34 @@ import java.util.ArrayList;
  */
 public class HomeRecyclerViewFragment extends RecyclerViewFragment {
 
-    public static final String TAG = "HomeRecyclerViewFragment";
+    public static final String TAG="HomeRecyclerViewFragment";
     /**
      * 是否是要刷新，不刷新时获取下一页数据不停止服务，暂时没有解决问题。
      */
-    boolean isRefreshData = false;
+    boolean isRefreshData=false;
     /**
      * 是否增量更新.增量的策略由获取数据中,新微博的数量 决定的.
      */
-    boolean isUpdateIncrement = true;
+    boolean isUpdateIncrement=true;
     Group mGroup;
     /**
      * 分组更新了，需要删除所有本地数据，而不是像之前那样还保留旧数据。
      */
-    boolean isGroupUpdated = false;
+    boolean isGroupUpdated=false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WeiboLog.v(TAG, "onCreate:" + savedInstanceState);
+        WeiboLog.v(TAG, "onCreate:"+savedInstanceState);
     }
 
     @Override
     public void initApi() {
-        mStatusImpl = new SinaHomeStatusImpl();
+        mStatusImpl=new SinaHomeStatusImpl();
 
-        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
         try {
-            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
@@ -67,9 +67,9 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
     @Override
     public void onResume() {
         super.onResume();
-        WeiboLog.v(TAG, "onResume:" + this);
+        WeiboLog.v(TAG, "onResume:"+this);
 
-        isUpdateIncrement = mPrefs.getBoolean(PrefsActivity.PREF_UPDATE_INCREMENT, true);
+        isUpdateIncrement=mPrefs.getBoolean(PrefsActivity.PREF_UPDATE_INCREMENT, true);
     }
 
     /**
@@ -84,10 +84,10 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
      * 下拉刷新数据
      */
     protected void pullToRefreshData() {
-        isRefreshing = true;
+        isRefreshing=true;
         //page=1;
-        fetchData(- 1, - 1, true, true);
-        isRefreshData = true;
+        fetchData(-1, -1, true, true);
+        isRefreshData=true;
     }
 
     /**
@@ -100,36 +100,36 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
      */
     @Override
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        WeiboLog.i("sinceId:" + sinceId + ", maxId:" + maxId + ", isRefresh:" + isRefresh +
-            ", isHomeStore:" + isHomeStore + " isGroupUpdated:" + isGroupUpdated);
-        if (! App.hasInternetConnection(getActivity())) {
+        WeiboLog.i("sinceId:"+sinceId+", maxId:"+maxId+", isRefresh:"+isRefresh+
+            ", isHomeStore:"+isHomeStore+" isGroupUpdated:"+isGroupUpdated);
+        if (!App.hasInternetConnection(getActivity())) {
             NotifyUtils.showToast(R.string.network_error);
-            if (mRefreshListener != null) {
+            if (mRefreshListener!=null) {
                 mRefreshListener.onRefreshFinished();
             }
             refreshAdapter(false, false);
             return;
         }
 
-        int count = weibo_count;
-        if (! isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。TODO
+        int count=weibo_count;
+        if (!isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。TODO
             //count++;
         } else {
-            if (isUpdateIncrement && (null == mGroup || mGroup.id.equals(Constants.TAB_ID_HOME))) {
+            if (isUpdateIncrement&&(null==mGroup||mGroup.id.equals(Constants.TAB_ID_HOME))) {
                 //page=1;
-                int status = mPrefs.getInt(Constants.PREF_SERVICE_STATUS, 0);
-                WeiboLog.d(TAG, "新消息数:" + status);
-                if (status > 0) {
-                    if (status > Constants.WEIBO_COUNT * 8) {
-                        status = Constants.WEIBO_COUNT * 8;
+                int status=mPrefs.getInt(Constants.PREF_SERVICE_STATUS, 0);
+                WeiboLog.d(TAG, "新消息数:"+status);
+                if (status>0) {
+                    if (status>Constants.WEIBO_COUNT*8) {
+                        status=Constants.WEIBO_COUNT*8;
                     }
 
-                    count = status;
+                    count=status;
                 }
             }
         }
 
-        if (! isLoading) {
+        if (!isLoading) {
             newTask(new Object[]{isRefresh, sinceId, maxId, count, page, isHomeStore}, null);
         }
     }
@@ -140,10 +140,10 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
     @Override
     protected void loadData() {
         WeiboLog.d(TAG, "home.loaddata:"+mDataList);
-        if (mDataList != null && mDataList.size() > 0) {
+        if (mDataList!=null&&mDataList.size()>0) {
             mAdapter.notifyDataSetChanged();
         } else {
-            if (! isLoading) {
+            if (!isLoading) {
                 loadLocalData();
             } else {
                 mEmptyTxt.setText(R.string.list_pre_empty_txt);
@@ -166,13 +166,13 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
      */
     @Override
     public void refreshNewData(SStatusData<Status> sStatusData, Boolean isRefresh) {
-        ArrayList<Status> list = sStatusData.mStatusData;
-        if (mDataList.size() > 0) {
+        ArrayList<Status> list=sStatusData.mStatusData;
+        if (mDataList.size()>0) {
             try {
-                Status first = list.get(0);
-                Status last = mDataList.get(mDataList.size() - 1);
+                Status first=list.get(0);
+                Status last=mDataList.get(mDataList.size()-1);
 
-                if (first.id == last.id) {
+                if (first.id==last.id) {
                     list.remove(0);
                 }
             } catch (Exception e) {
@@ -181,15 +181,15 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
         }
 
         if (isRefresh) {
-            int len = list.size();
-            NotifyUtils.showToast("为您更新了" + len + "条最新信息！", Toast.LENGTH_LONG);
-            if (list.size() < weibo_count) {
+            int len=list.size();
+            NotifyUtils.showToast("为您更新了"+len+"条最新信息！", Toast.LENGTH_LONG);
+            if (list.size()<weibo_count) {
                 mDataList.addAll(0, list);
             } else {
                 mDataList.clear();
                 mDataList.addAll(list);
             }
-            WeiboLog.i(TAG, "notify data changed." + mDataList.size() + " isRefresh:" + isRefresh);
+            WeiboLog.i(TAG, "notify data changed."+mDataList.size()+" isRefresh:"+isRefresh);
         } else {
             mDataList.addAll(list);
         }
@@ -203,13 +203,13 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
      */
     @Override
     public void refreshAdapter(boolean load, boolean isRefresh) {
-        WeiboLog.d(TAG, "refreshAdapter isGroupUpdated:" + isGroupUpdated);
+        WeiboLog.d(TAG, "refreshAdapter isGroupUpdated:"+isGroupUpdated);
         super.refreshAdapter(load, isRefresh);
-        isGroupUpdated = false;
-        if (isRefresh && load) {
+        isGroupUpdated=false;
+        if (isRefresh&&load) {
             clearHomeNotify();
         }
-        isRefreshData = false;
+        isRefreshData=false;
     }
 
     /**
@@ -218,7 +218,7 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
     private void clearHomeNotify() {
         mPrefs.edit().remove(Constants.PREF_SERVICE_STATUS).apply();
         try {
-            SkinFragmentActivity parent = (SkinFragmentActivity) getActivity();
+            SkinFragmentActivity parent=(SkinFragmentActivity) getActivity();
             parent.refreshSidebar();
         } catch (Exception e) {
             e.printStackTrace();
@@ -229,8 +229,8 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
      * 从缓存中查询数据.
      */
     void loadLocalData() {
-        if (! isLoading) {
-            Object[] params = new Object[]{false, currentUserId};
+        if (!isLoading) {
+            Object[] params=new Object[]{false, currentUserId};
             newTaskNoNet(params, null);
         }
     }
@@ -238,26 +238,26 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
     @Override
     public void fetchMore() {
         super.fetchMore();
-        isRefreshData = false;
+        isRefreshData=false;
     }
 
     //--------------------- 分组操作 ---------------------
     public void updateGroupTimeline(Group group) {
-        WeiboLog.d(TAG, "updateGroupTimeline:" + group + " old:" + mGroup);
-        if (null != group) {
-            if (null == mGroup || ! mGroup.id.equals(group.id)) {
-                if (null != mGroup) {
-                    isGroupUpdated = true;
-                    mGroup = group;
-                    isRefreshing = true;
+        WeiboLog.d(TAG, "updateGroupTimeline:"+group+" old:"+mGroup);
+        if (null!=group) {
+            if (null==mGroup||!mGroup.id.equals(group.id)) {
+                if (null!=mGroup) {
+                    isGroupUpdated=true;
+                    mGroup=group;
+                    isRefreshing=true;
 
-                    SinaHomeStatusImpl homeStatusImpl = (SinaHomeStatusImpl) mStatusImpl;
+                    SinaHomeStatusImpl homeStatusImpl=(SinaHomeStatusImpl) mStatusImpl;
                     homeStatusImpl.updateGroup(group, isGroupUpdated);
-                    fetchData(- 1, - 1, true, true);
+                    fetchData(-1, -1, true, true);
                 }
             }
         }
-        mGroup = group;
+        mGroup=group;
     }
 
     //--------------------- 微博操作 ---------------------
@@ -265,6 +265,6 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        WeiboLog.v(TAG, "onSaveInstanceState:" + outState);
+        WeiboLog.v(TAG, "onSaveInstanceState:"+outState);
     }
 }

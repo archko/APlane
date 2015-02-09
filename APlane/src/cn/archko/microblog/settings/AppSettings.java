@@ -14,7 +14,7 @@ public class AppSettings {
     }
 
     public static void init() {
-        current = new AppSettings();
+        current=new AppSettings();
     }
 
     public static AppSettings current() {
@@ -27,13 +27,13 @@ public class AppSettings {
     }
 
     static void onSettingsChanged() {
-        final AppSettings oldAppSettings = current;
-        current = new AppSettings();
+        final AppSettings oldAppSettings=current;
+        current=new AppSettings();
         applySettingsChanges(oldAppSettings, current);
     }
 
     static void applySettingsChanges(final AppSettings oldSettings, final AppSettings newSettings) {
-        final IAppSettingsChangeListener l = SettingsManager.listeners.getListener();
+        final IAppSettingsChangeListener l=SettingsManager.listeners.getListener();
         l.onAppSettingsChanged(oldSettings);
     }
 }

@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 public class SinaUserStatusImpl extends AbsStatusImpl<Status> {
 
-    public static final String TAG = "SinaUserStatusImpl";
+    public static final String TAG="SinaUserStatusImpl";
 
     public SinaUserStatusImpl() {
         /*AbsApiImpl absApi=new SinaStatusApi();
@@ -28,22 +28,22 @@ public class SinaUserStatusImpl extends AbsStatusImpl<Status> {
     @Override
     public SStatusData<Status> loadData(Object... params) throws WeiboException {
         WeiboLog.d(TAG, "loadData.");
-        SStatusData<Status> sStatusData = null;
+        SStatusData<Status> sStatusData=null;
         //SWeiboApi2 sWeiboApi2=((SWeiboApi2) App.getMicroBlog(App.getAppContext()));
-        SinaStatusApi sWeiboApi2 = (SinaStatusApi) mAbsApi;
+        SinaStatusApi sWeiboApi2=(SinaStatusApi) mAbsApi;
         sWeiboApi2.updateToken();
-        if (null == sWeiboApi2) {
-            sStatusData = new SStatusData<Status>();
-            sStatusData.errorCode = WeiboException.API_ERROR;
-            sStatusData.errorMsg = App.getAppContext().getString(R.string.err_api_error);
+        if (null==sWeiboApi2) {
+            sStatusData=new SStatusData<Status>();
+            sStatusData.errorCode=WeiboException.API_ERROR;
+            sStatusData.errorMsg=App.getAppContext().getString(R.string.err_api_error);
         } else {
-            Long sinceId = (Long) params[ 1 ];
-            Long maxId = (Long) params[ 2 ];
-            Integer c = (Integer) params[ 3 ];
-            Integer p = (Integer) params[ 4 ];
-            Long userId = (Long) params[ 5 ];
+            Long sinceId=(Long) params[1];
+            Long maxId=(Long) params[2];
+            Integer c=(Integer) params[3];
+            Integer p=(Integer) params[4];
+            Long userId=(Long) params[5];
             //TODO 也可以直接使用用户昵称
-            sStatusData = sWeiboApi2.getUserTimeLine(userId, sinceId, maxId, c, p, - 1);
+            sStatusData=sWeiboApi2.getUserTimeLine(userId, sinceId, maxId, c, p, -1);
         }
 
         return sStatusData;
@@ -55,11 +55,11 @@ public class SinaUserStatusImpl extends AbsStatusImpl<Status> {
 
     @Override
     public Object[] queryData(Object... params) throws WeiboException {
-        Long currentUserId = (Long) params[ 1 ];
-        ContentResolver resolver = App.getAppContext().getContentResolver();
-        ArrayList<Status> datas = SqliteWrapper.queryStatuses(resolver, currentUserId);
-        SStatusData<Status> sStatusData = new SStatusData<Status>();
-        sStatusData.mStatusData = datas;
+        Long currentUserId=(Long) params[1];
+        ContentResolver resolver=App.getAppContext().getContentResolver();
+        ArrayList<Status> datas=SqliteWrapper.queryStatuses(resolver, currentUserId);
+        SStatusData<Status> sStatusData=new SStatusData<Status>();
+        sStatusData.mStatusData=datas;
         return new Object[]{sStatusData, params};
     }
 }

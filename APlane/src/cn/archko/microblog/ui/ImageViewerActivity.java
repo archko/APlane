@@ -40,34 +40,34 @@ public class ImageViewerActivity extends Activity {
     int mSelectedIdx;
     ImageView mSave;
     TextView mTxtPager;
-    int mTotal = 1;
+    int mTotal=1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActionBar().hide();
 
-        if (null == getIntent()) {
+        if (null==getIntent()) {
             WeiboLog.e("null==getIntent");
             NotifyUtils.showToast("null==getIntent");
             return;
         }
-        mUrls = getIntent().getStringArrayExtra("thumbs");
-        mSelectedIdx = getIntent().getIntExtra("pos", 0);
-        WeiboLog.d("mSelectedIdx:" + mSelectedIdx);
+        mUrls=getIntent().getStringArrayExtra("thumbs");
+        mSelectedIdx=getIntent().getIntExtra("pos", 0);
+        WeiboLog.d("mSelectedIdx:"+mSelectedIdx);
 
-        if (null == mUrls) {
+        if (null==mUrls) {
             WeiboLog.e("null==url");
             NotifyUtils.showToast("null==url");
             return;
         }
-        mTotal = mUrls.length;
+        mTotal=mUrls.length;
 
         setContentView(R.layout.imageviewer);
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        mViewPager=(ViewPager) findViewById(R.id.viewpager);
         mViewPager.setOffscreenPageLimit(0);
-        mSave = (ImageView) findViewById(R.id.save);
-        mTxtPager = (TextView) findViewById(R.id.txt_pager);
+        mSave=(ImageView) findViewById(R.id.save);
+        mTxtPager=(TextView) findViewById(R.id.txt_pager);
         mSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,18 +75,18 @@ public class ImageViewerActivity extends Activity {
             }
         });
 
-        mPagerAdapter = new SamplePagerAdapter(getFragmentManager());
+        mPagerAdapter=new SamplePagerAdapter(getFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
         //mViewPager.setCurrentItem(mSelectedIdx);
         mViewPager.setOnPageChangeListener(mPagerAdapter);
 
-        if (mSelectedIdx != 0) {
+        if (mSelectedIdx!=0) {
             mViewPager.setCurrentItem(mSelectedIdx);
         }/* else {*/
         mViewPager.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
-                WeiboLog.d("onPreDraw:" + mSelectedIdx);
+                WeiboLog.d("onPreDraw:"+mSelectedIdx);
                 mViewPager.getViewTreeObserver().removeOnPreDrawListener(this);
                 //if (mSelectedIdx==0) {
                 mPagerAdapter.onPageSelected(mSelectedIdx);
@@ -100,7 +100,7 @@ public class ImageViewerActivity extends Activity {
     }
 
     private void updatePager() {
-        mTxtPager.setText((mSelectedIdx + 1) + "/" + mTotal);
+        mTxtPager.setText((mSelectedIdx+1)+"/"+mTotal);
     }
 
     @Override
@@ -109,21 +109,21 @@ public class ImageViewerActivity extends Activity {
     }
 
     private void saveImage() {
-        AKSnapImageView imageView = mPagerAdapter.getAKSnapImageView(mViewPager.getCurrentItem());
-        if (null != imageView) {
-            if (! imageView.isImageDownloaded()) {
+        AKSnapImageView imageView=mPagerAdapter.getAKSnapImageView(mViewPager.getCurrentItem());
+        if (null!=imageView) {
+            if (!imageView.isImageDownloaded()) {
                 WeiboLog.d("正在下载中...");
                 NotifyUtils.showToast("正在下载中...");
                 return;
             }
-            String path = imageView.getBmidPath();
-            if (! TextUtils.isEmpty(path)) {
-                File file = new File(path);
+            String path=imageView.getBmidPath();
+            if (!TextUtils.isEmpty(path)) {
+                File file=new File(path);
                 if (file.exists()) {
-                    WeiboLog.d("保存文件:" + path);
+                    WeiboLog.d("保存文件:"+path);
                     new SaveImageTask().execute(path);
                 } else {
-                    WeiboLog.d("保存失败." + path);
+                    WeiboLog.d("保存失败."+path);
                     NotifyUtils.showToast("保存失败.");
                 }
             } else {
@@ -137,7 +137,7 @@ public class ImageViewerActivity extends Activity {
 
     class SamplePagerAdapter extends PagerAdapter implements ViewPager.OnPageChangeListener {
 
-        private final SparseArray<WeakReference<AKSnapImageView>> mFragmentArray = new SparseArray<WeakReference<AKSnapImageView>>();
+        private final SparseArray<WeakReference<AKSnapImageView>> mFragmentArray=new SparseArray<WeakReference<AKSnapImageView>>();
 
         public SamplePagerAdapter(FragmentManager fm) {
             super();
@@ -150,17 +150,17 @@ public class ImageViewerActivity extends Activity {
 
         @Override
         public View instantiateItem(ViewGroup container, int position) {
-            AKSnapImageView itemView = null;
-            String bean = mUrls[ position ];
-            final WeakReference<AKSnapImageView> mWeakFragment = mFragmentArray.get(position);
-            if (mWeakFragment != null && mWeakFragment.get() != null) {
-                itemView = mWeakFragment.get();
+            AKSnapImageView itemView=null;
+            String bean=mUrls[position];
+            final WeakReference<AKSnapImageView> mWeakFragment=mFragmentArray.get(position);
+            if (mWeakFragment!=null&&mWeakFragment.get()!=null) {
+                itemView=mWeakFragment.get();
                 itemView.update(bean);
                 container.addView(itemView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 return itemView;
             }
 
-            itemView = new AKSnapImageView(ImageViewerActivity.this, bean);
+            itemView=new AKSnapImageView(ImageViewerActivity.this, bean);
             itemView.update(bean);
             itemView.loadThumb();
             mFragmentArray.put(position, new WeakReference<AKSnapImageView>(itemView));
@@ -172,22 +172,22 @@ public class ImageViewerActivity extends Activity {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
-            final WeakReference<AKSnapImageView> mWeakFragment = mFragmentArray.get(position);
-            if (mWeakFragment != null) {
+            final WeakReference<AKSnapImageView> mWeakFragment=mFragmentArray.get(position);
+            if (mWeakFragment!=null) {
                 mWeakFragment.clear();
             }
         }
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return view == object;
+            return view==object;
         }
 
         public AKSnapImageView getAKSnapImageView(int position) {
-            AKSnapImageView itemView = null;
-            final WeakReference<AKSnapImageView> mWeakFragment = mFragmentArray.get(position);
-            if (mWeakFragment != null && mWeakFragment.get() != null) {
-                itemView = mWeakFragment.get();
+            AKSnapImageView itemView=null;
+            final WeakReference<AKSnapImageView> mWeakFragment=mFragmentArray.get(position);
+            if (mWeakFragment!=null&&mWeakFragment.get()!=null) {
+                itemView=mWeakFragment.get();
             }
             return itemView;
         }
@@ -198,24 +198,24 @@ public class ImageViewerActivity extends Activity {
 
         @Override
         public void onPageSelected(int i) {
-            WeiboLog.d("onPageSelected." + i);
-            mSelectedIdx = i;
+            WeiboLog.d("onPageSelected."+i);
+            mSelectedIdx=i;
             updatePager();
 
-            int size = mFragmentArray.size();
-            for (int k = 0; k < size; k++) {
-                int key = mFragmentArray.keyAt(k);
-                WeakReference<AKSnapImageView> viewWeakReference = mFragmentArray.get(key);
-                if (null != viewWeakReference && null != viewWeakReference.get()) {
-                    WeiboLog.d("size:" + size + " key:" + key + " view:" + viewWeakReference.get());
-                    AKSnapImageView imagePageView = (AKSnapImageView) viewWeakReference.get();
-                    if (key == i) {
+            int size=mFragmentArray.size();
+            for (int k=0; k<size; k++) {
+                int key=mFragmentArray.keyAt(k);
+                WeakReference<AKSnapImageView> viewWeakReference=mFragmentArray.get(key);
+                if (null!=viewWeakReference&&null!=viewWeakReference.get()) {
+                    WeiboLog.d("size:"+size+" key:"+key+" view:"+viewWeakReference.get());
+                    AKSnapImageView imagePageView=(AKSnapImageView) viewWeakReference.get();
+                    if (key==i) {
                         imagePageView.loadLargeBitmap();
                     } else {
                         imagePageView.loadThumb();
                     }
                 } else {
-                    WeiboLog.d("key:" + key);
+                    WeiboLog.d("key:"+key);
                 }
             }
         }
@@ -230,13 +230,13 @@ public class ImageViewerActivity extends Activity {
 
         @Override
         protected String doInBackground(Object... params) {
-            boolean flag = false;
-            String targetFilePath = null;
+            boolean flag=false;
+            String targetFilePath=null;
             try {
-                String path = (String) params[ 0 ];
-                targetFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/image" +
-                    DateUtils.formatDate(new Date(), "yyyy-MM-dd_HH-mm-ss") + WeiboUtils.getExt(path);
-                flag = StreamUtils.copyFileToFile(targetFilePath, path);
+                String path=(String) params[0];
+                targetFilePath=Environment.getExternalStorageDirectory().getAbsolutePath()+"/image"+
+                    DateUtils.formatDate(new Date(), "yyyy-MM-dd_HH-mm-ss")+WeiboUtils.getExt(path);
+                flag=StreamUtils.copyFileToFile(targetFilePath, path);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -245,9 +245,9 @@ public class ImageViewerActivity extends Activity {
         }
 
         protected void onPostExecute(String bitmap) {
-            if (! isFinishing()) {
-                if (bitmap != null) {
-                    NotifyUtils.showToast("保存成功:" + bitmap, Toast.LENGTH_LONG);
+            if (!isFinishing()) {
+                if (bitmap!=null) {
+                    NotifyUtils.showToast("保存成功:"+bitmap, Toast.LENGTH_LONG);
                 } else {
                     NotifyUtils.showToast("保存失败:");
                 }

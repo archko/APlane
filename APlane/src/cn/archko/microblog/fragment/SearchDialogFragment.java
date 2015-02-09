@@ -61,7 +61,7 @@ import java.util.Map;
 public class SearchDialogFragment extends DialogFragment implements AdapterView.OnItemClickListener {
 
     public SharedPreferences mPrefs;
-    public long currentUserId = - 1l;
+    public long currentUserId=-1l;
     AtUserListener mAtUserListener;
     SimpleAdapter mSimpleAdapter;
     ListView mListView;
@@ -82,11 +82,11 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
      * 0表示搜索用户建议，1表示默认搜索主页关注的对象。2表示搜索话题。3,表示最近@的人.
      * 最近@的功能先隐藏.
      */
-    int mSearchMode = 0;
+    int mSearchMode=0;
     /**
      * 是否在搜索的标志位。
      */
-    boolean isSearching = false;
+    boolean isSearching=false;
     QueryTask mQueryTask;
     InputMethodManager imm;
 
@@ -108,14 +108,14 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_NoTitleBar);
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        long aUserId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
-        this.currentUserId = aUserId;
-        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        mPrefs=PreferenceManager.getDefaultSharedPreferences(getActivity());
+        long aUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
+        this.currentUserId=aUserId;
+        imm=(InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        mSinaUserApi = new SinaUserApi();
-        mSinaSearchApi = new SinaSearchApi();
-        mSinaTrendApi = new SinaTrendApi();
+        mSinaUserApi=new SinaUserApi();
+        mSinaSearchApi=new SinaSearchApi();
+        mSinaTrendApi=new SinaTrendApi();
         mSinaUserApi.updateToken();
         mSinaSearchApi.updateToken();
         mSinaTrendApi.updateToken();
@@ -123,30 +123,30 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.search_dialog, container, false);
-        ListView listView = (ListView) root.findViewById(R.id.statusList);
-        mListView = listView;
+        View root=inflater.inflate(R.layout.search_dialog, container, false);
+        ListView listView=(ListView) root.findViewById(R.id.statusList);
+        mListView=listView;
         listView.setOnItemClickListener(SearchDialogFragment.this);
 
-        mTitle = (TextView) root.findViewById(R.id.tv_title);
-        mSearch = (EditText) root.findViewById(R.id.content);
-        mFriendBtn = (Button) root.findViewById(R.id.btn_friends);
-        mSugguestBtn = (Button) root.findViewById(R.id.btn_sugguest);
-        mTrendsBtn = (Button) root.findViewById(R.id.btn_trends);
-        mRecentBtn = (Button) root.findViewById(R.id.btn_recent);
+        mTitle=(TextView) root.findViewById(R.id.tv_title);
+        mSearch=(EditText) root.findViewById(R.id.content);
+        mFriendBtn=(Button) root.findViewById(R.id.btn_friends);
+        mSugguestBtn=(Button) root.findViewById(R.id.btn_sugguest);
+        mTrendsBtn=(Button) root.findViewById(R.id.btn_trends);
+        mRecentBtn=(Button) root.findViewById(R.id.btn_recent);
 
-        mSearchBtn = (ImageView) root.findViewById(R.id.search_btn);
-        mSearchCloseBtn = (ImageView) root.findViewById(R.id.search_close_btn);
+        mSearchBtn=(ImageView) root.findViewById(R.id.search_btn);
+        mSearchCloseBtn=(ImageView) root.findViewById(R.id.search_close_btn);
 
-        mHeaderLayout = (RelativeLayout) ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+        mHeaderLayout=(RelativeLayout) ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
             .inflate(R.layout.at_user_item, null);
         mHeaderLayout.findViewById(R.id.iv_portrait).setVisibility(View.GONE);
-        mName = (TextView) mHeaderLayout.findViewById(R.id.tv_name);
-        mLoadingLayout = (LinearLayout) root.findViewById(R.id.loading);
+        mName=(TextView) mHeaderLayout.findViewById(R.id.tv_name);
+        mLoadingLayout=(LinearLayout) root.findViewById(R.id.loading);
 
-        mFooterLayout = new RelativeLayout(getActivity());
+        mFooterLayout=new RelativeLayout(getActivity());
 
-        String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         /*if ("0".equals(themeId)) {
             mSearchBtn.setImageResource(R.drawable.action_search_dark);
         } else if ("1".equals(themeId)) {
@@ -168,20 +168,20 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
      */
     protected void showMoreView() {
         WeiboLog.d("showMoreView");
-        if (null == mRelativeLoadingLayout) {
+        if (null==mRelativeLoadingLayout) {
             WeiboLog.d("null==mLoadingLayout.");
-            mRelativeLoadingLayout = (RelativeLayout) LayoutInflater.from(getActivity().getApplicationContext())
+            mRelativeLoadingLayout=(RelativeLayout) LayoutInflater.from(getActivity().getApplicationContext())
                 .inflate(R.layout.ak_more_progressbar, null);
-            mMoreProgressBar = (ProgressBar) mRelativeLoadingLayout.findViewById(R.id.progress_bar);
-            mMoreTxt = (TextView) mRelativeLoadingLayout.findViewById(R.id.more_txt);
+            mMoreProgressBar=(ProgressBar) mRelativeLoadingLayout.findViewById(R.id.progress_bar);
+            mMoreTxt=(TextView) mRelativeLoadingLayout.findViewById(R.id.more_txt);
         }
 
         mMoreTxt.setText(R.string.search_user_friends);
 
-        WeiboLog.d("mListView.getFooterViewsCount():" + mListView.getFooterViewsCount());
+        WeiboLog.d("mListView.getFooterViewsCount():"+mListView.getFooterViewsCount());
 
         mFooterLayout.removeAllViews();
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+        RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
         );
         mFooterLayout.addView(mRelativeLoadingLayout, layoutParams);
@@ -201,15 +201,15 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
         mSearchBtn.setOnClickListener(clickListener);
         mSearchCloseBtn.setOnClickListener(clickListener);
 
-        if (null == mSimpleAdapter) {
-            mSimpleAdapter = new SimpleAdapter(getActivity());
+        if (null==mSimpleAdapter) {
+            mSimpleAdapter=new SimpleAdapter(getActivity());
         }
 
         mListView.setAdapter(mSimpleAdapter);
 
-        int type = getArguments().getInt("type");
-        mSearchMode = type;
-        if (type == 2) {    //search trends
+        int type=getArguments().getInt("type");
+        mSearchMode=type;
+        if (type==2) {    //search trends
             mFriendBtn.setVisibility(View.GONE);
             mSugguestBtn.setVisibility(View.GONE);
             mTrendsBtn.setVisibility(View.VISIBLE);
@@ -221,11 +221,11 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
             mListView.removeHeaderView(mHeaderLayout);
             mListView.removeFooterView(mFooterLayout);
 
-            if (null != mQueryTask) {
+            if (null!=mQueryTask) {
                 mQueryTask.cancel(true);
             }
 
-            mQueryTask = new QueryTask();
+            mQueryTask=new QueryTask();
             mQueryTask.execute(new Object[]{null, mSearchMode});
         } else {
             mFriendBtn.setVisibility(View.VISIBLE);
@@ -242,14 +242,14 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
         }
     }
 
-    TextWatcher textWatcher = new TextWatcher() {
+    TextWatcher textWatcher=new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         }
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            if (! TextUtils.isEmpty(charSequence)) {
+            if (!TextUtils.isEmpty(charSequence)) {
                 mSearchCloseBtn.setVisibility(View.VISIBLE);
                 doLocalSearch(charSequence.toString());
             } else {
@@ -270,69 +270,69 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
      */
     private void doLocalSearch(String keyword) {
         mName.setText(keyword);
-        if (! isSearching) {
-            if (null != mQueryTask) {
+        if (!isSearching) {
+            if (null!=mQueryTask) {
                 mQueryTask.cancel(true);
             }
 
-            mQueryTask = new QueryTask();
+            mQueryTask=new QueryTask();
             mQueryTask.execute(new Object[]{keyword, mSearchMode});
         }
     }
 
-    View.OnClickListener clickListener = new View.OnClickListener() {
+    View.OnClickListener clickListener=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             clickMethod(view);
         }
 
         private void clickMethod(View view) {
-            int id = view.getId();
-            if (id == R.id.btn_recent) {
-                if (! mRecentBtn.isSelected()) {
+            int id=view.getId();
+            if (id==R.id.btn_recent) {
+                if (!mRecentBtn.isSelected()) {
                     mRecentBtn.setSelected(true);
                     mSugguestBtn.setSelected(false);
                     mFriendBtn.setSelected(false);
-                    mSearchMode = 3;
+                    mSearchMode=3;
                     clearAdapter();
                 }
-            } else if (id == R.id.btn_friends) {
-                if (! mFriendBtn.isSelected()) {
+            } else if (id==R.id.btn_friends) {
+                if (!mFriendBtn.isSelected()) {
                     showMoreView();
                     mFriendBtn.setSelected(true);
                     mSugguestBtn.setSelected(false);
                     mRecentBtn.setSelected(false);
-                    mSearchMode = 0;
+                    mSearchMode=0;
                     clearAdapter();
                     requery();
                 }
-            } else if (id == R.id.btn_sugguest) {
-                if (! mSugguestBtn.isSelected()) {
+            } else if (id==R.id.btn_sugguest) {
+                if (!mSugguestBtn.isSelected()) {
                     mFooterLayout.removeAllViews();
                     mSugguestBtn.setSelected(true);
                     mFriendBtn.setSelected(false);
                     mRecentBtn.setSelected(false);
-                    mSearchMode = 1;
+                    mSearchMode=1;
                     clearAdapter();
                     requery();
                 }
-            } else if (id == R.id.search_btn) {
-                String keyword = mSearch.getEditableText().toString();
-                if (! TextUtils.isEmpty(keyword)) {
+            } else if (id==R.id.search_btn) {
+                String keyword=mSearch.getEditableText().toString();
+                if (!TextUtils.isEmpty(keyword)) {
                     doLocalSearch(keyword);
                 }
-            } else if (id == R.id.search_close_btn) {
+            } else if (id==R.id.search_close_btn) {
                 mSearch.setText(null);
                 mName.setText(null);
                 mSearchCloseBtn.setVisibility(View.GONE);
-                if (mSearchMode == 0) {
+                if (mSearchMode==0) {
                     doLocalSearch("");
                 }
-            } else if (view == mHeaderLayout) {
-                String content = mSearch.getEditableText().toString();
-                if (! TextUtils.isEmpty(content)) {
-                    AtUser atUser = new AtUser();
-                    atUser.name = content;
+            } else if (view==mHeaderLayout) {
+                String content=mSearch.getEditableText().toString();
+                if (!TextUtils.isEmpty(content)) {
+                    AtUser atUser=new AtUser();
+                    atUser.name=content;
                     mAtUserListener.getAtUser(atUser);
                     SearchDialogFragment.this.dismiss();
                 }
@@ -344,21 +344,21 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
      * 重新查询,只要输入框中有内容,在切换按钮时就自动查询.
      */
     private void requery() {
-        String keyWord = mSearch.getEditableText().toString();
-        if (! TextUtils.isEmpty(keyWord)) {
+        String keyWord=mSearch.getEditableText().toString();
+        if (!TextUtils.isEmpty(keyWord)) {
             doLocalSearch(keyWord);
         }
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (null != mAtUserListener) {
-            int pos = position;
-            if (mListView.getHeaderViewsCount() > 0) {
-                pos = position - 1;
+        if (null!=mAtUserListener) {
+            int pos=position;
+            if (mListView.getHeaderViewsCount()>0) {
+                pos=position-1;
             }
 
-            if (view == mFooterLayout) {   //if (mAdapter.getCount()>0&&position>=mAdapter.getCount()) {
+            if (view==mFooterLayout) {   //if (mAdapter.getCount()>0&&position>=mAdapter.getCount()) {
                 //mMoreProgressBar.setVisibility(View.VISIBLE);
                 fetchMore();
                 return;
@@ -374,25 +374,25 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
      * 获取网络的关注列表。
      */
     private void fetchMore() {
-        String keyword = mSearch.getEditableText().toString();
+        String keyword=mSearch.getEditableText().toString();
         if (TextUtils.isEmpty(keyword)) {
             WeiboLog.d("can't find friends.");
             Toast.makeText(App.getAppContext(), "请输入人名。", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (! isSearching) {
-            if (null != mQueryTask) {
+        if (!isSearching) {
+            if (null!=mQueryTask) {
                 mQueryTask.cancel(true);
             }
 
-            mQueryTask = new QueryTask();
+            mQueryTask=new QueryTask();
             mQueryTask.execute(new Object[]{keyword, 4});
         }
     }
 
     public void setAtUserListener(AtUserListener atUserListener) {
-        this.mAtUserListener = atUserListener;
+        this.mAtUserListener=atUserListener;
     }
 
     //--------------------- 查询用户操作 ---------------------
@@ -404,21 +404,21 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
      * @param searchMode 0表示搜索本地数据，4表示搜索关注列表
      */
     private Object[] searchFriends(String keyword, Integer searchMode) {
-        ArrayList<AtUser> atUsers = null;
-        if (searchMode == 0) {
-            atUsers = SqliteWrapper.queryAtUsers(App.getAppContext(), currentUserId, TwitterTable.UserTbl.TYPE_FRIEND, keyword);
-        } else if (searchMode == 4) {
+        ArrayList<AtUser> atUsers=null;
+        if (searchMode==0) {
+            atUsers=SqliteWrapper.queryAtUsers(App.getAppContext(), currentUserId, TwitterTable.UserTbl.TYPE_FRIEND, keyword);
+        } else if (searchMode==4) {
             try {
                 //SWeiboApi2 sWeiboApi2=(SWeiboApi2) App.getMicroBlog(App.getAppContext());
-                final SStatusData<User> data = mSinaUserApi.getFriends(keyword, - 1l, 18, 1);
-                if (data.mStatusData != null && data.mStatusData.size() > 0) {
-                    atUsers = new ArrayList<AtUser>();
+                final SStatusData<User> data=mSinaUserApi.getFriends(keyword, -1l, 18, 1);
+                if (data.mStatusData!=null&&data.mStatusData.size()>0) {
+                    atUsers=new ArrayList<AtUser>();
                     AtUser atUser;
-                    ArrayList<User> users = data.mStatusData;
+                    ArrayList<User> users=data.mStatusData;
                     for (User user : users) {
-                        atUser = new AtUser();
-                        atUser.uid = user.id;
-                        atUser.name = user.screenName;
+                        atUser=new AtUser();
+                        atUser.uid=user.id;
+                        atUser.name=user.screenName;
                         atUsers.add(atUser);
                     }
 
@@ -454,14 +454,14 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
     private Object[] searchUserSuggestion(String keyword, Integer searchMode) {
         try {
             //SWeiboApi2 sWeiboApi2=(SWeiboApi2) App.getMicroBlog(App.getAppContext());
-            final ArrayList<Map<String, String>> data = mSinaSearchApi.getSearchSuggestions(keyword, 15, 1);
-            if (data.size() > 0) {
-                ArrayList<AtUser> atUsers = new ArrayList<AtUser>();
+            final ArrayList<Map<String, String>> data=mSinaSearchApi.getSearchSuggestions(keyword, 15, 1);
+            if (data.size()>0) {
+                ArrayList<AtUser> atUsers=new ArrayList<AtUser>();
                 AtUser atUser;
                 for (Map<String, String> tmp : data) {
-                    atUser = new AtUser();
-                    atUser.uid = Long.valueOf(tmp.get("uid"));
-                    atUser.name = tmp.get("screen_name");
+                    atUser=new AtUser();
+                    atUser.uid=Long.valueOf(tmp.get("uid"));
+                    atUser.name=tmp.get("screen_name");
                     atUsers.add(atUser);
                 }
                 return new Object[]{searchMode, atUsers};
@@ -480,15 +480,15 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
      * @return
      */
     private Object[] searchTrends(String keyWord, Integer searchMode) {
-        String filename = App.getAppContext().getFilesDir().getAbsolutePath() + "/" + Constants.TREND_FILE;
-        File file = new File(filename);
-        WeiboLog.d("filename:" + filename + " file:" + file.exists());
+        String filename=App.getAppContext().getFilesDir().getAbsolutePath()+"/"+Constants.TREND_FILE;
+        File file=new File(filename);
+        WeiboLog.d("filename:"+filename+" file:"+file.exists());
         if (file.exists()) {
-            long now = DateUtils.parseDateString(DateUtils.formatDate(new Date(), "yyyy-MM-dd"), "yyyy-MM-dd").getTime();
-            WeiboLog.d("lastModified:" + file.lastModified() + " now;" + now);
+            long now=DateUtils.parseDateString(DateUtils.formatDate(new Date(), "yyyy-MM-dd"), "yyyy-MM-dd").getTime();
+            WeiboLog.d("lastModified:"+file.lastModified()+" now;"+now);
             try {
-                String content = StreamUtils.parseInputStream(new FileInputStream(file));
-                Trends trends = WeiboParser.parseTrends(content);
+                String content=StreamUtils.parseInputStream(new FileInputStream(file));
+                Trends trends=WeiboParser.parseTrends(content);
                 updateTrendsTmp(trends, searchMode);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -496,7 +496,7 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
                 e.printStackTrace();
             }
 
-            if ((file.lastModified() < now)) {
+            if ((file.lastModified()<now)) {
                 return fetchNewTrends(searchMode);
             }
         } else {
@@ -515,9 +515,9 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Object[] objects = updateCompleteTrendAdapter(trends, searchMode);
-                if (null != objects) {
-                    ArrayList<AtUser> list = (ArrayList<AtUser>) objects[ 1 ];
+                Object[] objects=updateCompleteTrendAdapter(trends, searchMode);
+                if (null!=objects) {
+                    ArrayList<AtUser> list=(ArrayList<AtUser>) objects[1];
                     mSimpleAdapter.setAtUserList(list);
                     mSimpleAdapter.notifyDataSetChanged();
                 }
@@ -532,7 +532,7 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
      */
     Object[] fetchNewTrends(Integer searchMode) {
         try {
-            Trends tmp = mSinaTrendApi.getTrends("daily");
+            Trends tmp=mSinaTrendApi.getTrends("daily");
             return updateCompleteTrendAdapter(tmp, searchMode);
         } catch (Exception e) {
             e.printStackTrace();
@@ -541,16 +541,16 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
     }
 
     Object[] updateCompleteTrendAdapter(final Trends trends, Integer searchMode) {
-        if (trends == null || trends.trends == null || trends.trends.length < 1) {
-            WeiboLog.w("查询话题失败，或线程结束。" + trends);
+        if (trends==null||trends.trends==null||trends.trends.length<1) {
+            WeiboLog.w("查询话题失败，或线程结束。"+trends);
             return null;
         }
 
-        ArrayList<AtUser> atUsers = new ArrayList<AtUser>();
+        ArrayList<AtUser> atUsers=new ArrayList<AtUser>();
         AtUser atUser;
         for (Trend trend : trends.trends) {
-            atUser = new AtUser();
-            atUser.name = trend.name;
+            atUser=new AtUser();
+            atUser.name=trend.name;
             atUsers.add(atUser);
         }
 
@@ -567,22 +567,22 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            isSearching = true;
+            isSearching=true;
             mLoadingLayout.setVisibility(View.VISIBLE);
         }
 
         @Override
         protected Object doInBackground(Object... params) {
-            String keyWord = (String) params[ 0 ];
-            Integer searchMode = (Integer) params[ 1 ];
-            if (searchMode == 0) {
+            String keyWord=(String) params[0];
+            Integer searchMode=(Integer) params[1];
+            if (searchMode==0) {
                 return searchFriends(keyWord, searchMode);
-            } else if (searchMode == 1) {
+            } else if (searchMode==1) {
                 return searchUserSuggestion(keyWord, searchMode);
-            } else if (searchMode == 2) {
+            } else if (searchMode==2) {
                 return searchTrends(keyWord, searchMode);
-            } else if (searchMode == 3) { //recent at
-            } else if (searchMode == 4) {  //search friends
+            } else if (searchMode==3) { //recent at
+            } else if (searchMode==4) {  //search friends
                 return searchFriends(keyWord, searchMode);
             }
 
@@ -591,23 +591,23 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
 
         @Override
         protected void onPostExecute(Object result) {
-            isSearching = false;
-            if (! isResumed()) {
+            isSearching=false;
+            if (!isResumed()) {
                 return;
             }
 
             mLoadingLayout.setVisibility(View.GONE);
 
-            if (null == result) {
+            if (null==result) {
                 Toast.makeText(App.getAppContext(), "no result!", Toast.LENGTH_LONG).show();
                 return;
             }
 
-            Integer searchMode = (Integer) ((Object[]) result)[ 0 ];
-            ArrayList<AtUser> list = (ArrayList<AtUser>) ((Object[]) result)[ 1 ];
-            if (null == list || list.size() < 1) {
-                if (searchMode == 2) {
-                    if (mSimpleAdapter.getCount() < 1) {
+            Integer searchMode=(Integer) ((Object[]) result)[0];
+            ArrayList<AtUser> list=(ArrayList<AtUser>) ((Object[]) result)[1];
+            if (null==list||list.size()<1) {
+                if (searchMode==2) {
+                    if (mSimpleAdapter.getCount()<1) {
                         Toast.makeText(App.getAppContext(), "no result!", Toast.LENGTH_LONG).show();
                     }
                 } else {
@@ -616,7 +616,7 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
                 return;
             }
 
-            WeiboLog.d("list.size:" + list.size());
+            WeiboLog.d("list.size:"+list.size());
 
             mSimpleAdapter.setAtUserList(list);
             mSimpleAdapter.notifyDataSetChanged();
@@ -642,12 +642,12 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
         ArrayList<AtUser> mAtUserList;
 
         SimpleAdapter(Context ctx) {
-            this.mContext = ctx;
-            mAtUserList = new ArrayList<AtUser>();
+            this.mContext=ctx;
+            mAtUserList=new ArrayList<AtUser>();
         }
 
         public void setAtUserList(ArrayList<AtUser> mAtUserList) {
-            this.mAtUserList = mAtUserList;
+            this.mAtUserList=mAtUserList;
         }
 
         public void clearAtUserList() {
@@ -671,12 +671,12 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            AtUser atUser = mAtUserList.get(position);
-            UserItemView itemView = null;
-            if (null == convertView) {
-                itemView = new UserItemView(mContext);
+            AtUser atUser=mAtUserList.get(position);
+            UserItemView itemView=null;
+            if (null==convertView) {
+                itemView=new UserItemView(mContext);
             } else {
-                itemView = (UserItemView) convertView;
+                itemView=(UserItemView) convertView;
             }
 
             itemView.update(atUser);
@@ -694,8 +694,8 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
             super(context);
             ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
                 R.layout.at_user_item, this);
-            mName = (TextView) findViewById(R.id.tv_name);
-            mPortrait = (ImageView) findViewById(R.id.iv_portrait);
+            mName=(TextView) findViewById(R.id.tv_name);
+            mPortrait=(ImageView) findViewById(R.id.iv_portrait);
         }
 
         public void update(final AtUser atUser) {

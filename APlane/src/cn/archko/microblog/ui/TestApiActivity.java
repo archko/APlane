@@ -23,30 +23,30 @@ public class TestApiActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mListView = getListView();
+        mListView=getListView();
 
-        ArrayList<ApiBean> beans = new ArrayList<ApiBean>();
+        ArrayList<ApiBean> beans=new ArrayList<ApiBean>();
         addApi(PlaceNearbyPhotosGridFragment.class, beans);
         addApi(TestFragment.class, beans);
 
-        mAdapter = new ArrayAdapter<ApiBean>(this, android.R.layout.simple_list_item_1, android.R.id.text1, beans);
+        mAdapter=new ArrayAdapter<ApiBean>(this, android.R.layout.simple_list_item_1, android.R.id.text1, beans);
         mListView.setAdapter(mAdapter);
 
     }
 
     private void addApi(Class clazz, ArrayList<ApiBean> beans) {
-        ApiBean bean = new ApiBean(clazz);
+        ApiBean bean=new ApiBean(clazz);
         beans.add(bean);
     }
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        ApiBean bean = mAdapter.getItem(position);
+        ApiBean bean=mAdapter.getItem(position);
         initFragment(bean);
     }
 
     public void initFragment(ApiBean bean) {
-        Intent loginIntent = new Intent(this, EmptyFragmentActivity.class);
+        Intent loginIntent=new Intent(this, EmptyFragmentActivity.class);
         loginIntent.putExtra("title", bean.className);
         loginIntent.putExtra("fragment_class", bean.aClass.getName());
         loginIntent.putExtra("mode", "1");
@@ -59,8 +59,8 @@ public class TestApiActivity extends ListActivity {
         public Class aClass;
 
         ApiBean(Class aClass) {
-            this.aClass = aClass;
-            this.className = aClass.getSimpleName();
+            this.aClass=aClass;
+            this.className=aClass.getSimpleName();
         }
 
         @Override

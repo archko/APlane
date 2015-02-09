@@ -16,28 +16,28 @@ import java.util.ArrayList;
  */
 public class SinaHotPostStatusImpl extends AbsStatusImpl<Status> {
 
-    public static final String TAG = "SinaAtMeStatusImpl";
+    public static final String TAG="SinaAtMeStatusImpl";
 
     public SinaHotPostStatusImpl() {
-        mAbsApi = new SinaStatusApi();
+        mAbsApi=new SinaStatusApi();
     }
 
     @Override
     public SStatusData<Status> loadData(Object... params) throws WeiboException {
         WeiboLog.d(TAG, "loadData.");
-        SStatusData<Status> sStatusData = null;
-        SinaStatusApi sWeiboApi2 = (SinaStatusApi) mAbsApi;
-        if (null == sWeiboApi2) {
-            sStatusData = new SStatusData<Status>();
-            sStatusData.errorCode = WeiboException.API_ERROR;
-            sStatusData.errorMsg = App.getAppContext().getString(R.string.err_api_error);
+        SStatusData<Status> sStatusData=null;
+        SinaStatusApi sWeiboApi2=(SinaStatusApi) mAbsApi;
+        if (null==sWeiboApi2) {
+            sStatusData=new SStatusData<Status>();
+            sStatusData.errorCode=WeiboException.API_ERROR;
+            sStatusData.errorMsg=App.getAppContext().getString(R.string.err_api_error);
         } else {
-            Long sinceId = (Long) params[ 1 ];
-            Long maxId = (Long) params[ 2 ];
-            Integer c = (Integer) params[ 3 ];
-            Integer p = (Integer) params[ 4 ];
-            ArrayList<Status> statuses = sWeiboApi2.getHotRepost(c, "repost_daily");
-            sStatusData.mStatusData = statuses;
+            Long sinceId=(Long) params[1];
+            Long maxId=(Long) params[2];
+            Integer c=(Integer) params[3];
+            Integer p=(Integer) params[4];
+            ArrayList<Status> statuses=sWeiboApi2.getHotRepost(c, "repost_daily");
+            sStatusData.mStatusData=statuses;
         }
 
         return sStatusData;

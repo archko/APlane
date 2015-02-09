@@ -15,7 +15,7 @@ public abstract class AbsReceiver {
     }
 
     public void setCommand(Command command) {
-        this.command = command;
+        this.command=command;
     }
 
     public abstract void action(Command command);

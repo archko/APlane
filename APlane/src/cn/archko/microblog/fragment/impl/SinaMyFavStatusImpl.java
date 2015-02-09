@@ -27,7 +27,7 @@ import java.util.ArrayList;
  */
 public class SinaMyFavStatusImpl extends AbsStatusImpl<Favorite> {
 
-    public static final String TAG = "SinaMyFavStatusImpl";
+    public static final String TAG="SinaMyFavStatusImpl";
 
     public SinaMyFavStatusImpl() {
         /*AbsApiImpl absApi=new SinaStatusApi();
@@ -37,21 +37,21 @@ public class SinaMyFavStatusImpl extends AbsStatusImpl<Favorite> {
     @Override
     public SStatusData<Favorite> loadData(Object... params) throws WeiboException {
         WeiboLog.d(TAG, "loadData.");
-        SinaStatusApi sWeiboApi2 = (SinaStatusApi) mAbsApi;
-        SStatusData<Favorite> sStatusData = null;
+        SinaStatusApi sWeiboApi2=(SinaStatusApi) mAbsApi;
+        SStatusData<Favorite> sStatusData=null;
         //SWeiboApi2 sWeiboApi2=((SWeiboApi2) App.getMicroBlog(App.getAppContext()));
-        if (null == sWeiboApi2) {
-            sStatusData = new SStatusData<Favorite>();
-            sStatusData.errorCode = WeiboException.API_ERROR;
-            sStatusData.errorMsg = App.getAppContext().getString(R.string.err_api_error);
+        if (null==sWeiboApi2) {
+            sStatusData=new SStatusData<Favorite>();
+            sStatusData.errorCode=WeiboException.API_ERROR;
+            sStatusData.errorMsg=App.getAppContext().getString(R.string.err_api_error);
         } else {
             /*Long userId=(Long) params[1];
             Long sinceId=(Long) params[2];
             Long maxId=(Long) params[3];*/
-            Integer c = (Integer) params[ 4 ];
-            Integer p = (Integer) params[ 5 ];
-            WeiboLog.d(/*"userId:"+userId+" sinceId:"+sinceId+", maxId:"+maxId+*/", count:" + c + ", page:" + p);
-            sStatusData = sWeiboApi2.myFavorites(c, p);
+            Integer c=(Integer) params[4];
+            Integer p=(Integer) params[5];
+            WeiboLog.d(/*"userId:"+userId+" sinceId:"+sinceId+", maxId:"+maxId+*/", count:"+c+", page:"+p);
+            sStatusData=sWeiboApi2.myFavorites(c, p);
         }
 
         return sStatusData;
@@ -65,19 +65,19 @@ public class SinaMyFavStatusImpl extends AbsStatusImpl<Favorite> {
     @Override
     public void saveData(SStatusData<Favorite> data) {
         try {
-            ArrayList<Favorite> newList = data.mStatusData;
-            if (null == newList || newList.size() < 1) {
+            ArrayList<Favorite> newList=data.mStatusData;
+            if (null==newList||newList.size()<1) {
                 WeiboLog.w(TAG, "no datas");
                 return;
             }
-            SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
-            long currentUserId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
-            String filename = App.getAppContext().getFilesDir().getAbsolutePath() + "/" + currentUserId + Constants.MY_FAV_FILE;
+            SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+            long currentUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
+            String filename=App.getAppContext().getFilesDir().getAbsolutePath()+"/"+currentUserId+Constants.MY_FAV_FILE;
 
-            FileOutputStream fos = null;
-            ObjectOutputStream out = null;
-            fos = new FileOutputStream(filename);
-            out = new ObjectOutputStream(fos);
+            FileOutputStream fos=null;
+            ObjectOutputStream out=null;
+            fos=new FileOutputStream(filename);
+            out=new ObjectOutputStream(fos);
             out.writeObject(newList);
             out.flush();
         } catch (IOException e) {
@@ -90,18 +90,18 @@ public class SinaMyFavStatusImpl extends AbsStatusImpl<Favorite> {
     @Override
     public Object[] queryData(Object... params) throws WeiboException {
         try {
-            Long currentUserId = (Long) params[ 1 ];
-            String filename = App.getAppContext().getFilesDir().getAbsolutePath() + "/" + String.valueOf(currentUserId) + Constants.MY_FAV_FILE;
-            File file = new File(filename);
-            WeiboLog.d(TAG, "filename:" + filename + " file:" + file.exists());
+            Long currentUserId=(Long) params[1];
+            String filename=App.getAppContext().getFilesDir().getAbsolutePath()+"/"+String.valueOf(currentUserId)+Constants.MY_FAV_FILE;
+            File file=new File(filename);
+            WeiboLog.d(TAG, "filename:"+filename+" file:"+file.exists());
             if (file.exists()) {
-                FileInputStream fis = null;
-                fis = new FileInputStream(filename);
-                BufferedInputStream br = new BufferedInputStream(fis);
-                ObjectInputStream in = new ObjectInputStream(br);
-                ArrayList<Favorite> datas = (ArrayList<Favorite>) in.readObject();
-                SStatusData<Favorite> sStatusData = new SStatusData<Favorite>();
-                sStatusData.mStatusData = datas;
+                FileInputStream fis=null;
+                fis=new FileInputStream(filename);
+                BufferedInputStream br=new BufferedInputStream(fis);
+                ObjectInputStream in=new ObjectInputStream(br);
+                ArrayList<Favorite> datas=(ArrayList<Favorite>) in.readObject();
+                SStatusData<Favorite> sStatusData=new SStatusData<Favorite>();
+                sStatusData.mStatusData=datas;
                 return new Object[]{sStatusData, params};
             }
         } catch (FileNotFoundException e) {

@@ -26,39 +26,39 @@ import java.util.ArrayList;
  */
 public class AKWidgetService extends Service {
 
-    public static final String TAG = "AKWidgetService";
+    public static final String TAG="AKWidgetService";
 
     /**
      * Called to indicate a general service commmand. Used in
      * {@link MediaButtonIntentReceiver}
      */
-    public static final String SERVICECMD = "com.me.archko.servicecommand";
+    public static final String SERVICECMD="com.me.archko.servicecommand";
 
     /**
      * Called to go toggle between pausing and playing the music
      */
-    public static final String TOGGLEPAUSE_ACTION = "com.me.archko.togglepause";
+    public static final String TOGGLEPAUSE_ACTION="com.me.archko.togglepause";
 
     /**
      * Called to go to the previous track
      */
-    public static final String PREVIOUS_ACTION = "com.me.archko.previous";
+    public static final String PREVIOUS_ACTION="com.me.archko.previous";
 
     /**
      * Called to go to the next track
      */
-    public static final String NEXT_ACTION = "com.me.archko.next";
+    public static final String NEXT_ACTION="com.me.archko.next";
 
-    public static final String CMDNAME = "command";
-    private MyBinder myBinder = new MyBinder();
+    public static final String CMDNAME="command";
+    private MyBinder myBinder=new MyBinder();
     SharedPreferences mPrefs;
     ArrayList<Status> mDataList;
-    private int mCurrPos = 0;
+    private int mCurrPos=0;
 
     /**
      * 4x2 widget
      */
-    private AppWidgetLarge mAppWidgetLarge = AppWidgetLarge.getInstance();
+    private AppWidgetLarge mAppWidgetLarge=AppWidgetLarge.getInstance();
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -92,8 +92,8 @@ public class AKWidgetService extends Service {
     public void onCreate() {
         super.onCreate();
         WeiboLog.d(TAG, "onCreate");
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        final IntentFilter filter = new IntentFilter();
+        mPrefs=PreferenceManager.getDefaultSharedPreferences(this);
+        final IntentFilter filter=new IntentFilter();
         filter.addAction(SERVICECMD);
         filter.addAction(TOGGLEPAUSE_ACTION);
         filter.addAction(NEXT_ACTION);
@@ -114,7 +114,7 @@ public class AKWidgetService extends Service {
         unregisterReceiver(mIntentReceiver);
     }
 
-    private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mIntentReceiver=new BroadcastReceiver() {
 
         /**
          * {@inheritDoc}
@@ -122,20 +122,20 @@ public class AKWidgetService extends Service {
         @Override
         public void onReceive(final Context context, final Intent intent) {
             initData(false);
-            final String action = intent.getAction();
-            final String command = intent.getStringExtra("command");
-            WeiboLog.d(TAG, "action:" + action + " command:" + command);
+            final String action=intent.getAction();
+            final String command=intent.getStringExtra("command");
+            WeiboLog.d(TAG, "action:"+action+" command:"+command);
             if (NEXT_ACTION.equals(action)) {
                 mCurrPos++;
-                final int[] large = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
+                final int[] large=intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
                 mAppWidgetLarge.performUpdate(AKWidgetService.this, large);
             } else if (PREVIOUS_ACTION.equals(action)) {
                 mCurrPos--;
-                final int[] large = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
+                final int[] large=intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
                 mAppWidgetLarge.performUpdate(AKWidgetService.this, large);
             } else if (TOGGLEPAUSE_ACTION.equals(action)) {
             } else if (AppWidgetLarge.CMDAPPWIDGETUPDATE.equals(command)) {
-                final int[] large = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
+                final int[] large=intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
                 mAppWidgetLarge.performUpdate(AKWidgetService.this, large);
             } else if (Constants.SERVICE_NOTIFY_UNREAD.equals(action)) {
                 //receiveUnread((Unread) intent.getSerializableExtra("unread"));
@@ -145,13 +145,13 @@ public class AKWidgetService extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
-        WeiboLog.d(TAG, "onStart:" + " startId:" + startId);
+        WeiboLog.d(TAG, "onStart:"+" startId:"+startId);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        WeiboLog.d(TAG, "onStartCommand,flags:" + flags + " startId:" + startId);
+        WeiboLog.d(TAG, "onStartCommand,flags:"+flags+" startId:"+startId);
 
         // We want this service to continue running until it is explicitly
         // stopped, so return sticky.
@@ -160,22 +160,22 @@ public class AKWidgetService extends Service {
     }
 
     void initData(boolean force) {
-        if (null == mDataList || force) {
-            ContentResolver resolver = App.getAppContext().getContentResolver();
-            long aUserId = PreferenceManager.getDefaultSharedPreferences(App.getAppContext()).
-                getLong(Constants.PREF_CURRENT_USER_ID, - 1);
-            mDataList = SqliteWrapper.queryStatuses(resolver, aUserId);
+        if (null==mDataList||force) {
+            ContentResolver resolver=App.getAppContext().getContentResolver();
+            long aUserId=PreferenceManager.getDefaultSharedPreferences(App.getAppContext()).
+                getLong(Constants.PREF_CURRENT_USER_ID, -1);
+            mDataList=SqliteWrapper.queryStatuses(resolver, aUserId);
         }
     }
 
     public Status getStatus() {
-        if (null != mDataList && mDataList.size() > 0) {
-            if (mCurrPos < 0) {
-                mCurrPos = mDataList.size() - 1;
+        if (null!=mDataList&&mDataList.size()>0) {
+            if (mCurrPos<0) {
+                mCurrPos=mDataList.size()-1;
             }
 
-            if (mCurrPos >= mDataList.size()) {
-                mCurrPos = 0;
+            if (mCurrPos>=mDataList.size()) {
+                mCurrPos=0;
             }
             return mDataList.get(mCurrPos);
         }

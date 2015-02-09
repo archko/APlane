@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 public class SinaTaskImpl extends AbsStatusImpl<SendTask> {
 
-    public static final String TAG = "SinaTaskImpl";
+    public static final String TAG="SinaTaskImpl";
 
     public SinaTaskImpl() {
     }
@@ -42,11 +42,11 @@ public class SinaTaskImpl extends AbsStatusImpl<SendTask> {
 
     public Object[] queryData(Object... params) throws WeiboException {
         try {
-            SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
-            long currentUserId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
-            ArrayList<SendTask> objects = SqliteWrapper.queryAllTasks(App.getAppContext(), String.valueOf(currentUserId), - 1);
-            SStatusData<SendTask> sStatusData = new SStatusData<SendTask>();
-            sStatusData.mStatusData = objects;
+            SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+            long currentUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
+            ArrayList<SendTask> objects=SqliteWrapper.queryAllTasks(App.getAppContext(), String.valueOf(currentUserId), -1);
+            SStatusData<SendTask> sStatusData=new SStatusData<SendTask>();
+            sStatusData.mStatusData=objects;
             return new Object[]{sStatusData, params};
         } catch (Exception e) {
             e.printStackTrace();

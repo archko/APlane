@@ -77,28 +77,28 @@ public class PlaceStatusGridFragment extends RecyclerViewFragment {
         if (mRefreshListener!=null) {
             mRefreshListener.onRefreshStarted();
         }
-        final BaiduLocation location = new BaiduLocation();
+        final BaiduLocation location=new BaiduLocation();
         //下面这个应该放在EmployeeBaiduLocation里面处理的.
         location.setMyListener(new BDLocationListener() {
 
             @Override
             public void onReceiveLocation(BDLocation bdLocation) {
-                if (bdLocation == null) {
+                if (bdLocation==null) {
                     if (isResumed()) {
                         refreshAdapter(false, true);
                     }
                     return;
                 }
-                AKLocation akLocation = new AKLocation(bdLocation.getLongitude(), bdLocation.getLatitude());
+                AKLocation akLocation=new AKLocation(bdLocation.getLongitude(), bdLocation.getLatitude());
                 akLocation.mLocationTimestamp=System.currentTimeMillis();
                 akLocation.addr=bdLocation.getAddrStr();
-                ((App)App.getAppContext()).setLocation(akLocation);
+                ((App) App.getAppContext()).setLocation(akLocation);
                 if (isResumed()) {
                     pullToRefreshData();
                 }
             }
         });
-        Command command = new LocationCommand(location);
+        Command command=new LocationCommand(location);
         command.execute();
     }
 
@@ -119,8 +119,8 @@ public class PlaceStatusGridFragment extends RecyclerViewFragment {
     @Override
     protected void pullToRefreshData() {
         isRefreshing=true;
-        AKLocation akLocation = ((App) App.getAppContext()).getLocation(600000);
-        if (akLocation == null || akLocation.latitude == 0.0 || akLocation.longitude == 0.0) {
+        AKLocation akLocation=((App) App.getAppContext()).getLocation(600000);
+        if (akLocation==null||akLocation.latitude==0.0||akLocation.longitude==0.0) {
             WeiboLog.i(TAG, "pullToRefreshData.没有找到地点,需要重新定位.");
             startMap();
             isRefreshing=false;
@@ -137,8 +137,8 @@ public class PlaceStatusGridFragment extends RecyclerViewFragment {
      */
     @Override
     protected void loadData() {
-        AKLocation akLocation = ((App) App.getAppContext()).getLocation(600000);
-        if (akLocation == null || akLocation.latitude == 0.0 || akLocation.longitude == 0.0) {
+        AKLocation akLocation=((App) App.getAppContext()).getLocation(600000);
+        if (akLocation==null||akLocation.latitude==0.0||akLocation.longitude==0.0) {
             WeiboLog.i(TAG, "loadData.没有找到地点,需要重新定位.");
             startMap();
             return;

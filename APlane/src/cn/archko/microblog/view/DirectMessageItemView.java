@@ -39,7 +39,7 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
  */
 public class DirectMessageItemView extends LinearLayout implements View.OnClickListener, Checkable {
 
-    public static final String TAG = "DirectMessageItemView";
+    public static final String TAG="DirectMessageItemView";
     protected Context mContext;
     protected String mCacheDir;    //图片缓存目录
     private TextView mName;
@@ -47,12 +47,12 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
     private ImageView mPortrait;    //微博作者头像
     protected TextView mSourceFrom;    //来自
     protected TextView mCreateAt;  //发表时间
-    protected String mPortraitUrl = null;
+    protected String mPortraitUrl=null;
     DirectMessage mDirectMessage;
 
-    protected boolean isShowBitmap = true;
+    protected boolean isShowBitmap=true;
 
-    private boolean checked = false;
+    private boolean checked=false;
     //protected DisplayImageOptions options;
 
     @Override
@@ -62,16 +62,16 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
 
     @Override
     public void setChecked(boolean aChecked) {
-        if (checked == aChecked) {
+        if (checked==aChecked) {
             return;
         }
-        checked = aChecked;
+        checked=aChecked;
         setBackgroundResource(checked ? R.drawable.abs__list_longpressed_holo : android.R.color.transparent);
     }
 
     @Override
     public void toggle() {
-        setChecked(! checked);
+        setChecked(!checked);
     }
 
     public DirectMessageItemView(Context context, String cacheDir,
@@ -79,27 +79,27 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
         super(context);
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.comment_item, this);
 
-        mCacheDir = cacheDir;
-        mContext = context;
+        mCacheDir=cacheDir;
+        mContext=context;
 
-        mName = (TextView) findViewById(R.id.tv_name);
-        mContentFirst = (TextView) findViewById(R.id.tv_content_first);
-        mPortrait = (ImageView) findViewById(R.id.iv_portrait);
+        mName=(TextView) findViewById(R.id.tv_name);
+        mContentFirst=(TextView) findViewById(R.id.tv_content_first);
+        mPortrait=(ImageView) findViewById(R.id.iv_portrait);
         mPortrait.setOnClickListener(this);
 
-        mSourceFrom = (TextView) findViewById(R.id.source_from);
-        mCreateAt = (TextView) findViewById(R.id.send_time);
+        mSourceFrom=(TextView) findViewById(R.id.source_from);
+        mCreateAt=(TextView) findViewById(R.id.send_time);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
-        float pref_title_font_size = prefs.getInt(PreferenceUtils.PREF_TITLE_FONT_SIZE, 14);
-        float pref_content_font_size = prefs.getInt(PreferenceUtils.PREF_CONTENT_FONT_SIZE, 16);
+        SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+        float pref_title_font_size=prefs.getInt(PreferenceUtils.PREF_TITLE_FONT_SIZE, 14);
+        float pref_content_font_size=prefs.getInt(PreferenceUtils.PREF_CONTENT_FONT_SIZE, 16);
 
-        int pref_content_color = PreferenceUtils.getInstace(App.getAppContext()).getDefaultStatusThemeColor(App.getAppContext());
+        int pref_content_color=PreferenceUtils.getInstace(App.getAppContext()).getDefaultStatusThemeColor(App.getAppContext());
 
-        if (mName.getTextSize() != pref_title_font_size) {
+        if (mName.getTextSize()!=pref_title_font_size) {
             mName.setTextSize(pref_title_font_size);
         }
-        if (mContentFirst.getTextSize() != pref_content_font_size) {
+        if (mContentFirst.getTextSize()!=pref_content_font_size) {
             mContentFirst.setTextSize(pref_content_font_size);
         }
 
@@ -116,34 +116,34 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        if (mPortrait == view) {
+        if (mPortrait==view) {
             WeiboOperation.toViewStatusUser(mContext, mDirectMessage.sender, UserFragmentActivity.TYPE_USER_INFO);
             return;
         }
     }
 
     public void update(final DirectMessage directMessage, boolean updateFlag, boolean cache, boolean showBitmap) {
-        if (mDirectMessage == directMessage) {
+        if (mDirectMessage==directMessage) {
             WeiboLog.v(TAG, "相同的内容不更新。");
             if (updateFlag) {   //需要加载数据,否则会无法更新列表的图片.
-                isShowBitmap = showBitmap;
+                isShowBitmap=showBitmap;
                 loadPortrait(updateFlag, cache);
             }
             return;
         }
 
-        mDirectMessage = directMessage;
-        User user = directMessage.sender;
+        mDirectMessage=directMessage;
+        User user=directMessage.sender;
         mName.setText(user.screenName);
-        String titleString = directMessage.text;
+        String titleString=directMessage.text;
         mContentFirst.setText(titleString);
 
-        String source = directMessage.source;
-        Matcher atMatcher = WeiboUtils.comeFrom.matcher(source);
+        String source=directMessage.source;
+        Matcher atMatcher=WeiboUtils.comeFrom.matcher(source);
         if (atMatcher.find()) {
-            int start = atMatcher.start();
-            int end = atMatcher.end();
-            String cfString = source.substring(end, source.length() - 4);
+            int start=atMatcher.start();
+            int end=atMatcher.end();
+            String cfString=source.substring(end, source.length()-4);
             mSourceFrom.setText(getResources().getString(R.string.text_come_from, cfString));
         }
 
@@ -160,16 +160,16 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
      */
     protected void loadPortrait(boolean updateFlag, boolean cache) {
         if (isShowBitmap) {
-            String profileImgUrl = mDirectMessage.sender.profileImageUrl;
+            String profileImgUrl=mDirectMessage.sender.profileImageUrl;
             if (TextUtils.isEmpty(profileImgUrl)) {
                 mPortrait.setImageResource(R.drawable.user_default_photo);
                 return;
             }
 
-            mPortraitUrl = profileImgUrl;
+            mPortraitUrl=profileImgUrl;
             //获取头像.
-            Bitmap bitmap = ImageCache2.getInstance().getBitmapFromMemCache(mPortraitUrl);
-            if (null != bitmap && ! bitmap.isRecycled()) {
+            Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(mPortraitUrl);
+            if (null!=bitmap&&!bitmap.isRecycled()) {
                 mPortrait.setImageBitmap(bitmap);
             } else {
                 mPortrait.setImageResource(R.drawable.user_default_photo);
@@ -185,7 +185,7 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
         }
     }
 
-    Handler mHandler = new Handler() {
+    Handler mHandler=new Handler() {
 
         @Override
         public void handleMessage(Message msg) {

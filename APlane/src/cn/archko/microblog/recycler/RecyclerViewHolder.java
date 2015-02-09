@@ -13,13 +13,13 @@ public class RecyclerViewHolder implements RecyclerView.RecyclerListener {
     @Override
     public void onViewRecycled(RecyclerView.ViewHolder viewHolder) {
         if (viewHolder instanceof SimpleViewHolder) {
-            SimpleViewHolder simpleViewHolder = (SimpleViewHolder) viewHolder;
-            View view = simpleViewHolder.baseItemView;
+            SimpleViewHolder simpleViewHolder=(SimpleViewHolder) viewHolder;
+            View view=simpleViewHolder.baseItemView;
             if (view instanceof ThreadBeanItemView) {
-                ThreadBeanItemView itemView = (ThreadBeanItemView) view;
+                ThreadBeanItemView itemView=(ThreadBeanItemView) view;
 
-                TagsViewGroup tagsViewGroup = itemView.mTagsViewGroup;
-                if (null != tagsViewGroup) {
+                TagsViewGroup tagsViewGroup=itemView.mTagsViewGroup;
+                if (null!=tagsViewGroup) {
                     tagsViewGroup.setAdapter(null);
                     tagsViewGroup.removeAllViews();
                 }

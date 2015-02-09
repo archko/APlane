@@ -35,12 +35,12 @@ import com.me.microblog.util.WeiboLog;
  */
 public class PlaceUserListFragment extends UserListFragment {
 
-    public static final String TAG = "PlaceUserListFragment";
+    public static final String TAG="PlaceUserListFragment";
 
     /**
      * 数据是否加载成功,对于位置来说,使用百度定位,它会在20秒内再执行一次定位,所以要去除不必要的加载.
      */
-    protected boolean isLoaded = false;
+    protected boolean isLoaded=false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,11 +50,11 @@ public class PlaceUserListFragment extends UserListFragment {
 
     @Override
     public void initApi() {
-        mStatusImpl = new SinaPlaceUserImpl();
+        mStatusImpl=new SinaPlaceUserImpl();
 
-        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
         try {
-            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.placeApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
@@ -70,38 +70,38 @@ public class PlaceUserListFragment extends UserListFragment {
         WeiboLog.d(TAG, "startMap.");
 
         mSwipeLayout.setRefreshing(true);
-        if (mRefreshListener != null) {
+        if (mRefreshListener!=null) {
             mRefreshListener.onRefreshStarted();
         }
-        final BaiduLocation location = new BaiduLocation();
+        final BaiduLocation location=new BaiduLocation();
         //下面这个应该放在EmployeeBaiduLocation里面处理的.
         location.setMyListener(new BDLocationListener() {
 
             @Override
             public void onReceiveLocation(BDLocation bdLocation) {
-                if (bdLocation == null) {
+                if (bdLocation==null) {
                     if (isResumed()) {
                         refreshAdapter(false, true);
                     }
                     return;
                 }
-                AKLocation akLocation = new AKLocation(bdLocation.getLongitude(), bdLocation.getLatitude());
+                AKLocation akLocation=new AKLocation(bdLocation.getLongitude(), bdLocation.getLatitude());
                 akLocation.mLocationTimestamp=System.currentTimeMillis();
                 akLocation.addr=bdLocation.getAddrStr();
-                ((App)App.getAppContext()).setLocation(akLocation);
+                ((App) App.getAppContext()).setLocation(akLocation);
                 if (isResumed()) {
                     pullToRefreshData();
                 }
             }
         });
-        Command command = new LocationCommand(location);
+        Command command=new LocationCommand(location);
         command.execute();
     }
 
     @Override
     public void refreshAdapter(boolean load, boolean isRefresh) {
         super.refreshAdapter(load, isRefresh);
-        isLoaded = true;
+        isLoaded=true;
     }
 
     /**
@@ -109,9 +109,9 @@ public class PlaceUserListFragment extends UserListFragment {
      */
     @Override
     protected void pullToRefreshData() {
-        isRefreshing = true;
-        AKLocation akLocation = ((App) App.getAppContext()).getLocation(600000);
-        if (akLocation == null || akLocation.latitude == 0.0 || akLocation.longitude == 0.0) {
+        isRefreshing=true;
+        AKLocation akLocation=((App) App.getAppContext()).getLocation(600000);
+        if (akLocation==null||akLocation.latitude==0.0||akLocation.longitude==0.0) {
             WeiboLog.i(TAG, "pullToRefreshData.没有找到地点,需要重新定位.");
             startMap();
             isRefreshing=false;
@@ -119,7 +119,7 @@ public class PlaceUserListFragment extends UserListFragment {
         }
 
         //page=1;
-        fetchData(- 1, - 1, true, false);
+        fetchData(-1, -1, true, false);
     }
 
     /**
@@ -127,18 +127,18 @@ public class PlaceUserListFragment extends UserListFragment {
      */
     @Override
     protected void loadData() {
-        AKLocation akLocation = ((App) App.getAppContext()).getLocation(600000);
-        if (akLocation == null || akLocation.latitude == 0.0 || akLocation.longitude == 0.0) {
+        AKLocation akLocation=((App) App.getAppContext()).getLocation(600000);
+        if (akLocation==null||akLocation.latitude==0.0||akLocation.longitude==0.0) {
             WeiboLog.i(TAG, "loadData.没有找到地点,需要重新定位.");
             startMap();
             return;
         }
 
-        if (mDataList != null && mDataList.size() > 0) {
+        if (mDataList!=null&&mDataList.size()>0) {
             mAdapter.notifyDataSetChanged();
         } else {
-            if (! isLoading) {
-                fetchData(- 1, - 1, true, false);
+            if (!isLoading) {
+                fetchData(-1, -1, true, false);
             }
         }
     }
@@ -146,11 +146,11 @@ public class PlaceUserListFragment extends UserListFragment {
     @Override
     public void fetchMore() {
         super.fetchMore();
-        WeiboLog.d(TAG, "fetchMore.lastItem:" + lastItem + " selectedPos:" + selectedPos);
-        if (mAdapter.getCount() > 0) {
+        WeiboLog.d(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
+        if (mAdapter.getCount()>0) {
             User st;
-            st = (User) mAdapter.getItem(mAdapter.getCount() - 1);
-            fetchData(- 1, st.id, false, false);
+            st=(User) mAdapter.getItem(mAdapter.getCount()-1);
+            fetchData(-1, st.id, false, false);
         }
     }
 
@@ -164,27 +164,27 @@ public class PlaceUserListFragment extends UserListFragment {
      */
     @Override
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        WeiboLog.i(TAG, "sinceId:" + sinceId + ", maxId:" + maxId + ", isRefresh:" + isRefresh + ", isHomeStore:" + isHomeStore);
-        if (! App.hasInternetConnection(getActivity())) {
+        WeiboLog.i(TAG, "sinceId:"+sinceId+", maxId:"+maxId+", isRefresh:"+isRefresh+", isHomeStore:"+isHomeStore);
+        if (!App.hasInternetConnection(getActivity())) {
             NotifyUtils.showToast(R.string.network_error);
-            if (mRefreshListener != null) {
+            if (mRefreshListener!=null) {
                 mRefreshListener.onRefreshFinished();
             }
             refreshAdapter(false, false);
             return;
         }
 
-        int count = weibo_count;
-        if (! isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
+        int count=weibo_count;
+        if (!isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
             //count++;
         } else {
             //page=1;
         }
-        if (count > 50) {
-            count = 50;
+        if (count>50) {
+            count=50;
         }
 
-        if (! isLoading) {
+        if (!isLoading) {
             newTask(new Object[]{isRefresh, sinceId, maxId, count, page, isHomeStore}, null);
         }
     }
@@ -192,18 +192,18 @@ public class PlaceUserListFragment extends UserListFragment {
     @Override
     public View getView(SimpleViewHolder holder, final int position) {
         View convertView=holder.baseItemView;
-        UserItemView itemView = null;
-        User user = mDataList.get(position);
+        UserItemView itemView=null;
+        User user=mDataList.get(position);
 
         boolean updateFlag=true;
         if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
 
-        if (convertView == null) {
-            itemView = new UserItemView(getActivity(), mCacheDir, updateFlag);
+        if (convertView==null) {
+            itemView=new UserItemView(getActivity(), mCacheDir, updateFlag);
         } else {
-            itemView = (UserItemView) convertView;
+            itemView=(UserItemView) convertView;
         }
         itemView.update(user, updateFlag, true);
         itemView.setOnClickListener(new View.OnClickListener() {
@@ -249,8 +249,8 @@ public class PlaceUserListFragment extends UserListFragment {
 
     protected void atUser() {
         try {
-            User user = mDataList.get(selectedPos);
-            Intent intent = new Intent(getActivity(), NewStatusActivity.class);
+            User user=mDataList.get(selectedPos);
+            Intent intent=new Intent(getActivity(), NewStatusActivity.class);
             intent.putExtra("at_some", user.screenName);
             intent.setAction(Constants.INTENT_NEW_BLOG);
             startActivity(intent);

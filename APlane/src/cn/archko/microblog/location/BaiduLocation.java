@@ -15,10 +15,10 @@ public class BaiduLocation extends AbsReceiver {
     //private static BaiduLocation mInstance;
     protected LocationClient mLocClient;
     public BDLocationListener myListener;
-    MyLocationListenner myLocationListenner = new MyLocationListenner();
+    MyLocationListenner myLocationListenner=new MyLocationListenner();
 
     public void setMyListener(BDLocationListener myListener) {
-        this.myListener = myListener;
+        this.myListener=myListener;
     }
 
     public BDLocationListener getMyListener() {
@@ -33,17 +33,17 @@ public class BaiduLocation extends AbsReceiver {
     }*/
 
     public BaiduLocation() {
-        mLocClient = new LocationClient(App.getAppContext());
+        mLocClient=new LocationClient(App.getAppContext());
     }
 
     @Override
     public void action(Command command) {
         setCommand(command);
-        LocationCommand locationCommand = (LocationCommand) command;
+        LocationCommand locationCommand=(LocationCommand) command;
         mLocClient.registerLocationListener(myLocationListenner);
-        LocationClientOption option = mLocClient.getLocOption();
-        if (null == option) {
-            option = new LocationClientOption();
+        LocationClientOption option=mLocClient.getLocOption();
+        if (null==option) {
+            option=new LocationClientOption();
         }
         option.setOpenGps(locationCommand.isOpenGps());// 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
@@ -64,22 +64,22 @@ public class BaiduLocation extends AbsReceiver {
     }
 
     public void receiveLocation(BDLocation location) {
-        LocationCommand command = (LocationCommand) getCommand();
-        if (null != command && command.isOnlyOnce()) {
+        LocationCommand command=(LocationCommand) getCommand();
+        if (null!=command&&command.isOnlyOnce()) {
             mLocClient.unRegisterLocationListener(myLocationListenner);
             mLocClient.stop();
         }
-        if (null != myListener) {
+        if (null!=myListener) {
             myListener.onReceiveLocation(location);
             return;
         }
 
-        if (location == null) {
+        if (location==null) {
             WeiboLog.d("", "location is null.");
             return;
         }
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb=new StringBuilder();
         sb.append("lat:").append(location.getLatitude()).append(" lng:").append(location.getLongitude())
             .append(" city:").append(location.getCity()).append(" cityCode:").append(location.getCityCode())
             .append(" province:").append(location.getProvince())

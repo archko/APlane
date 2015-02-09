@@ -29,32 +29,32 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
  */
 public class UserGridItemView extends LinearLayout {
 
-    private static final String TAG = "UserGridItemView";
+    private static final String TAG="UserGridItemView";
     private Context mContext;
     private ImageView mPortrait;    //微博作者头像
     private TextView mName;
     private TextView mGridviewLineOne;
     private TextView mGridviewLineTwo;
 
-    private String portraitUrl = null;
+    private String portraitUrl=null;
     private String mCacheDir;    //图片缓存目录
     private User user;    //微博
 
-    public static final int TYPE_PORTRAIT = 1;
-    private int followingType = - 1;   //0表示未关注,1表示已关注,-1表示未知
+    public static final int TYPE_PORTRAIT=1;
+    private int followingType=-1;   //0表示未关注,1表示已关注,-1表示未知
     //protected DisplayImageOptions options;
 
     public UserGridItemView(Context context, String cacheDir, boolean updateFlag) {
         super(context);
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.ak_user_grid_item, this);
 
-        mPortrait = (ImageView) findViewById(R.id.iv_portrait);
-        mName = (TextView) findViewById(R.id.tv_name);
-        mGridviewLineOne = (TextView) findViewById(R.id.gridview_line_one);
-        mGridviewLineTwo = (TextView) findViewById(R.id.gridview_line_two);
+        mPortrait=(ImageView) findViewById(R.id.iv_portrait);
+        mName=(TextView) findViewById(R.id.tv_name);
+        mGridviewLineOne=(TextView) findViewById(R.id.gridview_line_one);
+        mGridviewLineTwo=(TextView) findViewById(R.id.gridview_line_two);
 
-        mContext = context;
-        mCacheDir = cacheDir;
+        mContext=context;
+        mCacheDir=cacheDir;
 
         //update(status, updateFlag);
         /*options = new DisplayImageOptions.Builder()
@@ -67,22 +67,22 @@ public class UserGridItemView extends LinearLayout {
     }
 
     private void doFollow() {
-        WeiboLog.i(TAG, "follow listener:" + followingType);
-        if (followingType == - 1) {
+        WeiboLog.i(TAG, "follow listener:"+followingType);
+        if (followingType==-1) {
             WeiboLog.i(TAG, "doFollow.followingType=-1.");
             return;
         }
 
-        App app = (App) App.getAppContext();
-        if (app.getOauthBean().oauthType == Oauth2.OAUTH_TYPE_WEB) {
-            FollwingTask follwingTask = new FollwingTask();
+        App app=(App) App.getAppContext();
+        if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB) {
+            FollwingTask follwingTask=new FollwingTask();
             follwingTask.execute(new Integer[]{followingType});
         } else {
-            if (System.currentTimeMillis() >= app.getOauthBean().expireTime && app.getOauthBean().expireTime != 0) {
+            if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
                 WeiboLog.d(TAG, "web认证，token过期了.");
                 Toast.makeText(mContext, "token过期了,处理失败,可以刷新列表重新获取token.", Toast.LENGTH_LONG).show();
             } else {
-                FollwingTask follwingTask = new FollwingTask();
+                FollwingTask follwingTask=new FollwingTask();
                 follwingTask.execute(new Integer[]{followingType});
             }
         }
@@ -93,17 +93,17 @@ public class UserGridItemView extends LinearLayout {
         @Override
         protected User doInBackground(Integer... params) {
             try {
-                User now = null;
-                SinaUserApi weiboApi2 = new SinaUserApi();
+                User now=null;
+                SinaUserApi weiboApi2=new SinaUserApi();
                 weiboApi2.updateToken();
-                if (null == weiboApi2) {
+                if (null==weiboApi2) {
                     return now;
                 }
 
-                if (followingType == 0) {
-                    now = weiboApi2.createFriendships(user.id);
-                } else if (followingType == 1) {
-                    now = weiboApi2.deleteFriendships(user.id);
+                if (followingType==0) {
+                    now=weiboApi2.createFriendships(user.id);
+                } else if (followingType==1) {
+                    now=weiboApi2.deleteFriendships(user.id);
                 }
 
                 return now;
@@ -116,7 +116,7 @@ public class UserGridItemView extends LinearLayout {
 
         @Override
         protected void onPostExecute(User resultObj) {
-            if (resultObj == null) {
+            if (resultObj==null) {
                 Toast.makeText(mContext, "处理失败", Toast.LENGTH_LONG).show();
                 WeiboLog.e(TAG, "can't not follow.");
                 return;
@@ -124,20 +124,20 @@ public class UserGridItemView extends LinearLayout {
 
             try {
 
-                if (user.id != resultObj.id) {
+                if (user.id!=resultObj.id) {
                     WeiboLog.i(TAG, "用户项已经过期了.");
                     Toast.makeText(mContext, "处理成功!", Toast.LENGTH_LONG);
                     return;
                 }
 
-                boolean oldFollowing = user.following;
-                user.following = resultObj.following;
-                boolean newFollowing = user.following;
+                boolean oldFollowing=user.following;
+                user.following=resultObj.following;
+                boolean newFollowing=user.following;
 
-                if (oldFollowing == newFollowing) {
-                    Toast.makeText(mContext, "unfollow " + user.screenName + " successfully!", Toast.LENGTH_LONG);
+                if (oldFollowing==newFollowing) {
+                    Toast.makeText(mContext, "unfollow "+user.screenName+" successfully!", Toast.LENGTH_LONG);
                 } else {
-                    Toast.makeText(mContext, "follow " + user.screenName + " successfully!", Toast.LENGTH_LONG);
+                    Toast.makeText(mContext, "follow "+user.screenName+" successfully!", Toast.LENGTH_LONG);
                 }
 
                 /*if (user.isFollowing) {
@@ -165,9 +165,9 @@ public class UserGridItemView extends LinearLayout {
     }
 
     public void update(final User bean, boolean updateFlag, boolean cache) {
-        user = bean;
+        user=bean;
         mName.setText(user.screenName);
-        Status status = user.status;
+        Status status=user.status;
         /*if (user.isFollowing) {
             followingType=1;
             followBtn.setText(R.string.unfollow);
@@ -176,20 +176,20 @@ public class UserGridItemView extends LinearLayout {
             followBtn.setText(R.string.follow);
         }*/
 
-        int followersCount = user.followersCount;
-        int friendsCount = user.friendsCount;
+        int followersCount=user.followersCount;
+        int friendsCount=user.friendsCount;
         mGridviewLineOne.setText(String.valueOf(followersCount));
         mGridviewLineTwo.setText(String.valueOf(friendsCount));
 
-        portraitUrl = user.profileImageUrl;
-        String avatar_large = user.avatar_large;
-        if (! TextUtils.isEmpty(avatar_large)) {
-            portraitUrl = avatar_large;
+        portraitUrl=user.profileImageUrl;
+        String avatar_large=user.avatar_large;
+        if (!TextUtils.isEmpty(avatar_large)) {
+            portraitUrl=avatar_large;
         }
 
         //获取头像.
-        Bitmap bitmap = ImageCache2.getInstance().getBitmapFromMemCache(portraitUrl);
-        if (null != bitmap && ! bitmap.isRecycled()) {
+        Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(portraitUrl);
+        if (null!=bitmap&&!bitmap.isRecycled()) {
             mPortrait.setImageBitmap(bitmap);
         } else {
             mPortrait.setImageResource(R.drawable.user_default_photo);

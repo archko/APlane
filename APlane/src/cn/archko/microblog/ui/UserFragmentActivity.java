@@ -16,7 +16,6 @@ import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.UserFollowersGridFragment;

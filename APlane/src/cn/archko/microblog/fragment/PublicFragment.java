@@ -18,8 +18,8 @@ import com.me.microblog.util.WeiboLog;
  */
 public class PublicFragment extends RecyclerViewFragment {
 
-    public static final String TAG = "PublicFragment";
-    private static final int MAX_PAGE = 4;
+    public static final String TAG="PublicFragment";
+    private static final int MAX_PAGE=4;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,11 +29,11 @@ public class PublicFragment extends RecyclerViewFragment {
 
     @Override
     public void initApi() {
-        mStatusImpl = new SinaPublucStatusImpl();
+        mStatusImpl=new SinaPublucStatusImpl();
 
-        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
         try {
-            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
@@ -46,19 +46,19 @@ public class PublicFragment extends RecyclerViewFragment {
     @Override
     public void fetchMore() {
         super.fetchMore();
-        WeiboLog.v(TAG, "fetchMore.lastItem:" + lastItem + " selectedPos:" + selectedPos);
-        int count = mAdapter.getCount();
-        if (count < 1) {
+        WeiboLog.v(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
+        int count=mAdapter.getCount();
+        if (count<1) {
             WeiboLog.w(TAG, "no other data.");
             return;
         }
 
-        boolean isRefresh = false;
-        if (count >= weibo_count * MAX_PAGE) {   //refresh list
-            isRefresh = true;
+        boolean isRefresh=false;
+        if (count>=weibo_count*MAX_PAGE) {   //refresh list
+            isRefresh=true;
         }
         Status st;
-        st = (Status) mAdapter.getItem(mAdapter.getCount() - 1);
-        fetchData(- 1, st.id, isRefresh, false);
+        st=(Status) mAdapter.getItem(mAdapter.getCount()-1);
+        fetchData(-1, st.id, isRefresh, false);
     }
 }

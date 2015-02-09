@@ -33,53 +33,53 @@ import java.util.regex.Matcher;
  */
 public class PlaceItemView extends BaseItemView implements IBaseItemView {
 
-    private static final String TAG = "ThreadBeanItemView";
+    private static final String TAG="ThreadBeanItemView";
     private TagsViewGroup mTagsViewGroup;
     ImageAdapter mAdapter;
 
     public PlaceItemView(Context context, String cacheDir, boolean updateFlag,
         boolean cache, boolean showLargeBitmap, boolean showBitmap) {
-        super(context,cacheDir, updateFlag);
+        super(context, cacheDir, updateFlag);
 
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.home_time_line_item, this);
 
-        mPortrait = (ImageView) findViewById(R.id.iv_portrait);
+        mPortrait=(ImageView) findViewById(R.id.iv_portrait);
         mPortrait.setOnClickListener(this);
-        mName = (TextView) findViewById(R.id.tv_name);
-        mRepostNum = (TextView) findViewById(R.id.repost_num);
-        mCommentNum = (TextView) findViewById(R.id.comment_num);
-        mContentFirst = (TextView) findViewById(R.id.tv_content_first);
+        mName=(TextView) findViewById(R.id.tv_name);
+        mRepostNum=(TextView) findViewById(R.id.repost_num);
+        mCommentNum=(TextView) findViewById(R.id.comment_num);
+        mContentFirst=(TextView) findViewById(R.id.tv_content_first);
         /*mStatusPicture=(ImageView) findViewById(R.id.status_picture);
         mStatusPicture.setOnClickListener(this);
         mStatusPictureLay=(ImageView) findViewById(R.id.status_picture_lay);*/
-        mTagsViewGroup = (TagsViewGroup) findViewById(R.id.tags);
-        mContentSencond = (TextView) findViewById(R.id.tv_content_sencond);
-        mContentSecondLayout = (LinearLayout) findViewById(R.id.tv_content_sencond_layout);
-        mLeftSlider = (TextView) findViewById(R.id.left_slider);
-        mSourceFrom = (TextView) findViewById(R.id.source_from);
-        mCreateAt = (TextView) findViewById(R.id.send_time);
+        mTagsViewGroup=(TagsViewGroup) findViewById(R.id.tags);
+        mContentSencond=(TextView) findViewById(R.id.tv_content_sencond);
+        mContentSecondLayout=(LinearLayout) findViewById(R.id.tv_content_sencond_layout);
+        mLeftSlider=(TextView) findViewById(R.id.left_slider);
+        mSourceFrom=(TextView) findViewById(R.id.source_from);
+        mCreateAt=(TextView) findViewById(R.id.send_time);
 
-        mLoctationlayout = (LinearLayout) findViewById(R.id.loctation_ll);
-        mLocation = (TextView) findViewById(R.id.location);
+        mLoctationlayout=(LinearLayout) findViewById(R.id.loctation_ll);
+        mLocation=(TextView) findViewById(R.id.location);
 
-        isShowLargeBitmap = showLargeBitmap;
-        isShowBitmap = showBitmap;
+        isShowLargeBitmap=showLargeBitmap;
+        isShowBitmap=showBitmap;
 
-        SharedPreferences options = PreferenceManager.getDefaultSharedPreferences(mContext);
-        float pref_title_font_size = options.getInt(PreferenceUtils.PREF_TITLE_FONT_SIZE, 14);
-        float pref_content_font_size = options.getInt(PreferenceUtils.PREF_CONTENT_FONT_SIZE, 16);
-        float pref_ret_content_font_size = options.getInt(PreferenceUtils.PREF_RET_CONTENT_FONT_SIZE, 16);
+        SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(mContext);
+        float pref_title_font_size=options.getInt(PreferenceUtils.PREF_TITLE_FONT_SIZE, 14);
+        float pref_content_font_size=options.getInt(PreferenceUtils.PREF_CONTENT_FONT_SIZE, 16);
+        float pref_ret_content_font_size=options.getInt(PreferenceUtils.PREF_RET_CONTENT_FONT_SIZE, 16);
 
-        int pref_content_color = PreferenceUtils.getInstace(App.getAppContext()).getDefaultStatusThemeColor(App.getAppContext());
-        int pref_ret_content_color = PreferenceUtils.getInstace(App.getAppContext()).getDefaultRetContentThemeColor(App.getAppContext());
+        int pref_content_color=PreferenceUtils.getInstace(App.getAppContext()).getDefaultStatusThemeColor(App.getAppContext());
+        int pref_ret_content_color=PreferenceUtils.getInstace(App.getAppContext()).getDefaultRetContentThemeColor(App.getAppContext());
 
-        if (mName.getTextSize() != pref_title_font_size) {
+        if (mName.getTextSize()!=pref_title_font_size) {
             mName.setTextSize(pref_title_font_size);
         }
-        if (mContentFirst.getTextSize() != pref_content_font_size) {
+        if (mContentFirst.getTextSize()!=pref_content_font_size) {
             mContentFirst.setTextSize(pref_content_font_size);
         }
-        if (mContentSencond.getTextSize() != pref_ret_content_font_size) {
+        if (mContentSencond.getTextSize()!=pref_ret_content_font_size) {
             mContentSencond.setTextSize(pref_ret_content_font_size);
         }
         mContentFirst.setTextColor(pref_content_color);
@@ -87,47 +87,47 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
         mContentFirst.setOnTouchListener(this);
         mContentSencond.setOnTouchListener(this);
 
-        mLeftSlider.setBackgroundResource(sliderColors[ mIndex ]);
+        mLeftSlider.setBackgroundResource(sliderColors[mIndex]);
         mIndex++;
-        if (mIndex >= 8) {
-            mIndex = 0;
+        if (mIndex>=8) {
+            mIndex=0;
         }
     }
 
     @Override
     public void update(final Status bean, boolean updateFlag, boolean cache, boolean showLargeBitmap,
         boolean showBitmap) {
-        if (mStatus == bean) {
+        if (mStatus==bean) {
             WeiboLog.v(TAG, "相同的内容不更新。");
             if (updateFlag) {   //需要加载数据,否则会无法更新列表的图片.
                 loadPicture(updateFlag, cache);
-                isShowBitmap = showBitmap;
+                isShowBitmap=showBitmap;
                 loadPortrait(updateFlag, cache);
             }
             return;
         }
 
         try {
-            mStatus = bean;
-            mRetweetedStatus = bean.retweetedStatus;
+            mStatus=bean;
+            mRetweetedStatus=bean.retweetedStatus;
             //TODO 因为现在的微博可能没有包user属性。可能被删除了。
             try {
                 mName.setText(mStatus.user.screenName);
             } catch (Exception e) {
             }
 
-            String title = (mStatus.text);
-            AKSpannableStringBuilder spannableString = (AKSpannableStringBuilder) mStatus.mStatusSpannable;
-            if (null == spannableString) {
-                spannableString = new AKSpannableStringBuilder(mStatus.text);
+            String title=(mStatus.text);
+            AKSpannableStringBuilder spannableString=(AKSpannableStringBuilder) mStatus.mStatusSpannable;
+            if (null==spannableString) {
+                spannableString=new AKSpannableStringBuilder(mStatus.text);
                 AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtils.ATPATTERN);
                 AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtils.getWebPattern());
-                mStatus.mStatusSpannable = spannableString;
+                mStatus.mStatusSpannable=spannableString;
             }
             mContentFirst.setText(spannableString, TextView.BufferType.SPANNABLE);
             //mContentFirst.setMovementMethod(LinkMovementMethod.getInstance());
 
-            if (null == mStatus.user) {
+            if (null==mStatus.user) {
                 WeiboLog.i(TAG, "微博可能被删除，无法显示！");
                 mSourceFrom.setText(null);
                 mCreateAt.setText(null);
@@ -135,23 +135,23 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
                 mCommentNum.setText(null);
                 mContentSencond.setText(null);
                 mLocation.setText(null);
-                if (null != mStatusPicture && mStatusPictureLay != null) {
+                if (null!=mStatusPicture&&mStatusPictureLay!=null) {
                     mStatusPicture.setVisibility(View.GONE);
                     mStatusPictureLay.setVisibility(GONE);
                 }
                 mContentSencond.setVisibility(GONE);
-                if (null != mContentSecondLayout) {
+                if (null!=mContentSecondLayout) {
                     mContentSecondLayout.setVisibility(GONE);
                 }
                 return;
             }
 
-            String source = mStatus.source;
-            Matcher atMatcher = WeiboUtils.comeFrom.matcher(source);
+            String source=mStatus.source;
+            Matcher atMatcher=WeiboUtils.comeFrom.matcher(source);
             if (atMatcher.find()) {
-                int start = atMatcher.start();
-                int end = atMatcher.end();
-                String cfString = source.substring(end, source.length() - 4);
+                int start=atMatcher.start();
+                int end=atMatcher.end();
+                String cfString=source.substring(end, source.length()-4);
                 mSourceFrom.setText(mContext.getString(R.string.text_come_from, cfString));
             }
 
@@ -161,17 +161,17 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
             mCommentNum.setText(getResources().getString(R.string.text_comment_num, mStatus.c_num));
 
             //处理转发的微博
-            if (mRetweetedStatus != null) {
+            if (mRetweetedStatus!=null) {
                 mContentSencond.setVisibility(View.VISIBLE);
 
                 try {
-                    title = "@" + mRetweetedStatus.user.screenName + ":" + mRetweetedStatus.text + " ";
-                    spannableString = (AKSpannableStringBuilder) mStatus.mRetweetedSpannable;
-                    if (null == spannableString) {
-                        spannableString = new AKSpannableStringBuilder(title);
+                    title="@"+mRetweetedStatus.user.screenName+":"+mRetweetedStatus.text+" ";
+                    spannableString=(AKSpannableStringBuilder) mStatus.mRetweetedSpannable;
+                    if (null==spannableString) {
+                        spannableString=new AKSpannableStringBuilder(title);
                         AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtils.ATPATTERN);
                         AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtils.getWebPattern());
-                        mStatus.mRetweetedSpannable = spannableString;
+                        mStatus.mRetweetedSpannable=spannableString;
                     }
                     mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
                     //mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
@@ -180,29 +180,29 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
                 }
             } else {
                 mContentSencond.setVisibility(View.GONE);
-                if (null != mContentSecondLayout) {
+                if (null!=mContentSecondLayout) {
                     mContentSecondLayout.setVisibility(GONE);
                 }
             }
 
             //location
-            sAnnotation = mStatus.annotations;
-            if (null == sAnnotation || sAnnotation.place == null) {
-                if (mStatus.distance > 0) {
-                    if (mLoctationlayout.getVisibility() == GONE) {
+            sAnnotation=mStatus.annotations;
+            if (null==sAnnotation||sAnnotation.place==null) {
+                if (mStatus.distance>0) {
+                    if (mLoctationlayout.getVisibility()==GONE) {
                         mLoctationlayout.setVisibility(VISIBLE);
                     }
-                    mLocation.setText(mStatus.distance + "m");
+                    mLocation.setText(mStatus.distance+"m");
                 } else {
                     mLoctationlayout.setVisibility(GONE);
                 }
             } else {
-                if (mLoctationlayout.getVisibility() == GONE) {
+                if (mLoctationlayout.getVisibility()==GONE) {
                     mLoctationlayout.setVisibility(VISIBLE);
                 }
-                String loc = sAnnotation.place.title;
-                if (mStatus.distance > 0) {
-                    loc = loc + " " + mStatus.distance + "m";
+                String loc=sAnnotation.place.title;
+                if (mStatus.distance>0) {
+                    loc=loc+" "+mStatus.distance+"m";
                 }
                 mLocation.setText(sAnnotation.place.title);
             }
@@ -218,7 +218,7 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
 
     @Override
     public void onClick(View view) {
-        if (mPortrait == view) {
+        if (mPortrait==view) {
             WeiboLog.d(TAG, "onClick:");
             WeiboOperation.toViewStatusUser(mContext, mStatus.user, UserFragmentActivity.TYPE_USER_INFO);
             return;
@@ -232,13 +232,13 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
      * @param cache      是否缓存头像.
      */
     void loadPicture(boolean updateFlag, boolean cache) {
-        String thumImageUrl = mStatus.thumbnailPic;
+        String thumImageUrl=mStatus.thumbnailPic;
 
         //处理转发的微博
         if (TextUtils.isEmpty(thumImageUrl)) {
-            if (mRetweetedStatus != null) {
+            if (mRetweetedStatus!=null) {
                 //获取转发微博内容图片.
-                thumImageUrl = mRetweetedStatus.thumbnailPic;
+                thumImageUrl=mRetweetedStatus.thumbnailPic;
             }
         }
 
@@ -247,8 +247,8 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
             mTagsViewGroup.setAdapter(null);
             return;
         }
-        mStatus.thumbs = new String[]{thumImageUrl};
-        String[] thumbs = mStatus.thumbs; //不重复检查,在解析完成后处理.
+        mStatus.thumbs=new String[]{thumImageUrl};
+        String[] thumbs=mStatus.thumbs; //不重复检查,在解析完成后处理.
         //WeiboLog.d(TAG, "loadPicture:"+thumbs+" o:"+mStatus.thumbnailPic);
         /*if (null==thumbs||thumbs.length==0) {
             if (null!=mStatus.retweetedStatus) {
@@ -256,7 +256,7 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
             }
         }*/
 
-        if (! isShowBitmap || null == thumbs || thumbs.length == 0) {
+        if (!isShowBitmap||null==thumbs||thumbs.length==0) {
             mTagsViewGroup.setAdapter(null);
             mTagsViewGroup.setVisibility(GONE);
             //WeiboLog.v(TAG, "setAdapter.没有图片需要显示。"+mStatus.text);
@@ -266,8 +266,8 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
 
         mTagsViewGroup.setVisibility(VISIBLE);
         //ImageAdapter adapter=(ImageAdapter) mTagsViewGroup.getAdapter();
-        if (null == mAdapter) {
-            mAdapter = new ImageAdapter(mContext, mCacheDir, mStatus.thumbs);
+        if (null==mAdapter) {
+            mAdapter=new ImageAdapter(mContext, mCacheDir, mStatus.thumbs);
             //mTagsViewGroup.setAdapter(mAdapter);
         } /*else*/
         {

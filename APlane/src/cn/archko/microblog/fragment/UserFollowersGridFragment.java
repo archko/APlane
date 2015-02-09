@@ -27,7 +27,7 @@ import java.util.ArrayList;
  */
 public class UserFollowersGridFragment extends UserFriendsGridFragment {
 
-    public static final String TAG = "UserFollowersGridFragment";
+    public static final String TAG="UserFollowersGridFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,11 +37,11 @@ public class UserFollowersGridFragment extends UserFriendsGridFragment {
 
     @Override
     public void initApi() {
-        mStatusImpl = new SinaUserFollowersImpl();
+        mStatusImpl=new SinaUserFollowersImpl();
 
-        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
         try {
-            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.userApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
@@ -54,13 +54,13 @@ public class UserFollowersGridFragment extends UserFriendsGridFragment {
 
     @Override
     public void refreshNewData(SStatusData<User> sStatusData, Boolean isRefresh) {
-        ArrayList<User> list = sStatusData.mStatusData;
-        if (mDataList.size() > 0) {
+        ArrayList<User> list=sStatusData.mStatusData;
+        if (mDataList.size()>0) {
             try {
-                User first = list.get(0);
-                User last = mDataList.get(mDataList.size() - 1);
+                User first=list.get(0);
+                User last=mDataList.get(mDataList.size()-1);
 
-                if (first.id == last.id) {
+                if (first.id==last.id) {
                     list.remove(0);
                 }
             } catch (Exception e) {
@@ -69,15 +69,15 @@ public class UserFollowersGridFragment extends UserFriendsGridFragment {
         }
 
         if (isRefresh) {
-            int len = list.size();
-            NotifyUtils.showToast("为您更新了" + len + "条最新信息！");
-            if (list.size() < weibo_count) {
+            int len=list.size();
+            NotifyUtils.showToast("为您更新了"+len+"条最新信息！");
+            if (list.size()<weibo_count) {
                 mDataList.addAll(0, list);
             } else {
                 mDataList.clear();
                 mDataList.addAll(list);
             }
-            WeiboLog.i(TAG, "notify data changed." + mDataList.size() + " isRefresh:" + isRefresh);
+            WeiboLog.i(TAG, "notify data changed."+mDataList.size()+" isRefresh:"+isRefresh);
         } else {
             mDataList.addAll(list);
         }
@@ -88,7 +88,7 @@ public class UserFollowersGridFragment extends UserFriendsGridFragment {
     @Override
     public void refreshAdapter(boolean load, boolean isRefresh) {
         super.refreshAdapter(load, isRefresh);
-        if (isRefresh && load) {
+        if (isRefresh&&load) {
             clearHomeNotify();
         }
     }
@@ -99,14 +99,14 @@ public class UserFollowersGridFragment extends UserFriendsGridFragment {
      * 清除主页的消息计数通知
      */
     private void clearHomeNotify() {
-        if (mUserId != currentUserId) {
+        if (mUserId!=currentUserId) {
             WeiboLog.d(TAG, "查看的用户不是当前用户,不刷新粉丝数.");
             return;
         }
         //int newFollower=mPrefs.getInt(Constants.PREF_SERVICE_FOLLOWER, 0);
         mPrefs.edit().remove(Constants.PREF_SERVICE_FOLLOWER).commit();
         try {
-            SkinFragmentActivity parent = (SkinFragmentActivity) getActivity();
+            SkinFragmentActivity parent=(SkinFragmentActivity) getActivity();
             parent.refreshSidebar();
 
             newOperationTask(new Object[]{Constants.REMIND_FOLLOWER}, null);
@@ -123,12 +123,12 @@ public class UserFollowersGridFragment extends UserFriendsGridFragment {
      */
     protected Object[] baseBackgroundOperation2(Object... params) {
         try {
-            String type = (String) params[ 0 ];
-            SStatusData sStatusData = new SStatusData();
-            SinaUnreadApi sinaUnreadApi = new SinaUnreadApi();
+            String type=(String) params[0];
+            SStatusData sStatusData=new SStatusData();
+            SinaUnreadApi sinaUnreadApi=new SinaUnreadApi();
             sinaUnreadApi.updateToken();
-            String rs = sinaUnreadApi.setUnread(type);
-            sStatusData.errorMsg = rs;
+            String rs=sinaUnreadApi.setUnread(type);
+            sStatusData.errorMsg=rs;
             return new Object[]{sStatusData};
         } catch (Exception e) {
             e.printStackTrace();
@@ -144,13 +144,13 @@ public class UserFollowersGridFragment extends UserFriendsGridFragment {
      */
     protected void basePostOperation2(Object[] resultObj) {
         try {
-            SStatusData sStatusData = (SStatusData) resultObj[ 0 ];
-            WeiboLog.i(TAG, TAG + sStatusData);
-            if (null == sStatusData) {
+            SStatusData sStatusData=(SStatusData) resultObj[0];
+            WeiboLog.i(TAG, TAG+sStatusData);
+            if (null==sStatusData) {
                 return;
             }
 
-            if (sStatusData.errorCode > 0 && ! TextUtils.isEmpty(sStatusData.errorMsg)) {
+            if (sStatusData.errorCode>0&&!TextUtils.isEmpty(sStatusData.errorMsg)) {
                 NotifyUtils.showToast(sStatusData.errorMsg);
             }
         } catch (Exception e) {

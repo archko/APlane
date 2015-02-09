@@ -12,6 +12,6 @@ public class SimpleViewHolder extends RecyclerView.ViewHolder {
 
     public SimpleViewHolder(View view) {
         super(view);
-        baseItemView = view;
+        baseItemView=view;
     }
 }

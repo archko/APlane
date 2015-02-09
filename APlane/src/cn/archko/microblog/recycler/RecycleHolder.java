@@ -16,10 +16,10 @@ public class RecycleHolder implements RecyclerListener {
     @Override
     public void onMovedToScrapHeap(final View view) {
         if (view instanceof ThreadBeanItemView) {
-            ThreadBeanItemView itemView = (ThreadBeanItemView) view;
+            ThreadBeanItemView itemView=(ThreadBeanItemView) view;
 
-            TagsViewGroup tagsViewGroup = itemView.mTagsViewGroup;
-            if (null != tagsViewGroup) {
+            TagsViewGroup tagsViewGroup=itemView.mTagsViewGroup;
+            if (null!=tagsViewGroup) {
                 tagsViewGroup.setAdapter(null);
                 tagsViewGroup.removeAllViews();
             }

@@ -16,7 +16,7 @@ import com.me.microblog.util.NotifyUtils;
  */
 public class UserFriendsGridFragment extends UserGridFragment {
 
-    public static final String TAG = "UserFriendsGridFragment";
+    public static final String TAG="UserFriendsGridFragment";
 
     /**
      * When creating, retrieve this instance's number from its arguments.
@@ -28,11 +28,11 @@ public class UserFriendsGridFragment extends UserGridFragment {
     }
 
     public void initApi() {
-        mStatusImpl = new SinaUserFriendsImpl();
+        mStatusImpl=new SinaUserFriendsImpl();
 
-        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
         try {
-            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.userApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();

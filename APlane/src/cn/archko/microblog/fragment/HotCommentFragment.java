@@ -13,13 +13,13 @@ import com.me.microblog.util.WeiboLog;
 @Deprecated
 public class HotCommentFragment extends RecyclerViewFragment {
 
-    public static final String TAG = "HotCommentFragment";
+    public static final String TAG="HotCommentFragment";
 
     //--------------------- 数据加载 ---------------------
     public SStatusData<Status> getStatuses(Long sinceId, Long maxId, int c, int p)
         throws WeiboException {
-        WeiboLog.d(TAG, " HotCommentFragment.getStatuses." + sinceId + " maxId:" + maxId + " count:" + c + " page:" + p);
-        SStatusData<Status> sStatusData = null;
+        WeiboLog.d(TAG, " HotCommentFragment.getStatuses."+sinceId+" maxId:"+maxId+" count:"+c+" page:"+p);
+        SStatusData<Status> sStatusData=null;
         /*SWeiboApi2 sWeiboApi2=((SWeiboApi2) App.getMicroBlog(App.getAppContext()));
         if (null==sWeiboApi2) {
             sStatusData=new SStatusData<Status>();

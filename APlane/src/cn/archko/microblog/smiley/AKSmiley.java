@@ -9,7 +9,7 @@ import java.util.HashMap;
  */
 public final class AKSmiley {
 
-    public static final HashMap<String, Integer> mSmileyMap = new HashMap<String, Integer>();
+    public static final HashMap<String, Integer> mSmileyMap=new HashMap<String, Integer>();
 
     static {
         mSmileyMap.put("[织]", Integer.valueOf(R.drawable.zz2_org));

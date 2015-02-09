@@ -32,38 +32,38 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;*/
  */
 public class UserItemView extends LinearLayout implements View.OnClickListener {
 
-    private static final String TAG = "UserItemView";
+    private static final String TAG="UserItemView";
     private Context mContext;
     private TextView status_content;    //微博的内容
     private Button followBtn;
     private ImageView mPortrait;    //微博作者头像
     private TextView mName;
 
-    private String mPortraitUrl = null;
+    private String mPortraitUrl=null;
     private String mCacheDir;    //图片缓存目录
     private User user;    //微博
     View right;
 
-    public static final int TYPE_PORTRAIT = 1;
-    private int followingType = - 1;   //0表示未关注,1表示已关注,-1表示未知
+    public static final int TYPE_PORTRAIT=1;
+    private int followingType=-1;   //0表示未关注,1表示已关注,-1表示未知
     //protected DisplayImageOptions options;
 
     public UserItemView(Context context, String cacheDir, boolean updateFlag) {
         super(context);
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.friend_item, this);
 
-        right = findViewById(R.id.right);
-        status_content = (TextView) findViewById(R.id.status_content);
-        followBtn = (Button) findViewById(R.id.follow_btn);
-        mPortrait = (ImageView) findViewById(R.id.iv_portrait);
-        mName = (TextView) findViewById(R.id.tv_name);
+        right=findViewById(R.id.right);
+        status_content=(TextView) findViewById(R.id.status_content);
+        followBtn=(Button) findViewById(R.id.follow_btn);
+        mPortrait=(ImageView) findViewById(R.id.iv_portrait);
+        mName=(TextView) findViewById(R.id.tv_name);
 
         //setOnTouchListener(this);
         mPortrait.setOnClickListener(this);
         followBtn.setOnClickListener(this);
 
-        mContext = context;
-        mCacheDir = cacheDir;
+        mContext=context;
+        mCacheDir=cacheDir;
 
         /*options = new DisplayImageOptions.Builder()
             .cacheInMemory(true)
@@ -76,8 +76,8 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        int id = view.getId();
-        WeiboLog.d(TAG, "id:" + id);
+        int id=view.getId();
+        WeiboLog.d(TAG, "id:"+id);
         String imgUrl;
         /*if (mPortrait==view) {
             WeiboLog.d(TAG, "onClick:"+id);
@@ -88,29 +88,29 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
             mContext.startActivity(intent);
             return;
         }*/
-        if (id == R.id.follow_btn) {
+        if (id==R.id.follow_btn) {
             //Toast.makeText(mContext, "not implemented.",Toast.LENGTH_SHORT).show();
             doFollow();
         }
     }
 
     private void doFollow() {
-        WeiboLog.i(TAG, "follow listener:" + followingType);
-        if (followingType == - 1) {
+        WeiboLog.i(TAG, "follow listener:"+followingType);
+        if (followingType==-1) {
             WeiboLog.i(TAG, "doFollow.followingType=-1.");
             return;
         }
 
-        App app = (App) App.getAppContext();
-        if (app.getOauthBean().oauthType == Oauth2.OAUTH_TYPE_WEB) {
-            FollwingTask follwingTask = new FollwingTask();
+        App app=(App) App.getAppContext();
+        if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB) {
+            FollwingTask follwingTask=new FollwingTask();
             follwingTask.execute(new Integer[]{followingType});
         } else {
-            if (System.currentTimeMillis() >= app.getOauthBean().expireTime && app.getOauthBean().expireTime != 0) {
+            if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
                 WeiboLog.d(TAG, "web认证，token过期了.");
                 Toast.makeText(mContext, "token过期了,处理失败,可以刷新列表重新获取token.", Toast.LENGTH_LONG).show();
             } else {
-                FollwingTask follwingTask = new FollwingTask();
+                FollwingTask follwingTask=new FollwingTask();
                 follwingTask.execute(new Integer[]{followingType});
             }
         }
@@ -121,17 +121,17 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
         @Override
         protected User doInBackground(Integer... params) {
             try {
-                User now = null;
-                SinaUserApi weiboApi2 = new SinaUserApi();
+                User now=null;
+                SinaUserApi weiboApi2=new SinaUserApi();
                 weiboApi2.updateToken();
-                if (null == weiboApi2) {
+                if (null==weiboApi2) {
                     return now;
                 }
 
-                if (followingType == 0) {
-                    now = weiboApi2.createFriendships(user.id);
-                } else if (followingType == 1) {
-                    now = weiboApi2.deleteFriendships(user.id);
+                if (followingType==0) {
+                    now=weiboApi2.createFriendships(user.id);
+                } else if (followingType==1) {
+                    now=weiboApi2.deleteFriendships(user.id);
                 }
 
                 return now;
@@ -144,7 +144,7 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(User resultObj) {
-            if (resultObj == null) {
+            if (resultObj==null) {
                 Toast.makeText(mContext, "处理失败", Toast.LENGTH_LONG).show();
                 WeiboLog.e(TAG, "can't not follow.");
                 return;
@@ -152,27 +152,27 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
 
             try {
 
-                if (user.id != resultObj.id) {
+                if (user.id!=resultObj.id) {
                     WeiboLog.i(TAG, "用户项已经过期了.");
                     Toast.makeText(mContext, "处理成功!", Toast.LENGTH_LONG);
                     return;
                 }
 
-                boolean oldFollowing = user.following;
-                user.following = resultObj.following;
-                boolean newFollowing = user.following;
+                boolean oldFollowing=user.following;
+                user.following=resultObj.following;
+                boolean newFollowing=user.following;
 
-                if (oldFollowing == newFollowing) {
-                    Toast.makeText(mContext, "unfollow " + user.screenName + " successfully!", Toast.LENGTH_LONG);
+                if (oldFollowing==newFollowing) {
+                    Toast.makeText(mContext, "unfollow "+user.screenName+" successfully!", Toast.LENGTH_LONG);
                 } else {
-                    Toast.makeText(mContext, "follow " + user.screenName + " successfully!", Toast.LENGTH_LONG);
+                    Toast.makeText(mContext, "follow "+user.screenName+" successfully!", Toast.LENGTH_LONG);
                 }
 
                 if (user.following) {
-                    followingType = 1;
+                    followingType=1;
                     followBtn.setText(R.string.unfollow);
                 } else {
-                    followingType = 0;
+                    followingType=0;
                     followBtn.setText(R.string.follow);
                 }
             } catch (Exception e) {
@@ -193,27 +193,27 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
     }
 
     public void update(final User bean, boolean updateFlag, boolean cache) {
-        user = bean;
+        user=bean;
         mName.setText(user.screenName);
-        Status status = user.status;
-        if (null != status) {
+        Status status=user.status;
+        if (null!=status) {
             status_content.setText(status.text);
         } else {
             status_content.setText(null);
         }
 
         if (user.following) {
-            followingType = 1;
+            followingType=1;
             followBtn.setText(R.string.unfollow);
         } else {
-            followingType = 0;
+            followingType=0;
             followBtn.setText(R.string.follow);
         }
 
-        mPortraitUrl = user.profileImageUrl;
+        mPortraitUrl=user.profileImageUrl;
         //获取头像.
-        Bitmap bitmap = ImageCache2.getInstance().getBitmapFromMemCache(mPortraitUrl);
-        if (null != bitmap && ! bitmap.isRecycled()) {
+        Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(mPortraitUrl);
+        if (null!=bitmap&&!bitmap.isRecycled()) {
             mPortrait.setImageBitmap(bitmap);
         } else {
             mPortrait.setImageResource(R.drawable.user_default_photo);
@@ -228,7 +228,7 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
         }
     }
 
-    Handler mHandler = new Handler() {
+    Handler mHandler=new Handler() {
 
         @Override
         public void handleMessage(Message msg) {

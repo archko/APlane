@@ -18,12 +18,12 @@ public class AccountFiltersListAdapter extends ResourceCursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        Filter filter = new Filter();
+        Filter filter=new Filter();
         filter.createFromDb(cursor);
-        String filterDesc = filter.getRepresentation(context);
+        String filterDesc=filter.getRepresentation(context);
 
-        TextView tv = (TextView) view.findViewById(R.id.line1);
-        ImageView icon = (ImageView) view.findViewById(R.id.action_icon);
+        TextView tv=(TextView) view.findViewById(R.id.line1);
+        ImageView icon=(ImageView) view.findViewById(R.id.action_icon);
 
         tv.setText(filterDesc);
         icon.setContentDescription(filterDesc);

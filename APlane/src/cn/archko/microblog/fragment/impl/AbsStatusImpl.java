@@ -8,16 +8,16 @@ import com.me.microblog.core.AbsApiImpl;
  * @author: archko Date: 13-1-28 Time: 下午6:39
  * @description: 抽象数据获取，通过没事的api获取。包含查询，保存，网络数据获取
  */
-public abstract class AbsStatusImpl <T> {
+public abstract class AbsStatusImpl<T> {
 
     AbsApiImpl mAbsApi;
 
     public void setApiImpl(AbsApiImpl apiImpl) {
-        this.mAbsApi = apiImpl;
+        this.mAbsApi=apiImpl;
     }
 
     public void updateToken() {
-        if (null != mAbsApi) {
+        if (null!=mAbsApi) {
             mAbsApi.updateToken();
         }
     }

@@ -25,7 +25,7 @@ import java.io.InputStream;
  */
 public class AboutActivity extends Activity {
 
-    private static final Part[] PARTS = {
+    private static final Part[] PARTS={
         // Start
         new Part(R.string.about_3dparty_title, Format.HTML, "about_3rdparty.html"),
         new Part(R.string.about_changelog_title, Format.WIKI, "about_changelog.wiki")
@@ -38,20 +38,20 @@ public class AboutActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.about);
 
-        String name = getResources().getString(R.string.app_name);
-        String version = "";
+        String name=getResources().getString(R.string.app_name);
+        String version="";
         try {
-            final PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            version = packageInfo.versionName;
-            name = getResources().getString(packageInfo.applicationInfo.labelRes);
+            final PackageInfo packageInfo=getPackageManager().getPackageInfo(getPackageName(), 0);
+            version=packageInfo.versionName;
+            name=getResources().getString(packageInfo.applicationInfo.labelRes);
         } catch (final PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
 
-        final TextView title = (TextView) findViewById(R.id.about_title);
-        title.setText(name + (! TextUtils.isEmpty(version) ? " v" + version : ""));
+        final TextView title=(TextView) findViewById(R.id.about_title);
+        title.setText(name+(!TextUtils.isEmpty(version) ? " v"+version : ""));
 
-        final ExpandableListView view = (ExpandableListView) findViewById(R.id.about_parts);
+        final ExpandableListView view=(ExpandableListView) findViewById(R.id.about_parts);
         view.setAdapter(new PartsAdapter());
         view.expandGroup(0);
     }
@@ -64,24 +64,24 @@ public class AboutActivity extends Activity {
         CharSequence content;
 
         public Part(final int labelId, final Format format, final String fileName) {
-            this.labelId = labelId;
-            this.format = format;
-            this.fileName = fileName;
+            this.labelId=labelId;
+            this.format=format;
+            this.fileName=fileName;
         }
 
         public CharSequence getContent(final Context context) {
-            if (content == null) {
+            if (content==null) {
                 try {
-                    final InputStream input = context.getAssets().open(fileName);
-                    final int size = input.available();
-                    byte[] buffer = new byte[ size ];
+                    final InputStream input=context.getAssets().open(fileName);
+                    final int size=input.available();
+                    byte[] buffer=new byte[size];
                     input.read(buffer);
                     input.close();
-                    final String text = new String(buffer, "UTF8");
-                    content = format.format(text);
+                    final String text=new String(buffer, "UTF8");
+                    content=format.format(text);
                 } catch (final IOException e) {
                     e.printStackTrace();
-                    content = "";
+                    content="";
                 }
             }
             return content;
@@ -102,12 +102,12 @@ public class AboutActivity extends Activity {
 
         @Override
         public Part getGroup(final int groupPosition) {
-            return PARTS[ groupPosition ];
+            return PARTS[groupPosition];
         }
 
         @Override
         public Part getChild(final int groupPosition, final int childPosition) {
-            return PARTS[ groupPosition ];
+            return PARTS[groupPosition];
         }
 
         @Override
@@ -128,14 +128,14 @@ public class AboutActivity extends Activity {
         @Override
         public View getGroupView(final int groupPosition, final boolean isExpanded, final View convertView,
             final ViewGroup parent) {
-            View container = null;
-            TextView view = null;
-            if (convertView == null) {
-                container = LayoutInflater.from(AboutActivity.this).inflate(R.layout.about_part, parent, false);
+            View container=null;
+            TextView view=null;
+            if (convertView==null) {
+                container=LayoutInflater.from(AboutActivity.this).inflate(R.layout.about_part, parent, false);
             } else {
-                container = convertView;
+                container=convertView;
             }
-            view = (TextView) container.findViewById(R.id.about_partText);
+            view=(TextView) container.findViewById(R.id.about_partText);
             view.setText(getGroup(groupPosition).labelId);
             return container;
         }
@@ -143,13 +143,13 @@ public class AboutActivity extends Activity {
         @Override
         public View getChildView(final int groupPosition, final int childPosition, final boolean isLastChild,
             final View convertView, final ViewGroup parent) {
-            WebView view = null;
-            if (! (convertView instanceof WebView)) {
-                view = new WebView(AboutActivity.this);
+            WebView view=null;
+            if (!(convertView instanceof WebView)) {
+                view=new WebView(AboutActivity.this);
             } else {
-                view = ((WebView) convertView);
+                view=((WebView) convertView);
             }
-            CharSequence content = getChild(groupPosition, childPosition).getContent(AboutActivity.this);
+            CharSequence content=getChild(groupPosition, childPosition).getContent(AboutActivity.this);
             view.loadDataWithBaseURL("file:///fake/not_used", content.toString(), "text/html", "UTF-8", "");
             view.setBackgroundColor(Color.GRAY);
             return view;

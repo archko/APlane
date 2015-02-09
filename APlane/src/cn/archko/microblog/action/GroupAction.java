@@ -22,40 +22,40 @@ import java.util.ArrayList;
  */
 public class GroupAction implements Action {
 
-    public static final String TAG = "GroupAction";
+    public static final String TAG="GroupAction";
     /**
      * 强制加载分组
      */
-    boolean forceLoad = false;
+    boolean forceLoad=false;
 
     public GroupAction() {
     }
 
     public GroupAction(boolean forceLoad) {
-        this.forceLoad = forceLoad;
+        this.forceLoad=forceLoad;
     }
 
     @Override
     public ActionResult doAction(Context context, Object... params) {
-        String filepath = (String) params[ 0 ];
+        String filepath=(String) params[0];
 
-        ActionResult actionResult = new ActionResult();
+        ActionResult actionResult=new ActionResult();
 
-        File file = new File(filepath);
-        WeiboLog.d(TAG, "loadGroup:" + filepath);
-        if (file.exists() && ! forceLoad) {
-            ArrayList<Group> groups = WeiboOperation.readLocalData(filepath);
-            if (null != groups) {
-                actionResult.resoultCode = ActionResult.ACTION_SUCESS;
-                actionResult.obj = groups;
+        File file=new File(filepath);
+        WeiboLog.d(TAG, "loadGroup:"+filepath);
+        if (file.exists()&&!forceLoad) {
+            ArrayList<Group> groups=WeiboOperation.readLocalData(filepath);
+            if (null!=groups) {
+                actionResult.resoultCode=ActionResult.ACTION_SUCESS;
+                actionResult.obj=groups;
             } else {
                 loadGroup(actionResult, filepath, context);
             }
         } else {
-            App app = (App) App.getAppContext();
-            if (System.currentTimeMillis() >= app.getOauthBean().expireTime && app.getOauthBean().expireTime != 0) {
+            App app=(App) App.getAppContext();
+            if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
                 WeiboLog.d(TAG, "不下载分组，token过期了。");
-                actionResult.reslutMsg = "不下载分组，token过期了。";
+                actionResult.reslutMsg="不下载分组，token过期了。";
             } else {
                 loadGroup(actionResult, filepath, context);
             }
@@ -73,30 +73,30 @@ public class GroupAction implements Action {
      */
     void loadGroup(ActionResult actionResult, String filepath, Context context) {
         try {
-            SinaGroupApi sWeiboApi2 = new SinaGroupApi();
+            SinaGroupApi sWeiboApi2=new SinaGroupApi();
             sWeiboApi2.updateToken();
-            SStatusData<Group> sStatusData = null;
+            SStatusData<Group> sStatusData=null;
             //SWeiboApi2 sWeiboApi2=((SWeiboApi2) App.getMicroBlog(App.getAppContext()));
-            if (null == sWeiboApi2) {
-                sStatusData = new SStatusData<Group>();
-                sStatusData.errorCode = WeiboException.API_ERROR;
-                sStatusData.errorMsg = context.getString(R.string.err_api_error);
-                actionResult.resoultCode = ActionResult.ACTION_FALL;
-                actionResult.reslutMsg = context.getString(R.string.err_api_error);
+            if (null==sWeiboApi2) {
+                sStatusData=new SStatusData<Group>();
+                sStatusData.errorCode=WeiboException.API_ERROR;
+                sStatusData.errorMsg=context.getString(R.string.err_api_error);
+                actionResult.resoultCode=ActionResult.ACTION_FALL;
+                actionResult.reslutMsg=context.getString(R.string.err_api_error);
             } else {
-                sStatusData = sWeiboApi2.getGroups();
+                sStatusData=sWeiboApi2.getGroups();
             }
 
-            WeiboLog.d(TAG, "下载分组：" + sStatusData);
-            ArrayList<Group> groups = sStatusData.mStatusData;
-            if (null != groups && groups.size() > 0) {
+            WeiboLog.d(TAG, "下载分组："+sStatusData);
+            ArrayList<Group> groups=sStatusData.mStatusData;
+            if (null!=groups&&groups.size()>0) {
                 WeiboOperation.writeLocalData(groups, filepath);
-                actionResult.obj = groups;
-                actionResult.resoultCode = ActionResult.ACTION_SUCESS;
+                actionResult.obj=groups;
+                actionResult.resoultCode=ActionResult.ACTION_SUCESS;
             }
         } catch (WeiboException e) {
             e.printStackTrace();
-            actionResult.reslutMsg = e.toString();
+            actionResult.reslutMsg=e.toString();
         }
     }
 }

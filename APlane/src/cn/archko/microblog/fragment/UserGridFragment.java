@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -94,7 +93,7 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLongClickable(true);
 
-        GridLayoutManager lm = new GridLayoutManager(getActivity(), 2);
+        GridLayoutManager lm=new GridLayoutManager(getActivity(), 2);
         //lm.setReverseLayout(true);
         //SpanSizeLookup mSpanSizeLookup = new DefaultSpanSizeLookup();
         //lm.setSpanSizeLookup(mSpanSizeLookup);

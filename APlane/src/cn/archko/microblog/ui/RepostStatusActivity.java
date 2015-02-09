@@ -35,10 +35,10 @@ import java.util.Date;
  */
 public class RepostStatusActivity extends CommentStatusActivity {
 
-    public static final String TAG = "RepostStatusActivity";
-    public static final String prefix = "//@";
+    public static final String TAG="RepostStatusActivity";
+    public static final String prefix="//@";
     CheckBox repost_cur_btn, repost_ori_btn;
-    final int MENU_REPOST = MENU_FIRST + 10;
+    final int MENU_REPOST=MENU_FIRST+10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +70,9 @@ public class RepostStatusActivity extends CommentStatusActivity {
      */
     @Override
     protected void initOperationBar() {
-        mCharNum = (TextView) findViewById(R.id.char_num);
-        repost_cur_btn = (CheckBox) findViewById(R.id.repost_cur_btn);
-        repost_ori_btn = (CheckBox) findViewById(R.id.repost_ori_btn);
+        mCharNum=(TextView) findViewById(R.id.char_num);
+        repost_cur_btn=(CheckBox) findViewById(R.id.repost_cur_btn);
+        repost_ori_btn=(CheckBox) findViewById(R.id.repost_ori_btn);
         /*commentBtn=(Button) findViewById(R.id.repost_btn);
         commentBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -81,36 +81,36 @@ public class RepostStatusActivity extends CommentStatusActivity {
                 doRepost();
             }
         });*/
-        btn_trend = (Button) findViewById(R.id.btn_trend);
-        btn_at = (Button) findViewById(R.id.btn_at);
-        mEmoBtn = (Button) findViewById(R.id.btn_emo);
+        btn_trend=(Button) findViewById(R.id.btn_trend);
+        btn_at=(Button) findViewById(R.id.btn_at);
+        mEmoBtn=(Button) findViewById(R.id.btn_emo);
         btn_trend.setOnClickListener(clickListener);
         btn_at.setOnClickListener(clickListener);
         mEmoBtn.setOnClickListener(clickListener);
     }
 
     private void doRepost() {
-        int repost = 0;
+        int repost=0;
 
         if (repost_cur_btn.isChecked()) {
-            repost += 1;
+            repost+=1;
         }
 
-        if (repost_ori_btn.getVisibility() == View.VISIBLE && repost_ori_btn.isChecked()) {
-            repost += 2;
+        if (repost_ori_btn.getVisibility()==View.VISIBLE&&repost_ori_btn.isChecked()) {
+            repost+=2;
         }
         comment(String.valueOf(repost));
     }
 
     @Override
     protected void setStatusContent() {
-        String title = mStatus.user.screenName;
+        String title=mStatus.user.screenName;
         mName.setText(title);
         mContentFirst.setText(mStatus.text);
-        comment_num.setText(getString(R.string.text_comment) + mStatus.c_num);
-        repost_num.setText(getString(R.string.text_repost) + mStatus.r_num);
+        comment_num.setText(getString(R.string.text_comment)+mStatus.c_num);
+        repost_num.setText(getString(R.string.text_repost)+mStatus.r_num);
 
-        commentET.setText(prefix + mStatus.user.screenName + ":" + mStatus.text);
+        commentET.setText(prefix+mStatus.user.screenName+":"+mStatus.text);
         repost_cur_btn.setText(mStatus.user.screenName);
 
         setRetweetStatus();
@@ -118,10 +118,10 @@ public class RepostStatusActivity extends CommentStatusActivity {
 
     @Override
     protected void setRetweetStatus() {
-        Status retweetedStatus = mStatus.retweetedStatus;
-        if (retweetedStatus != null) {
-            String title = "@" + retweetedStatus.user.screenName + ":" + retweetedStatus.text + " ";
-            SpannableString spannableString = new SpannableString(title);
+        Status retweetedStatus=mStatus.retweetedStatus;
+        if (retweetedStatus!=null) {
+            String title="@"+retweetedStatus.user.screenName+":"+retweetedStatus.text+" ";
+            SpannableString spannableString=new SpannableString(title);
             WeiboUtils.highlightContent(RepostStatusActivity.this, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
             mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
             repost_ori_btn.setText(retweetedStatus.user.screenName);
@@ -134,14 +134,14 @@ public class RepostStatusActivity extends CommentStatusActivity {
     }
 
     private void comment(String comment_ori) {
-        WeiboLog.d("comment.comment_ori:" + comment_ori);
+        WeiboLog.d("comment.comment_ori:"+comment_ori);
         imm.hideSoftInputFromWindow(commentET.getWindowToken(), 0);
         if (isPostingComment) {
             NotifyUtils.showToast(R.string.in_progress);
             return;
         }
 
-        String commentString = commentET.getEditableText().toString();
+        String commentString=commentET.getEditableText().toString();
         if (TextUtils.isEmpty(commentString)) {
             NotifyUtils.showToast(R.string.content_is_null, Toast.LENGTH_LONG);
             return;
@@ -151,24 +151,24 @@ public class RepostStatusActivity extends CommentStatusActivity {
     }
 
     protected void addTask(String is_comment, String content) {
-        Intent taskService = new Intent(RepostStatusActivity.this, SendTaskService.class);
-        SendTask task = new SendTask();
-        task.uid = currentUserId;
-        task.userId = currentUserId;
-        task.content = content;
-        task.source = String.valueOf(mStatus.id);
-        task.data = is_comment;
-        task.type = TwitterTable.SendQueueTbl.SEND_TYPE_REPOST_STATUS;
-        task.createAt = new Date().getTime();
-        String txt = mStatus.text;
+        Intent taskService=new Intent(RepostStatusActivity.this, SendTaskService.class);
+        SendTask task=new SendTask();
+        task.uid=currentUserId;
+        task.userId=currentUserId;
+        task.content=content;
+        task.source=String.valueOf(mStatus.id);
+        task.data=is_comment;
+        task.type=TwitterTable.SendQueueTbl.SEND_TYPE_REPOST_STATUS;
+        task.createAt=new Date().getTime();
+        String txt=mStatus.text;
         try {
-            if ("2".equals(is_comment) || "3".equals(is_comment)) {
-                txt = mStatus.retweetedStatus.text;
+            if ("2".equals(is_comment)||"3".equals(is_comment)) {
+                txt=mStatus.retweetedStatus.text;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        task.text = txt;
+        task.text=txt;
         taskService.putExtra("send_task", task);
         RepostStatusActivity.this.startService(taskService);
         NotifyUtils.showToast("转发任务添加到队列服务中了。");
@@ -176,7 +176,7 @@ public class RepostStatusActivity extends CommentStatusActivity {
     }
 
     protected void exitConfirm() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(RepostStatusActivity.this);
+        AlertDialog.Builder builder=new AlertDialog.Builder(RepostStatusActivity.this);
         builder.setTitle(R.string.app_name).setMessage(R.string.repost_exit_msg)
             .setNegativeButton(getResources().getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
@@ -200,7 +200,7 @@ public class RepostStatusActivity extends CommentStatusActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.clear();
         menu.add(0, MENU_REPOST, 0, R.string.repost_btn).
-            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS |
+            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS|
                 MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
         return super.onCreateOptionsMenu(menu);
@@ -208,10 +208,10 @@ public class RepostStatusActivity extends CommentStatusActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == android.R.id.home) {
+        int itemId=item.getItemId();
+        if (itemId==android.R.id.home) {
             exitConfirm();
-        } else if (MENU_REPOST == itemId) {    //
+        } else if (MENU_REPOST==itemId) {    //
             doRepost();
         }
 

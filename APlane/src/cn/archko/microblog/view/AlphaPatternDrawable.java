@@ -17,13 +17,13 @@ import android.graphics.drawable.Drawable;
  */
 public class AlphaPatternDrawable extends Drawable {
 
-    private final Paint mPaint = new Paint();
+    private final Paint mPaint=new Paint();
 
-    private final Paint mPaintWhite = new Paint();
+    private final Paint mPaintWhite=new Paint();
 
-    private final Paint mPaintGray = new Paint();
+    private final Paint mPaintGray=new Paint();
 
-    private int mRectangleSize = 10;
+    private int mRectangleSize=10;
 
     private int numRectanglesHorizontal;
 
@@ -34,7 +34,7 @@ public class AlphaPatternDrawable extends Drawable {
 
     /**/
     public AlphaPatternDrawable(final int rectangleSize) {
-        mRectangleSize = rectangleSize;
+        mRectangleSize=rectangleSize;
         mPaintWhite.setColor(0xffffffff);
         mPaintGray.setColor(0xffcbcbcb);
     }
@@ -78,11 +78,11 @@ public class AlphaPatternDrawable extends Drawable {
     protected void onBoundsChange(final Rect bounds) {
         super.onBoundsChange(bounds);
 
-        final int mHeight = bounds.height();
-        final int mWidth = bounds.width();
+        final int mHeight=bounds.height();
+        final int mWidth=bounds.width();
 
-        numRectanglesHorizontal = (int) Math.ceil((mWidth / mRectangleSize));
-        numRectanglesVertical = (int) Math.ceil(mHeight / mRectangleSize);
+        numRectanglesHorizontal=(int) Math.ceil((mWidth/mRectangleSize));
+        numRectanglesVertical=(int) Math.ceil(mHeight/mRectangleSize);
 
         generatePatternBitmap();
     }
@@ -94,28 +94,28 @@ public class AlphaPatternDrawable extends Drawable {
      */
     private void generatePatternBitmap() {
 
-        if (getBounds().width() <= 0 || getBounds().height() <= 0) {
+        if (getBounds().width()<=0||getBounds().height()<=0) {
             return;
         }
 
-        mBitmap = Bitmap.createBitmap(getBounds().width(), getBounds().height(), Config.ARGB_8888);
-        final Canvas mCanvas = new Canvas(mBitmap);
+        mBitmap=Bitmap.createBitmap(getBounds().width(), getBounds().height(), Config.ARGB_8888);
+        final Canvas mCanvas=new Canvas(mBitmap);
 
-        final Rect mRect = new Rect();
-        boolean mVerticalStartWhite = true;
-        for (int i = 0; i <= numRectanglesVertical; i++) {
-            boolean mIsWhite = mVerticalStartWhite;
-            for (int j = 0; j <= numRectanglesHorizontal; j++) {
-                mRect.top = i * mRectangleSize;
-                mRect.left = j * mRectangleSize;
-                mRect.bottom = mRect.top + mRectangleSize;
-                mRect.right = mRect.left + mRectangleSize;
+        final Rect mRect=new Rect();
+        boolean mVerticalStartWhite=true;
+        for (int i=0; i<=numRectanglesVertical; i++) {
+            boolean mIsWhite=mVerticalStartWhite;
+            for (int j=0; j<=numRectanglesHorizontal; j++) {
+                mRect.top=i*mRectangleSize;
+                mRect.left=j*mRectangleSize;
+                mRect.bottom=mRect.top+mRectangleSize;
+                mRect.right=mRect.left+mRectangleSize;
 
                 mCanvas.drawRect(mRect, mIsWhite ? mPaintWhite : mPaintGray);
 
-                mIsWhite = ! mIsWhite;
+                mIsWhite=!mIsWhite;
             }
-            mVerticalStartWhite = ! mVerticalStartWhite;
+            mVerticalStartWhite=!mVerticalStartWhite;
         }
     }
 }

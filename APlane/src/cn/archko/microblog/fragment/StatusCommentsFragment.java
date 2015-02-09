@@ -44,9 +44,9 @@ import java.util.Date;
  */
 public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
 
-    public static final String TAG = "StatusCommentsFragment";
-    private Status mStatus = null;
-    boolean hasInitialed = false;
+    public static final String TAG="StatusCommentsFragment";
+    private Status mStatus=null;
+    boolean hasInitialed=false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,11 +56,11 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
 
     @Override
     public void initApi() {
-        mStatusImpl = new SinaCommentImpl();
+        mStatusImpl=new SinaCommentImpl();
 
-        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
         try {
-            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.commentApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
@@ -73,8 +73,8 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
     public void onResume() {
         super.onResume();
         //这里为是否显示列表的评论者头像。
-        showBitmap = mPrefs.getBoolean(PrefsActivity.PREF_COMMENT_USER_BM, true);
-        weibo_count = Constants.WEIBO_COUNT_MIN;
+        showBitmap=mPrefs.getBoolean(PrefsActivity.PREF_COMMENT_USER_BM, true);
+        weibo_count=Constants.WEIBO_COUNT_MIN;
     }
 
     @Override
@@ -85,9 +85,9 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
     @Override
     public void _onActivityCreated(Bundle savedInstanceState) {
         super._onActivityCreated(savedInstanceState);
-        Intent intent = getActivity().getIntent();
-        Serializable status = intent.getSerializableExtra("status");
-        mStatus = (Status) status;
+        Intent intent=getActivity().getIntent();
+        Serializable status=intent.getSerializableExtra("status");
+        mStatus=(Status) status;
         /*SinaCommentImpl commentImpl=(SinaCommentImpl) mStatusImpl;
         commentImpl.mStatus=mStatus;*/
 
@@ -104,20 +104,20 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
     @Override
     public void fetchMore() {
         super.fetchMore();
-        WeiboLog.v(TAG, "fetchMore.lastItem:" + lastItem + " selectedPos:" + selectedPos);
-        int count = mAdapter.getCount();
-        if (count < 1) {
+        WeiboLog.v(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
+        int count=mAdapter.getCount();
+        if (count<1) {
             WeiboLog.w(TAG, "no other data.");
             return;
         }
 
-        boolean isRefresh = false;
+        boolean isRefresh=false;
         /*if (count>=weibo_count*3) {   //refresh list
             isRefresh=true;
         }*/
         Comment st;
-        st = (Comment) mAdapter.getItem(mAdapter.getCount() - 1);
-        fetchData(- 1, st.id, isRefresh, false);
+        st=(Comment) mAdapter.getItem(mAdapter.getCount()-1);
+        fetchData(-1, st.id, isRefresh, false);
     }
 
     /**
@@ -133,18 +133,18 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
         //WeiboLog.d(TAG, "getView.pos:" + position + " holder:" + holder);
 
         View convertView=holder.baseItemView;
-        CommentItemView itemView = null;
-        final Comment bean = mDataList.get(position);
+        CommentItemView itemView=null;
+        final Comment bean=mDataList.get(position);
 
         boolean updateFlag=true;
         if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
 
-        if (null == convertView) {
-            itemView = new CommentItemView(getActivity(), mCacheDir, updateFlag, false, showBitmap, false);
+        if (null==convertView) {
+            itemView=new CommentItemView(getActivity(), mCacheDir, updateFlag, false, showBitmap, false);
         } else {
-            itemView = (CommentItemView) convertView;
+            itemView=(CommentItemView) convertView;
         }
 
         itemView.update(bean, updateFlag, false, showBitmap);
@@ -181,7 +181,7 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
      * 加载数据，可以供子类覆盖，分别加载不同类型的数据。
      */
     protected void loadData() {
-        if (mDataList != null && mDataList.size() > 0) {
+        if (mDataList!=null&&mDataList.size()>0) {
             mAdapter.notifyDataSetChanged();
         }/* else {
             if (!isLoading) {
@@ -200,31 +200,31 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
      * @param isHomeStore 是否是主页,只有主页有存储
      */
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        WeiboLog.i(TAG, "sinceId:" + sinceId + ", maxId:" + maxId + ", isRefresh:" + isRefresh + ", isHomeStore:" + isHomeStore);
-        if (! App.hasInternetConnection(getActivity())) {
+        WeiboLog.i(TAG, "sinceId:"+sinceId+", maxId:"+maxId+", isRefresh:"+isRefresh+", isHomeStore:"+isHomeStore);
+        if (!App.hasInternetConnection(getActivity())) {
             NotifyUtils.showToast(R.string.network_error);
-            if (mRefreshListener != null) {
+            if (mRefreshListener!=null) {
                 mRefreshListener.onRefreshFinished();
             }
             refreshAdapter(false, false);
             return;
         }
 
-        int count = weibo_count;
-        if (! isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
+        int count=weibo_count;
+        if (!isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
             //count++;
         } else {
             //page=1;
         }
 
-        if (! isLoading) {
+        if (!isLoading) {
             newTask(new Object[]{isRefresh, mStatus.id, count, page, isHomeStore}, null);
         }
     }
 
     @Override
     public void refreshAdapter(boolean load, boolean isRefresh) {
-        WeiboLog.d(TAG, "refreshAdapter.load:" + load + " isRefresh:" + isRefresh);
+        WeiboLog.d(TAG, "refreshAdapter.load:"+load+" isRefresh:"+isRefresh);
         try {
             mSwipeLayout.setRefreshing(fastScroll);
         } catch (Exception e) {
@@ -234,15 +234,15 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
         if (load) {
             //mPullRefreshListView.setLastUpdatedLabel(getString(R.string.pull_to_refresh_label)+DateUtils.longToDateTimeString(System.currentTimeMillis()));
             mAdapter.notifyDataSetChanged();
-            hasInitialed = true;
+            hasInitialed=true;
         }
 
         if (isRefresh) {
             scrollToHeader();
         }
 
-        if (null != mDataList && mDataList.size() > 0) {
-            if (mEmptyTxt.getVisibility() == View.VISIBLE) {
+        if (null!=mDataList&&mDataList.size()>0) {
+            if (mEmptyTxt.getVisibility()==View.VISIBLE) {
                 mEmptyTxt.setVisibility(View.GONE);
             }
         } else {
@@ -257,9 +257,9 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
      * 刷新数据，因为不是自动加载评论，所以在选中时，需要处理
      */
     public void refresh() {
-        WeiboLog.d(TAG, "refresh:" + hasInitialed);
-        if (! hasInitialed) {
-            hasInitialed = true;
+        WeiboLog.d(TAG, "refresh:"+hasInitialed);
+        if (!hasInitialed) {
+            hasInitialed=true;
             mSwipeLayout.setRefreshing(true);
             pullToRefreshData();
         }
@@ -278,7 +278,7 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
 
     //--------------------- popupMenu ---------------------
     public void onCreateCustomMenu(PopupMenu menuBuilder) {
-        int index = 0;
+        int index=0;
         menuBuilder.getMenu().add(0, Constants.OP_ID_VIEW_USER, index++, R.string.user_view_user);
         menuBuilder.getMenu().add(0, Constants.OP_ID_REPLY_COMMENT, index++, R.string.opb_reply_comment);
         menuBuilder.getMenu().add(0, Constants.OP_ID_OPB_DESTROY_COMMENT, index++, R.string.opb_destroy_comment);
@@ -288,15 +288,15 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        int menuId = item.getItemId();
+        int menuId=item.getItemId();
         switch (menuId) {
             case Constants.OP_ID_VIEW_USER: {
-                Comment comment = mDataList.get(selectedPos);
+                Comment comment=mDataList.get(selectedPos);
                 WeiboOperation.toViewStatusUser(getActivity(), comment.user, UserFragmentActivity.TYPE_USER_INFO);
                 break;
             }
             case Constants.OP_ID_STATUS: {
-                Comment comment = mDataList.get(selectedPos);
+                Comment comment=mDataList.get(selectedPos);
                 WeiboOperation.toViewStatusUser(getActivity(), comment.user, UserFragmentActivity.TYPE_USER_TIMELINE);
                 break;
             }
@@ -310,8 +310,8 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
             }
             case Constants.OP_ID_AT: {
                 try {
-                    Status status = mStatus;
-                    User user = status.user;
+                    Status status=mStatus;
+                    User user=status.user;
                     WeiboOperation.toAtUser(getActivity(), user.screenName);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -335,9 +335,9 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
     }
 
     void initDialog() {
-        if (null == mCommentDialog) {
-            mCommentDialog = new CommentDialog(getActivity());
-            mCommentListener = new CommentListener() {
+        if (null==mCommentDialog) {
+            mCommentDialog=new CommentDialog(getActivity());
+            mCommentListener=new CommentListener() {
 
                 @Override
                 public void cancel() {
@@ -352,23 +352,23 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
 
                             @Override
                             public void run() {
-                                Comment comment = mDataList.get(selectedPos);
-                                long cid = comment.id;
-                                long id = comment.status.id;
+                                Comment comment=mDataList.get(selectedPos);
+                                long cid=comment.id;
+                                long id=comment.status.id;
                                 try {
                                     //SWeiboApi2 sWeiboApi2=(SWeiboApi2) App.getMicroBlog(App.getAppContext());
-                                    SinaCommentApi sWeiboApi2 = new SinaCommentApi();
+                                    SinaCommentApi sWeiboApi2=new SinaCommentApi();
                                     sWeiboApi2.updateToken();
-                                    Comment result = sWeiboApi2.commentReply(cid, id, content, null);
-                                    if (null != result && result.id > 0) {
+                                    Comment result=sWeiboApi2.commentReply(cid, id, content, null);
+                                    if (null!=result&&result.id>0) {
                                         mCommentDialog.dismiss();
                                         showUIToast(R.string.comment_reply_suc);
                                     } else {
                                         showUIToast(R.string.comment_reply_failed);
                                     }
                                 } catch (WeiboException e) {
-                                    int code = e.getStatusCode();
-                                    if (code == WeiboException.EX_CODE_TOKEN_EXPIRE) {
+                                    int code=e.getStatusCode();
+                                    if (code==WeiboException.EX_CODE_TOKEN_EXPIRE) {
                                         showUIToast(R.string.comment_reply_token_isexpired);
                                     } else {
                                         showUIToast(R.string.comment_reply_failed);
@@ -403,9 +403,9 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
      * 回复评论
      */
     protected void replyComment() {
-        WeiboLog.i(TAG, "replyComment:" + selectedPos);
+        WeiboLog.i(TAG, "replyComment:"+selectedPos);
         try {
-            Comment comment = mDataList.get(selectedPos);
+            Comment comment=mDataList.get(selectedPos);
             initDialog();
             mCommentDialog.setComment(comment);
             mCommentDialog.show();
@@ -420,22 +420,22 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
      * @param task
      */
     public void addComment(SendTask task) {
-        WeiboLog.d(TAG, "addComment:" + task);
+        WeiboLog.d(TAG, "addComment:"+task);
         try {
-            if (task.uid > 0) {
-                Comment comment = new Comment();
-                comment.id = task.uid;
-                Status status = new Status();
-                status.text = task.text;
-                status.id = Long.valueOf(task.source);
-                comment.status = status;
-                comment.source = "AKWBO";
-                comment.text = task.content;
-                comment.createdAt = new Date();
+            if (task.uid>0) {
+                Comment comment=new Comment();
+                comment.id=task.uid;
+                Status status=new Status();
+                status.text=task.text;
+                status.id=Long.valueOf(task.source);
+                comment.status=status;
+                comment.source="AKWBO";
+                comment.text=task.content;
+                comment.createdAt=new Date();
                 mDataList.add(0, comment);
                 mAdapter.notifyDataSetChanged();
-                if (! hasInitialed) {
-                    hasInitialed = true;
+                if (!hasInitialed) {
+                    hasInitialed=true;
                 }
             }
         } catch (NumberFormatException e) {

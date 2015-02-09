@@ -18,10 +18,10 @@ import com.me.microblog.util.WeiboLog;
  */
 public class AccountUserActivity extends AbstractFragmentTabsPager {
 
-    public static final String TAG = "AccountUserActivity";
-    public static final int TYPE_DRAFT_ONLY = 1;   //只显示草稿tab
-    public static final int TYPE_ACCOUNT_ONLY = 2;   //只显示帐户tab
-    public static final int TYPE_DRAFT_ACCOUNT = 3;   //显示两个。
+    public static final String TAG="AccountUserActivity";
+    public static final int TYPE_DRAFT_ONLY=1;   //只显示草稿tab
+    public static final int TYPE_ACCOUNT_ONLY=2;   //只显示帐户tab
+    public static final int TYPE_DRAFT_ACCOUNT=3;   //显示两个。
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +50,8 @@ public class AccountUserActivity extends AbstractFragmentTabsPager {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == android.R.id.home) {
+        int itemId=item.getItemId();
+        if (itemId==android.R.id.home) {
             finish();
         }
 
@@ -60,22 +60,22 @@ public class AccountUserActivity extends AbstractFragmentTabsPager {
 
     @Override
     protected void addTab(ActionBar bar) {
-        Intent intent = getIntent();
-        if (intent == null) {
+        Intent intent=getIntent();
+        if (intent==null) {
             Toast.makeText(AccountUserActivity.this, "抱歉，系统错误!", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
 
-        int type = intent.getIntExtra("type", TYPE_DRAFT_ACCOUNT);
+        int type=intent.getIntExtra("type", TYPE_DRAFT_ACCOUNT);
 
-        if (type == TYPE_DRAFT_ONLY) {
-            addItem(DraftListFragment.class, - 1, "草稿", R.string.tab_label_draft, bar, null);
-        } else if (type == TYPE_ACCOUNT_ONLY) {
-            addItem(AccountUsersFragment.class, - 1, "帐户", R.string.tab_label_account, bar, null);
+        if (type==TYPE_DRAFT_ONLY) {
+            addItem(DraftListFragment.class, -1, "草稿", R.string.tab_label_draft, bar, null);
+        } else if (type==TYPE_ACCOUNT_ONLY) {
+            addItem(AccountUsersFragment.class, -1, "帐户", R.string.tab_label_account, bar, null);
         } else {
-            addItem(AccountUsersFragment.class, - 1, "帐户", R.string.tab_label_account, bar, null);
-            addItem(DraftListFragment.class, - 1, "草稿", R.string.tab_label_draft, bar, null);
+            addItem(AccountUsersFragment.class, -1, "帐户", R.string.tab_label_account, bar, null);
+            addItem(DraftListFragment.class, -1, "草稿", R.string.tab_label_draft, bar, null);
         }
     }
 
@@ -85,14 +85,14 @@ public class AccountUserActivity extends AbstractFragmentTabsPager {
      * @param index tab索引，与上面的四个静态常量同。
      */
     void switchTab(int index) {
-        WeiboLog.d("switchTab," + index);
+        WeiboLog.d("switchTab,"+index);
         mViewPager.setCurrentItem(index);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        WeiboLog.d("onNewIntent:" + intent);
+        WeiboLog.d("onNewIntent:"+intent);
     }
 
     //-----------------------

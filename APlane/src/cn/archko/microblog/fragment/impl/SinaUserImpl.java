@@ -16,7 +16,7 @@ import com.me.microblog.util.WeiboLog;
  */
 public class SinaUserImpl extends AbsStatusImpl<User> {
 
-    public static final String TAG = "SinaUserImpl";
+    public static final String TAG="SinaUserImpl";
 
     public SinaUserImpl() {
         //mAbsApi=new SinaUserApi();
@@ -24,19 +24,19 @@ public class SinaUserImpl extends AbsStatusImpl<User> {
 
     @Override
     public SStatusData<User> loadData(Object... params) throws WeiboException {
-        Integer type = (Integer) params[ 1 ];
-        if (type == 0) {
-            Intent intent = (Intent) params[ 0 ];
-            String nickName = intent.getStringExtra("nickName");
+        Integer type=(Integer) params[1];
+        if (type==0) {
+            Intent intent=(Intent) params[0];
+            String nickName=intent.getStringExtra("nickName");
 
-            WeiboLog.d(TAG, "nickName:" + nickName);
-            if (! TextUtils.isEmpty(nickName)) {
+            WeiboLog.d(TAG, "nickName:"+nickName);
+            if (!TextUtils.isEmpty(nickName)) {
                 return loadUserByName(nickName);
             } else {
                 return loadUserById(intent);
             }
         } else {    //获取自己的信息.
-            Long userId = (Long) params[ 2 ];
+            Long userId=(Long) params[2];
             return getMySelf(userId);
         }
     }
@@ -47,30 +47,30 @@ public class SinaUserImpl extends AbsStatusImpl<User> {
      * @param intent
      */
     private SStatusData<User> loadUserById(Intent intent) {
-        long userid = intent.getLongExtra("user_id", - 1);
-        SStatusData<User> sStatusData = new SStatusData<User>();
-        SinaUserApi sinaUserApi = (SinaUserApi) mAbsApi;
-        if (- 1 != userid) {
+        long userid=intent.getLongExtra("user_id", -1);
+        SStatusData<User> sStatusData=new SStatusData<User>();
+        SinaUserApi sinaUserApi=(SinaUserApi) mAbsApi;
+        if (-1!=userid) {
             try {
-                User mUser = sinaUserApi.getUser(userid);
-                WeiboLog.d(TAG, "要查询的userid为:" + userid + " ..." + mUser);
-                sStatusData.mData = mUser;
-                sStatusData.errorCode = 0;
+                User mUser=sinaUserApi.getUser(userid);
+                WeiboLog.d(TAG, "要查询的userid为:"+userid+" ..."+mUser);
+                sStatusData.mData=mUser;
+                sStatusData.errorCode=0;
             } catch (Exception e) {
-                sStatusData.errorCode = 500;
-                sStatusData.errorMsg = e.toString();
+                sStatusData.errorCode=500;
+                sStatusData.errorMsg=e.toString();
             }
         } else {
-            String screeName = intent.getStringExtra("scree_name");
-            if (null != screeName && ! "".equals(screeName)) {
+            String screeName=intent.getStringExtra("scree_name");
+            if (null!=screeName&&!"".equals(screeName)) {
                 try {
-                    User mUser = sinaUserApi.getUser(screeName);
-                    WeiboLog.d(TAG, "要查询的scree_name为:" + screeName + " ..." + mUser);
-                    sStatusData.errorCode = 0;
-                    sStatusData.mData = mUser;
+                    User mUser=sinaUserApi.getUser(screeName);
+                    WeiboLog.d(TAG, "要查询的scree_name为:"+screeName+" ..."+mUser);
+                    sStatusData.errorCode=0;
+                    sStatusData.mData=mUser;
                 } catch (Exception e) {
-                    sStatusData.errorCode = 500;
-                    sStatusData.errorMsg = e.toString();
+                    sStatusData.errorCode=500;
+                    sStatusData.errorMsg=e.toString();
                 }
             } else {
                 WeiboLog.i(TAG, "screeName is null.");
@@ -86,54 +86,54 @@ public class SinaUserImpl extends AbsStatusImpl<User> {
      * @param nickName 昵称
      */
     private SStatusData<User> loadUserByName(String nickName) {
-        SStatusData<User> sStatusData = new SStatusData<User>();
+        SStatusData<User> sStatusData=new SStatusData<User>();
         try {
-            SinaUserApi sinaUserApi = (SinaUserApi) mAbsApi;
-            if (nickName.indexOf("：") != - 1) {
-                nickName = nickName.substring(0, nickName.indexOf("："));
+            SinaUserApi sinaUserApi=(SinaUserApi) mAbsApi;
+            if (nickName.indexOf("：")!=-1) {
+                nickName=nickName.substring(0, nickName.indexOf("："));
             }
             if (nickName.startsWith("@")) {
-                nickName = nickName.substring(1);
+                nickName=nickName.substring(1);
             }
             nickName.trim();
-            User mUser = sinaUserApi.getUser(nickName);
-            WeiboLog.d(TAG, "要查询的nickName为:" + nickName + " ..." + mUser);
-            sStatusData.errorCode = 0;
-            sStatusData.mData = mUser;
+            User mUser=sinaUserApi.getUser(nickName);
+            WeiboLog.d(TAG, "要查询的nickName为:"+nickName+" ..."+mUser);
+            sStatusData.errorCode=0;
+            sStatusData.mData=mUser;
         } catch (Exception e) {
-            sStatusData.errorCode = 500;
-            sStatusData.errorMsg = e.toString();
+            sStatusData.errorCode=500;
+            sStatusData.errorMsg=e.toString();
         }
 
         return sStatusData;
     }
 
     private SStatusData<User> getMySelf(Long userId) {
-        SStatusData<User> sStatusData = new SStatusData<User>();
+        SStatusData<User> sStatusData=new SStatusData<User>();
         try {
-            User user = null;
-            SinaUserApi sinaUserApi = (SinaUserApi) mAbsApi;
+            User user=null;
+            SinaUserApi sinaUserApi=(SinaUserApi) mAbsApi;
             WeiboLog.v(TAG, "getMySelf.");
-            if (userId == - 1) {
-                user = sinaUserApi.getMyself();
-                userId = user.id;
+            if (userId==-1) {
+                user=sinaUserApi.getMyself();
+                userId=user.id;
             }
 
-            user = sinaUserApi.getUser(userId);
-            sStatusData.mData = user;
+            user=sinaUserApi.getUser(userId);
+            sStatusData.mData=user;
         } catch (Exception e) {
             e.printStackTrace();
-            sStatusData.errorMsg = e.toString();
+            sStatusData.errorMsg=e.toString();
         }
         return sStatusData;
     }
 
     @Override
     public Object[] queryData(Object... params) throws WeiboException {
-        Long currentUserId = (Long) params[ 1 ];
-        ContentResolver resolver = App.getAppContext().getContentResolver();
+        Long currentUserId=(Long) params[1];
+        ContentResolver resolver=App.getAppContext().getContentResolver();
         //ArrayList<User> datas=SqliteWrapper.queryAtUsers(resolver, currentUserId, TwitterTable.SStatusUserTbl.TYPE_User);
-        SStatusData<User> sStatusData = new SStatusData<User>();
+        SStatusData<User> sStatusData=new SStatusData<User>();
         //sStatusData.mStatusData=datas;
         return new Object[]{sStatusData, params};
     }

@@ -259,7 +259,9 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
             android.R.color.holo_orange_light,
             android.R.color.holo_red_light);
 
-        mRecyclerView.setRecyclerListener(new RecyclerViewHolder());
+        if (showLargeBitmap) {
+            mRecyclerView.setRecyclerListener(new RecyclerViewHolder());
+        }
         mRecyclerView.setOnScrollListener(getScrollListener());
         footerView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -292,7 +294,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
                     }
                     mAdapter.notifyDataSetChanged();
                 } else {
-                    ImageCache.getInstance(getActivity()).setPauseDiskCache(false);
+                    ImageCache.getInstance(getActivity()).setPauseDiskCache(true);
                     isEndOfList();
                     if (mLastItemVisible) {
                         showMoreView();

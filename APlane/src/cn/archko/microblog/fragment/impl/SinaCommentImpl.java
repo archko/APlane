@@ -17,31 +17,31 @@ import java.util.ArrayList;
  */
 public class SinaCommentImpl extends AbsStatusImpl<Comment> {
 
-    public static final String TAG = "SinaCommentImpl";
-    protected int page = 1;//当前页,这个值不能随便地变，目前来说不需要用到。
+    public static final String TAG="SinaCommentImpl";
+    protected int page=1;//当前页,这个值不能随便地变，目前来说不需要用到。
     //public Status mStatus=null;
     //protected int weibo_count=15;   //一次显示微博数量
 
     public SinaCommentImpl() {
-        AbsApiImpl absApi = new SinaCommentApi();
-        mAbsApi = absApi;
+        AbsApiImpl absApi=new SinaCommentApi();
+        mAbsApi=absApi;
     }
 
     @Override
     public SStatusData<Comment> loadData(Object... params) throws WeiboException {
-        SStatusData<Comment> sStatusData = null;
+        SStatusData<Comment> sStatusData=null;
         //SWeiboApi2 sWeiboApi2=((SWeiboApi2) App.getMicroBlog(App.getAppContext()));
-        SinaCommentApi sWeiboApi2 = (SinaCommentApi) mAbsApi;
-        if (null == sWeiboApi2) {
-            sStatusData = new SStatusData<Comment>();
-            sStatusData.errorCode = WeiboException.API_ERROR;
-            sStatusData.errorMsg = App.getAppContext().getString(R.string.err_api_error);
+        SinaCommentApi sWeiboApi2=(SinaCommentApi) mAbsApi;
+        if (null==sWeiboApi2) {
+            sStatusData=new SStatusData<Comment>();
+            sStatusData.errorCode=WeiboException.API_ERROR;
+            sStatusData.errorMsg=App.getAppContext().getString(R.string.err_api_error);
         } else {
-            Long id = (Long) params[ 1 ];
-            Integer c = (Integer) params[ 2 ];
-            sStatusData = sWeiboApi2.getComments(id, c, page, - 1, - 1, - 1);
-            ArrayList<Comment> list = sStatusData.mStatusData;
-            WeiboLog.i(TAG, "list:" + list.size() + " page:" + page);
+            Long id=(Long) params[1];
+            Integer c=(Integer) params[2];
+            sStatusData=sWeiboApi2.getComments(id, c, page, -1, -1, -1);
+            ArrayList<Comment> list=sStatusData.mStatusData;
+            WeiboLog.i(TAG, "list:"+list.size()+" page:"+page);
             page++;
         }
 

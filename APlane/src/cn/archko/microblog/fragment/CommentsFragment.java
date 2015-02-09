@@ -23,7 +23,7 @@ import com.me.microblog.util.WeiboLog;
  */
 public class CommentsFragment extends AtMeCommentsFragment {
 
-    public static final String TAG = "CommentsFragment";
+    public static final String TAG="CommentsFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,11 +33,11 @@ public class CommentsFragment extends AtMeCommentsFragment {
     }
 
     public void initApi() {
-        mStatusImpl = new SinaMyCommentImpl();
+        mStatusImpl=new SinaMyCommentImpl();
 
-        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
         try {
-            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.commentApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
@@ -57,33 +57,33 @@ public class CommentsFragment extends AtMeCommentsFragment {
      */
     @Override
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        WeiboLog.i("AtMeCommentsFragment.sinceId:" + sinceId + ", maxId:" + maxId + ", isRefresh:" + isRefresh + ", isHomeStore:" + isHomeStore);
-        if (! App.hasInternetConnection(getActivity())) {
+        WeiboLog.i("AtMeCommentsFragment.sinceId:"+sinceId+", maxId:"+maxId+", isRefresh:"+isRefresh+", isHomeStore:"+isHomeStore);
+        if (!App.hasInternetConnection(getActivity())) {
             NotifyUtils.showToast(R.string.network_error);
-            if (mRefreshListener != null) {
+            if (mRefreshListener!=null) {
                 mRefreshListener.onRefreshFinished();
             }
             refreshAdapter(false, false);
             return;
         }
 
-        int count = weibo_count;
+        int count=weibo_count;
         /*if (isHomeStore) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。TODO
             //count++;
         } else {*/
         //page=1;
-        int status = mPrefs.getInt(Constants.PREF_SERVICE_COMMENT, 0);
-        WeiboLog.d(TAG, "新提及我的评论数:" + status);
-        if (status > 0) {
-            if (status > Constants.WEIBO_COUNT * 8) {
-                status = Constants.WEIBO_COUNT * 8;
+        int status=mPrefs.getInt(Constants.PREF_SERVICE_COMMENT, 0);
+        WeiboLog.d(TAG, "新提及我的评论数:"+status);
+        if (status>0) {
+            if (status>Constants.WEIBO_COUNT*8) {
+                status=Constants.WEIBO_COUNT*8;
             }
 
-            count = status;
+            count=status;
         }
         //}
 
-        if (! isLoading) {
+        if (!isLoading) {
             newTask(new Object[]{isRefresh, sinceId, maxId, count, page, isHomeStore}, null);
         }
     }
@@ -101,12 +101,12 @@ public class CommentsFragment extends AtMeCommentsFragment {
     @Override
     protected void clearHomeNotify() {
         try {
-            int comments = mPrefs.getInt(Constants.PREF_SERVICE_COMMENT, 0);
+            int comments=mPrefs.getInt(Constants.PREF_SERVICE_COMMENT, 0);
             mPrefs.edit().remove(Constants.PREF_SERVICE_COMMENT).commit();
-            WeiboLog.i(TAG, "清除评论的标记：" + comments);
+            WeiboLog.i(TAG, "清除评论的标记："+comments);
             newOperationTask(new Object[]{Constants.REMIND_CMT}, null);
 
-            SkinFragmentActivity parent = (SkinFragmentActivity) getActivity();
+            SkinFragmentActivity parent=(SkinFragmentActivity) getActivity();
             parent.refreshSidebar();
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,13 +122,13 @@ public class CommentsFragment extends AtMeCommentsFragment {
     @Override
     protected Object[] baseBackgroundOperation2(Object... params) {
         try {
-            String type = (String) params[ 0 ];
-            SStatusData sStatusData = new SStatusData();
+            String type=(String) params[0];
+            SStatusData sStatusData=new SStatusData();
             //String rs=((SWeiboApi2) App.getMicroBlog(getActivity())).setUnread(type);
-            SinaUnreadApi sinaUnreadApi = new SinaUnreadApi();
+            SinaUnreadApi sinaUnreadApi=new SinaUnreadApi();
             sinaUnreadApi.updateToken();
-            String rs = sinaUnreadApi.setUnread(type);
-            sStatusData.errorMsg = rs;
+            String rs=sinaUnreadApi.setUnread(type);
+            sStatusData.errorMsg=rs;
             return new Object[]{sStatusData};
         } catch (Exception e) {
             e.printStackTrace();

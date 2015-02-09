@@ -13,8 +13,8 @@ import com.me.microblog.util.WeiboLog;
  */
 public class AutoCompleteView extends android.widget.AutoCompleteTextView implements Filter.FilterListener {
 
-    static final boolean DEBUG = false;
-    static final String TAG = "AutoCompleteView";
+    static final boolean DEBUG=false;
+    static final String TAG="AutoCompleteView";
 
     public AutoCompleteView(Context context) {
         this(context, null);
@@ -34,7 +34,7 @@ public class AutoCompleteView extends android.widget.AutoCompleteTextView implem
      * this string and finally dismissing the drop down menu.</p>
      */
     public void performCompletion() {
-        performCompletion(null, - 1, - 1);
+        performCompletion(null, -1, -1);
     }
 
     private void performCompletion(View selectedView, int position, long id) {
@@ -81,22 +81,22 @@ public class AutoCompleteView extends android.widget.AutoCompleteTextView implem
     protected void replaceText(CharSequence text) {
         clearComposingText();
 
-        Editable editable = getText();
-        String txt = editable.toString();
-        int index = getSelectionStart();
-        int end = getSelectionEnd();
-        WeiboLog.d(TAG, "index:" + index + " txt:" + txt + " end:" + end);
-        String startTxt = txt.substring(0, index);
-        String endTxt = txt.substring(end);
-        WeiboLog.d(TAG, "startTxt:" + startTxt + " endTxt:" + endTxt);
+        Editable editable=getText();
+        String txt=editable.toString();
+        int index=getSelectionStart();
+        int end=getSelectionEnd();
+        WeiboLog.d(TAG, "index:"+index+" txt:"+txt+" end:"+end);
+        String startTxt=txt.substring(0, index);
+        String endTxt=txt.substring(end);
+        WeiboLog.d(TAG, "startTxt:"+startTxt+" endTxt:"+endTxt);
 
         /*08-03 15:59:32.714: D/AutoCompleteView(6606): index:11 txt:ygfsbnhgv @@ end:11
         08-03 15:59:32.714: D/AutoCompleteView(6606): startTxt:ygfsbnhgv @ endTxt:@*/
 
-        String result = startTxt + text + endTxt;
+        String result=startTxt+text+endTxt;
         setText(result);
         // make sure we keep the caret at the end of the text view
-        Editable spannable = getText();
+        Editable spannable=getText();
         Selection.setSelection(spannable, spannable.length());
     }
 

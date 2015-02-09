@@ -42,7 +42,7 @@ import java.util.ArrayList;
  */
 public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
 
-    public static final String TAG = "AtMeCommentsFragment";
+    public static final String TAG="AtMeCommentsFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,11 +50,11 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
     }
 
     public void initApi() {
-        mStatusImpl = new SinaAtMeCommentImpl();
+        mStatusImpl=new SinaAtMeCommentImpl();
 
-        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
         try {
-            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.commentApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
@@ -74,33 +74,33 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
      */
     @Override
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        WeiboLog.i("AtMeCommentsFragment.sinceId:" + sinceId + ", maxId:" + maxId + ", isRefresh:" + isRefresh + ", isHomeStore:" + isHomeStore);
-        if (! App.hasInternetConnection(getActivity())) {
+        WeiboLog.i("AtMeCommentsFragment.sinceId:"+sinceId+", maxId:"+maxId+", isRefresh:"+isRefresh+", isHomeStore:"+isHomeStore);
+        if (!App.hasInternetConnection(getActivity())) {
             NotifyUtils.showToast(R.string.network_error);
-            if (mRefreshListener != null) {
+            if (mRefreshListener!=null) {
                 mRefreshListener.onRefreshFinished();
             }
             refreshAdapter(false, false);
             return;
         }
 
-        int count = weibo_count;
+        int count=weibo_count;
         /*if (isHomeStore) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。TODO
             //count++;
         } else {*/
         //page=1;
-        int status = mPrefs.getInt(Constants.PREF_SERVICE_AT_COMMENT, 0);
-        WeiboLog.d(TAG, "新提及我的评论数:" + status);
-        if (status > 0) {
-            if (status > Constants.WEIBO_COUNT * 8) {
-                status = Constants.WEIBO_COUNT * 8;
+        int status=mPrefs.getInt(Constants.PREF_SERVICE_AT_COMMENT, 0);
+        WeiboLog.d(TAG, "新提及我的评论数:"+status);
+        if (status>0) {
+            if (status>Constants.WEIBO_COUNT*8) {
+                status=Constants.WEIBO_COUNT*8;
             }
 
-            count = status;
+            count=status;
         }
         //}
 
-        if (! isLoading) {
+        if (!isLoading) {
             newTask(new Object[]{isRefresh, sinceId, maxId, count, page, isHomeStore}, null);
         }
     }
@@ -109,10 +109,10 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
      * 加载数据，可以供子类覆盖，分别加载不同类型的数据。
      */
     protected void loadData() {
-        if (mDataList != null && mDataList.size() > 0) {
+        if (mDataList!=null&&mDataList.size()>0) {
             mAdapter.notifyDataSetChanged();
         } else {
-            if (! isLoading) {
+            if (!isLoading) {
                 //queryData();
                 loadLocalData();
             }
@@ -120,8 +120,8 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
     }
 
     protected void loadLocalData() {
-        if (! isLoading) {
-            Object[] params = new Object[]{false, currentUserId};
+        if (!isLoading) {
+            Object[] params=new Object[]{false, currentUserId};
             newTaskNoNet(params, null);
         }
     }
@@ -130,15 +130,15 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
      * 下拉刷新数据
      */
     protected void pullToRefreshData() {
-        isRefreshing = true;
+        isRefreshing=true;
         //page=1;
-        fetchData(- 1, - 1, true, true);
+        fetchData(-1, -1, true, true);
     }
 
     @Override
     public void refreshNewData(SStatusData<Comment> sStatusData, Boolean isRefresh) {
         //TODO 还需要处理获取更多的数据
-        ArrayList<Comment> list = sStatusData.mStatusData;
+        ArrayList<Comment> list=sStatusData.mStatusData;
         /*if (mDataList.size()>0) {
             try {
                 Status first=list.get(0);
@@ -153,8 +153,8 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
         }*/
 
         if (isRefresh) {
-            int len = list.size();
-            NotifyUtils.showToast("为您更新了" + len + "条最新信息！");
+            int len=list.size();
+            NotifyUtils.showToast("为您更新了"+len+"条最新信息！");
 
             /*if (len>=weibo_count-1) {
                 mDataList.clear();
@@ -164,7 +164,7 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
             }*/
             mDataList.clear();
             mDataList.addAll(list);
-            WeiboLog.i(TAG, "notify data changed." + mDataList.size() + " isRefresh:" + isRefresh);
+            WeiboLog.i(TAG, "notify data changed."+mDataList.size()+" isRefresh:"+isRefresh);
         } else {
             mDataList.addAll(list);
         }
@@ -173,11 +173,11 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
     @Override
     public void fetchMore() {
         super.fetchMore();
-        WeiboLog.d(TAG, "fetchMore.lastItem:" + lastItem + " selectedPos:" + selectedPos);
-        if (mAdapter.getCount() > 0) {
+        WeiboLog.d(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
+        if (mAdapter.getCount()>0) {
             Comment st;
-            st = (Comment) mAdapter.getItem(mAdapter.getCount()-1);
-            fetchData(- 1, st.id, false, false);
+            st=(Comment) mAdapter.getItem(mAdapter.getCount()-1);
+            fetchData(-1, st.id, false, false);
         }
     }
 
@@ -233,9 +233,9 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
     CommentListener mCommentListener;
 
     void initDialog() {
-        if (null == mCommentDialog) {
-            mCommentDialog = new CommentDialog(getActivity());
-            mCommentListener = new CommentListener() {
+        if (null==mCommentDialog) {
+            mCommentDialog=new CommentDialog(getActivity());
+            mCommentListener=new CommentListener() {
 
                 @Override
                 public void cancel() {
@@ -250,23 +250,23 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
 
                             @Override
                             public void run() {
-                                Comment comment = mDataList.get(selectedPos);
-                                long cid = comment.id;
-                                long id = comment.status.id;
+                                Comment comment=mDataList.get(selectedPos);
+                                long cid=comment.id;
+                                long id=comment.status.id;
                                 try {
                                     //SWeiboApi2 sWeiboApi2=(SWeiboApi2) App.getMicroBlog(App.getAppContext());
-                                    SinaCommentApi sWeiboApi2 = new SinaCommentApi();
+                                    SinaCommentApi sWeiboApi2=new SinaCommentApi();
                                     sWeiboApi2.updateToken();
-                                    Comment result = sWeiboApi2.commentReply(cid, id, content, null);
-                                    if (null != result && result.id > 0) {
+                                    Comment result=sWeiboApi2.commentReply(cid, id, content, null);
+                                    if (null!=result&&result.id>0) {
                                         mCommentDialog.dismiss();
                                         showUIToast(R.string.comment_reply_suc);
                                     } else {
                                         showUIToast(R.string.comment_reply_failed);
                                     }
                                 } catch (WeiboException e) {
-                                    int code = e.getStatusCode();
-                                    if (code == WeiboException.EX_CODE_TOKEN_EXPIRE) {
+                                    int code=e.getStatusCode();
+                                    if (code==WeiboException.EX_CODE_TOKEN_EXPIRE) {
                                         showUIToast(R.string.comment_reply_token_isexpired);
                                     }
                                     e.printStackTrace();
@@ -306,7 +306,7 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
 
     //--------------------- popupMenu ---------------------
     public void onCreateCustomMenu(PopupMenu menuBuilder) {
-        int index = 0;
+        int index=0;
         menuBuilder.getMenu().add(0, Constants.OP_ID_REPLY_COMMENT, index++, R.string.opb_reply_comment);
         //menuBuilder.add(0, Constants.OP_ID_OPB_DESTROY_COMMENT, index++, R.string.opb_destroy_comment);
         menuBuilder.getMenu().add(0, Constants.OP_ID_VIEW_USER, index++, R.string.user_view_user);
@@ -319,8 +319,8 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
     public void onPrepareCustomMenu(PopupMenu menuBuilder) {
         super.onPrepareCustomMenu(menuBuilder);
         try {
-            Comment comment = mDataList.get(selectedPos);
-            if (comment.user.id == currentUserId) {
+            Comment comment=mDataList.get(selectedPos);
+            if (comment.user.id==currentUserId) {
                 menuBuilder.getMenu().findItem(Constants.OP_ID_REPLY_COMMENT).setVisible(false);
             } else {
                 menuBuilder.getMenu().findItem(Constants.OP_ID_REPLY_COMMENT).setVisible(true);
@@ -332,7 +332,7 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        int menuId = item.getItemId();
+        int menuId=item.getItemId();
         switch (menuId) {
             case Constants.OP_ID_REPLY_COMMENT: {   //回复评论
                 replyComment();
@@ -347,7 +347,7 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
                 break;
             }
             case Constants.OP_ID_VIEW_USER: {
-                final Comment comment = mDataList.get(selectedPos);
+                final Comment comment=mDataList.get(selectedPos);
                 /*Intent intent=new Intent(getActivity(), UserFragmentActivity.class);
                 intent.putExtra("nickName", comment.user.screenName);
                 intent.putExtra("user_id", comment.user.id);
@@ -359,14 +359,14 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
                 break;
             }
             case Constants.OP_ID_STATUS: {
-                final Comment comment = mDataList.get(selectedPos);
+                final Comment comment=mDataList.get(selectedPos);
                 WeiboOperation.toViewStatusUser(getActivity(), comment.user, UserFragmentActivity.TYPE_USER_TIMELINE);
                 break;
             }
             case Constants.OP_ID_AT: {
                 try {
-                    final Comment comment = mDataList.get(selectedPos);
-                    User user = comment.user;
+                    final Comment comment=mDataList.get(selectedPos);
+                    User user=comment.user;
                     WeiboOperation.toAtUser(getActivity(), user.screenName);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -375,8 +375,8 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
             }
             case Constants.OP_ID_COMMENT_STATUS: {
                 try {
-                    final Comment comment = mDataList.get(selectedPos);
-                    Status status = comment.status;
+                    final Comment comment=mDataList.get(selectedPos);
+                    Status status=comment.status;
                     WeiboOperation.toViewOriginalStatus(getActivity(), status, true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -394,8 +394,8 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
         //replyComment();
         //prepareMenu(up);
         try {
-            Comment comment = mDataList.get(selectedPos);
-            if (comment.user.id != currentUserId) {
+            Comment comment=mDataList.get(selectedPos);
+            if (comment.user.id!=currentUserId) {
                 replyComment();
             }
         } catch (Exception e) {
@@ -407,9 +407,9 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
      * 回复评论
      */
     protected void replyComment() {
-        WeiboLog.d(TAG, "replyComment:" + selectedPos);
+        WeiboLog.d(TAG, "replyComment:"+selectedPos);
         try {
-            Comment comment = mDataList.get(selectedPos);
+            Comment comment=mDataList.get(selectedPos);
             initDialog();
             mCommentDialog.setComment(comment);
             mCommentDialog.show();
@@ -435,7 +435,7 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
     @Override
     public void refreshAdapter(boolean load, boolean isRefresh) {
         super.refreshAdapter(load, isRefresh);
-        if (isRefresh && load) {
+        if (isRefresh&&load) {
             clearHomeNotify();
         }
     }
@@ -445,12 +445,12 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
      */
     protected void clearHomeNotify() {
         try {
-            int mention_cmt = mPrefs.getInt(Constants.PREF_SERVICE_AT_COMMENT, 0);
+            int mention_cmt=mPrefs.getInt(Constants.PREF_SERVICE_AT_COMMENT, 0);
             mPrefs.edit().remove(Constants.PREF_SERVICE_AT_COMMENT).commit();
-            WeiboLog.i(TAG, "清除评论的标记 @评论：" + mention_cmt);
+            WeiboLog.i(TAG, "清除评论的标记 @评论："+mention_cmt);
             newOperationTask(new Object[]{Constants.REMIND_MENTION_CMT}, null);
 
-            SkinFragmentActivity parent = (SkinFragmentActivity) getActivity();
+            SkinFragmentActivity parent=(SkinFragmentActivity) getActivity();
             parent.refreshSidebar();
         } catch (Exception e) {
             e.printStackTrace();
@@ -466,13 +466,13 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
     @Override
     protected Object[] baseBackgroundOperation2(Object... params) {
         try {
-            String type = (String) params[ 0 ];
-            SStatusData sStatusData = new SStatusData();
+            String type=(String) params[0];
+            SStatusData sStatusData=new SStatusData();
             //String rs=((SWeiboApi2) App.getMicroBlog(getActivity())).setUnread(type);
-            SinaUnreadApi sinaUnreadApi = new SinaUnreadApi();
+            SinaUnreadApi sinaUnreadApi=new SinaUnreadApi();
             sinaUnreadApi.updateToken();
-            String rs = sinaUnreadApi.setUnread(type);
-            sStatusData.errorMsg = rs;
+            String rs=sinaUnreadApi.setUnread(type);
+            sStatusData.errorMsg=rs;
             return new Object[]{sStatusData};
         } catch (Exception e) {
             e.printStackTrace();
@@ -489,13 +489,13 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
     @Override
     protected void basePostOperation2(Object[] resultObj) {
         try {
-            SStatusData sStatusData = (SStatusData) resultObj[ 0 ];
-            WeiboLog.i(TAG, TAG + sStatusData);
-            if (null == sStatusData) {
+            SStatusData sStatusData=(SStatusData) resultObj[0];
+            WeiboLog.i(TAG, TAG+sStatusData);
+            if (null==sStatusData) {
                 return;
             }
 
-            if (sStatusData.errorCode > 0 && ! TextUtils.isEmpty(sStatusData.errorMsg)) {
+            if (sStatusData.errorCode>0&&!TextUtils.isEmpty(sStatusData.errorMsg)) {
                 NotifyUtils.showToast(sStatusData.errorMsg);
             }
         } catch (Exception e) {

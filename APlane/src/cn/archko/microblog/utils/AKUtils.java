@@ -35,9 +35,9 @@ import java.util.regex.Pattern;
 public class AKUtils {
 
     public static String stripTrailingSlash(String _s) {
-        String s = _s;
-        if (s.endsWith("/") && s.length() > 1)
-            s = s.substring(0, s.length() - 1);
+        String s=_s;
+        if (s.endsWith("/")&&s.length()>1)
+            s=s.substring(0, s.length()-1);
         return s;
     }
 
@@ -48,68 +48,68 @@ public class AKUtils {
      * @return formated string (hh:)mm:ss
      */
     public static String millisToString(long millis) {
-        boolean negative = millis < 0;
-        millis = Math.abs(millis);
+        boolean negative=millis<0;
+        millis=Math.abs(millis);
 
-        millis /= 1000;
-        int sec = (int) (millis % 60);
-        millis /= 60;
-        int min = (int) (millis % 60);
-        millis /= 60;
-        int hours = (int) millis;
+        millis/=1000;
+        int sec=(int) (millis%60);
+        millis/=60;
+        int min=(int) (millis%60);
+        millis/=60;
+        int hours=(int) millis;
 
         String time;
-        DecimalFormat format = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        DecimalFormat format=(DecimalFormat) NumberFormat.getInstance(Locale.US);
         format.applyPattern("00");
-        if (millis > 0) {
-            time = (negative ? "-" : "") + hours + ":" + format.format(min) + ":" + format.format(sec);
+        if (millis>0) {
+            time=(negative ? "-" : "")+hours+":"+format.format(min)+":"+format.format(sec);
         } else {
-            time = (negative ? "-" : "") + min + ":" + format.format(sec);
+            time=(negative ? "-" : "")+min+":"+format.format(sec);
         }
         return time;
     }
 
     public static Bitmap scaleDownBitmap(Context context, Bitmap bitmap, int width) {
-        if (bitmap != null) {
-            final float densityMultiplier = context.getResources().getDisplayMetrics().density;
-            int w = (int) (width * densityMultiplier);
-            int h = (int) (w * bitmap.getHeight() / ((double) bitmap.getWidth()));
-            bitmap = Bitmap.createScaledBitmap(bitmap, w, h, true);
+        if (bitmap!=null) {
+            final float densityMultiplier=context.getResources().getDisplayMetrics().density;
+            int w=(int) (width*densityMultiplier);
+            int h=(int) (w*bitmap.getHeight()/((double) bitmap.getWidth()));
+            bitmap=Bitmap.createScaledBitmap(bitmap, w, h, true);
         }
         return bitmap;
     }
 
     public static Bitmap cropBorders(Bitmap bitmap, int width, int height) {
-        int top = 0;
-        for (int i = 0; i < height / 2; i++) {
-            int pixel1 = bitmap.getPixel(width / 2, i);
-            int pixel2 = bitmap.getPixel(width / 2, height - i - 1);
-            if ((pixel1 == 0 || pixel1 == - 16777216) &&
-                (pixel2 == 0 || pixel2 == - 16777216)) {
-                top = i;
+        int top=0;
+        for (int i=0; i<height/2; i++) {
+            int pixel1=bitmap.getPixel(width/2, i);
+            int pixel2=bitmap.getPixel(width/2, height-i-1);
+            if ((pixel1==0||pixel1==-16777216)&&
+                (pixel2==0||pixel2==-16777216)) {
+                top=i;
             } else {
                 break;
             }
         }
 
-        int left = 0;
-        for (int i = 0; i < width / 2; i++) {
-            int pixel1 = bitmap.getPixel(i, height / 2);
-            int pixel2 = bitmap.getPixel(width - i - 1, height / 2);
-            if ((pixel1 == 0 || pixel1 == - 16777216) &&
-                (pixel2 == 0 || pixel2 == - 16777216)) {
-                left = i;
+        int left=0;
+        for (int i=0; i<width/2; i++) {
+            int pixel1=bitmap.getPixel(i, height/2);
+            int pixel2=bitmap.getPixel(width-i-1, height/2);
+            if ((pixel1==0||pixel1==-16777216)&&
+                (pixel2==0||pixel2==-16777216)) {
+                left=i;
             } else {
                 break;
             }
         }
 
-        if (left >= width / 2 - 10 || top >= height / 2 - 10)
+        if (left>=width/2-10||top>=height/2-10)
             return bitmap;
 
         // Cut off the transparency on the borders
         return Bitmap.createBitmap(bitmap, left, top,
-            (width - (2 * left)), (height - (2 * top)));
+            (width-(2*left)), (height-(2*top)));
     }
 
     //--------------------- logout ---------------------
@@ -121,7 +121,7 @@ public class AKUtils {
         WeiboUtils.logout(activity);
         ((App) App.getAppContext()).logout();
 
-        Intent intent = new Intent(activity, SendTaskService.class);
+        Intent intent=new Intent(activity, SendTaskService.class);
         activity.stopService(intent);
 
         WeiboLog.d("logout.");
@@ -134,11 +134,11 @@ public class AKUtils {
     }
 
     public static void exit(Activity activity) {
-        Intent intent = new Intent(activity, WeiboService.class);
+        Intent intent=new Intent(activity, WeiboService.class);
         activity.stopService(intent);
-        intent = new Intent(activity, SendTaskService.class);
+        intent=new Intent(activity, SendTaskService.class);
         activity.stopService(intent);
-        intent = new Intent(activity, AKWidgetService.class);
+        intent=new Intent(activity, AKWidgetService.class);
         activity.stopService(intent);
         ((App) App.getAppContext()).logout();
         activity.finish();
@@ -152,7 +152,7 @@ public class AKUtils {
      * @param key     sp key
      */
     public static void showColorPicker(final Context context, final String key, int currentColor) {
-        final ColorSchemeDialog colorPickerView = new ColorSchemeDialog(context, currentColor);
+        final ColorSchemeDialog colorPickerView=new ColorSchemeDialog(context, currentColor);
         colorPickerView.setButton(AlertDialog.BUTTON_POSITIVE,
             context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
 
@@ -175,13 +175,13 @@ public class AKUtils {
         Context mContext;
 
         public AtClicker(Context context) {
-            this.mContext = context;
+            this.mContext=context;
         }
 
         @Override
         public void updateDrawState(TextPaint textPaint) {
             try {
-                if (null != mContext && null != mContext.getResources()) {
+                if (null!=mContext&&null!=mContext.getResources()) {
                     textPaint.setColor(mContext.getResources().getColor(R.color.holo_light_item_highliht_link));
                     textPaint.setUnderlineText(true);
                 }
@@ -192,13 +192,13 @@ public class AKUtils {
 
         @Override
         public void onClick(View view) {
-            WeiboLog.d("AtClicker:" + name);
+            WeiboLog.d("AtClicker:"+name);
             if (TextUtils.isEmpty(name)) {
                 WeiboLog.e("nick name is null.");
                 return;
             }
             WeiboOperation.toViewStatusUser((Activity) mContext, name,
-                - 1, UserFragmentActivity.TYPE_USER_INFO);
+                -1, UserFragmentActivity.TYPE_USER_INFO);
         }
 
     }
@@ -208,13 +208,13 @@ public class AKUtils {
         Context mContext;
 
         public UrlClicker(Context mContext) {
-            this.mContext = mContext;
+            this.mContext=mContext;
         }
 
         @Override
         public void updateDrawState(TextPaint textPaint) {
             try {
-                if (null != mContext && null != mContext.getResources()) {
+                if (null!=mContext&&null!=mContext.getResources()) {
                     textPaint.setColor(mContext.getResources().getColor(R.color.holo_light_item_highliht_link));
                     textPaint.setUnderlineText(true);
                 }
@@ -225,15 +225,15 @@ public class AKUtils {
 
         @Override
         public void onClick(View view) {
-            WeiboLog.d("UrlClicker:" + name);
+            WeiboLog.d("UrlClicker:"+name);
             if (TextUtils.isEmpty(name)) {
                 WeiboLog.e("url is null.");
                 return;
             }
             //String str1=URLEncoder.encode(this.name);
-            SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
-            boolean prefWebview = mPrefs.getBoolean(PreferenceUtils.PREF_WEBVIEW, true);
-            if (! prefWebview) {
+            SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+            boolean prefWebview=mPrefs.getBoolean(PreferenceUtils.PREF_WEBVIEW, true);
+            if (!prefWebview) {
                 WeiboUtils.openUrlByDefaultBrowser(mContext, name);
             } else {
                 /*Intent intent=new Intent(getActivity(), WebviewActivity.class);
@@ -246,43 +246,43 @@ public class AKUtils {
     }
 
     public static void highlightAtClickable(Context context, Spannable spannable, Pattern pattern) {
-        Matcher atMatcher = pattern.matcher(spannable);
+        Matcher atMatcher=pattern.matcher(spannable);
 
         while (atMatcher.find()) {
-            int start = atMatcher.start();
-            int end = atMatcher.end();
+            int start=atMatcher.start();
+            int end=atMatcher.end();
             //WeiboLog.d("weibo", "start:"+start+" end:"+end);
-            if (end - start == 2) {
+            if (end-start==2) {
             } else {
-                if (end - start <= 2) {
+                if (end-start<=2) {
                     break;
                 }
             }
 
-            String name = spannable.subSequence(start, end).toString();
-            AtClicker clicker = new AtClicker(context);
-            clicker.name = name;
+            String name=spannable.subSequence(start, end).toString();
+            AtClicker clicker=new AtClicker(context);
+            clicker.name=name;
             spannable.setSpan(clicker, start, end, 34);
         }
     }
 
     public static void highlightUrlClickable(Context context, Spannable spannable, Pattern pattern) {
-        Matcher atMatcher = pattern.matcher(spannable);
+        Matcher atMatcher=pattern.matcher(spannable);
 
         while (atMatcher.find()) {
-            int start = atMatcher.start();
-            int end = atMatcher.end();
+            int start=atMatcher.start();
+            int end=atMatcher.end();
             //WeiboLog.d("weibo", "start:"+start+" end:"+end);
-            if (end - start == 2) {
+            if (end-start==2) {
             } else {
-                if (end - start <= 2) {
+                if (end-start<=2) {
                     break;
                 }
             }
 
-            String name = spannable.subSequence(start, end).toString();
-            UrlClicker clicker = new UrlClicker(context);
-            clicker.name = name;
+            String name=spannable.subSequence(start, end).toString();
+            UrlClicker clicker=new UrlClicker(context);
+            clicker.name=name;
             spannable.setSpan(clicker, start, end, 34);
         }
     }

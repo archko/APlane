@@ -19,14 +19,14 @@ import java.util.ArrayList;
  */
 public class TestFragment extends AbstractBaseFragment {
 
-    public static final String TAG = "TestFragment";
+    public static final String TAG="TestFragment";
 
-    boolean isLoading = false;
+    boolean isLoading=false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WeiboLog.d(TAG, "onCreate:" + this);
+        WeiboLog.d(TAG, "onCreate:"+this);
     }
 
     ArrayList<Status> getStatuses(Long sinceId, Long maxId, int c, int p) throws WeiboException {
@@ -36,9 +36,9 @@ public class TestFragment extends AbstractBaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
-        WeiboLog.d(TAG, "onCreateView:" + this);
+        WeiboLog.d(TAG, "onCreateView:"+this);
 
-        View view = inflater.inflate(R.layout.imageviewer_progress_bar, container, false);
+        View view=inflater.inflate(R.layout.imageviewer_progress_bar, container, false);
 
         return view;
     }

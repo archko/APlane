@@ -57,8 +57,8 @@ import java.util.Date;
  */
 public class ViewStatusDetailActivity extends SkinFragmentActivity implements LazyViewPager.OnPageChangeListener {
 
-    public static final String TAG = "ViewStatusDetailActivity";
-    private Status mStatus = null;
+    public static final String TAG="ViewStatusDetailActivity";
+    private Status mStatus=null;
 
     private ActionMode mMode;
     View mCustomModeView;
@@ -90,15 +90,15 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
      * 快速转发
      */
     protected void quickRepostStatus() {
-        Intent taskService = new Intent(ViewStatusDetailActivity.this, SendTaskService.class);
-        SendTask task = new SendTask();
-        task.uid = currentUserId;
-        task.userId = currentUserId;
-        task.content = "";
-        task.source = String.valueOf(mStatus.id);
-        task.data = "0";
-        task.type = TwitterTable.SendQueueTbl.SEND_TYPE_REPOST_STATUS;
-        task.createAt = new Date().getTime();
+        Intent taskService=new Intent(ViewStatusDetailActivity.this, SendTaskService.class);
+        SendTask task=new SendTask();
+        task.uid=currentUserId;
+        task.userId=currentUserId;
+        task.content="";
+        task.source=String.valueOf(mStatus.id);
+        task.data="0";
+        task.type=TwitterTable.SendQueueTbl.SEND_TYPE_REPOST_STATUS;
+        task.createAt=new Date().getTime();
         taskService.putExtra("send_task", task);
         startService(taskService);
         NotifyUtils.showToast("转发任务添加到队列服务中了。");
@@ -123,36 +123,36 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         mActionBar.setTitle(R.string.text_title_content);
 
-        Intent intent = getIntent();
-        Serializable status = intent.getSerializableExtra("status");
-        if (status == null) {
+        Intent intent=getIntent();
+        Serializable status=intent.getSerializableExtra("status");
+        if (status==null) {
             WeiboLog.e(TAG, "没有传来微博.");
             NotifyUtils.showToast("没有微博");
             //this.finish();
             return;
         }
-        mStatus = (Status) status;
+        mStatus=(Status) status;
 
         setContentView(R.layout.status_details);
-        imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm=(InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        SwipeAwayLayout view_root = (SwipeAwayLayout) findViewById(R.id.view_root);
+        SwipeAwayLayout view_root=(SwipeAwayLayout) findViewById(R.id.view_root);
         view_root.setSwipeOrientation(SwipeAwayLayout.LEFT_RIGHT);
 
         view_root.setOnSwipeAwayListener(new SwipeAwayLayout.OnSwipeAwayListener() {
             @Override
             public void onSwipedAway(int mCloseOrientation) {
                 finish();
-                int animId = R.anim.exit_left;
-                if (mCloseOrientation == SwipeAwayLayout.RIGHT_ONLY) {
-                    animId = R.anim.exit_to_left;
+                int animId=R.anim.exit_left;
+                if (mCloseOrientation==SwipeAwayLayout.RIGHT_ONLY) {
+                    animId=R.anim.exit_to_left;
                 }
                 overridePendingTransition(0, animId);
             }
         });
 
-        mPagerAdapter = new PagerAdapter(this);
-        mViewPager = (LazyViewPager) findViewById(R.id.pager);
+        mPagerAdapter=new PagerAdapter(this);
+        mViewPager=(LazyViewPager) findViewById(R.id.pager);
 
         //mPagerAdapter.add(EmptyFragment.class, null);
         mPagerAdapter.add(StatusDetailFragment.class, null);
@@ -180,7 +180,7 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
         ThemeUtils.getsInstance().themeBackground(findViewById(R.id.root), ViewStatusDetailActivity.this);
 
         try {
-            final User user = mStatus.user;
+            final User user=mStatus.user;
             mActionBar.setTitle(user.screenName);
             mActionBar.setSubtitle(R.string.text_title_content);
         } catch (Exception e) {
@@ -189,10 +189,10 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
     }
 
     private void setCustomActionBar() {
-        View cusActionBar = getLayoutInflater().inflate(R.layout.status_detail_action_bar, null);
+        View cusActionBar=getLayoutInflater().inflate(R.layout.status_detail_action_bar, null);
         mActionBar.setCustomView(cusActionBar);
         mActionBar.setDisplayShowCustomEnabled(true);
-        TextView more = (TextView) cusActionBar.findViewById(R.id.menu_more);
+        TextView more=(TextView) cusActionBar.findViewById(R.id.menu_more);
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,7 +206,7 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
         super.onResume();
         //MobclickAgent.onResume(this);
 
-        IntentFilter f = new IntentFilter();
+        IntentFilter f=new IntentFilter();
         f.addAction(Constants.TASK_CHANGED);
         registerReceiver(mStatusListener, new IntentFilter(f));
     }
@@ -225,7 +225,7 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
 
     @Override
     public void onBackPressed() {
-        if (mViewPager.getCurrentItem() == 2) {
+        if (mViewPager.getCurrentItem()==2) {
             mViewPager.setCurrentItem(1);
         } else {
             super.onBackPressed();
@@ -238,9 +238,9 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
 
     @Override
     public void onPageSelected(int position) {
-        if (position == 0) {
+        if (position==0) {
             //finish();
-        } else if (position == 1) {
+        } else if (position==1) {
             getStatusCommentsFragment().refresh();
         }
     }
@@ -251,9 +251,9 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
 
     class PagerAdapter extends FragmentPagerAdapter {
 
-        private final SparseArray<WeakReference<Fragment>> mFragmentArray = new SparseArray<WeakReference<Fragment>>();
+        private final SparseArray<WeakReference<Fragment>> mFragmentArray=new SparseArray<WeakReference<Fragment>>();
 
-        private final ArrayList<Holder> mHolderList = new ArrayList<Holder>();
+        private final ArrayList<Holder> mHolderList=new ArrayList<Holder>();
 
         private final ViewStatusDetailActivity mFragmentActivity;
 
@@ -267,7 +267,7 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
          */
         public PagerAdapter(final ViewStatusDetailActivity fragmentActivity) {
             super(fragmentActivity.getFragmentManager());
-            mFragmentActivity = fragmentActivity;
+            mFragmentActivity=fragmentActivity;
         }
 
         /**
@@ -279,11 +279,11 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
          */
         @SuppressWarnings("synthetic-access")
         public void add(final Class<? extends Fragment> className, final Bundle params) {
-            final Holder mHolder = new Holder();
-            mHolder.mClassName = className.getName();
-            mHolder.mParams = params;
+            final Holder mHolder=new Holder();
+            mHolder.mClassName=className.getName();
+            mHolder.mParams=params;
 
-            final int mPosition = mHolderList.size();
+            final int mPosition=mHolderList.size();
             mHolderList.add(mPosition, mHolder);
             notifyDataSetChanged();
         }
@@ -296,8 +296,8 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
          * @return Fragment The {@link SherlockFragment} in the argument position.
          */
         public Fragment getFragment(final int position) {
-            final WeakReference<Fragment> mWeakFragment = mFragmentArray.get(position);
-            if (mWeakFragment != null && mWeakFragment.get() != null) {
+            final WeakReference<Fragment> mWeakFragment=mFragmentArray.get(position);
+            if (mWeakFragment!=null&&mWeakFragment.get()!=null) {
                 return mWeakFragment.get();
             }
             return getItem(position);
@@ -308,9 +308,9 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
          */
         @Override
         public Object instantiateItem(final ViewGroup container, final int position) {
-            final Fragment mFragment = (Fragment) super.instantiateItem(container, position);
-            final WeakReference<Fragment> mWeakFragment = mFragmentArray.get(position);
-            if (mWeakFragment != null) {
+            final Fragment mFragment=(Fragment) super.instantiateItem(container, position);
+            final WeakReference<Fragment> mWeakFragment=mFragmentArray.get(position);
+            if (mWeakFragment!=null) {
                 mWeakFragment.clear();
             }
             mFragmentArray.put(position, new WeakReference<Fragment>(mFragment));
@@ -322,8 +322,8 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
          */
         @Override
         public Fragment getItem(final int position) {
-            final Holder mCurrentHolder = mHolderList.get(position);
-            final Fragment mFragment = Fragment.instantiate(mFragmentActivity,
+            final Holder mCurrentHolder=mHolderList.get(position);
+            final Fragment mFragment=Fragment.instantiate(mFragmentActivity,
                 mCurrentHolder.mClassName, mCurrentHolder.mParams);
             return mFragment;
         }
@@ -334,8 +334,8 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
         @Override
         public void destroyItem(final ViewGroup container, final int position, final Object object) {
             super.destroyItem(container, position, object);
-            final WeakReference<Fragment> mWeakFragment = mFragmentArray.get(position);
-            if (mWeakFragment != null) {
+            final WeakReference<Fragment> mWeakFragment=mFragmentArray.get(position);
+            if (mWeakFragment!=null) {
                 mWeakFragment.clear();
             }
         }
@@ -366,7 +366,7 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
          * @param currentPage The current page.
          */
         protected void setCurrentPage(final int currentPage) {
-            mCurrentPage = currentPage;
+            mCurrentPage=currentPage;
         }
 
         /**
@@ -391,9 +391,9 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != mMode) {
+        if (null!=mMode) {
             mMode.finish();
-            mMode = null;
+            mMode=null;
         }
     }
 
@@ -406,9 +406,9 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
      */
     public void onPrepareCustomMenu(PopupMenu menuBuilder) {
         menuBuilder.getMenu().clear();
-        WeiboLog.d(TAG, "onPrepareCustomMenu:" + hasInitMoreAction + " size:" + menuBuilder.getMenu().size());
-        if (! hasInitMoreAction) {
-            hasInitMoreAction = true;
+        WeiboLog.d(TAG, "onPrepareCustomMenu:"+hasInitMoreAction+" size:"+menuBuilder.getMenu().size());
+        if (!hasInitMoreAction) {
+            hasInitMoreAction=true;
             initMoreAction(menuBuilder);
         }
         for (ActionItem item : actionItems) {
@@ -418,19 +418,19 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        WeiboLog.d(TAG, "onMenuItemSelected:" + " itemId:" + item.getItemId() + " item:" + item);
-        int actionId = item.getItemId();
+        WeiboLog.d(TAG, "onMenuItemSelected:"+" itemId:"+item.getItemId()+" item:"+item);
+        int actionId=item.getItemId();
         switch (actionId) {
             case Constants.OP_ID_MORE_CONTENT_COPY_STATUS: {    //原内容复制
-                ClipboardManager clipboard = (ClipboardManager) ViewStatusDetailActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard=(ClipboardManager) ViewStatusDetailActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
                 clipboard.setText(mStatus.text);
 
                 NotifyUtils.showToast(R.string.text_copy_status);
                 break;
             }
             case Constants.OP_ID_MORE_CONTENT_COPY_RET_STATUS: {   //转发内容复制
-                ClipboardManager clipboard = (ClipboardManager) ViewStatusDetailActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
-                if (null != mStatus.retweetedStatus && ! TextUtils.isEmpty(mStatus.retweetedStatus.text)) {
+                ClipboardManager clipboard=(ClipboardManager) ViewStatusDetailActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                if (null!=mStatus.retweetedStatus&&!TextUtils.isEmpty(mStatus.retweetedStatus.text)) {
                     clipboard.setText(mStatus.retweetedStatus.text);
 
                     NotifyUtils.showToast(R.string.text_copy_ret_status);
@@ -443,11 +443,11 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
             }
             case Constants.OP_ID_MORE_RETSTATUS: {
                 try {
-                    Status status = mStatus;
+                    Status status=mStatus;
 
-                    Intent intent = new Intent();
+                    Intent intent=new Intent();
                     intent.setClass(ViewStatusDetailActivity.this, ViewStatusDetailActivity.class);
-                    if (null != status) {
+                    if (null!=status) {
                         intent.putExtra("status", status.retweetedStatus);
                         intent.putExtra("refresh", true);
                         ViewStatusDetailActivity.this.startActivity(intent);
@@ -461,7 +461,7 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
     }
 
     private void processContent(MenuItem item) {
-        String title = item.getTitle().toString();
+        String title=item.getTitle().toString();
         if (title.startsWith("@")) {
             WeiboOperation.toAtUser(ViewStatusDetailActivity.this, title);
         } else if (title.startsWith("^")) {
@@ -471,19 +471,19 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater=getMenuInflater();
         inflater.inflate(R.menu.status_menu, menu);
 
-        String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         //int resId=R.drawable.abs__ic_menu_moreoverflow_normal_holo_dark;
-        int favId = R.drawable.rating_favorite_light;
-        int refreshId = R.drawable.navigation_refresh_light;
+        int favId=R.drawable.rating_favorite_light;
+        int refreshId=R.drawable.navigation_refresh_light;
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
         } else {
             //resId=R.drawable.abs__ic_menu_moreoverflow_normal_holo_light;
-            favId = R.drawable.rating_favorite_light;
-            refreshId = R.drawable.navigation_refresh_light;
+            favId=R.drawable.rating_favorite_light;
+            refreshId=R.drawable.navigation_refresh_light;
         }
         //menu.findItem(R.id.menu_nav).setIcon(resId);
         menu.findItem(R.id.menu_favorite).setIcon(favId);
@@ -515,9 +515,9 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        WeiboLog.d(TAG, "super.item:" + item);
-        if (itemId == android.R.id.home) {
+        int itemId=item.getItemId();
+        WeiboLog.d(TAG, "super.item:"+item);
+        if (itemId==android.R.id.home) {
             finish();
         } else {
             processMenuItemSelected(itemId);
@@ -532,38 +532,38 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
      * @param itemId
      */
     private void processMenuItemSelected(int itemId) {
-        if (itemId == R.id.menu_refresh) {
+        if (itemId==R.id.menu_refresh) {
             //refreshStatus();
-        } else if (itemId == R.id.menu_quick_comment) {
-            mMode = startActionMode(new StatusActionMode());
-            if (null == mCustomModeView) {
+        } else if (itemId==R.id.menu_quick_comment) {
+            mMode=startActionMode(new StatusActionMode());
+            if (null==mCustomModeView) {
                 initActionModeView();
             }
             mMode.setCustomView(mCustomModeView);
-        } else if (itemId == R.id.menu_quick_repost) {
+        } else if (itemId==R.id.menu_quick_repost) {
             quickRepostStatus();
-        } else if (itemId == R.id.menu_comment) {
+        } else if (itemId==R.id.menu_comment) {
             commentStatus();
-        } else if (itemId == R.id.menu_repost) {
+        } else if (itemId==R.id.menu_repost) {
             repostStatus();
-        } else if (itemId == R.id.menu_favorite) {
+        } else if (itemId==R.id.menu_favorite) {
             //createFavorite();
-        } else if (itemId == R.id.menu_download_ori_img) {
+        } else if (itemId==R.id.menu_download_ori_img) {
             //downOriImage();
-        } else if (itemId == R.id.menu_show_in_gallery) {
+        } else if (itemId==R.id.menu_show_in_gallery) {
             //viewLargeBitmap();
         }
     }
 
-    View.OnClickListener clickListener = new View.OnClickListener() {
+    View.OnClickListener clickListener=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             clickMethod(view);
         }
 
         private void clickMethod(View view) {
-            int id = view.getId();
-            if (id == R.id.btn_comment) {
+            int id=view.getId();
+            if (id==R.id.btn_comment) {
                 quickComment();
             }
         }
@@ -573,19 +573,19 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
      * 显示快速评论的View
      */
     private void initActionModeView() {
-        mCustomModeView = (RelativeLayout) ((LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE))
+        mCustomModeView=(RelativeLayout) ((LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE))
             .inflate(R.layout.status_quick_comment, null);
-        mQuickCommentBtn = (ImageView) mCustomModeView.findViewById(R.id.btn_comment);
-        mQuickComnet = (EditText) mCustomModeView.findViewById(R.id.et_quick_comment);
+        mQuickCommentBtn=(ImageView) mCustomModeView.findViewById(R.id.btn_comment);
+        mQuickComnet=(EditText) mCustomModeView.findViewById(R.id.et_quick_comment);
         mQuickCommentBtn.setOnClickListener(clickListener);
 
-        String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        int resId = R.drawable.send_light;
+        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        int resId=R.drawable.send_light;
 
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
         } else {
-            resId = R.drawable.send_light;
+            resId=R.drawable.send_light;
         }
         mQuickCommentBtn.setImageResource(resId);
     }
@@ -595,31 +595,31 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
      */
     private void quickComment() {
         imm.hideSoftInputFromWindow(mQuickComnet.getWindowToken(), 0);
-        String content = mQuickComnet.getEditableText().toString();
+        String content=mQuickComnet.getEditableText().toString();
         if (TextUtils.isEmpty(content)) {
             NotifyUtils.showToast(R.string.content_is_null);
             return;
         }
-        int len = content.length();
-        if (len > Constants.INPUT_STRING_COUNT) {
+        int len=content.length();
+        if (len>Constants.INPUT_STRING_COUNT) {
             NotifyUtils.showToast(R.string.text_exceed_max_num);
             return;
         }
         mMode.finish();
-        mMode = null;
+        mMode=null;
 
-        Intent taskService = new Intent(ViewStatusDetailActivity.this, SendTaskService.class);
-        SendTask task = new SendTask();
-        task.uid = currentUserId;     //在评论成功后，可能值为评论的id。
-        task.userId = currentUserId;
-        task.content = content;
-        task.source = String.valueOf(mStatus.id);
-        task.data = "0";
-        task.type = TwitterTable.SendQueueTbl.SEND_TYPE_COMMENT;
-        task.createAt = new Date().getTime();
-        String txt = mStatus.text;
+        Intent taskService=new Intent(ViewStatusDetailActivity.this, SendTaskService.class);
+        SendTask task=new SendTask();
+        task.uid=currentUserId;     //在评论成功后，可能值为评论的id。
+        task.userId=currentUserId;
+        task.content=content;
+        task.source=String.valueOf(mStatus.id);
+        task.data="0";
+        task.type=TwitterTable.SendQueueTbl.SEND_TYPE_COMMENT;
+        task.createAt=new Date().getTime();
+        String txt=mStatus.text;
 
-        task.text = txt;
+        task.text=txt;
         taskService.putExtra("send_task", task);
         NotifyUtils.showToast("评论任务添加到队列服务中了。");
         ViewStatusDetailActivity.this.startService(taskService);
@@ -640,7 +640,7 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            WeiboLog.d(TAG, "onActionItemClicked:" + item);
+            WeiboLog.d(TAG, "onActionItemClicked:"+item);
             return false;
         }
 
@@ -653,12 +653,12 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
     /**
      * Update comments when a comment was posted succuessfully
      */
-    private final BroadcastReceiver mStatusListener = new BroadcastReceiver() {
+    private final BroadcastReceiver mStatusListener=new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Constants.TASK_CHANGED)) {
-                SendTask task = (SendTask) intent.getSerializableExtra("task");
-                if (task.type == TwitterTable.SendQueueTbl.SEND_TYPE_COMMENT && task.uid != 0) {
+                SendTask task=(SendTask) intent.getSerializableExtra("task");
+                if (task.type==TwitterTable.SendQueueTbl.SEND_TYPE_COMMENT&&task.uid!=0) {
                     //showToast("评论成功."+task.content);
                     try {
                         getStatusCommentsFragment().addComment(task);
@@ -672,45 +672,45 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
     };
 
     //--------------------- 对内容的更多操作 ---------------------
-    boolean hasInitMoreAction = false;
-    ArrayList<ActionItem> actionItems = new ArrayList<ActionItem>();
+    boolean hasInitMoreAction=false;
+    ArrayList<ActionItem> actionItems=new ArrayList<ActionItem>();
 
     private void initMoreAction(PopupMenu menuBuilder) {
         ActionItem item;
-        item = new ActionItem(Constants.OP_ID_MORE_CONTENT_COPY_STATUS, getString(R.string.opb_more_content_copy_status));
+        item=new ActionItem(Constants.OP_ID_MORE_CONTENT_COPY_STATUS, getString(R.string.opb_more_content_copy_status));
         actionItems.add(item);
 
-        if (null != mStatus) {
-            Status retStatus = mStatus.retweetedStatus;
-            if (null != retStatus) {
-                item = new ActionItem(Constants.OP_ID_MORE_CONTENT_COPY_RET_STATUS, getString(R.string.opb_more_content_copy_ret_status));
+        if (null!=mStatus) {
+            Status retStatus=mStatus.retweetedStatus;
+            if (null!=retStatus) {
+                item=new ActionItem(Constants.OP_ID_MORE_CONTENT_COPY_RET_STATUS, getString(R.string.opb_more_content_copy_ret_status));
                 actionItems.add(item);
             }
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb=new StringBuilder();
             sb.append(mStatus.text);
-            if (null != retStatus) {
-                if (retStatus.id > 0) {
-                    item = new ActionItem(Constants.OP_ID_MORE_RETSTATUS, getString(R.string.opb_more_view_ret_status));
+            if (null!=retStatus) {
+                if (retStatus.id>0) {
+                    item=new ActionItem(Constants.OP_ID_MORE_RETSTATUS, getString(R.string.opb_more_view_ret_status));
                     actionItems.add(item);
                 }
 
-                sb.append("@" + retStatus.user.screenName)
+                sb.append("@"+retStatus.user.screenName)
                     .append(":")
                     .append(retStatus.text);
                 //WeiboLog.d(TAG, "sn:"+retStatus.user.screenName+" text:"+retStatus.text);
             }
 
-            SpannableString spannableString = new SpannableString(sb);
-            ArrayList<ContentItem> contentItems = WeiboUtils.getAtHighlightContent(this, spannableString);
-            if (contentItems.size() > 0) {
+            SpannableString spannableString=new SpannableString(sb);
+            ArrayList<ContentItem> contentItems=WeiboUtils.getAtHighlightContent(this, spannableString);
+            if (contentItems.size()>0) {
                 for (ContentItem ci : contentItems) {
-                    item = new ActionItem(Constants.OP_ID_MORE_CONTENT_OTHER, String.valueOf(ci.content));
+                    item=new ActionItem(Constants.OP_ID_MORE_CONTENT_OTHER, String.valueOf(ci.content));
                     actionItems.add(item);
                     if (String.valueOf(ci.content).startsWith("@")) {
-                        item = new ActionItem(Constants.OP_ID_MORE_CONTENT_OTHER, "^" + String.valueOf(ci.content).substring(1));
+                        item=new ActionItem(Constants.OP_ID_MORE_CONTENT_OTHER, "^"+String.valueOf(ci.content).substring(1));
                         actionItems.add(item);
-                        WeiboLog.v(TAG, "添加用户操作:" + item);
+                        WeiboLog.v(TAG, "添加用户操作:"+item);
                     }
                 }
             }
@@ -720,11 +720,11 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
     static class ActionItem {
 
         public String title;
-        public int actionId = - 1;
+        public int actionId=-1;
 
         ActionItem(int actionId, String title) {
-            this.title = title;
-            this.actionId = actionId;
+            this.title=title;
+            this.actionId=actionId;
         }
     }
 }

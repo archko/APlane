@@ -15,7 +15,7 @@ import com.me.microblog.util.WeiboLog;
  */
 public class SinaPlaceStatusImpl extends AbsStatusImpl<Status> {
 
-    public static final String TAG = "SinaPlaceStatusImpl";
+    public static final String TAG="SinaPlaceStatusImpl";
 
     public SinaPlaceStatusImpl() {
         //mAbsApi=new SinaPlaceApi();
@@ -23,27 +23,27 @@ public class SinaPlaceStatusImpl extends AbsStatusImpl<Status> {
 
     @Override
     public SStatusData<Status> loadData(Object... params) throws WeiboException {
-        SStatusData<Status> sStatusData = null;
-        SinaPlaceApi sWeiboApi2 = (SinaPlaceApi) mAbsApi;
-        if (null == sWeiboApi2) {
-            sStatusData = new SStatusData<Status>();
-            sStatusData.errorCode = WeiboException.API_ERROR;
-            sStatusData.errorMsg = App.getAppContext().getString(R.string.err_api_error);
+        SStatusData<Status> sStatusData=null;
+        SinaPlaceApi sWeiboApi2=(SinaPlaceApi) mAbsApi;
+        if (null==sWeiboApi2) {
+            sStatusData=new SStatusData<Status>();
+            sStatusData.errorCode=WeiboException.API_ERROR;
+            sStatusData.errorMsg=App.getAppContext().getString(R.string.err_api_error);
         } else {
             try {
-                Long sinceId = (Long) params[ 1 ];
-                Long maxId = (Long) params[ 2 ];
-                Integer c = (Integer) params[ 3 ];
-                Integer p = (Integer) params[ 4 ];
-                String type = (String) params[ 6 ];
-                WeiboLog.d(TAG, "loadData." + type);
+                Long sinceId=(Long) params[1];
+                Long maxId=(Long) params[2];
+                Integer c=(Integer) params[3];
+                Integer p=(Integer) params[4];
+                String type=(String) params[6];
+                WeiboLog.d(TAG, "loadData."+type);
 
                 if ("nearby_photos".equals(type)) {
-                    AKLocation akLocation = ((App) App.getAppContext()).getLocation();
-                    sStatusData = sWeiboApi2.getNearbyPhotos(akLocation.latitude,
+                    AKLocation akLocation=((App) App.getAppContext()).getLocation();
+                    sStatusData=sWeiboApi2.getNearbyPhotos(akLocation.latitude,
                         akLocation.longitude, akLocation.range, c, p);
                 } else {
-                    sStatusData = sWeiboApi2.getPlaceFriendTimeline(sinceId, maxId, c, p, 0);
+                    sStatusData=sWeiboApi2.getPlaceFriendTimeline(sinceId, maxId, c, p, 0);
                 }
             } catch (WeiboException e) {
                 e.printStackTrace();

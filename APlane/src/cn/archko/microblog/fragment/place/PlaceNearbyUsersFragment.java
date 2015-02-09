@@ -10,7 +10,7 @@ import android.view.View;
  */
 public class PlaceNearbyUsersFragment extends PlaceUserListFragment {
 
-    public static final String TAG = "PlaceNearbyUsersFragment";
+    public static final String TAG="PlaceNearbyUsersFragment";
     //--------------------- 数据加载 ---------------------
 
     /*public SStatusData<User> getStatuses(Long sinceId, Long maxId, int c, int p)

@@ -24,33 +24,33 @@ import com.me.microblog.util.WeiboLog;
 @SuppressLint("NewApi")
 public class AppWidgetLarge extends AppWidgetProvider {
 
-    public static final String TAG = "AppWidgetLarge";
+    public static final String TAG="AppWidgetLarge";
 
-    public static final String CMDAPPWIDGETUPDATE = "app_widget_large_update";
+    public static final String CMDAPPWIDGETUPDATE="app_widget_large_update";
 
     private static AppWidgetLarge mInstance;
 
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-        Intent intent = new Intent(context, AKWidgetService.class);
+        Intent intent=new Intent(context, AKWidgetService.class);
         context.startService(intent);
     }
 
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
-        Intent intent = new Intent(context, AKWidgetService.class);
+        Intent intent=new Intent(context, AKWidgetService.class);
         context.stopService(intent);
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        WeiboLog.d(TAG, "onReceive." + intent);
+        WeiboLog.d(TAG, "onReceive."+intent);
         /*intent=new Intent(context, AKWidgetService.class);
         context.startService(intent);*/
-        final Intent updateIntent = new Intent(AKWidgetService.SERVICECMD);
+        final Intent updateIntent=new Intent(AKWidgetService.SERVICECMD);
         updateIntent.setAction(intent.getAction());
         updateIntent.setFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY);
         context.sendBroadcast(updateIntent);
@@ -58,8 +58,8 @@ public class AppWidgetLarge extends AppWidgetProvider {
     }
 
     public static synchronized AppWidgetLarge getInstance() {
-        if (mInstance == null) {
-            mInstance = new AppWidgetLarge();
+        if (mInstance==null) {
+            mInstance=new AppWidgetLarge();
         }
         return mInstance;
     }
@@ -70,7 +70,7 @@ public class AppWidgetLarge extends AppWidgetProvider {
     @Override
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
         defaultAppWidget(context, appWidgetIds);
-        final Intent updateIntent = new Intent(AKWidgetService.SERVICECMD);
+        final Intent updateIntent=new Intent(AKWidgetService.SERVICECMD);
         updateIntent.putExtra(AKWidgetService.CMDNAME, AppWidgetLarge.CMDAPPWIDGETUPDATE);
         updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
         updateIntent.setFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY);
@@ -82,15 +82,15 @@ public class AppWidgetLarge extends AppWidgetProvider {
      * default click and hide actions if service not running.
      */
     private void defaultAppWidget(final Context context, final int[] appWidgetIds) {
-        final RemoteViews appWidgetViews = new RemoteViews(context.getPackageName(),
+        final RemoteViews appWidgetViews=new RemoteViews(context.getPackageName(),
             R.layout.ak_app_widget_large);
         linkButtons(context, appWidgetViews);
         pushUpdate(context, appWidgetIds, appWidgetViews);
     }
 
     private void pushUpdate(final Context context, final int[] appWidgetIds, final RemoteViews views) {
-        final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        if (appWidgetIds != null) {
+        final AppWidgetManager appWidgetManager=AppWidgetManager.getInstance(context);
+        if (appWidgetIds!=null) {
             appWidgetManager.updateAppWidget(appWidgetIds, views);
         } else {
             appWidgetManager.updateAppWidget(new ComponentName(context, getClass()), views);
@@ -102,10 +102,10 @@ public class AppWidgetLarge extends AppWidgetProvider {
      * widget.
      */
     private boolean hasInstances(final Context context) {
-        final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        final int[] mAppWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context,
+        final AppWidgetManager appWidgetManager=AppWidgetManager.getInstance(context);
+        final int[] mAppWidgetIds=appWidgetManager.getAppWidgetIds(new ComponentName(context,
             getClass()));
-        return mAppWidgetIds.length > 0;
+        return mAppWidgetIds.length>0;
     }
 
     /**
@@ -165,48 +165,48 @@ public class AppWidgetLarge extends AppWidgetProvider {
         Intent action;
         PendingIntent pendingIntent;
 
-        final ComponentName serviceName = new ComponentName(context, AKWidgetService.class);
+        final ComponentName serviceName=new ComponentName(context, AKWidgetService.class);
 
         // Previous track
         //action=new Intent(AKWidgetService.PREVIOUS_ACTION);
         //action.setComponent(serviceName);
-        action = new Intent(context, AppWidgetLarge.class);
+        action=new Intent(context, AppWidgetLarge.class);
         action.setAction(AKWidgetService.PREVIOUS_ACTION);
         //pendingIntent=PendingIntent.getActivity(context, 0, action, 0);   //调用Activity
-        pendingIntent = PendingIntent.getBroadcast(context, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);    //自身的更新onReceive接收
+        pendingIntent=PendingIntent.getBroadcast(context, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);    //自身的更新onReceive接收
         views.setOnClickPendingIntent(R.id.app_widget_large_previous, pendingIntent);
 
         // Play and pause
         //action=new Intent(AKWidgetService.TOGGLEPAUSE_ACTION);
         //action.setComponent(serviceName);
-        action = new Intent(context, AppWidgetLarge.class);
+        action=new Intent(context, AppWidgetLarge.class);
         action.setAction(AKWidgetService.TOGGLEPAUSE_ACTION);
         //pendingIntent=PendingIntent.getActivity(context, 0, action, 0);
-        pendingIntent = PendingIntent.getBroadcast(context, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent=PendingIntent.getBroadcast(context, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.app_widget_large_play, pendingIntent);
 
         // Next track
         //action=new Intent(AKWidgetService.NEXT_ACTION);
         //action.setComponent(serviceName);
-        action = new Intent(context, AppWidgetLarge.class);
+        action=new Intent(context, AppWidgetLarge.class);
         action.setAction(AKWidgetService.NEXT_ACTION);
         //pendingIntent=PendingIntent.getActivity(context, 0, action, 0);
-        pendingIntent = PendingIntent.getBroadcast(context, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent=PendingIntent.getBroadcast(context, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.app_widget_large_next, pendingIntent);
 
         //
-        action = new Intent(context, SplashActivity.class);
-        pendingIntent = PendingIntent.getActivity(context, 0, action, 0);
+        action=new Intent(context, SplashActivity.class);
+        pendingIntent=PendingIntent.getActivity(context, 0, action, 0);
         views.setOnClickPendingIntent(R.id.app_widget_large_image, pendingIntent);
 
         //
-        action = new Intent(context, NewStatusActivity.class);
-        pendingIntent = PendingIntent.getActivity(context, 0, action, 0);
+        action=new Intent(context, NewStatusActivity.class);
+        pendingIntent=PendingIntent.getActivity(context, 0, action, 0);
         views.setOnClickPendingIntent(R.id.app_widget_large_edit, pendingIntent);
     }
 
     public void performUpdate(AKWidgetService service, final int[] appWidgetIds) {
-        final RemoteViews appWidgetView = new RemoteViews(service.getPackageName(),
+        final RemoteViews appWidgetView=new RemoteViews(service.getPackageName(),
             R.layout.ak_app_widget_large);
         updateTxt(service, appWidgetView);
 
@@ -220,9 +220,9 @@ public class AppWidgetLarge extends AppWidgetProvider {
     }
 
     private void updateTxt(AKWidgetService service, RemoteViews appWidgetView) {
-        Status status = service.getStatus();
-        WeiboLog.v(TAG, "status:" + status);
-        if (null == status) {
+        Status status=service.getStatus();
+        WeiboLog.v(TAG, "status:"+status);
+        if (null==status) {
             return;
         }
 

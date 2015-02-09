@@ -19,7 +19,7 @@ public class OauthDialogFragment extends DialogFragment {
     Handler mHandler;
 
     public OauthDialogFragment(Handler handler) {
-        mHandler = handler;
+        mHandler=handler;
     }
 
     @Override
@@ -34,8 +34,8 @@ public class OauthDialogFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        SOauth2 ouath2 = new SOauth2();
-        WebView webView = ouath2.oauthByWebView(new Object[]{"", "", App.getAppContext(), mHandler, null});
+        SOauth2 ouath2=new SOauth2();
+        WebView webView=ouath2.oauthByWebView(new Object[]{"", "", App.getAppContext(), mHandler, null});
         return webView;
     }
 }

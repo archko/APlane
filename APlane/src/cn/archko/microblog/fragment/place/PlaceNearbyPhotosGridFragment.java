@@ -18,7 +18,7 @@ import com.me.microblog.util.WeiboLog;
  */
 public class PlaceNearbyPhotosGridFragment extends PlaceStatusGridFragment {
 
-    public static final String TAG = "PlaceNearbyPhotosGridFragment";
+    public static final String TAG="PlaceNearbyPhotosGridFragment";
 
     /**
      * When creating, retrieve this instance's number from its arguments.
@@ -36,11 +36,11 @@ public class PlaceNearbyPhotosGridFragment extends PlaceStatusGridFragment {
 
     @Override
     public void initApi() {
-        mStatusImpl = new SinaPlaceStatusImpl();
+        mStatusImpl=new SinaPlaceStatusImpl();
 
-        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
         try {
-            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.placeApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
@@ -58,27 +58,27 @@ public class PlaceNearbyPhotosGridFragment extends PlaceStatusGridFragment {
      * @param isHomeStore 是否是主页,只有主页有存储
      */
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        WeiboLog.i(TAG, "sinceId:" + sinceId + ", maxId:" + maxId + ", isRefresh:" + isRefresh + ", isHomeStore:" + isHomeStore);
-        if (! App.hasInternetConnection(getActivity())) {
+        WeiboLog.i(TAG, "sinceId:"+sinceId+", maxId:"+maxId+", isRefresh:"+isRefresh+", isHomeStore:"+isHomeStore);
+        if (!App.hasInternetConnection(getActivity())) {
             NotifyUtils.showToast(R.string.network_error);
-            if (mRefreshListener != null) {
+            if (mRefreshListener!=null) {
                 mRefreshListener.onRefreshFinished();
             }
             refreshAdapter(false, false);
             return;
         }
 
-        int count = weibo_count;
-        if (! isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
+        int count=weibo_count;
+        if (!isRefresh) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。
             //count++;
         } else {
             //page=1;
         }
-        if (count > 50) {
-            count = 50;
+        if (count>50) {
+            count=50;
         }
 
-        if (! isLoading) {
+        if (!isLoading) {
             newTask(new Object[]{isRefresh, sinceId, maxId, count, page, isHomeStore, "nearby_photos"}, null);
         }
     }

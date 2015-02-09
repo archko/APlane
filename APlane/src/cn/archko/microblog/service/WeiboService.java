@@ -37,22 +37,22 @@ import java.lang.ref.WeakReference;
  */
 public class WeiboService extends Service {
 
-    public static final String TAG = "WeiboService";
+    public static final String TAG="WeiboService";
     private PowerManager.WakeLock mWakeLock;
     private WifiManager.WifiLock mWifiLock;
-    private MyBinder myBinder = new MyBinder();
+    private MyBinder myBinder=new MyBinder();
     private NotificationManager mNM;
     SharedPreferences settings;
     /**
      * 查询新微博时间
      */
-    public static int DELAY_TIME = 10 * 1000 * 60;
+    public static int DELAY_TIME=10*1000*60;
 
-    public static final String REFRESH = "cn.archko.microblog.refresh";
+    public static final String REFRESH="cn.archko.microblog.refresh";
 
-    private static final String OAUTH = "cn.archko.microblog.oauth";
+    private static final String OAUTH="cn.archko.microblog.oauth";
 
-    public boolean isOauthing = false;
+    public boolean isOauthing=false;
     private Looper mServiceLooper;
     private ServiceHandler mServiceHandler;
 
@@ -96,7 +96,7 @@ public class WeiboService extends Service {
          */
         public ServiceHandler(final WeiboService service, final Looper looper) {
             super(looper);
-            mService = new WeakReference<WeiboService>(service);
+            mService=new WeakReference<WeiboService>(service);
         }
 
         /**
@@ -104,8 +104,8 @@ public class WeiboService extends Service {
          */
         @Override
         public void handleMessage(final Message msg) {
-            final WeiboService service = mService.get();
-            if (service == null) {
+            final WeiboService service=mService.get();
+            if (service==null) {
                 return;
             }
 
@@ -121,36 +121,36 @@ public class WeiboService extends Service {
     public void onCreate() {
         super.onCreate();
         WeiboLog.d(TAG, "WeiboService.onCreate");
-        final PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        if (powerManager != null && mWakeLock == null) {
-            mWakeLock = powerManager.newWakeLock(PowerManager.ON_AFTER_RELEASE
-                | PowerManager.SCREEN_BRIGHT_WAKE_LOCK
-                | PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
+        final PowerManager powerManager=(PowerManager) getSystemService(Context.POWER_SERVICE);
+        if (powerManager!=null&&mWakeLock==null) {
+            mWakeLock=powerManager.newWakeLock(PowerManager.ON_AFTER_RELEASE
+                |PowerManager.SCREEN_BRIGHT_WAKE_LOCK
+                |PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
         }
 
-        mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNM=(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        settings = PreferenceManager.getDefaultSharedPreferences(this);
+        settings=PreferenceManager.getDefaultSharedPreferences(this);
         //Display a notification about us starting.We put an icon in the status bar.
         //showNotification(0);
-        String chk_new_status_time = settings.getString(PrefsActivity.PREF_CHK_NEW_STATUS_TIME, "1");
+        String chk_new_status_time=settings.getString(PrefsActivity.PREF_CHK_NEW_STATUS_TIME, "1");
         if (chk_new_status_time.equals("0")) {
-            WeiboService.DELAY_TIME = 1 * 1000 * 60;
+            WeiboService.DELAY_TIME=1*1000*60;
         } else if (chk_new_status_time.equals("1")) {
-            WeiboService.DELAY_TIME = 2 * 1000 * 60;
+            WeiboService.DELAY_TIME=2*1000*60;
         } else if (chk_new_status_time.equals("2")) {
-            WeiboService.DELAY_TIME = 5 * 1000 * 60;
+            WeiboService.DELAY_TIME=5*1000*60;
         } else if (chk_new_status_time.equals("3")) {
-            WeiboService.DELAY_TIME = 20 * 1000 * 60;
+            WeiboService.DELAY_TIME=20*1000*60;
         }
 
-        final HandlerThread thread = new HandlerThread("ServiceHandler",
+        final HandlerThread thread=new HandlerThread("ServiceHandler",
             android.os.Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
 
-        mServiceLooper = thread.getLooper();
+        mServiceLooper=thread.getLooper();
         // Initialize the handler
-        mServiceHandler = new ServiceHandler(this, thread.getLooper());
+        mServiceHandler=new ServiceHandler(this, thread.getLooper());
     }
 
     @Override
@@ -163,7 +163,7 @@ public class WeiboService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (null != mServiceHandler) {
+        if (null!=mServiceHandler) {
             mServiceHandler.removeCallbacksAndMessages(null);
             mServiceHandler.getLooper().quit();
         }
@@ -172,7 +172,7 @@ public class WeiboService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        WeiboLog.d(TAG, "onStartCommand,flags:" + flags + " startId:" + startId);
+        WeiboLog.d(TAG, "onStartCommand,flags:"+flags+" startId:"+startId);
 
         /*if (intent!=null) {
             final String action=intent.getAction();
@@ -191,32 +191,32 @@ public class WeiboService extends Service {
      * 处理任务
      */
     private void doTask() {
-        if (! App.hasInternetConnection(this)) {
+        if (!App.hasInternetConnection(this)) {
             WeiboLog.d(TAG, "no internet connection.");
             return;
         }
 
-        App app = (App) App.getAppContext();
-        if (app.getOauthBean().oauthType == Oauth2.OAUTH_TYPE_WEB &&
-            System.currentTimeMillis() >= app.getOauthBean().expireTime && app.getOauthBean().expireTime != 0) {
+        App app=(App) App.getAppContext();
+        if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB&&
+            System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
             WeiboLog.w(TAG, "token expired.");
             return;
         }
 
         try {
-            long currentUserId = settings.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
-            WeiboLog.d(TAG, "currentUserId:" + currentUserId);
-            if (currentUserId != - 1) {
-                SinaUnreadApi unreadApi = new SinaUnreadApi();
+            long currentUserId=settings.getLong(Constants.PREF_CURRENT_USER_ID, -1);
+            WeiboLog.d(TAG, "currentUserId:"+currentUserId);
+            if (currentUserId!=-1) {
+                SinaUnreadApi unreadApi=new SinaUnreadApi();
                 unreadApi.updateToken();
-                Unread unread = unreadApi.getUnread(currentUserId);
-                WeiboLog.i(TAG, "获取新微博数据为:" + unread);
+                Unread unread=unreadApi.getUnread(currentUserId);
+                WeiboLog.i(TAG, "获取新微博数据为:"+unread);
 
-                boolean shouldUpdate = unread.status != 0 || unread.comments != 0 || unread.followers != 0 ||
-                    unread.mention_status != 0 || unread.mention_cmt != 0 || unread.dm != 0;
-                if (null != unread && shouldUpdate) {
-                    int statusCount = unread.status;
-                    SharedPreferences.Editor editor = settings.edit();
+                boolean shouldUpdate=unread.status!=0||unread.comments!=0||unread.followers!=0||
+                    unread.mention_status!=0||unread.mention_cmt!=0||unread.dm!=0;
+                if (null!=unread&&shouldUpdate) {
+                    int statusCount=unread.status;
+                    SharedPreferences.Editor editor=settings.edit();
                     editor.putInt(Constants.PREF_SERVICE_STATUS, statusCount);
                     editor.putInt(Constants.PREF_SERVICE_COMMENT, unread.comments);
                     editor.putInt(Constants.PREF_SERVICE_FOLLOWER, unread.followers);
@@ -225,7 +225,7 @@ public class WeiboService extends Service {
                     editor.putInt(Constants.PREF_SERVICE_DM, unread.dm);
                     editor.commit();
 
-                    Intent intent = new Intent(Constants.SERVICE_NOTIFY_UNREAD);
+                    Intent intent=new Intent(Constants.SERVICE_NOTIFY_UNREAD);
                     intent.putExtra("unread", unread);
                     WeiboService.this.sendBroadcast(intent);
 
@@ -237,7 +237,7 @@ public class WeiboService extends Service {
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-            Message msg = mServiceHandler.obtainMessage();
+            Message msg=mServiceHandler.obtainMessage();
             mServiceHandler.sendMessageDelayed(msg, DELAY_TIME);
         }
     }
@@ -250,25 +250,25 @@ public class WeiboService extends Service {
      */
     private void fetchNewStatuses(Intent intent, int startId) {
         WeiboLog.d(TAG, "fetchNewStatuses.");
-        boolean chk_new_status = settings.getBoolean(PrefsActivity.PREF_AUTO_CHK_NEW_STATUS, true);
-        if (! chk_new_status) {
+        boolean chk_new_status=settings.getBoolean(PrefsActivity.PREF_AUTO_CHK_NEW_STATUS, true);
+        if (!chk_new_status) {
             WeiboLog.d(TAG, "no chk_new_status.");
             mServiceHandler.removeCallbacksAndMessages(null);
             return;
         }
 
-        App app = (App) App.getAppContext();
-        if (app.getOauthBean().oauthType == Oauth2.OAUTH_TYPE_WEB &&
-            System.currentTimeMillis() >= app.getOauthBean().expireTime && app.getOauthBean().expireTime != 0) {
-            WeiboLog.e(TAG, "web认证，token过期了.不能启动定时器:" + app.getOauthBean().expireTime);
+        App app=(App) App.getAppContext();
+        if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB&&
+            System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
+            WeiboLog.e(TAG, "web认证，token过期了.不能启动定时器:"+app.getOauthBean().expireTime);
 
             return;
         }
 
         try {
             WeiboLog.d(TAG, "WeiboService.onStartCommand.");
-            Message msg = mServiceHandler.obtainMessage();
-            msg.arg1 = startId;
+            Message msg=mServiceHandler.obtainMessage();
+            msg.arg1=startId;
             mServiceHandler.sendMessage(msg);
         } catch (Exception e) {
             e.printStackTrace();
@@ -282,30 +282,30 @@ public class WeiboService extends Service {
             //return;
         }
 
-        if (intent == null || null == intent.getSerializableExtra("oauth_bean")) {
+        if (intent==null||null==intent.getSerializableExtra("oauth_bean")) {
             WeiboLog.d(TAG, "oauth2,intent =null.");
             return;
         }
 
-        OauthBean oauthBean = (OauthBean) intent.getSerializableExtra("oauth_bean");
-        WeiboLog.d(TAG, "添加任务:" + oauthBean);
-        if (null != oauthBean) {
+        OauthBean oauthBean=(OauthBean) intent.getSerializableExtra("oauth_bean");
+        WeiboLog.d(TAG, "添加任务:"+oauthBean);
+        if (null!=oauthBean) {
         }
     }
 
     void doNotify() {
         // 创建一个通知
-        Notification notification = new Notification(R.drawable.logo, "", System.currentTimeMillis());
+        Notification notification=new Notification(R.drawable.logo, "", System.currentTimeMillis());
         // 指定这个通知的布局文件
-        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.custom_remoteview);
+        RemoteViews remoteViews=new RemoteViews(getPackageName(), R.layout.custom_remoteview);
 
         // 设置通知显示的内容
         remoteViews.setTextViewText(R.id.title, "");
 
         // 将内容指定给通知
-        notification.contentView = remoteViews;
+        notification.contentView=remoteViews;
         // 指定点击通知后跳到那个Activity
-        notification.contentIntent = PendingIntent.getActivity(this, 0, null, PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.contentIntent=PendingIntent.getActivity(this, 0, null, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // //或者启动一个Service
         // notification.contentIntent=PendingIntent.getService(
@@ -320,7 +320,7 @@ public class WeiboService extends Service {
         // PendingIntent.FLAG_UPDATE_CURRENT);
 
         // 指定通知可以清除
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        notification.flags|=Notification.FLAG_AUTO_CANCEL;
         // 指定通知不能清除
         // notification.flags|=Notification.FLAG_NO_CLEAR;
         // 通知显示的时候播放默认声音

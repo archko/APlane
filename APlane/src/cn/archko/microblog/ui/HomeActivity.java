@@ -65,16 +65,16 @@ import java.util.HashMap;
  */
 public class HomeActivity extends SkinFragmentActivity implements OnRefreshListener {
 
-    public final static String TAG = "HomeActivity";
+    public final static String TAG="HomeActivity";
 
     private ActionBar mActionBar;
     private SidebarAdapter mSidebarAdapter;
-    boolean isInitialized = false;
+    boolean isInitialized=false;
     Handler mHandler;
     /**
      * 消息的缓存View
      */
-    HashMap<String, TextView> mActionMsgView = new HashMap<String, TextView>(8);
+    HashMap<String, TextView> mActionMsgView=new HashMap<String, TextView>(8);
     Spinner mGroupItem;
     RelativeLayout mGrouplayout;
     private DrawerLayout mDrawerLayout;
@@ -83,25 +83,25 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
     /**
      * 是否已经选中一个位置了.第一次为未选中.
      */
-    boolean hasFocused = false;
+    boolean hasFocused=false;
     UpdateHelper mUpdateHelper=new UpdateHelper(this);
 
     /**
      * 根据屏幕设置下载图片的分辨率，因为内存的限制，不处理横屏时的大小，全部按照竖屏处理
      */
     void setImageD() {
-        Display display = getWindowManager().getDefaultDisplay();
-        DisplayMetrics dm = new DisplayMetrics();
+        Display display=getWindowManager().getDefaultDisplay();
+        DisplayMetrics dm=new DisplayMetrics();
         display.getMetrics(dm);
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-        WeiboLog.d(TAG, "setImageD.width:" + width + " height:" + height + " dm.wp:" + dm.widthPixels + " dm.hp:" + dm.heightPixels + " density:" + dm.density);
-        if (width > height) {
-            ImageManager.IMAGE_MAX_WIDTH = height;
-            ImageManager.IMAGE_MAX_HEIGHT = width;
+        int width=dm.widthPixels;
+        int height=dm.heightPixels;
+        WeiboLog.d(TAG, "setImageD.width:"+width+" height:"+height+" dm.wp:"+dm.widthPixels+" dm.hp:"+dm.heightPixels+" density:"+dm.density);
+        if (width>height) {
+            ImageManager.IMAGE_MAX_WIDTH=height;
+            ImageManager.IMAGE_MAX_HEIGHT=width;
         } else {
-            ImageManager.IMAGE_MAX_WIDTH = width;
-            ImageManager.IMAGE_MAX_HEIGHT = height;
+            ImageManager.IMAGE_MAX_WIDTH=width;
+            ImageManager.IMAGE_MAX_HEIGHT=height;
         }
     }
 
@@ -118,12 +118,12 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         setProgressBarIndeterminateVisibility(false);
         setProgressBarVisibility(false);
 
-        mHandler = new Handler();
+        mHandler=new Handler();
 
         setContentView(R.layout.ak_main_drawer_layout);
 
-        final ActionBar bar = getActionBar();
-        mActionBar = bar;
+        final ActionBar bar=getActionBar();
+        mActionBar=bar;
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         mActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -132,14 +132,14 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         mActionBar.setDisplayShowHomeEnabled(true);   //整个标题栏
         mActionBar.setTitle(R.string.tab_label_home);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawer = (ListView) findViewById(R.id.start_drawer);
+        mDrawerLayout=(DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawer=(ListView) findViewById(R.id.start_drawer);
         mDrawer.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         //mRightDrawer=(ListView) findViewById(R.id.right_drawer);
 
         // set the Behind View
-        mSidebarAdapter = new SidebarAdapter(HomeActivity.this);
-        int home = mSidebarAdapter.addFragment(true);
+        mSidebarAdapter=new SidebarAdapter(HomeActivity.this);
+        int home=mSidebarAdapter.addFragment(true);
         mDrawer.setAdapter(mSidebarAdapter);
         //mRightDrawer.setAdapter(mSidebarAdapter);
         mDrawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -149,10 +149,10 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
             }
         });
 
-        Fragment oldFragment = getFragmentManager().findFragmentById(R.id.fragment_placeholder);
-        WeiboLog.v(TAG, "old:" + oldFragment + " instance:" + savedInstanceState);
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        if (oldFragment == null) {
+        Fragment oldFragment=getFragmentManager().findFragmentById(R.id.fragment_placeholder);
+        WeiboLog.v(TAG, "old:"+oldFragment+" instance:"+savedInstanceState);
+        FragmentTransaction ft=getFragmentManager().beginTransaction();
+        if (oldFragment==null) {
             mSidebarAdapter.getFragment(0, ft);
         } else {
             ft.attach(oldFragment);
@@ -165,7 +165,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         addGroupNav();
     }
 
-    View.OnClickListener mActionItemListener = new View.OnClickListener() {
+    View.OnClickListener mActionItemListener=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             onActionItemClick(view.getId());
@@ -173,30 +173,30 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
     };
 
     private void onActionItemClick(int id) {
-        if (R.id.action_new_status == id) {
+        if (R.id.action_new_status==id) {
             newStatus();
-        } else if (R.id.action_refresh == id) {
+        } else if (R.id.action_refresh==id) {
             refresh();
-        } else if (R.id.action_clear == id) {
+        } else if (R.id.action_clear==id) {
             clear();
-        } else if (R.id.action_home == id) {
-            int pos = mSidebarAdapter.getFragmentPos(Constants.TAB_ID_HOME);
+        } else if (R.id.action_home==id) {
+            int pos=mSidebarAdapter.getFragmentPos(Constants.TAB_ID_HOME);
             selectItem(pos);
             navigationFragment(pos);
-        } else if (R.id.action_at_comment == id) {
-            int pos = mSidebarAdapter.getFragmentPos(Constants.TAB_ID_AT_COMMENT);
+        } else if (R.id.action_at_comment==id) {
+            int pos=mSidebarAdapter.getFragmentPos(Constants.TAB_ID_AT_COMMENT);
             selectItem(pos);
             navigationFragment(pos);
-        } else if (R.id.action_at_status == id) {
-            int pos = mSidebarAdapter.getFragmentPos(Constants.TAB_ID_AT_STATUS);
+        } else if (R.id.action_at_status==id) {
+            int pos=mSidebarAdapter.getFragmentPos(Constants.TAB_ID_AT_STATUS);
             selectItem(pos);
             navigationFragment(pos);
-        } else if (R.id.action_comment == id) {
-            int pos = mSidebarAdapter.getFragmentPos(Constants.TAB_ID_COMMENT);
+        } else if (R.id.action_comment==id) {
+            int pos=mSidebarAdapter.getFragmentPos(Constants.TAB_ID_COMMENT);
             selectItem(pos);
             navigationFragment(pos);
-        } else if (R.id.action_follower == id) {
-            int pos = mSidebarAdapter.getFragmentPos(Constants.TAB_ID_FOLLOWER);
+        } else if (R.id.action_follower==id) {
+            int pos=mSidebarAdapter.getFragmentPos(Constants.TAB_ID_FOLLOWER);
             selectItem(pos);
             navigationFragment(pos);
         }
@@ -208,32 +208,32 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
     }
 
     private void setCustomActionBar() {
-        View cusActionBar = getLayoutInflater().inflate(R.layout.home_action_bar, null);
+        View cusActionBar=getLayoutInflater().inflate(R.layout.home_action_bar, null);
         mActionBar.setCustomView(cusActionBar);
         mActionBar.setDisplayShowCustomEnabled(true);
 
-        mGroupItem = (Spinner) cusActionBar.findViewById(R.id.action_group);
-        mGrouplayout = (RelativeLayout) cusActionBar.findViewById(R.id.action_group_layout);
+        mGroupItem=(Spinner) cusActionBar.findViewById(R.id.action_group);
+        mGrouplayout=(RelativeLayout) cusActionBar.findViewById(R.id.action_group_layout);
         //ImageButton group=(ImageButton) cusActionBar.findViewById(R.id.action_group_bg);
-        ImageButton newStatusItem = (ImageButton) cusActionBar.findViewById(R.id.action_new_status);
+        ImageButton newStatusItem=(ImageButton) cusActionBar.findViewById(R.id.action_new_status);
         newStatusItem.setOnClickListener(mActionItemListener);
-        ImageButton refreshItem = (ImageButton) cusActionBar.findViewById(R.id.action_refresh);
+        ImageButton refreshItem=(ImageButton) cusActionBar.findViewById(R.id.action_refresh);
         refreshItem.setOnClickListener(mActionItemListener);
-        ImageButton clearItem = (ImageButton) cusActionBar.findViewById(R.id.action_clear);
+        ImageButton clearItem=(ImageButton) cusActionBar.findViewById(R.id.action_clear);
         clearItem.setOnClickListener(mActionItemListener);
 
-        String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        int menuNewStatus = R.drawable.content_edit_light;
-        int refreshId = R.drawable.navigation_refresh_light;
-        int clearId = R.drawable.content_discard_light;
+        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        int menuNewStatus=R.drawable.content_edit_light;
+        int refreshId=R.drawable.navigation_refresh_light;
+        int clearId=R.drawable.content_discard_light;
         //int groupdId=R.drawable.social_group_dark;
         if ("0".equals(themeId)) {
         } else if ("1".equals(themeId)) {
         } else {
-            menuNewStatus = R.drawable.content_edit_light;
-            refreshId = R.drawable.navigation_refresh_light;
+            menuNewStatus=R.drawable.content_edit_light;
+            refreshId=R.drawable.navigation_refresh_light;
             //groupdId=R.drawable.social_group_light;
-            clearId = R.drawable.content_discard_light;
+            clearId=R.drawable.content_discard_light;
         }
         newStatusItem.setImageResource(menuNewStatus);
         refreshItem.setImageResource(refreshId);
@@ -241,37 +241,37 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         //group.setImageResource(groupdId);
 
         //init action items
-        View layout = cusActionBar.findViewById(R.id.action_home);
-        TextView msgView = (TextView) layout.findViewById(R.id.msg);
-        TextView titleView = (TextView) layout.findViewById(R.id.title);
+        View layout=cusActionBar.findViewById(R.id.action_home);
+        TextView msgView=(TextView) layout.findViewById(R.id.msg);
+        TextView titleView=(TextView) layout.findViewById(R.id.title);
         titleView.setText(R.string.action_item_home);
         mActionMsgView.put(Constants.TAB_ID_HOME, msgView);
         layout.setOnClickListener(mActionItemListener);
 
-        layout = cusActionBar.findViewById(R.id.action_comment);
-        msgView = (TextView) layout.findViewById(R.id.msg);
-        titleView = (TextView) layout.findViewById(R.id.title);
+        layout=cusActionBar.findViewById(R.id.action_comment);
+        msgView=(TextView) layout.findViewById(R.id.msg);
+        titleView=(TextView) layout.findViewById(R.id.title);
         titleView.setText(R.string.action_item_comment);
         mActionMsgView.put(Constants.TAB_ID_COMMENT, msgView);
         layout.setOnClickListener(mActionItemListener);
 
-        layout = cusActionBar.findViewById(R.id.action_at_status);
-        msgView = (TextView) layout.findViewById(R.id.msg);
-        titleView = (TextView) layout.findViewById(R.id.title);
+        layout=cusActionBar.findViewById(R.id.action_at_status);
+        msgView=(TextView) layout.findViewById(R.id.msg);
+        titleView=(TextView) layout.findViewById(R.id.title);
         titleView.setText(R.string.action_item_at_status);
         mActionMsgView.put(Constants.TAB_ID_AT_STATUS, msgView);
         layout.setOnClickListener(mActionItemListener);
 
-        layout = cusActionBar.findViewById(R.id.action_at_comment);
-        msgView = (TextView) layout.findViewById(R.id.msg);
-        titleView = (TextView) layout.findViewById(R.id.title);
+        layout=cusActionBar.findViewById(R.id.action_at_comment);
+        msgView=(TextView) layout.findViewById(R.id.msg);
+        titleView=(TextView) layout.findViewById(R.id.title);
         titleView.setText(R.string.action_item_at_comment);
         mActionMsgView.put(Constants.TAB_ID_AT_COMMENT, msgView);
         layout.setOnClickListener(mActionItemListener);
 
-        layout = cusActionBar.findViewById(R.id.action_follower);
-        msgView = (TextView) layout.findViewById(R.id.msg);
-        titleView = (TextView) layout.findViewById(R.id.title);
+        layout=cusActionBar.findViewById(R.id.action_follower);
+        msgView=(TextView) layout.findViewById(R.id.msg);
+        titleView=(TextView) layout.findViewById(R.id.title);
         titleView.setText(R.string.action_item_follower);
         mActionMsgView.put(Constants.TAB_ID_FOLLOWER, msgView);
         layout.setOnClickListener(mActionItemListener);
@@ -280,24 +280,24 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        WeiboLog.v(TAG, "onRestoreInstanceState:" + savedInstanceState);
+        WeiboLog.v(TAG, "onRestoreInstanceState:"+savedInstanceState);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        WeiboLog.v(TAG, "onSaveInstanceState:" + outState);
+        WeiboLog.v(TAG, "onSaveInstanceState:"+outState);
     }
 
     private void doInit() {
-        isInitialized = true;
+        isInitialized=true;
         setImageD();
 
         delayStartService();
 
-        if (! WeiboUtils.isHoneycombOrLater()) {
-            if (null == mExitReceiver) {
-                mExitReceiver = new ExitBroadcastReceiver();
+        if (!WeiboUtils.isHoneycombOrLater()) {
+            if (null==mExitReceiver) {
+                mExitReceiver=new ExitBroadcastReceiver();
             }
             registerReceiver(mExitReceiver, new IntentFilter(Constants.EXIT_APP));
         }
@@ -307,10 +307,10 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                boolean chk_new_status = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this)
+                boolean chk_new_status=PreferenceManager.getDefaultSharedPreferences(HomeActivity.this)
                     .getBoolean(PrefsActivity.PREF_AUTO_CHK_NEW_STATUS, true);
 
-                Intent intent = new Intent(HomeActivity.this, WeiboService.class);
+                Intent intent=new Intent(HomeActivity.this, WeiboService.class);
                 intent.setAction(WeiboService.REFRESH);
                 if (chk_new_status) {
                     startService(intent);
@@ -318,7 +318,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
                     stopService(intent);
                 }
 
-                intent = new Intent(HomeActivity.this, SendTaskService.class);
+                intent=new Intent(HomeActivity.this, SendTaskService.class);
                 startService(intent);
 
                 /*intent=new Intent(HomeActivity.this, AKWidgetService.class);
@@ -334,28 +334,28 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
      */
     void navigationFragment(int position) {
         mDrawerLayout.closeDrawer(mDrawer);
-        SidebarAdapter.SidebarEntry entry = (SidebarAdapter.SidebarEntry) mSidebarAdapter.getItem(position);
-        if (entry.navType == SidebarAdapter.SidebarEntry.NAV_TYPE_INTENT) {
-            Intent intent = new Intent(HomeActivity.this, entry.clazz);
+        SidebarAdapter.SidebarEntry entry=(SidebarAdapter.SidebarEntry) mSidebarAdapter.getItem(position);
+        if (entry.navType==SidebarAdapter.SidebarEntry.NAV_TYPE_INTENT) {
+            Intent intent=new Intent(HomeActivity.this, entry.clazz);
             startActivity(intent);
             return;
         }
 
-        Fragment current = getFragmentManager().findFragmentById(R.id.fragment_placeholder);
+        Fragment current=getFragmentManager().findFragmentById(R.id.fragment_placeholder);
         if (current.getTag().equals(entry.id)) {// Already selected
             return;
         }
 
         //getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        WeiboLog.v(TAG, "currenttag:" + current.getTag() + " navmode;" + mActionBar.getNavigationMode());
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        if (null != current) {
+        WeiboLog.v(TAG, "currenttag:"+current.getTag()+" navmode;"+mActionBar.getNavigationMode());
+        FragmentTransaction ft=getFragmentManager().beginTransaction();
+        if (null!=current) {
             ft.detach(current);
         }
-        Fragment next = mSidebarAdapter.getFragment(entry, position, ft);
+        Fragment next=mSidebarAdapter.getFragment(entry, position, ft);
         ft.commit();
         if (Constants.TAB_ID_HOME.equals(next.getTag())) {
-            if (mGrouplayout.getVisibility() == View.GONE) {
+            if (mGrouplayout.getVisibility()==View.GONE) {
                 mGrouplayout.setVisibility(View.VISIBLE);
                 ((HorizontalScrollView) mActionBar.getCustomView()).fullScroll(View.FOCUS_RIGHT);
             }
@@ -363,7 +363,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
                 mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
             }*/
         } else {
-            if (mGrouplayout.getVisibility() == View.VISIBLE) {
+            if (mGrouplayout.getVisibility()==View.VISIBLE) {
                 mGrouplayout.setVisibility(View.GONE);
             }
             /*if (mActionBar.getNavigationMode()==ActionBar.NAVIGATION_MODE_LIST) {
@@ -387,8 +387,8 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
     protected void onResume() {
         super.onResume();
 
-        if (null == receiver) {
-            receiver = new MsgBroadcastReceiver();
+        if (null==receiver) {
+            receiver=new MsgBroadcastReceiver();
         }
         registerReceiver(receiver, new IntentFilter(Constants.SERVICE_NOTIFY_UNREAD));
 
@@ -396,9 +396,9 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         applyTheme();
         refreshSidebar();
 
-        if (! hasFocused) {
+        if (!hasFocused) {
             selectItem(0);
-            hasFocused = true;
+            hasFocused=true;
         }
     }
 
@@ -406,15 +406,15 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
      * 应用主题.
      */
     void applyTheme() {
-        String themeId = PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        if (! mThemeId.equals(themeId)) {
+        String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
+        if (!mThemeId.equals(themeId)) {
             ThemeUtils.getsInstance().themeActionBar(getActionBar(), this);
             //mMenuFragment.themeBackground(true);
-            mThemeId = themeId;
+            mThemeId=themeId;
             applyThemeId(themeId);
-            final Fragment current = getFragmentManager().findFragmentById(R.id.fragment_placeholder);
-            if (current != null && current instanceof AbstractBaseFragment) {
-                AbstractBaseFragment baseFragment = (AbstractBaseFragment) current;
+            final Fragment current=getFragmentManager().findFragmentById(R.id.fragment_placeholder);
+            if (current!=null&&current instanceof AbstractBaseFragment) {
+                AbstractBaseFragment baseFragment=(AbstractBaseFragment) current;
                 baseFragment.themeBackground();
             }
 
@@ -429,14 +429,14 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
      * 刷新侧边栏的消息
      */
     public void refreshSidebar() {
-        Unread unread = new Unread();
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        unread.status = sp.getInt(Constants.PREF_SERVICE_STATUS, 0);
-        unread.comments = sp.getInt(Constants.PREF_SERVICE_COMMENT, 0);
-        unread.followers = sp.getInt(Constants.PREF_SERVICE_FOLLOWER, 0);
-        unread.mention_status = sp.getInt(Constants.PREF_SERVICE_AT, 0);
-        unread.mention_cmt = sp.getInt(Constants.PREF_SERVICE_AT_COMMENT, 0);
-        unread.dm = sp.getInt(Constants.PREF_SERVICE_DM, 0);
+        Unread unread=new Unread();
+        SharedPreferences sp=PreferenceManager.getDefaultSharedPreferences(this);
+        unread.status=sp.getInt(Constants.PREF_SERVICE_STATUS, 0);
+        unread.comments=sp.getInt(Constants.PREF_SERVICE_COMMENT, 0);
+        unread.followers=sp.getInt(Constants.PREF_SERVICE_FOLLOWER, 0);
+        unread.mention_status=sp.getInt(Constants.PREF_SERVICE_AT, 0);
+        unread.mention_cmt=sp.getInt(Constants.PREF_SERVICE_AT_COMMENT, 0);
+        unread.dm=sp.getInt(Constants.PREF_SERVICE_DM, 0);
         receiveUnread(unread);
     }
 
@@ -447,44 +447,44 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         editor.commit();*/
         super.onPause();
 
-        if (null != receiver) {
+        if (null!=receiver) {
             unregisterReceiver(receiver);
-            receiver = null;
+            receiver=null;
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != mExitReceiver) {
+        if (null!=mExitReceiver) {
             unregisterReceiver(mExitReceiver);
-            mExitReceiver = null;
+            mExitReceiver=null;
         }
     }
 
     @Override
     public void onBackPressed() {
-        boolean pref_back_pressed = mPrefs.getBoolean(PrefsActivity.PREF_BACK_PRESSED, false);
+        boolean pref_back_pressed=mPrefs.getBoolean(PrefsActivity.PREF_BACK_PRESSED, false);
         if (pref_back_pressed) {
             super.onBackPressed();
-            Intent intent = new Intent(HomeActivity.this, WeiboService.class);
+            Intent intent=new Intent(HomeActivity.this, WeiboService.class);
             HomeActivity.this.stopService(intent);
-            intent = new Intent(HomeActivity.this, SendTaskService.class);
+            intent=new Intent(HomeActivity.this, SendTaskService.class);
             stopService(intent);
             ((App) App.getAppContext()).logout();
             finish();
             android.os.Process.killProcess(android.os.Process.myPid());
         } else {
             try {
-                ComponentName componentName = WeiboUtils.getTaskComponent(this);
-                WeiboLog.d(TAG, "启动桌面:" + componentName);
-                if (null != componentName) {
-                    Intent home = new Intent();
+                ComponentName componentName=WeiboUtils.getTaskComponent(this);
+                WeiboLog.d(TAG, "启动桌面:"+componentName);
+                if (null!=componentName) {
+                    Intent home=new Intent();
                     home.setComponent(componentName);
                     startActivity(home);
                     return;
                 }
-                Intent home = new Intent(Intent.ACTION_MAIN);
+                Intent home=new Intent(Intent.ACTION_MAIN);
                 home.addCategory("android.intent.category.HOME");
                 home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 home.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -539,40 +539,40 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
     public boolean onOptionsItemSelected(MenuItem item) {
         // Intent to start new Activity
 
-        int itemId = item.getItemId();
-        if (itemId == android.R.id.home) {
+        int itemId=item.getItemId();
+        if (itemId==android.R.id.home) {
             if (mDrawerLayout.isDrawerOpen(mDrawer)) {
                 mDrawerLayout.closeDrawer(mDrawer);
             } else {
                 mDrawerLayout.openDrawer(mDrawer);
             }
-        } else if (itemId == R.id.menu_new_status) {
+        } else if (itemId==R.id.menu_new_status) {
             newStatus();
         } /*else if (itemId==R.id.menu_home_hot) {
             navigateToHot();
-        } */ else if (itemId == R.id.menu_home_user) {
+        } */ else if (itemId==R.id.menu_home_user) {
             //showSelf();
-        } else if (itemId == R.id.menu_at_author) {
+        } else if (itemId==R.id.menu_at_author) {
             atStatus();
-        } else if (itemId == R.id.menu_pref) {
+        } else if (itemId==R.id.menu_pref) {
             showPrefs();
-        } else if (itemId == R.id.menu_logout) {
-            mode = PrefsFragment.MODE_LOGOUT;
+        } else if (itemId==R.id.menu_logout) {
+            mode=PrefsFragment.MODE_LOGOUT;
             exitConfirm(R.string.app_logout_title, R.string.app_logout_msg);
-        } else if (itemId == R.id.menu_search) {
-            Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
+        } else if (itemId==R.id.menu_search) {
+            Intent intent=new Intent(HomeActivity.this, SearchActivity.class);
             startActivity(intent);
-        } else if (itemId == R.id.menu_account_user_manager) {
-            Intent intent = new Intent(HomeActivity.this, AccountUserActivity.class);
+        } else if (itemId==R.id.menu_account_user_manager) {
+            Intent intent=new Intent(HomeActivity.this, AccountUserActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.enter_right, R.anim.enter_left);
-        } else if (itemId == R.id.menu_update) {
+        } else if (itemId==R.id.menu_update) {
             mUpdateHelper.checkUpdate();
-        } else if (itemId == R.id.menu_exit) {
-            mode = PrefsFragment.MODE_EXIT;
+        } else if (itemId==R.id.menu_exit) {
+            mode=PrefsFragment.MODE_EXIT;
             //exitConfirm(R.string.exit_title, R.string.exit_msg);
             AKUtils.exit(HomeActivity.this);
-        } else if (itemId == R.id.menu_refresh) {
+        } else if (itemId==R.id.menu_refresh) {
             refresh();
         }
 
@@ -580,37 +580,37 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
     }
 
     private void refresh() {
-        AbstractBaseFragment current = (AbstractBaseFragment) getFragmentManager().findFragmentById(R.id.fragment_placeholder);
-        WeiboLog.d(TAG, "refresh.current:" + current);
+        AbstractBaseFragment current=(AbstractBaseFragment) getFragmentManager().findFragmentById(R.id.fragment_placeholder);
+        WeiboLog.d(TAG, "refresh.current:"+current);
         current.refresh();
     }
 
     private void clear() {
-        AbstractBaseFragment current = (AbstractBaseFragment) getFragmentManager().findFragmentById(R.id.fragment_placeholder);
-        WeiboLog.d(TAG, "clear.current:" + current);
+        AbstractBaseFragment current=(AbstractBaseFragment) getFragmentManager().findFragmentById(R.id.fragment_placeholder);
+        WeiboLog.d(TAG, "clear.current:"+current);
         current.clear();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        WeiboLog.d(TAG, "onConfigurationChanged.o:" + newConfig.orientation);
+        WeiboLog.d(TAG, "onConfigurationChanged.o:"+newConfig.orientation);
     }
 
     private void reloadPreferences() {
-        SharedPreferences options = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
-        boolean autoChkUpdate = options.getBoolean(PrefsActivity.PREF_AUTO_CHK_UPDATE, true);
-        boolean pref_auto_chk_update_wifi_only = options.getBoolean(PrefsActivity.PREF_AUTO_CHK_UPDATE_WIFI_ONLY, false);
-        if (! pref_auto_chk_update_wifi_only) {//if (autoChkUpdate) {
-            long time = mPrefs.getLong(Constants.UPDATE_TIMESTAMP, - 1);
-            long now = System.currentTimeMillis();
-            long delta = now - time - Constants.UPDATE_DELTA;
-            WeiboLog.i("update.time:" + time + " now:" + now);
+        SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
+        boolean autoChkUpdate=options.getBoolean(PrefsActivity.PREF_AUTO_CHK_UPDATE, true);
+        boolean pref_auto_chk_update_wifi_only=options.getBoolean(PrefsActivity.PREF_AUTO_CHK_UPDATE_WIFI_ONLY, false);
+        if (!pref_auto_chk_update_wifi_only) {//if (autoChkUpdate) {
+            long time=mPrefs.getLong(Constants.UPDATE_TIMESTAMP, -1);
+            long now=System.currentTimeMillis();
+            long delta=now-time-Constants.UPDATE_DELTA;
+            WeiboLog.i("update.time:"+time+" now:"+now);
 
-            if (delta < 0 && time != - 1) {
-                WeiboLog.d(TAG, "不需要检查更新，近一天刚检查过，delta:" + delta + " time:" + time);
+            if (delta<0&&time!=-1) {
+                WeiboLog.d(TAG, "不需要检查更新，近一天刚检查过，delta:"+delta+" time:"+time);
             } else {
-                SharedPreferences.Editor editor = mPrefs.edit();
+                SharedPreferences.Editor editor=mPrefs.edit();
                 editor.putLong(Constants.UPDATE_TIMESTAMP, now);
                 editor.apply();
                 mUpdateHelper.checkUpdate();
@@ -621,11 +621,11 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Unread unread = (Unread) intent.getSerializableExtra("unread");
-        WeiboLog.d(TAG, "onNewIntent.intent:" + unread);
+        Unread unread=(Unread) intent.getSerializableExtra("unread");
+        WeiboLog.d(TAG, "onNewIntent.intent:"+unread);
     }
 
-    int mode = PrefsFragment.MODE_EXIT;
+    int mode=PrefsFragment.MODE_EXIT;
 
     /**
      * 退出确认，有注销与退出程序确认
@@ -634,7 +634,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
      * @param msg
      */
     private void exitConfirm(int title, int msg) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
         builder.setTitle(title).setMessage(msg)
             .setNegativeButton(getResources().getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
@@ -650,7 +650,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
                 @Override
                 public void onClick(DialogInterface arg0, int arg1) {
                     arg0.cancel();
-                    if (mode == PrefsFragment.MODE_EXIT) {
+                    if (mode==PrefsFragment.MODE_EXIT) {
                         AKUtils.exit(HomeActivity.this);
                     } else {
                         AKUtils.logout(HomeActivity.this);
@@ -686,7 +686,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
      * 跳转到发新微博
      */
     private void newStatus() {
-        Intent intent = new Intent(HomeActivity.this, NewStatusActivity.class);
+        Intent intent=new Intent(HomeActivity.this, NewStatusActivity.class);
         startActivity(intent);
     }
 
@@ -694,7 +694,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
      * 显示设置
      */
     private void showPrefs() {
-        Intent intent = new Intent(HomeActivity.this, PrefsActivity.class);
+        Intent intent=new Intent(HomeActivity.this, PrefsActivity.class);
         startActivity(intent);
     }
 
@@ -702,15 +702,15 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
      * 反馈信息，也是发新微博
      */
     private void atStatus() {
-        String atString = getString(R.string.feedback_at_name);
-        Intent intent = new Intent(HomeActivity.this, NewStatusActivity.class);
+        String atString=getString(R.string.feedback_at_name);
+        Intent intent=new Intent(HomeActivity.this, NewStatusActivity.class);
         intent.putExtra("at_some", atString);
         intent.setAction(Constants.INTENT_NEW_BLOG);
         startActivity(intent);
     }
 
     //------------------------
-    MsgBroadcastReceiver receiver = null;
+    MsgBroadcastReceiver receiver=null;
 
     class MsgBroadcastReceiver extends BroadcastReceiver {
 
@@ -722,7 +722,7 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         }
     }
 
-    ExitBroadcastReceiver mExitReceiver = null;
+    ExitBroadcastReceiver mExitReceiver=null;
 
     class ExitBroadcastReceiver extends BroadcastReceiver {
 
@@ -740,22 +740,22 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
      * @param intent
      */
     private void receiveUnread(Unread unread) {
-        if (null == unread && isFinishing()) {
+        if (null==unread&&isFinishing()) {
             return;
         }
 
-        int count = mSidebarAdapter.getCount();
+        int count=mSidebarAdapter.getCount();
         SidebarAdapter.SidebarEntry entry;
-        boolean updateFlag = false;
+        boolean updateFlag=false;
 
-        for (int i = 0; i < count; i++) {
-            entry = (SidebarAdapter.SidebarEntry) mSidebarAdapter.getItem(i);
+        for (int i=0; i<count; i++) {
+            entry=(SidebarAdapter.SidebarEntry) mSidebarAdapter.getItem(i);
             if (Constants.TAB_ID_HOME.equals(entry.id)) {
-                String msg = String.valueOf(unread.status);
+                String msg=String.valueOf(unread.status);
                 entry.setMsg(msg);
-                TextView textView = mActionMsgView.get(Constants.TAB_ID_HOME);
-                if (null != textView) {
-                    if (unread.status > 0) {
+                TextView textView=mActionMsgView.get(Constants.TAB_ID_HOME);
+                if (null!=textView) {
+                    if (unread.status>0) {
                         textView.setText(msg);
                         textView.setVisibility(View.VISIBLE);
                     } else {
@@ -763,18 +763,18 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
                         textView.setVisibility(View.GONE);
                     }
                 }
-                WeiboLog.i(TAG, "新微博数:" + unread.status);
-                updateFlag = true;
+                WeiboLog.i(TAG, "新微博数:"+unread.status);
+                updateFlag=true;
                 continue;
             }
 
             if (Constants.TAB_ID_COMMENT.equals(entry.id)) {
-                int total = unread.comments;
-                String msg = String.valueOf(total);
+                int total=unread.comments;
+                String msg=String.valueOf(total);
                 entry.setMsg(msg);
-                TextView textView = mActionMsgView.get(Constants.TAB_ID_COMMENT);
-                if (null != textView) {
-                    if (total > 0) {
+                TextView textView=mActionMsgView.get(Constants.TAB_ID_COMMENT);
+                if (null!=textView) {
+                    if (total>0) {
                         textView.setText(msg);
                         textView.setVisibility(View.VISIBLE);
                     } else {
@@ -782,18 +782,18 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
                         textView.setVisibility(View.GONE);
                     }
                 }
-                WeiboLog.i(TAG, "新评论数:" + total);
-                updateFlag = true;
+                WeiboLog.i(TAG, "新评论数:"+total);
+                updateFlag=true;
                 continue;
             }
 
             if (Constants.TAB_ID_AT_COMMENT.equals(entry.id)) {
-                int total = unread.mention_cmt;
-                String msg = String.valueOf(total);
+                int total=unread.mention_cmt;
+                String msg=String.valueOf(total);
                 entry.setMsg(msg);
-                TextView textView = mActionMsgView.get(Constants.TAB_ID_AT_COMMENT);
-                if (null != textView) {
-                    if (total > 0) {
+                TextView textView=mActionMsgView.get(Constants.TAB_ID_AT_COMMENT);
+                if (null!=textView) {
+                    if (total>0) {
                         textView.setText(msg);
                         textView.setVisibility(View.VISIBLE);
                     } else {
@@ -801,18 +801,18 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
                         textView.setVisibility(View.GONE);
                     }
                 }
-                WeiboLog.i(TAG, "新评论数:" + total);
-                updateFlag = true;
+                WeiboLog.i(TAG, "新评论数:"+total);
+                updateFlag=true;
                 continue;
             }
 
             if (Constants.TAB_ID_AT_STATUS.equals(entry.id)) {
-                int total = unread.mention_status + unread.mention_cmt;
-                String msg = String.valueOf(total);
+                int total=unread.mention_status+unread.mention_cmt;
+                String msg=String.valueOf(total);
                 entry.setMsg(msg);
-                TextView textView = mActionMsgView.get(Constants.TAB_ID_AT_STATUS);
-                if (null != textView) {
-                    if (total > 0) {
+                TextView textView=mActionMsgView.get(Constants.TAB_ID_AT_STATUS);
+                if (null!=textView) {
+                    if (total>0) {
                         textView.setText(msg);
                         textView.setVisibility(View.VISIBLE);
                     } else {
@@ -820,17 +820,17 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
                         textView.setVisibility(View.GONE);
                     }
                 }
-                WeiboLog.i(TAG, "新at总数:" + entry.getMsg());
-                updateFlag = true;
+                WeiboLog.i(TAG, "新at总数:"+entry.getMsg());
+                updateFlag=true;
                 continue;
             }
 
             if (Constants.TAB_ID_FOLLOWER.equals(entry.id)) {
-                String msg = String.valueOf(unread.followers);
+                String msg=String.valueOf(unread.followers);
                 entry.setMsg(msg);
-                TextView textView = mActionMsgView.get(Constants.TAB_ID_FOLLOWER);
-                if (null != textView) {
-                    if (unread.followers > 0) {
+                TextView textView=mActionMsgView.get(Constants.TAB_ID_FOLLOWER);
+                if (null!=textView) {
+                    if (unread.followers>0) {
                         textView.setText(msg);
                         textView.setVisibility(View.VISIBLE);
                     } else {
@@ -838,14 +838,14 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
                         textView.setVisibility(View.GONE);
                     }
                 }
-                WeiboLog.i(TAG, "新粉丝数:" + unread.followers);
-                updateFlag = true;
+                WeiboLog.i(TAG, "新粉丝数:"+unread.followers);
+                updateFlag=true;
             }
 
             if (Constants.TAB_ID_DIRECT_MSG.equals(entry.id)) {
                 entry.setMsg(String.valueOf(unread.dm));
-                WeiboLog.i(TAG, "新私信数:" + unread.dm);
-                updateFlag = true;
+                WeiboLog.i(TAG, "新私信数:"+unread.dm);
+                updateFlag=true;
             }
         }
 
@@ -860,20 +860,20 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
     ArrayList<Group> mGroupList;
 
     private void addGroupNav() {
-        if (null == mGroupList) {
-            mGroupList = new ArrayList<Group>();
-            Group homeGroup = new Group();
-            homeGroup.name = getString(R.string.tab_label_home);
-            homeGroup.id = Constants.TAB_ID_HOME;
+        if (null==mGroupList) {
+            mGroupList=new ArrayList<Group>();
+            Group homeGroup=new Group();
+            homeGroup.name=getString(R.string.tab_label_home);
+            homeGroup.id=Constants.TAB_ID_HOME;
             mGroupList.add(homeGroup);
         }
 
-        WeiboLog.d(TAG, "mGroupList.size()" + mGroupList.size());
-        if (mGroupList.size() == 1) {
+        WeiboLog.d(TAG, "mGroupList.size()"+mGroupList.size());
+        if (mGroupList.size()==1) {
             loadGroup();
         }
 
-        mGroupAdapter = new ArrayAdapter<Group>(this, android.R.layout.simple_spinner_item, mGroupList);
+        mGroupAdapter=new ArrayAdapter<Group>(this, android.R.layout.simple_spinner_item, mGroupList);
         mGroupAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mGroupItem.setAdapter(mGroupAdapter);
@@ -893,16 +893,16 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
     }
 
     void navigation(int itemPosition) {
-        final Fragment current = getFragmentManager().findFragmentById(R.id.fragment_placeholder);
-        WeiboLog.v(TAG, "current:" + current.getTag());
+        final Fragment current=getFragmentManager().findFragmentById(R.id.fragment_placeholder);
+        WeiboLog.v(TAG, "current:"+current.getTag());
         if (Constants.TAB_ID_HOME.equals(current.getTag())) {
-            final int pos = itemPosition;
+            final int pos=itemPosition;
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         if (current instanceof HomeRecyclerViewFragment) {
-                            HomeRecyclerViewFragment homeFragment = (HomeRecyclerViewFragment) current;
+                            HomeRecyclerViewFragment homeFragment=(HomeRecyclerViewFragment) current;
                             homeFragment.updateGroupTimeline(mGroupList.get(pos));
                         }
                     } catch (Exception e) {
@@ -915,14 +915,14 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
     }
 
     private void loadGroup() {
-        Handler groudHandler = new Handler() {
+        Handler groudHandler=new Handler() {
 
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case ActionResult.ACTION_SUCESS: {
-                        ActionResult actionResult = (ActionResult) msg.obj;
-                        ArrayList<Group> groups = (ArrayList<Group>) actionResult.obj;
+                        ActionResult actionResult=(ActionResult) msg.obj;
+                        ArrayList<Group> groups=(ArrayList<Group>) actionResult.obj;
                         updateGroup(groups);
                         break;
                     }
@@ -938,21 +938,21 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
             }
         };
 
-        long userId = mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
-        String filepath = getFilesDir().getAbsolutePath() + "/" + String.valueOf(userId) + Constants.GROUP_FILE;
-        AsyncActionTask task = new AsyncActionTask(HomeActivity.this, new GroupAction());
+        long userId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
+        String filepath=getFilesDir().getAbsolutePath()+"/"+String.valueOf(userId)+Constants.GROUP_FILE;
+        AsyncActionTask task=new AsyncActionTask(HomeActivity.this, new GroupAction());
         task.execute(filepath, groudHandler);
     }
 
     private void updateGroup(final ArrayList<Group> mStatusData) {
-        WeiboLog.d(TAG, "updateGroup:" + mStatusData.size());
+        WeiboLog.d(TAG, "updateGroup:"+mStatusData.size());
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mGroupList.clear();
-                Group homeGroup = new Group();
-                homeGroup.name = getString(R.string.tab_label_home);
-                homeGroup.id = Constants.TAB_ID_HOME;
+                Group homeGroup=new Group();
+                homeGroup.name=getString(R.string.tab_label_home);
+                homeGroup.id=Constants.TAB_ID_HOME;
                 mGroupList.add(homeGroup);
                 mGroupList.addAll(mStatusData);
                 mGroupAdapter.notifyDataSetChanged();

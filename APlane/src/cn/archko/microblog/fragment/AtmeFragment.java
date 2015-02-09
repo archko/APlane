@@ -34,7 +34,7 @@ import java.util.ArrayList;
  */
 public class AtmeFragment extends RecyclerViewFragment {
 
-    public static final String TAG = "AtmeFragment";
+    public static final String TAG="AtmeFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,11 +43,11 @@ public class AtmeFragment extends RecyclerViewFragment {
 
     @Override
     public void initApi() {
-        mStatusImpl = new SinaAtMeStatusImpl();
+        mStatusImpl=new SinaAtMeStatusImpl();
 
-        AbsApiFactory absApiFactory = null;//new SinaApiFactory();
+        AbsApiFactory absApiFactory=null;//new SinaApiFactory();
         try {
-            absApiFactory = ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
+            absApiFactory=ApiConfigFactory.getApiConfig(((App) App.getAppContext()).getOauthBean());
             mStatusImpl.setApiImpl((AbsApiImpl) absApiFactory.statusApiFactory());
         } catch (WeiboException e) {
             e.printStackTrace();
@@ -65,33 +65,33 @@ public class AtmeFragment extends RecyclerViewFragment {
      */
     @Override
     public void fetchData(long sinceId, long maxId, boolean isRefresh, boolean isHomeStore) {
-        WeiboLog.i("sinceId:" + sinceId + ", maxId:" + maxId + ", isRefresh:" + isRefresh + ", isHomeStore:" + isHomeStore);
-        if (! App.hasInternetConnection(getActivity())) {
+        WeiboLog.i("sinceId:"+sinceId+", maxId:"+maxId+", isRefresh:"+isRefresh+", isHomeStore:"+isHomeStore);
+        if (!App.hasInternetConnection(getActivity())) {
             NotifyUtils.showToast(R.string.network_error);
-            if (mRefreshListener != null) {
+            if (mRefreshListener!=null) {
                 mRefreshListener.onRefreshFinished();
             }
             refreshAdapter(false, false);
             return;
         }
 
-        int count = weibo_count;
+        int count=weibo_count;
         /*if (isHomeStore) {  //如果不是刷新，需要多加载一条数据，解析回来时，把第一条略过。TODO
             //count++;
         } else {*/
         //page=1;
-        int status = mPrefs.getInt(Constants.PREF_SERVICE_AT, 0);
-        WeiboLog.d(TAG, "新提及我的微博数:" + status);
-        if (status > 0) {
-            if (status > Constants.WEIBO_COUNT * 8) {
-                status = Constants.WEIBO_COUNT * 8;
+        int status=mPrefs.getInt(Constants.PREF_SERVICE_AT, 0);
+        WeiboLog.d(TAG, "新提及我的微博数:"+status);
+        if (status>0) {
+            if (status>Constants.WEIBO_COUNT*8) {
+                status=Constants.WEIBO_COUNT*8;
             }
 
-            count = status;
+            count=status;
         }
         //}
 
-        if (! isLoading) {
+        if (!isLoading) {
             newTask(new Object[]{isRefresh, sinceId, maxId, count, page, isHomeStore}, null);
         }
     }
@@ -100,10 +100,10 @@ public class AtmeFragment extends RecyclerViewFragment {
      * 加载数据，可以供子类覆盖，分别加载不同类型的数据。
      */
     protected void loadData() {
-        if (mDataList != null && mDataList.size() > 0) {
+        if (mDataList!=null&&mDataList.size()>0) {
             mAdapter.notifyDataSetChanged();
         } else {
-            if (! isLoading) {
+            if (!isLoading) {
                 //fetchData(-1, -1, true);
                 loadLocalData();
             } else {
@@ -117,8 +117,8 @@ public class AtmeFragment extends RecyclerViewFragment {
      * 从缓存中查询数据.
      */
     void loadLocalData() {
-        if (! isLoading) {
-            Object[] params = new Object[]{false, currentUserId};
+        if (!isLoading) {
+            Object[] params=new Object[]{false, currentUserId};
             newTaskNoNet(params, null);
         }
     }
@@ -127,15 +127,15 @@ public class AtmeFragment extends RecyclerViewFragment {
      * 下拉刷新数据
      */
     protected void pullToRefreshData() {
-        isRefreshing = true;
+        isRefreshing=true;
         //page=1;
-        fetchData(- 1, - 1, true, true);
+        fetchData(-1, -1, true, true);
     }
 
     @Override
     public void refreshNewData(SStatusData<Status> sStatusData, Boolean isRefresh) {
         //TODO 还需要处理获取更多的数据
-        ArrayList<Status> list = sStatusData.mStatusData;
+        ArrayList<Status> list=sStatusData.mStatusData;
         /*if (mDataList.size()>0) {
             try {
                 Status first=list.get(0);
@@ -150,8 +150,8 @@ public class AtmeFragment extends RecyclerViewFragment {
         }*/
 
         if (isRefresh) {
-            int len = list.size();
-            NotifyUtils.showToast("为您更新了" + len + "条最新信息！");
+            int len=list.size();
+            NotifyUtils.showToast("为您更新了"+len+"条最新信息！");
 
             /*if (len>=weibo_count-1) {
                 mDataList.clear();
@@ -161,7 +161,7 @@ public class AtmeFragment extends RecyclerViewFragment {
             }*/
             mDataList.clear();
             mDataList.addAll(list);
-            WeiboLog.i(TAG, "notify data changed." + mDataList.size() + " isRefresh:" + isRefresh);
+            WeiboLog.i(TAG, "notify data changed."+mDataList.size()+" isRefresh:"+isRefresh);
         } else {
             mDataList.addAll(list);
         }
@@ -170,14 +170,14 @@ public class AtmeFragment extends RecyclerViewFragment {
     @Override
     public void refreshAdapter(boolean load, boolean isRefresh) {
         super.refreshAdapter(load, isRefresh);
-        if (isRefresh && load) {
+        if (isRefresh&&load) {
             clearHomeNotify();
         }
     }
 
     //--------------------- popupMenu ---------------------
     public void onCreateCustomMenu(PopupMenu menuBuilder) {
-        int index = 0;
+        int index=0;
         menuBuilder.getMenu().add(0, Constants.OP_ID_QUICK_REPOST, index++, R.string.opb_quick_repost);
         menuBuilder.getMenu().add(0, Constants.OP_ID_COMMENT, index++, R.string.opb_comment);
         menuBuilder.getMenu().add(0, Constants.OP_ID_ORITEXT, index++, R.string.opb_origin_text);
@@ -189,7 +189,7 @@ public class AtmeFragment extends RecyclerViewFragment {
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        int menuId = item.getItemId();
+        int menuId=item.getItemId();
         switch (menuId) {
             case Constants.OP_ID_QUICK_REPOST: {
                 quickRepostStatus();
@@ -233,17 +233,17 @@ public class AtmeFragment extends RecyclerViewFragment {
      * @param follow_up
      */
     private void shield(int follow_up) {
-        AtMeAction action = new AtMeAction();
-        long id = mDataList.get(selectedPos).id;
-        AsyncActionTask task = new AsyncActionTask(App.getAppContext(), action);
+        AtMeAction action=new AtMeAction();
+        long id=mDataList.get(selectedPos).id;
+        AsyncActionTask task=new AsyncActionTask(App.getAppContext(), action);
         task.execute(id, follow_up, mStatusHandler);
     }
 
-    Handler mStatusHandler = new Handler() {
+    Handler mStatusHandler=new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
-            if (! isResumed()) {
+            if (!isResumed()) {
                 WeiboLog.w(TAG, "已经结束了Fragment，不需要通知消息");
                 return;
             }
@@ -274,7 +274,7 @@ public class AtmeFragment extends RecyclerViewFragment {
         //int newAt=mPrefs.getInt(Constants.PREF_SERVICE_AT, 0);
         mPrefs.edit().remove(Constants.PREF_SERVICE_AT).apply();
         try {
-            SkinFragmentActivity parent = (SkinFragmentActivity) getActivity();
+            SkinFragmentActivity parent=(SkinFragmentActivity) getActivity();
             parent.refreshSidebar();
 
             newOperationTask(new Object[]{Constants.REMIND_MENTION_STATUS}, null);
@@ -291,13 +291,13 @@ public class AtmeFragment extends RecyclerViewFragment {
      */
     protected Object[] baseBackgroundOperation2(Object... params) {
         try {
-            String type = (String) params[ 0 ];
-            SStatusData sStatusData = new SStatusData();
+            String type=(String) params[0];
+            SStatusData sStatusData=new SStatusData();
             //String rs=((SWeiboApi2) App.getMicroBlog(App.getAppContext())).setUnread(type);
-            SinaUnreadApi sinaUnreadApi = new SinaUnreadApi();
+            SinaUnreadApi sinaUnreadApi=new SinaUnreadApi();
             sinaUnreadApi.updateToken();
-            String rs = sinaUnreadApi.setUnread(type);
-            sStatusData.errorMsg = rs;
+            String rs=sinaUnreadApi.setUnread(type);
+            sStatusData.errorMsg=rs;
             return new Object[]{sStatusData};
         } catch (Exception e) {
             e.printStackTrace();
@@ -313,13 +313,13 @@ public class AtmeFragment extends RecyclerViewFragment {
      */
     protected void basePostOperation2(Object[] resultObj) {
         try {
-            SStatusData sStatusData = (SStatusData) resultObj[ 0 ];
-            WeiboLog.i(TAG, TAG + sStatusData);
-            if (null == sStatusData) {
+            SStatusData sStatusData=(SStatusData) resultObj[0];
+            WeiboLog.i(TAG, TAG+sStatusData);
+            if (null==sStatusData) {
                 return;
             }
 
-            if (sStatusData.errorCode > 0 && ! TextUtils.isEmpty(sStatusData.errorMsg)) {
+            if (sStatusData.errorCode>0&&!TextUtils.isEmpty(sStatusData.errorMsg)) {
                 NotifyUtils.showToast(sStatusData.errorMsg);
             }
         } catch (Exception e) {
