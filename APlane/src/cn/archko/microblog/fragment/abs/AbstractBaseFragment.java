@@ -166,15 +166,6 @@ public abstract class AbstractBaseFragment<T> extends Fragment implements Fragme
      * 列表选中的位置
      */
     public int selectedPos=0;
-    /*MenuBuilder mMenuBuilder=null;
-    MenuPopupHelper mMenuHelper=null;*/
-    PopupWindowListener mPopupWindowListener=new PopupWindowListener() {
-        @Override
-        public void show(View view, int pos) {
-            selectedPos=pos;
-            prepareMenu(view);
-        }
-    };
 
     //---------------------------------
 
