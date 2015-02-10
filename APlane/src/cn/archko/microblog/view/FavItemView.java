@@ -31,9 +31,8 @@ public class FavItemView extends ThreadBeanItemView implements Checkable {
 
     //protected DisplayImageOptions options;
 
-    public FavItemView(Context context, String cacheDir, boolean updateFlag,
-        boolean cache) {
-        super(context, cacheDir, updateFlag, cache);
+    public FavItemView(Context context, boolean updateFlag, boolean cache) {
+        super(context, updateFlag, cache);
     }
 
     @Override

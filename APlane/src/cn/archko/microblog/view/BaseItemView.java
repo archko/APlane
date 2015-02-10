@@ -67,9 +67,9 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
     int mResId;
     //protected DisplayImageOptions options;
 
-    public BaseItemView(Context context, String cacheDir, boolean updateFlag) {
+    public BaseItemView(Context context, boolean updateFlag) {
         super(context);
-        mCacheDir=cacheDir;
+        mCacheDir=AppSettings.current().mCacheDir;
         mContext=context;
         sliderColors=new int[8];
         sliderColors[0]=R.color.holo_blue_dark;

@@ -36,9 +36,9 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
     public TagsViewGroup mTagsViewGroup;
     public ImageAdapter mAdapter;
 
-    public ThreadBeanItemView(Context context, String cacheDir, boolean updateFlag,
+    public ThreadBeanItemView(Context context, boolean updateFlag,
         boolean cache) {
-        super(context, cacheDir, updateFlag);
+        super(context, updateFlag);
 
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.home_time_line_item, this);
 
@@ -246,7 +246,7 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
         //WeiboLog.d(TAG, "update adapter:"+mAdapter+" tvg:"+adapter+" mTagsViewGroup:"+mTagsViewGroup);
         mAdapter=adapter;
         if (null==mAdapter) {
-            mAdapter=new ImageAdapter(mContext, mCacheDir, thumbs);
+            mAdapter=new ImageAdapter(mContext, thumbs);
             mTagsViewGroup.setAdapter(mAdapter);
         } else {
         }

@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbstractBaseFragment;
+import cn.archko.microblog.settings.AppSettings;
 import cn.archko.microblog.smiley.AKSmileyParser;
 import cn.archko.microblog.ui.PrefsActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
@@ -145,6 +146,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     protected boolean showLargeBitmap=false;
     //RelativeLayout mTitleBar;
     LinearLayout mViewComment;
+    private String mCacheDir;
     //protected DisplayImageOptions options;
 
     //TODO 需要更新主页的存储数据。
@@ -264,7 +266,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             return;
         }
 
-        String dir=mCacheDir+Constants.PICTURE_DIR;
+        String dir=AppSettings.current().mCacheDir+Constants.PICTURE_DIR;
         String originalPic=mStatus.originalPic;
 
         if (TextUtils.isEmpty(originalPic)) {  //认为如果原创内容没有图片，就用转发的。
@@ -381,7 +383,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         showBitmap=mPrefs.getBoolean(PrefsActivity.PREF_COMMENT_STATUS_BM, true);
         showLargeBitmap=mPrefs.getBoolean(PrefsActivity.PREF_COMMENT_STATUS_BM, false);
 
-        mCacheDir=((App) App.getAppContext()).mCacheDir;
+        mCacheDir=AppSettings.current().mCacheDir;
 
         /*options = new DisplayImageOptions.Builder()
 
@@ -1009,7 +1011,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         //WeiboLog.d(TAG, "update adapter:"+mAdapter+" tvg:"+adapter+" mTagsViewGroup:"+mTagsViewGroup);
         mAdapter=adapter;
         if (null==mAdapter) {
-            mAdapter=new ImageAdapter(getActivity(), mCacheDir, thumbs);
+            mAdapter=new ImageAdapter(getActivity(), thumbs);
             mTagsViewGroup.setAdapter(mAdapter);
         } else {
         }

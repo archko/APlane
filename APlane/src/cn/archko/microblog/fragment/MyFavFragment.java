@@ -99,7 +99,7 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
         }
 
         if (convertView==null) {
-            itemView=new FavItemView(getActivity(), mCacheDir, updateFlag, true);
+            itemView=new FavItemView(getActivity(), updateFlag, true);
         } else {
             itemView=(FavItemView) convertView;
         }

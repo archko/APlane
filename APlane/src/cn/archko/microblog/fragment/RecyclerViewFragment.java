@@ -170,7 +170,7 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
         }
 
         if (convertView==null) {
-            itemView=new ThreadBeanItemView(getActivity(), mCacheDir, updateFlag, true);
+            itemView=new ThreadBeanItemView(getActivity(), updateFlag, true);
         } else {
             itemView=(ThreadBeanItemView) convertView;
         }
@@ -200,7 +200,7 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
         if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
-        itemView=new ThreadBeanItemView(getActivity(), mCacheDir, updateFlag, true);
+        itemView=new ThreadBeanItemView(getActivity(), updateFlag, true);
         return itemView;
     }
 

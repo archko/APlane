@@ -23,6 +23,7 @@ import cn.archko.microblog.R;
 import cn.archko.microblog.action.GroupAction;
 import cn.archko.microblog.fragment.abs.AbsStatusAbstraction;
 import cn.archko.microblog.fragment.impl.SinaUserImpl;
+import cn.archko.microblog.settings.AppSettings;
 import cn.archko.microblog.utils.WeiboOperation;
 import com.andrew.apollo.utils.ThemeUtils;
 import com.me.microblog.App;
@@ -356,7 +357,7 @@ public class ProfileFragment extends AbsStatusAbstraction<User> {
                     return resultObj;
                 } else {
                     bitmap=ImageCache2.getInstance().getImageManager().getBitmapFromDiskOrNet(url,
-                        mCacheDir+Constants.ICON_DIR, true);
+                        AppSettings.current().mCacheDir+Constants.ICON_DIR, true);
 
                     WeiboLog.i(TAG, "profileImageurl:"+url);
                     resultObj[0]=bitmap;

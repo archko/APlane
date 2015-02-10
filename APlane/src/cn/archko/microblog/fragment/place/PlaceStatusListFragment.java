@@ -179,7 +179,7 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
         }
 
         if (convertView==null) {
-            itemView=new PlaceItemView(getActivity(), mCacheDir, updateFlag, true);
+            itemView=new PlaceItemView(getActivity(), updateFlag, true);
         } else {
             itemView=(PlaceItemView) convertView;
         }
@@ -209,7 +209,7 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
         if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
-        itemView=new PlaceItemView(getActivity(), mCacheDir, updateFlag, true);
+        itemView=new PlaceItemView(getActivity(), updateFlag, true);
         return itemView;
     }
 

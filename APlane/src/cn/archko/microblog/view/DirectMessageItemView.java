@@ -73,12 +73,11 @@ public class DirectMessageItemView extends LinearLayout implements View.OnClickL
         setChecked(!checked);
     }
 
-    public DirectMessageItemView(Context context, String cacheDir,
-        boolean updateFlag, boolean cache) {
+    public DirectMessageItemView(Context context, boolean updateFlag, boolean cache) {
         super(context);
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.comment_item, this);
 
-        mCacheDir=cacheDir;
+        mCacheDir=AppSettings.current().mCacheDir;
         mContext=context;
 
         mName=(TextView) findViewById(R.id.tv_name);

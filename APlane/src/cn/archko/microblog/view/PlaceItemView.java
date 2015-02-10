@@ -38,9 +38,9 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
     private TagsViewGroup mTagsViewGroup;
     ImageAdapter mAdapter;
 
-    public PlaceItemView(Context context, String cacheDir, boolean updateFlag,
+    public PlaceItemView(Context context, boolean updateFlag,
         boolean cache) {
-        super(context, cacheDir, updateFlag);
+        super(context, updateFlag);
 
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.home_time_line_item, this);
 
@@ -264,7 +264,7 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
         mTagsViewGroup.setVisibility(VISIBLE);
         //ImageAdapter adapter=(ImageAdapter) mTagsViewGroup.getAdapter();
         if (null==mAdapter) {
-            mAdapter=new ImageAdapter(mContext, mCacheDir, mStatus.thumbs);
+            mAdapter=new ImageAdapter(mContext, mStatus.thumbs);
             //mTagsViewGroup.setAdapter(mAdapter);
         } /*else*/
         {

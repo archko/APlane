@@ -99,7 +99,7 @@ public class MyPostFragment extends RecyclerViewFragment {
         }
 
         if (convertView==null) {
-            itemView=new ActionModeItemView(getActivity(), mCacheDir, updateFlag, true);
+            itemView=new ActionModeItemView(getActivity(), updateFlag, true);
         } else {
             itemView=(ActionModeItemView) convertView;
         }
@@ -129,7 +129,7 @@ public class MyPostFragment extends RecyclerViewFragment {
         if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
-        itemView=new ActionModeItemView(getActivity(), mCacheDir, updateFlag, true);
+        itemView=new ActionModeItemView(getActivity(), updateFlag, true);
         return itemView;
     }
 

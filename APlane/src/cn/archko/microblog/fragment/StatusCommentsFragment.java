@@ -141,7 +141,7 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
         }
 
         if (null==convertView) {
-            itemView=new CommentItemView(getActivity(), mCacheDir, updateFlag, false, false);
+            itemView=new CommentItemView(getActivity(), updateFlag, false, false);
         } else {
             itemView=(CommentItemView) convertView;
         }
@@ -172,7 +172,7 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
         if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
-        itemView=new CommentItemView(getActivity(), mCacheDir, updateFlag, false, false);
+        itemView=new CommentItemView(getActivity(), updateFlag, false, false);
         return itemView;
     }
 

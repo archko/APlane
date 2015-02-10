@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
+import cn.archko.microblog.settings.AppSettings;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.me.microblog.App;
 import com.me.microblog.bean.Status;
@@ -44,7 +45,7 @@ public class UserGridItemView extends LinearLayout {
     private int followingType=-1;   //0表示未关注,1表示已关注,-1表示未知
     //protected DisplayImageOptions options;
 
-    public UserGridItemView(Context context, String cacheDir, boolean updateFlag) {
+    public UserGridItemView(Context context, boolean updateFlag) {
         super(context);
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.ak_user_grid_item, this);
 
@@ -54,7 +55,7 @@ public class UserGridItemView extends LinearLayout {
         mGridviewLineTwo=(TextView) findViewById(R.id.gridview_line_two);
 
         mContext=context;
-        mCacheDir=cacheDir;
+        mCacheDir=AppSettings.current().mCacheDir;
 
         //update(status, updateFlag);
         /*options = new DisplayImageOptions.Builder()

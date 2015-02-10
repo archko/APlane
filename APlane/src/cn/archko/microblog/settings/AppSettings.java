@@ -6,6 +6,8 @@ import cn.archko.microblog.R;
 import cn.archko.microblog.ui.PrefsActivity;
 import com.me.microblog.App;
 
+import java.io.File;
+
 public class AppSettings {
 
     private static AppSettings current;
@@ -21,6 +23,7 @@ public class AppSettings {
     public final boolean showDetailBitmap;
     public final boolean autoCheckUpdate;
     public final boolean updateIncrement;
+    public final String mCacheDir;   //缓存图片存储上级目录.
 
     private AppSettings() {
         final SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
@@ -34,6 +37,12 @@ public class AppSettings {
         showDetailLargeBitmap=prefs.getBoolean(PrefsActivity.PREF_COMMENT_STATUS_BM, false);
         autoCheckUpdate=prefs.getBoolean(PrefsActivity.PREF_AUTO_CHK_UPDATE, true);
         updateIncrement=prefs.getBoolean(PrefsActivity.PREF_UPDATE_INCREMENT, true);
+
+        mCacheDir=((App) App.getAppContext()).mCacheDir;
+        File file=new File(mCacheDir);
+        if (!file.exists()) {
+            file.mkdir();
+        }
     }
 
     public static void init() {

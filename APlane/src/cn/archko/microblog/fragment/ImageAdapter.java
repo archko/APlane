@@ -42,11 +42,11 @@ public class ImageAdapter extends BaseAdapter {
     int imageHeight;
     AppSettings appSettings=AppSettings.current();
 
-    public ImageAdapter(Context c, String cacheDir, String[] thumbs) {
+    public ImageAdapter(Context c, String[] thumbs) {
         mContext=c;
         mDensity=c.getResources().getDisplayMetrics().density;
         mInflater=LayoutInflater.from(c);
-        mCacheDir=cacheDir;
+        mCacheDir=appSettings.mCacheDir;
         imageUrls=thumbs;
 
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();

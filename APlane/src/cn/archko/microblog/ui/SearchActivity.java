@@ -456,7 +456,7 @@ public class SearchActivity extends SkinFragmentActivity implements OnRefreshLis
             }*/
 
             if (convertView==null) {
-                itemView=new ThreadBeanItemView(SearchActivity.this, App.mCacheDir, updateFlag, false);
+                itemView=new ThreadBeanItemView(SearchActivity.this, updateFlag, false);
             } else {
                 itemView=(ThreadBeanItemView) convertView;
             }

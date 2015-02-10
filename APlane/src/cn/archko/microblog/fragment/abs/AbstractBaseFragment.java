@@ -55,7 +55,6 @@ public abstract class AbstractBaseFragment<T> extends Fragment implements Fragme
 
     //---------------------  ---------------------
     public SharedPreferences mPrefs;
-    public String mCacheDir;   //缓存图片存储上级目录.
     /**
      * 用于主题设置背景的,需要子类初始化.
      */
@@ -95,11 +94,6 @@ public abstract class AbstractBaseFragment<T> extends Fragment implements Fragme
         long aUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
         this.currentUserId=aUserId;
 
-        mCacheDir=((App) getActivity().getApplicationContext()).mCacheDir;
-        File file=new File(mCacheDir);
-        if (!file.exists()) {
-            file.mkdir();
-        }
 
         mWeiboController=new AKSinaWeiboController();
         WeiboLog.v(TAG, "onCreate:"+this);

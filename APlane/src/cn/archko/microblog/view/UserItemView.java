@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
+import cn.archko.microblog.settings.AppSettings;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.me.microblog.App;
 import com.me.microblog.bean.Status;
@@ -48,7 +49,7 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
     private int followingType=-1;   //0表示未关注,1表示已关注,-1表示未知
     //protected DisplayImageOptions options;
 
-    public UserItemView(Context context, String cacheDir, boolean updateFlag) {
+    public UserItemView(Context context, boolean updateFlag) {
         super(context);
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.friend_item, this);
 
@@ -63,7 +64,7 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
         followBtn.setOnClickListener(this);
 
         mContext=context;
-        mCacheDir=cacheDir;
+        mCacheDir=AppSettings.current().mCacheDir;
 
         /*options = new DisplayImageOptions.Builder()
             .cacheInMemory(true)

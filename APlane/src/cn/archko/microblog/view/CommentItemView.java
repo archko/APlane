@@ -61,12 +61,11 @@ public class CommentItemView extends BaseItemView implements View.OnClickListene
      * @param showBitmap         是否显示图像
      * @param showSencondContent 是否显示tv_content_sencond布局,如果是在详细页面,就不需要,私信也可以考虑下.
      */
-    public CommentItemView(Context context, String cacheDir, boolean updateFlag,
+    public CommentItemView(Context context, boolean updateFlag,
         boolean cache, boolean showSencondContent) {
-        super(context, cacheDir, updateFlag);
+        super(context, updateFlag);
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.comment_item, this);
 
-        mCacheDir=cacheDir;
         mContext=context;
 
         mName=(TextView) findViewById(R.id.tv_name);

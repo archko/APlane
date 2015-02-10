@@ -193,7 +193,7 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
         }
 
         if (convertView==null) {
-            itemView=new CommentItemView(getActivity(), mCacheDir, updateFlag, true, true);
+            itemView=new CommentItemView(getActivity(), updateFlag, true, true);
         } else {
             itemView=(CommentItemView) convertView;
         }
@@ -224,7 +224,7 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
         if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
-        itemView=new CommentItemView(getActivity(), mCacheDir, updateFlag, true, true);
+        itemView=new CommentItemView(getActivity(), updateFlag, true, true);
         return itemView;
     }
 

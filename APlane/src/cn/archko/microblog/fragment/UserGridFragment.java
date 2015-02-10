@@ -169,7 +169,7 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         }
 
         if (convertView==null) {
-            itemView=new UserGridItemView(getActivity(), mCacheDir, updateFlag);
+            itemView=new UserGridItemView(getActivity(), updateFlag);
         } else {
             itemView=(UserGridItemView) convertView;
         }
@@ -199,7 +199,7 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
-        itemView=new UserGridItemView(getActivity(), mCacheDir, updateFlag);
+        itemView=new UserGridItemView(getActivity(), updateFlag);
         return itemView;
     }
 

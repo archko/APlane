@@ -15,9 +15,9 @@ public class ActionModeItemView extends ThreadBeanItemView implements Checkable 
 
     private boolean checked=false;
 
-    public ActionModeItemView(Context context, String cacheDir, boolean updateFlag,
+    public ActionModeItemView(Context context, boolean updateFlag,
         boolean cache) {
-        super(context, cacheDir, updateFlag, cache);
+        super(context, updateFlag, cache);
     }
 
     @Override
