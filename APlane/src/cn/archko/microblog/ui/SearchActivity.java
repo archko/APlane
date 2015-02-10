@@ -4,10 +4,8 @@ import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +46,6 @@ import java.util.Map;
 public class SearchActivity extends SkinFragmentActivity implements OnRefreshListener {
 
     public static final String TAG="SearchActivity";
-    private SharedPreferences mPreferences;
     EditText mSearchText;
     ImageView mSearchBtn;
     RadioButton mStatusRb, mUserRb;
@@ -81,7 +78,6 @@ public class SearchActivity extends SkinFragmentActivity implements OnRefreshLis
         setContentView(R.layout.search_view);
 
         WeiboLog.d(TAG, "onCreate");
-        mPreferences=PreferenceManager.getDefaultSharedPreferences(SearchActivity.this);
         imm=(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         doInit();
@@ -474,11 +470,10 @@ public class SearchActivity extends SkinFragmentActivity implements OnRefreshLis
         private SearchItemView(Context context) {
             super(context);
             ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
-                R.layout.sidebar_item, this);
-            setMinimumHeight(40);
+                R.layout.search_user_item, this);
+            setMinimumHeight(48);
             mTitle=(TextView) findViewById(R.id.title);
             mMsg=(TextView) findViewById(R.id.msg);
-            findViewById(R.id.image).setVisibility(View.GONE);
         }
 
         public void update(String text1, String text2) {
