@@ -160,45 +160,6 @@ public abstract class AbstractBaseFragment<T> extends Fragment implements Fragme
         }
     }
 
-    //------------------------------------
-
-    /**
-     * 查看Status原文信息,包括评论.
-     */
-    public void viewOriginalStatus(View achor) {
-    }
-
-    /**
-     * 创建收藏.
-     */
-    public void createFavorite() {
-    }
-
-    /**
-     * 跳转到到评论界面
-     */
-    public void commentStatus() {
-    }
-
-    /**
-     * 到转发界面
-     */
-    public void repostStatus() {
-    }
-
-    /**
-     * 删除，需要根据不同的类型的列表处理。不是所有的微博都可以删除
-     */
-    public void viewStatusUser() {
-    }
-
-    /**
-     * 快速转发
-     */
-    public void quickRepostStatus() {
-        //throw new IllegalArgumentException("not implemented!");
-    }
-
     //--------------------- theme ---------------------
     public void themeBackground() {
         if (null!=mRoot) {

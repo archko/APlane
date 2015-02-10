@@ -68,7 +68,8 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
                 break;
             }
             case Constants.OP_ID_COMMENT: {
-                commentStatus();
+                Status status=mDataList.get(selectedPos);
+                mWeiboController.commentStatus(status, getActivity());
                 break;
             }
             case Constants.OP_ID_ORITEXT: {
@@ -97,7 +98,6 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
     /**
      * 查看Status原文信息,包括评论.
      */
-    @Override
     public void viewOriginalStatus(View achor) {
         if (selectedPos>=mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
@@ -124,20 +124,9 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
     }
 
     /**
-     * 跳转到到评论界面
-     */
-    public void commentStatus() {
-        Status status=mDataList.get(selectedPos);
-        mWeiboController.commentStatus(status, getActivity());
-    }
-
-    /**
      * 到转发界面
      */
     public void repostStatus() {
-        Status status=mDataList.get(selectedPos);
-
-        mWeiboController.repostStatus(status, getActivity());
     }
 
     /**

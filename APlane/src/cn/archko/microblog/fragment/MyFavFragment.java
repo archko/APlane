@@ -203,7 +203,6 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
     /**
      * 查看Status原文信息,包括评论.
      */
-    @Override
     public void viewOriginalStatus(View achor) {
         if (selectedPos>=mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
@@ -234,24 +233,8 @@ public class MyFavFragment extends AbsBaseListFragment<Favorite> {
                 quickRepostStatus();
                 break;
             }
-            case Constants.OP_ID_FAVORITE: {
-                createFavorite();
-                break;
-            }
-            case Constants.OP_ID_REPOST: {
-                repostStatus();
-                break;
-            }
             case Constants.OP_ID_COMMENT: {
                 commentStatus();
-                break;
-            }
-            case Constants.OP_ID_ORITEXT: {
-                viewOriginalStatus(null);
-                break;
-            }
-            case Constants.OP_ID_VIEW_USER: {
-                viewStatusUser();
                 break;
             }
         }

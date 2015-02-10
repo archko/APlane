@@ -204,21 +204,14 @@ public class AtmeFragment extends RecyclerViewFragment {
                 break;
             }
             case Constants.OP_ID_COMMENT: {
-                commentStatus();
+                Status status=mDataList.get(selectedPos);
+                mWeiboController.commentStatus(status, getActivity());
                 break;
             }
             case Constants.OP_ID_ORITEXT: {
                 viewOriginalStatus(null);
                 break;
             }
-            case Constants.OP_ID_VIEW_USER: {
-                viewStatusUser();
-                break;
-            }
-            /*case Constants.OP_ID_SHIELD_ONE: {
-                shield(0);
-                break;
-            }*/
             case Constants.OP_ID_SHIELD_ALL: {
                 shield(1);
                 break;

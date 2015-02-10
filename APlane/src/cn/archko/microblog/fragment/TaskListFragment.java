@@ -270,10 +270,6 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
                 commentStatus();
                 break;
             }
-            case Constants.OP_ID_ORITEXT: {
-                viewOriginalStatus(null);
-                break;
-            }
             case Constants.OP_ID_VIEW_USER: {
                 viewStatusUser();
                 break;
@@ -327,7 +323,6 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
     /**
      * 在这里用于删除所有的任务。
      */
-    @Override
     public void viewStatusUser() {
         try {
             int res=SqliteWrapper.deleteAllSendTask(App.getAppContext(), currentUserId);
@@ -344,7 +339,6 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
     /**
      * 达里是重新执行任务，必须是失败的任务才能重新执行。
      */
-    @Override
     public void repostStatus() {
         if (selectedPos>=mDataList.size()) {
             WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");

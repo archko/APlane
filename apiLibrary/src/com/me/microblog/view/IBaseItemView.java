@@ -9,5 +9,5 @@ import com.me.microblog.bean.Status;
  */
 public interface IBaseItemView {
 
-    void update(final Status bean, boolean updateFlag, boolean cache, boolean showLargeBitmap, boolean showBitmap);
+    void update(final Status bean, boolean updateFlag, boolean cache);
 }
