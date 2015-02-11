@@ -30,6 +30,8 @@ import com.me.microblog.util.DisplayUtils;
 import com.me.microblog.util.WeiboLog;
 import com.me.microblog.view.MyWebView;
 import com.me.microblog.view.TextProgressBar;
+import org.fengwx.gif.GifDrawable;
+import org.fengwx.gif.GifImageView;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -78,7 +80,8 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
 
     private ImageBean mImageBean;
     private View mWebViewParent;
-    private MyWebView myWebView;
+    //private MyWebView myWebView;
+    GifImageView mGifImageView;
     private PhotoView imageView;
     private TextProgressBar textProgressBar;
     private UploadHandler mUploadHandler;
@@ -92,7 +95,8 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         super(context);
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.imageviewer_all, this);
         mWebViewParent=findViewById(R.id.lay_webview_parent);
-        myWebView=(MyWebView) findViewById(R.id.webview);
+        //myWebView=(MyWebView) findViewById(R.id.webview);
+        mGifImageView=(GifImageView) findViewById(R.id.gifview);
         imageView=(PhotoView) findViewById(R.id.imageview);
         textProgressBar=(TextProgressBar) findViewById(R.id.progress_bar);
 
@@ -105,6 +109,12 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {
+                close();
+            }
+        });
+        mGifImageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 close();
             }
         });
@@ -131,21 +141,6 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         }
 
         mImageBean=bean;
-
-        /*Scheme scheme=Scheme.ofUri(bean.thumb);
-        if (scheme==Scheme.FILE) {
-            File file=new File(bean.thumb);
-            if (file.exists()) {
-                if (bean.thumb.endsWith("gif")) {
-                    loadWebview(bean.thumb);
-                } else {
-                    loadImageView(bean.thumb);
-                }
-            }
-            return;
-        }*/
-
-        //loadView();
     }
 
     /**
@@ -196,11 +191,6 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         }
 
         textProgressBar.setVisibility(View.VISIBLE);
-        /*if (mImageBean.thumb.endsWith("gif")) {
-            loadWebview(bmiddlePic);
-        } else {
-            loadImageView(bmiddlePic);
-        }*/
         loadView();
     }
 
@@ -208,10 +198,13 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
      * 释放所有的资源.但不关闭Activity
      */
     public void release() {
-        if (null!=myWebView) {
+        /*if (null!=myWebView) {
             removeAllViews();
             //removeView(myWebView);  //remove it first,dettach view, and close.
             myWebView.destroy();
+        }*/
+        if (null!=mGifImageView) {
+            mGifImageView.setImageDrawable(null);
         }
 
         if (null!=imageView) {
@@ -317,8 +310,6 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
 
     private void downloadImage() {
         textProgressBar.setProgress(0);
-            /*mDownloadThread=new DownloadThread(new WeakReference<AKSnapImageView>(this));
-            mDownloadThread.start();*/
         if (null!=mUploadHandler) {
             mUploadHandler.removeCallbacksAndMessages(null);
             mUploadHandler.sendEmptyMessage(111);
@@ -344,9 +335,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
             h=(int) ((float) width/(float) w*h);
             w=width;
         }
-        //if (w<width&&h<height) {
         webView.setMeasureSpec(w, h);
-        //}
     }
 
     private Handler mHandler=new Handler() {
@@ -399,61 +388,6 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         } else {
             showGif((String) msg.obj);
         }
-        /*File file=new File(mBmidPath);
-        if (file.exists()) {
-            if (null!=mBmidPath&&mBmidPath.endsWith("gif")) {
-                WeiboLog.d(TAG, "loadWebview:"+mBmidPath);
-                if (null!=myWebView) {
-                    try {
-                        mWebViewParent.setVisibility(VISIBLE);
-                        BitmapFactory.Options opts=new BitmapFactory.Options();
-                        opts.inJustDecodeBounds=true;
-                        BitmapFactory.decodeFile(file.getAbsolutePath(), opts);
-                        setMeasureSpec(myWebView, DisplayUtils.convertDpToPx(opts.outWidth), DisplayUtils.convertDpToPx(opts.outHeight));
-                        myWebView.loadUrl("file://"+file.getAbsolutePath());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                imageView.setVisibility(GONE);
-            } else {
-                WeiboLog.d(TAG, "loadImageview:"+mBmidPath);
-                mWebViewParent.setVisibility(GONE);
-                if (null!=imageView) {
-                    Bitmap bitmap=null;
-                    try {
-                        bitmap=ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(file.getAbsolutePath());
-                    } catch (OutOfMemoryError e) {
-                        System.gc();
-                        e.printStackTrace();
-                        return;
-                    }
-
-                    if (null!=bitmap) {
-                        int screenHeight=getHeight();
-                        WeiboLog.v(TAG, "width："+bitmap.getWidth()+" height:"+bitmap.getHeight()+" screenHeight:"+screenHeight);
-                        try {
-                            if (screenHeight<bitmap.getHeight()) {
-                                imageView.setScaleType(ImageView.ScaleType.CENTER);
-                            } else {
-                                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                            }
-                            imageView.setImageBitmap(bitmap);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        try {
-                            file.delete();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        } else {
-            WeiboLog.w(TAG, "file not exist.");
-        }*/
     }
 
     void showPNG(Bitmap bitmap) {
@@ -479,8 +413,8 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
     }
 
     void showGif(String path) {
-        WeiboLog.d(TAG, "loadWebview:"+mImageBean);
-        File file=new File(path);
+        WeiboLog.d(TAG, "showGif:"+mImageBean);
+        /*File file=new File(path);
         if (null!=myWebView&&null!=file&&file.exists()) {
             try {
                 mWebViewParent.setVisibility(VISIBLE);
@@ -490,6 +424,16 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                 setMeasureSpec(myWebView, DisplayUtils.convertDpToPx(opts.outWidth), DisplayUtils.convertDpToPx(opts.outHeight));
                 myWebView.loadUrl("file://"+file.getAbsolutePath());
             } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }*/
+        File file=new File(path);
+        if (null!=mGifImageView&&null!=file&&file.exists()) {
+            try {
+                mWebViewParent.setVisibility(VISIBLE);
+                GifDrawable drawable=new GifDrawable(file.getAbsolutePath());
+                mGifImageView.setImageDrawable(drawable);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

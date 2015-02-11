@@ -194,6 +194,20 @@
             android:theme="@style/Theme.AK"
             android:taskAffinity="cn.archko.microblog.webview"></activity>
 
+        <activity android:name="org.fengwx.GifViewer"
+            android:label="twitter/gifviewer" android:screenOrientation="sensor"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AK" android:hardwareAccelerated="false"
+            android:windowSoftInputMode="adjustResize" android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.view"/>
+                <category android:name="android.intent.category.OPENABLE" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="image/gif"/>
+            </intent-filter>
+        </activity>
+
         <provider android:exported="true" android:name="com.me.microblog.db.TwitterProvider"
             android:authorities="cn.archko.microblog"
             android:readPermission="cn.archko.microblog.provider.READ_DATABASE"

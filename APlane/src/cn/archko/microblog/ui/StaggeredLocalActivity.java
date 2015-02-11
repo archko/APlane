@@ -5,7 +5,9 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,6 +25,7 @@ import cn.archko.microblog.view.ScaleImageView;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
+import org.fengwx.GifViewer;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -34,7 +37,7 @@ import java.util.List;
  */
 public class StaggeredLocalActivity extends SkinFragmentActivity {
 
-    protected int COUNT=500;
+    protected int COUNT=800;
     final int maxSize=4096000;
     final int minSize=4000;
     //protected ArrayList<File> mDataList=new ArrayList<File>();
@@ -324,13 +327,13 @@ public class StaggeredLocalActivity extends SkinFragmentActivity {
             ApolloUtils.getImageFetcher(mContext).startLoadImage(bean.path, holder.imageView);
             String title=bean.name;
             if (0!=bean.filesize) {
-                title+=" size:"+bean.filesize;
+                title="size:"+bean.filesize+"=>"+title;
             }
             holder.title.setText(title);
             holder.root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    showImage(view, bean);
                 }
             });
             holder.root.setOnLongClickListener(new View.OnLongClickListener() {
@@ -341,6 +344,13 @@ public class StaggeredLocalActivity extends SkinFragmentActivity {
                     return false;
                 }
             });
+        }
+
+        private void showImage(View view, ImageBean bean) {
+            Intent intent=new Intent(StaggeredLocalActivity.this, GifViewer.class);
+            intent.putExtra(GifViewer.IMAGE_URL, bean.path);
+            intent.setData(Uri.parse(bean.path));
+            StaggeredLocalActivity.this.startActivity(intent);
         }
 
         @Override

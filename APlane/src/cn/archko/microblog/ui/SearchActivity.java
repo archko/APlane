@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -87,6 +88,16 @@ public class SearchActivity extends SkinFragmentActivity implements OnRefreshLis
 
         mSinaSearchApi=new SinaSearchApi();
         mSinaSearchApi.updateToken();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId=item.getItemId();
+        if (itemId==android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void doInit() {
