@@ -17,3 +17,4 @@ APlane 依赖:roundedimageview圆形头像处理的库.
 
 所有的lib是在 APlane/libs中的,所以需要在使用eclipse中,单独指定,而使用idea则建立一个library,同时供所有的工程使用即可.
  
+gifview https://github.com/archko/GifView.git
