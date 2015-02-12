@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +24,7 @@ import cn.archko.microblog.R;
 import cn.archko.microblog.bean.ImageBean;
 import cn.archko.microblog.view.ScaleImageView;
 import com.andrew.apollo.utils.ApolloUtils;
+import com.android.photos.FullscreenViewer;
 import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
 import org.fengwx.GifViewer;
@@ -347,10 +349,19 @@ public class StaggeredLocalActivity extends SkinFragmentActivity {
         }
 
         private void showImage(View view, ImageBean bean) {
-            Intent intent=new Intent(StaggeredLocalActivity.this, GifViewer.class);
-            intent.putExtra(GifViewer.EXTRA_URL, bean.path);
-            intent.setData(Uri.parse(bean.path));
-            StaggeredLocalActivity.this.startActivity(intent);
+            if (null!=bean&&!TextUtils.isEmpty(bean.path)) {
+                Intent intent;
+                if (bean.path.endsWith("gif")) {
+                    intent=new Intent(StaggeredLocalActivity.this, GifViewer.class);
+                    intent.putExtra(GifViewer.EXTRA_URL, bean.path);
+                    intent.setData(Uri.parse(bean.path));
+                } else {
+                    intent=new Intent(StaggeredLocalActivity.this, FullscreenViewer.class);
+                    intent.putExtra(GifViewer.EXTRA_URL, bean.path);
+                    intent.setData(Uri.parse(bean.path));
+                }
+                StaggeredLocalActivity.this.startActivity(intent);
+            }
         }
 
         @Override

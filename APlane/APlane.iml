@@ -35,6 +35,8 @@
       <excludeFolder url="file://$MODULE_DIR$/doc" />
       <excludeFolder url="file://$MODULE_DIR$/picture" />
       <excludeFolder url="file://$MODULE_DIR$/proguard_logs" />
+      <excludeFolder url="file://$MODULE_DIR$/src/com/usabusi" />
+      <excludeFolder url="file://$MODULE_DIR$/src/org" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -44,6 +46,7 @@
     <orderEntry type="module" module-name="ImageFetcherLibrary" />
     <orderEntry type="library" name="aplane_lib" level="project" />
     <orderEntry type="module" module-name="GifView" />
+    <orderEntry type="module" module-name="GLPhotoViewer" />
   </component>
   <component name="org.twodividedbyzero.idea.findbugs">
     <option name="_basePreferences">

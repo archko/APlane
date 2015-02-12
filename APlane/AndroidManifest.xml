@@ -217,6 +217,40 @@
         <service android:name=".service.SendTaskService" android:enabled="true"/>
         <service android:name=".service.AKWidgetService" android:enabled="true"/>
 
+        <activity android:name="com.android.photos.FullscreenViewer" android:label="AKGLPhotoViewer"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AK" android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize" android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <!--<intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:mimeType="image/*"/>
+            </intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme=""/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:scheme="content"/>
+                <data android:scheme="file"/>
+                <data android:mimeType="image/bmp"/>
+                <data android:mimeType="image/jpeg"/>
+                <data android:mimeType="image/gif"/>
+                <data android:mimeType="image/png"/>
+                <data android:mimeType="image/webp"/>
+                <data android:mimeType="image/x-ms-bmp"/>
+                <data android:mimeType="image/vnd.wap.wbmp"/>
+            </intent-filter>
+        </activity>
+
         <!--<receiver
             android:name=".appwidgets.AppWidgetLarge"
             android:enabled="true"
