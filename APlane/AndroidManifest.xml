@@ -197,10 +197,10 @@
         <activity android:name="org.fengwx.GifViewer"
             android:label="twitter/gifviewer" android:screenOrientation="sensor"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/Theme.AK" android:hardwareAccelerated="false"
+            android:theme="@style/Theme.AK" android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize" android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="android.intent.action.view"/>
+                <action android:name="android.intent.action.View"/>
                 <category android:name="android.intent.category.OPENABLE" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT"/>

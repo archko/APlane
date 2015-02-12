@@ -348,7 +348,7 @@ public class StaggeredLocalActivity extends SkinFragmentActivity {
 
         private void showImage(View view, ImageBean bean) {
             Intent intent=new Intent(StaggeredLocalActivity.this, GifViewer.class);
-            intent.putExtra(GifViewer.IMAGE_URL, bean.path);
+            intent.putExtra(GifViewer.EXTRA_URL, bean.path);
             intent.setData(Uri.parse(bean.path));
             StaggeredLocalActivity.this.startActivity(intent);
         }
