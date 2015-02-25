@@ -228,7 +228,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
 
         AppSettings appSettings=AppSettings.current();
         if (appSettings.showLargeBitmap) {
-            mRecyclerView.setRecyclerListener(new RecyclerViewHolder());
+            //mRecyclerView.setRecyclerListener(new RecyclerViewHolder());
         }
         mRecyclerView.setOnScrollListener(getScrollListener());
         footerView.setOnClickListener(new View.OnClickListener() {
