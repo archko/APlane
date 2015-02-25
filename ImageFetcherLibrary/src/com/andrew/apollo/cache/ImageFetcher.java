@@ -38,6 +38,9 @@ public class ImageFetcher extends ImageWorker {
     public static final int DEFAULT_MAX_IMAGE_HEIGHT = 1920;
 
     public static final int DEFAULT_MAX_IMAGE_WIDTH = 720;
+    public static final int DEFAULT_MAX_IMAGE_TEXTURE_HEIGHT=4096;
+    public static final int DEFAULT_MAX_IMAGE_TEXTURE_WIDTH=4096;
+
 
     public static final String DEFAULT_HTTP_CACHE_DIR = "http"; //$NON-NLS-1$
 
@@ -331,6 +334,9 @@ public class ImageFetcher extends ImageWorker {
             final float totalReqPixelsCap = reqWidth * reqHeight * 2;
 
             while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
+                inSampleSize++;
+            }
+            while (height/(inSampleSize)>DEFAULT_MAX_IMAGE_TEXTURE_HEIGHT) {
                 inSampleSize++;
             }
         }

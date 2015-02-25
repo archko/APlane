@@ -32,6 +32,9 @@ import org.fengwx.GifViewer;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -145,6 +148,14 @@ public class StaggeredLocalActivity extends SkinFragmentActivity {
                         }
                     });
                     WeiboLog.d("", "file length:"+files.length);
+                    /*List<File> fileList=Arrays.asList(files);
+                    Collections.sort(fileList, new Comparator<File>() {
+                        @Override
+                        public int compare(File f1, File f2) {
+                            WeiboLog.d("", "modify:"+f1.lastModified()+" modify2:"+f2.lastModified());
+                            return f1.lastModified()>f2.lastModified() ? 1 : 0;
+                        }
+                    });*/
                     return parseImageBean(files);
                 }
                 return null;
@@ -165,6 +176,21 @@ public class StaggeredLocalActivity extends SkinFragmentActivity {
     }
 
     public ArrayList<ImageBean> parseImageBean(File[] files) {
+        ArrayList<ImageBean> list=new ArrayList<ImageBean>();
+        if (null!=files) {
+            ImageBean bean;
+            for (File f : files) {
+                bean=new ImageBean();
+                bean.path=f.getAbsolutePath();
+                bean.filesize=f.length();
+                bean.name=f.getName();
+                list.add(0, bean);
+            }
+        }
+        return list;
+    }
+
+    public ArrayList<ImageBean> parseImageBean(List<File> files) {
         ArrayList<ImageBean> list=new ArrayList<ImageBean>();
         if (null!=files) {
             ImageBean bean;
@@ -205,6 +231,8 @@ public class StaggeredLocalActivity extends SkinFragmentActivity {
                 filepath=SINA_PICTURE_PATH;
                 initData();
             }
+        } else if (item.getItemId()==android.R.id.home) {
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
