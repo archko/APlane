@@ -102,12 +102,17 @@ public class WebviewActivity extends SkinFragmentActivity {
                 mEmptyTxt.setText(R.string.webview_receive_err);
             }
 
-            /*@Override
+            @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.startsWith("http://video.weibo.com")&&!url.contains("type=")) {
+                    url+="&type=mp4";
+                    mWebView.loadUrl(url);
+                    return true;
+                }
                 return super.shouldOverrideUrlLoading(view, url);
             }
 
-            @Override
+            /*@Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
             }*/
