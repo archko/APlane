@@ -59,10 +59,6 @@
         <!-- -->
         <activity android:name=".ui.LoginActivity" android:label="twitter/Login"
             android:excludeFromRecents="true" android:launchMode="singleTop">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="archko.test"/>
-            </intent-filter>-->
         </activity>
 
         <activity android:name=".ui.CommentStatusActivity"
@@ -97,10 +93,6 @@
 
         <activity android:name=".ui.ViewStatusDetailActivity" android:label="twitter/ViewStatusFragment"
             android:uiOptions="splitActionBarWhenNarrow">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="archko.test"/>
-            </intent-filter>-->
         </activity>
 
         <activity android:name=".ui.SplashActivity"
@@ -113,36 +105,20 @@
 
         <activity android:name=".ui.UserFragmentActivity"
             android:theme="@style/Theme.AK.Light.OverlayActionBar"
-            android:label="twitter/UserFragments">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="archko.test"/>
-            </intent-filter>-->
+            android:label="UserFragments">
         </activity>
 
         <activity android:name=".ui.PrefsActivity" android:theme="@style/Theme.AK"
             android:label="@string/pref" android:excludeFromRecents="true" android:screenOrientation="portrait">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="archko.test"/>
-            </intent-filter>-->
         </activity>
 
         <activity android:name=".ui.AboutActivity"
             android:excludeFromRecents="true" android:screenOrientation="portrait">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="archko.test"/>
-            </intent-filter>-->
         </activity>
 
         <activity android:name=".ui.HomeActivity" android:label="@string/app_name"
             android:uiOptions="none"
             android:launchMode="singleTask" android:configChanges="orientation|keyboardHidden|screenSize">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="archko.test"/>
-            </intent-filter>-->
         </activity>
 
         <activity android:name=".ui.SearchActivity">
@@ -150,17 +126,9 @@
 
         <activity android:name=".ui.AccountUserActivity" android:label="twitter/accountUser"
             android:screenOrientation="portrait">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="archko.test"/>
-            </intent-filter>-->
         </activity>
 
         <activity android:name=".ui.TaskQueueActivity" android:label="twitter/TaskQueue">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="archko.test"/>
-            </intent-filter>-->
         </activity>
 
         <activity android:name=".ui.EmptyFragmentActivity" android:label="twitter/Empty"
@@ -227,7 +195,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data android:mimeType="image/*"/>
             </intent-filter>-->
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
@@ -243,7 +211,7 @@
                 <data android:mimeType="image/webp"/>
                 <data android:mimeType="image/x-ms-bmp"/>
                 <data android:mimeType="image/vnd.wap.wbmp"/>
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <!--<receiver
