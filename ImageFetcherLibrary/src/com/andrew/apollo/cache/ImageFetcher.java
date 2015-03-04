@@ -38,8 +38,8 @@ public class ImageFetcher extends ImageWorker {
     public static final int DEFAULT_MAX_IMAGE_HEIGHT = 1920;
 
     public static final int DEFAULT_MAX_IMAGE_WIDTH = 720;
-    public static final int DEFAULT_MAX_IMAGE_TEXTURE_HEIGHT=4096;
-    public static final int DEFAULT_MAX_IMAGE_TEXTURE_WIDTH=4096;
+    public static int DEFAULT_MAX_IMAGE_TEXTURE_HEIGHT=4096;
+    public static int DEFAULT_MAX_IMAGE_TEXTURE_WIDTH=4096;
 
 
     public static final String DEFAULT_HTTP_CACHE_DIR = "http"; //$NON-NLS-1$
@@ -53,7 +53,7 @@ public class ImageFetcher extends ImageWorker {
 
     /**
      * Creates a new instance of {@link ImageFetcher}.
-     * 
+     *
      * @param context The {@link Context} to use.
      */
     public ImageFetcher(final Context context) {
@@ -78,7 +78,7 @@ public class ImageFetcher extends ImageWorker {
 
     /**
      * Used to create a singleton of the image fetcher
-     * 
+     *
      * @param context The {@link Context} to use
      * @return A new instance of this class.
      */
@@ -123,6 +123,7 @@ public class ImageFetcher extends ImageWorker {
                 final Bitmap bitmap = decodeSampledBitmapFromFile(file.toString(), option.getMaxWidth(),
                     option.getMaxHeight(), option.getConfig());
                 if (bitmap != null) {
+                    Log.d("", "width:"+bitmap.getWidth()+" height:"+bitmap.getHeight()+" mh:"+DEFAULT_MAX_IMAGE_TEXTURE_HEIGHT);
                     return bitmap;
                 }
             }
@@ -194,7 +195,7 @@ public class ImageFetcher extends ImageWorker {
     /**
      * Download a {@link Bitmap} from a URL, write it to a disk and return the
      * File pointer. This implementation uses a simple disk cache.
-     * 
+     *
      * @param context The context to use
      * @param urlString The URL to fetch
      * @return A {@link File} pointing to the fetched bitmap
@@ -248,7 +249,7 @@ public class ImageFetcher extends ImageWorker {
     /**
      * Decode and sample down a {@link Bitmap} from a file to the requested
      * width and height.
-     * 
+     *
      * @param filename The full path of the file to decode
      * @param reqWidth The requested width of the resulting bitmap
      * @param reqHeight The requested height of the resulting bitmap
@@ -282,7 +283,7 @@ public class ImageFetcher extends ImageWorker {
         BitmapFactory.decodeFile(filename, options);
 
         // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, maxWidth, maxheight);
+        options.inSampleSize = calculateInSampleSize2(options, maxWidth, maxheight);
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
@@ -300,7 +301,7 @@ public class ImageFetcher extends ImageWorker {
      * a power of 2 is returned for inSampleSize which can be faster when
      * decoding but results in a larger bitmap which isn't as useful for caching
      * purposes.
-     * 
+     *
      * @param options An options object with out* params already populated (run
      *            through a decode* method with inJustDecodeBounds==true
      * @param reqWidth The requested width of the resulting bitmap
@@ -344,6 +345,26 @@ public class ImageFetcher extends ImageWorker {
     }
 
     /**
+     * textture max height 2048,4096
+     *
+     * @param options
+     * @param reqWidth
+     * @param reqHeight
+     * @return
+     */
+    public static final int calculateInSampleSize2(final BitmapFactory.Options options,
+        final int reqWidth, final int reqHeight) {
+        final int height=options.outHeight;
+        final int width=options.outWidth;
+        int inSampleSize=1;
+
+        while (height/(inSampleSize)>DEFAULT_MAX_IMAGE_TEXTURE_HEIGHT||width/inSampleSize>DEFAULT_MAX_IMAGE_WIDTH) {
+            inSampleSize*=2;
+        }
+        return inSampleSize;
+    }
+
+    /**
      * Workaround for bug pre-Froyo, see here for more info:
      * http://android-developers.blogspot.com/2011/09/androids-http-clients.html
      */
@@ -358,7 +379,7 @@ public class ImageFetcher extends ImageWorker {
      * Check if OS version has a http URLConnection bug. See here for more
      * information:
      * http://android-developers.blogspot.com/2011/09/androids-http-clients.html
-     * 
+     *
      * @return true if this OS version is affected, false otherwise
      */
     public static final boolean hasHttpConnectionBug() {
