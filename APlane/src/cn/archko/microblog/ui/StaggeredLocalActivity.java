@@ -302,7 +302,7 @@ public class StaggeredLocalActivity extends SkinFragmentActivity {
     private class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.SimpleViewHolder> {
 
         private final Context mContext;
-        private List<ImageBean> mItems;
+        private ArrayList<ImageBean> mItems;
 
         public class SimpleViewHolder extends RecyclerView.ViewHolder {
 
@@ -363,7 +363,7 @@ public class StaggeredLocalActivity extends SkinFragmentActivity {
             holder.root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showImage(view, bean);
+                    showImage(view, bean, position);
                 }
             });
             holder.root.setOnLongClickListener(new View.OnLongClickListener() {
@@ -376,10 +376,10 @@ public class StaggeredLocalActivity extends SkinFragmentActivity {
             });
         }
 
-        private void showImage(View view, ImageBean bean) {
+        private void showImage(View view, ImageBean bean, int position) {
             if (null!=bean&&!TextUtils.isEmpty(bean.path)) {
                 Intent intent;
-                if (bean.path.endsWith("gif")) {
+                /*if (bean.path.endsWith("gif")) {
                     intent=new Intent(StaggeredLocalActivity.this, GifViewer.class);
                     intent.putExtra(GifViewer.EXTRA_URL, bean.path);
                     intent.setData(Uri.parse(bean.path));
@@ -387,7 +387,11 @@ public class StaggeredLocalActivity extends SkinFragmentActivity {
                     intent=new Intent(StaggeredLocalActivity.this, FullscreenViewer.class);
                     intent.putExtra(GifViewer.EXTRA_URL, bean.path);
                     intent.setData(Uri.parse(bean.path));
-                }
+                }*/
+
+                intent=new Intent(StaggeredLocalActivity.this, ImageViewPagerActivity.class);
+                intent.putParcelableArrayListExtra("items", mItems);
+                intent.putExtra("pos", position);
                 StaggeredLocalActivity.this.startActivity(intent);
             }
         }

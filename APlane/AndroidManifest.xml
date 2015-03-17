@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="16075" android:installLocation="auto"
-    android:versionName="2.2.2"
+    android:versionCode="16085" android:installLocation="auto"
+    android:versionName="2.2.4"
     package="cn.archko.microblog">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -24,7 +24,7 @@
     <uses-permission android:name="cn.archko.microblog.provider.WRITE_DATABASE"/>
 
     <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
-    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="21"/>
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="22"/>
 
     <supports-screens
         android:smallScreens="true"
@@ -139,7 +139,7 @@
             </intent-filter>-->
         </activity>
 
-        <activity android:name=".ui.TestApiActivity" android:label="twitter/TestApi">
+        <activity android:name=".ui.TestApiActivity" android:label="twitter/TestApi" android:hardwareAccelerated="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="archko.test"/>
@@ -212,6 +212,13 @@
                 <data android:mimeType="image/x-ms-bmp"/>
                 <data android:mimeType="image/vnd.wap.wbmp"/>
             </intent-filter>-->
+        </activity>
+
+        <activity android:name=".ui.ImageViewPagerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AK" android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize" android:launchMode="singleTop">
+
         </activity>
 
         <!--<receiver
