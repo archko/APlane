@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="16085" android:installLocation="auto"
-    android:versionName="2.2.4"
+    android:versionCode="16095" android:installLocation="auto"
+    android:versionName="2.2.5"
     package="cn.archko.microblog">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -162,7 +162,7 @@
             android:theme="@style/Theme.AK"
             android:taskAffinity="cn.archko.microblog.webview"></activity>
 
-        <activity android:name="org.fengwx.GifViewer"
+        <activity android:name="pl.droidsonroids.gif.viewer.GifViewer"
             android:label="twitter/gifviewer" android:screenOrientation="sensor"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Theme.AK" android:hardwareAccelerated="true"
