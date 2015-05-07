@@ -27,7 +27,6 @@ import com.andrew.apollo.utils.ApolloUtils;
 import com.android.photos.FullscreenViewer;
 import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import org.fengwx.GifViewer;
 
 import java.io.File;
 import java.io.FileFilter;

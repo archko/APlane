@@ -12,15 +12,15 @@
         android:fillViewport="true" android:scrollbars="none"
         android:layout_centerInParent="true"
         android:visibility="gone"
-        android:layout_width="match_parent" android:layout_height="match_parent">
+        android:layout_width="wrap_content" android:layout_height="wrap_content">
         <!--<com.me.microblog.view.MyWebView android:id="@+id/webview"
             android:gravity="center" android:adjustViewBounds="false"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:padding="0dip" android:layout_margin="0dip"
             android:scrollbars="none"/>-->
-        <org.fengwx.gif.GifImageView
+        <pl.droidsonroids.gif.GifImageView
             android:id="@+id/gifview"
-            android:layout_width="match_parent" android:layout_height="match_parent"/>
+            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
     </ScrollView>
 
     <uk.co.senab.photoview.PhotoView android:id="@+id/imageview"

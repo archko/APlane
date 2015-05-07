@@ -30,8 +30,8 @@ import com.me.microblog.util.DisplayUtils;
 import com.me.microblog.util.WeiboLog;
 import com.me.microblog.view.MyWebView;
 import com.me.microblog.view.TextProgressBar;
-import org.fengwx.gif.GifDrawable;
-import org.fengwx.gif.GifImageView;
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 

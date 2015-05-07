@@ -2,6 +2,7 @@ package cn.archko.microblog.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.HackyViewPager;
 import android.support.v4.view.PagerAdapter;
@@ -14,12 +15,13 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import cn.archko.microblog.R;
 import cn.archko.microblog.bean.ImageBean;
+import com.android.launcher3.GLImageView;
 import com.android.photos.BitmapRegionTileSource;
 import com.android.photos.views.TiledImageView;
 import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import org.fengwx.gif.GifDrawable;
-import org.fengwx.gif.GifImageView;
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -128,12 +130,18 @@ public class ImageViewPagerActivity extends Activity {
                 container.addView(photoView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
                 return photoView;
             } else {
-                TiledImageView photoView=new TiledImageView(container.getContext());
+                /*TiledImageView photoView=new TiledImageView(container.getContext());
                 if (!TextUtils.isEmpty(bean.path)) {
                     photoView.setTileSource(new BitmapRegionTileSource(bean.path));
                 } else {
                     WeiboLog.d(TAG, "item is null:"+dataList.get(position));
-                }
+                }*/
+                GLImageView photoView=new GLImageView(container.getContext());
+                //photoView.setTileSource(new BitmapRegionTileSource(dataList.get(position).getAbsolutePath()));
+                BitmapRegionTileSource.BitmapSource bitmapSource=null;
+                bitmapSource=new BitmapRegionTileSource.FilePathBitmapSource(bean.path, 1024);
+
+                setCropViewTileSource(container.getContext(), photoView, bitmapSource, true, false, null);
 
                 // Now just add PhotoView to ViewPager and return it
                 container.addView(photoView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -156,6 +164,47 @@ public class ImageViewPagerActivity extends Activity {
             return view==object;
         }
 
+        public void setCropViewTileSource(
+            final Context context, final GLImageView photoView, final BitmapRegionTileSource.BitmapSource bitmapSource, final boolean touchEnabled,
+            final boolean moveToLeft, final Runnable postExecute) {
+            //final View progressView = findViewById(R.id.loading);
+            final AsyncTask<Void, Void, Void> loadBitmapTask=new AsyncTask<Void, Void, Void>() {
+                protected Void doInBackground(Void... args) {
+                    if (!isCancelled()) {
+                        bitmapSource.loadInBackground();
+                    }
+                    return null;
+                }
+
+                protected void onPostExecute(Void arg) {
+                    if (!isCancelled()) {
+                        //progressView.setVisibility(View.INVISIBLE);
+                        if (bitmapSource.getLoadingState()==BitmapRegionTileSource.BitmapSource.State.LOADED) {
+                            photoView.setTileSource(
+                                new BitmapRegionTileSource(context, bitmapSource), null);
+                            photoView.setTouchEnabled(touchEnabled);
+                            if (moveToLeft) {
+                                photoView.moveToLeft();
+                            }
+                        }
+                    }
+                    if (postExecute!=null) {
+                        postExecute.run();
+                    }
+                }
+            };
+            // We don't want to show the spinner every time we load an image, because that would be
+            // annoying; instead, only start showing the spinner if loading the image has taken
+            // longer than 1 sec (ie 1000 ms)
+        /*progressView.postDelayed(new Runnable() {
+            public void run() {
+                if (loadBitmapTask.getStatus() != AsyncTask.Status.FINISHED) {
+                    progressView.setVisibility(View.VISIBLE);
+                }
+            }
+        }, 1000);*/
+            loadBitmapTask.execute();
+        }
     }
 
 }
