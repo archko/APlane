@@ -25,7 +25,7 @@ public class AccountUserActivity extends AbstractFragmentTabsPager {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        //requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         super.onCreate(savedInstanceState);
 
         /*Intent intent=getIntent();
