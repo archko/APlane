@@ -309,9 +309,22 @@ public class WebviewActivity extends SkinFragmentActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        mWebView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mWebView.onPause();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         //mWebView.clearView();
+        mWebView.stopLoading();
         mWebView.destroy();
     }
 }
