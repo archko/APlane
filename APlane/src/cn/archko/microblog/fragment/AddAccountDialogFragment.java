@@ -39,9 +39,17 @@ import com.me.microblog.util.WeiboLog;
 public class AddAccountDialogFragment extends DialogFragment {
 
     public static final String TAG="AddAccountDialogFragment";
+    public static final String KEY_USERNAME="key_username";
+    public static final String KEY_PASSWORD="key_password";
+    public static final String KEY_OAUTH_KEY="key_oauth_key";
+    public static final String KEY_OAUTH_SECRET="key_oauth_secret";
+    public static final String KEY_OAUTH_URL="key_oauth_url";
+
     private EditText email, pwd;
     InputMethodManager imm;
-    int type=0;
+    private static final int OAUTH_TYPE_CLIENT=0;
+    private static final int OAUTH_TYPE_WEBVIEW=1;
+    int type=OAUTH_TYPE_CLIENT;
     ProgressDialog mProgressDialog;
     AccountOauthListener mAccountOauthListener;
     Spinner mSpinner;
@@ -85,10 +93,10 @@ public class AddAccountDialogFragment extends DialogFragment {
             if (id==R.id.exit) {
                 dismiss();
             } else if (id==R.id.login2) {
-                type=0;
+                type=OAUTH_TYPE_CLIENT;
                 addAccount();
             } else if (id==R.id.login_show_webview_btn) {
-                type=1;
+                type=OAUTH_TYPE_WEBVIEW;
                 addAccount();
             }
         }
@@ -146,11 +154,6 @@ public class AddAccountDialogFragment extends DialogFragment {
         String username=email.getEditableText().toString();
         String password=pwd.getEditableText().toString();
 
-        if (TextUtils.isEmpty(username)||TextUtils.isEmpty(password)) {
-            NotifyUtils.showToast("请输入帐户及密码");
-            return;
-        }
-
         //TODO search the username first
         OauthBean oauthBean=SqliteWrapper.queryAccount(App.getAppContext(), TwitterTable.AUTbl.WEIBO_SINA, username);
         if (null!=oauthBean) {
@@ -159,7 +162,7 @@ public class AddAccountDialogFragment extends DialogFragment {
             return;
         }
 
-        if (type==1) {
+        if (type==OAUTH_TYPE_WEBVIEW) { //打开网页认证
             FragmentTransaction ft=getActivity().getFragmentManager().beginTransaction();
             Fragment prev=getActivity().getFragmentManager().findFragmentByTag("oauth_dialog");
             if (prev!=null) {
@@ -167,10 +170,31 @@ public class AddAccountDialogFragment extends DialogFragment {
             }
             ft.addToBackStack(null);
 
+            String key=SOauth2.CONSUMER_KEY;
+            String url=SOauth2.CALLBACK_URL;
+            String secret="";
+            if (mSpinner.getSelectedItemPosition()==1) {
+                key=SOauth2.DESKTOP_KEY;
+                secret=SOauth2.DESKTOP_SECRET;
+                url=SOauth2.DESKTOP_CALLBACK;
+            }
+            Bundle bundle=new Bundle();
+            bundle.putString(KEY_USERNAME, username);
+            bundle.putString(KEY_PASSWORD, password);
+            bundle.putString(KEY_OAUTH_SECRET, secret);
+            bundle.putString(KEY_OAUTH_KEY, key);
+            bundle.putString(KEY_OAUTH_URL, url);
+
             // Create and show the dialog.
             OauthDialogFragment oauthDialogFragment=new OauthDialogFragment(mOauthHandler);
+            oauthDialogFragment.setArguments(bundle);
             oauthDialogFragment.show(ft, "oauth_dialog");
-        } else {
+        } else {    //后台认证
+            if (TextUtils.isEmpty(username)||TextUtils.isEmpty(password)) {
+                NotifyUtils.showToast("请输入帐户及密码");
+                return;
+            }
+
             Object[] params=new Object[]{username, password};
             SOauth2 ouath2=new SOauth2();
 

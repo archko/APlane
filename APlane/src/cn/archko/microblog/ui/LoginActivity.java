@@ -49,6 +49,7 @@ import java.util.ArrayList;
  *
  * @author archko date:2011-7-5
  */
+@Deprecated
 public class LoginActivity extends NavModeActivity {
 
     public static final String TAG="LoginActivity";
@@ -61,10 +62,12 @@ public class LoginActivity extends NavModeActivity {
     InputMethodManager imm;
     ProgressDialog mProgressDialog;
     AlertDialog mAlertDialog;
+    private static final int OAUTH_TYPE_CLIENT=0;
+    private static final int OAUTH_TYPE_WEBVIEW=1;
     /**
      * 0表示默认的方式,不显式地处理,1表示需要显示webview,但是无法自动认证,
      */
-    int type=0;
+    int type=OAUTH_TYPE_CLIENT;
     RelativeLayout mContextFrame;
     TextView mAccountName;
     ArrayList<OauthBean> mAccounts;
@@ -80,7 +83,7 @@ public class LoginActivity extends NavModeActivity {
                 e.printStackTrace();
             }
 
-            if (type==1) {
+            if (type==OAUTH_TYPE_WEBVIEW) {
                 try {
                     FragmentTransaction ft=getFragmentManager().beginTransaction();
                     Fragment prev=getFragmentManager().findFragmentByTag("oauth_dialog");
@@ -203,7 +206,7 @@ public class LoginActivity extends NavModeActivity {
             finish();
             return;
         } else if (v.getId()==R.id.login_show_webview_btn) {
-            type=1;
+            type=OAUTH_TYPE_WEBVIEW;
             oauth2("", "");
             return;
         } else if (v.getId()==R.id.track_list_context_frame) {
@@ -247,7 +250,7 @@ public class LoginActivity extends NavModeActivity {
             }
             this.finish();
         } else if (v.getId()==R.id.login2) {  //web认证
-            type=0;
+            type=OAUTH_TYPE_CLIENT;
             oauth2(emailTxt, passwordTxt);
         }
     }
@@ -275,7 +278,7 @@ public class LoginActivity extends NavModeActivity {
     void oauth2(String username, String password) {
         SOauth2 ouath2=new SOauth2();
 
-        if (type==1) {
+        if (type==OAUTH_TYPE_WEBVIEW) {
             /*AlertDialog.Builder builder=new AlertDialog.Builder(LoginActivity.this)
                 .setTitle(R.string.app_name)
                 .setView(webView);
@@ -329,7 +332,7 @@ public class LoginActivity extends NavModeActivity {
                 editor.commit();
                 String username=mName.getEditableText().toString();
                 String password=mPass.getEditableText().toString();
-                if (type==1) {
+                if (type==OAUTH_TYPE_WEBVIEW) {
                     username=password="";
                 }
                 App.isLogined=true;

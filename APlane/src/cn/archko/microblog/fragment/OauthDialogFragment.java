@@ -35,7 +35,21 @@ public class OauthDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         SOauth2 ouath2=new SOauth2();
-        WebView webView=ouath2.oauthByWebView(new Object[]{"", "", App.getAppContext(), mHandler, null});
+        Bundle bundle=getArguments();
+        String username=null;
+        String password=null;
+        String key=SOauth2.CONSUMER_KEY;
+        String url=SOauth2.CALLBACK_URL;
+        String secret="";
+        if (null!=bundle) {
+            key=bundle.getString(AddAccountDialogFragment.KEY_OAUTH_KEY);
+            secret=bundle.getString(AddAccountDialogFragment.KEY_OAUTH_SECRET);
+            url=bundle.getString(AddAccountDialogFragment.KEY_OAUTH_URL);
+        }
+
+        Object[] params=new Object[]{username, password};
+        WebView webView=ouath2.oauthByWebView(new Object[]{username, password, App.getAppContext(), mHandler, params,
+            key, secret, url});
         return webView;
     }
 }

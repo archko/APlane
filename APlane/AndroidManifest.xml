@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="16095" android:installLocation="auto"
-    android:versionName="2.2.5"
+    android:versionCode="16105" android:installLocation="auto"
+    android:versionName="2.2.6"
     package="cn.archko.microblog">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -57,9 +57,9 @@
         </service>
 
         <!-- -->
-        <activity android:name=".ui.LoginActivity" android:label="twitter/Login"
+        <!--<activity android:name=".ui.LoginActivity" android:label="twitter/Login"
             android:excludeFromRecents="true" android:launchMode="singleTop">
-        </activity>
+        </activity>-->
 
         <activity android:name=".ui.CommentStatusActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"></activity>
@@ -124,7 +124,8 @@
         <activity android:name=".ui.SearchActivity">
         </activity>
 
-        <activity android:name=".ui.AccountUserActivity" android:label="twitter/accountUser"
+        <activity android:name=".ui.AccountUserActivity" android:label="accountUser"
+            android:theme="@style/Theme.AK"
             android:screenOrientation="portrait">
         </activity>
 
