@@ -227,9 +227,16 @@ public abstract class ImageWorker {
             // Second, if we're fetching artwork, check the device for the image
 
             // Third, by now we need to download the image
-            Scheme scheme=Scheme.ofUri(mUrl);
             //Log.d("", "scheme:"+scheme+" url:"+url);
-            if (bitmap == null &&((scheme==Scheme.HTTP||scheme==Scheme.HTTPS)&&ApolloUtils.isOnline(mContext)) && !isCancelled()
+            boolean isOnline=ApolloUtils.isOnline(mContext);
+            Scheme scheme=Scheme.ofUri(mUrl);
+            if (!isOnline) {
+                if (scheme==Scheme.HTTP||scheme==Scheme.HTTPS) {
+                } else {
+                    isOnline=true;
+                }
+            }
+            if (bitmap == null && isOnline && !isCancelled()
                     && getAttachedImageView() != null) {
                 // Now define what the artist name, album name, and url are.
                 //mUrl = processImageUrl();
