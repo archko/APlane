@@ -19,13 +19,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
-//import android.os.AsyncTask;
 import android.widget.ImageView;
-
 import cn.archko.thread.AsyncTask;
 import com.andrew.apollo.utils.ApolloUtils;
 
 import java.lang.ref.WeakReference;
+
+//import android.os.AsyncTask;
 
 /**
  * This class wraps up completing some arbitrary long running work when loading
@@ -227,7 +227,9 @@ public abstract class ImageWorker {
             // Second, if we're fetching artwork, check the device for the image
 
             // Third, by now we need to download the image
-            if (bitmap == null && ApolloUtils.isOnline(mContext) && !isCancelled()
+            Scheme scheme=Scheme.ofUri(mUrl);
+            //Log.d("", "scheme:"+scheme+" url:"+url);
+            if (bitmap == null &&((scheme==Scheme.HTTP||scheme==Scheme.HTTPS)&&ApolloUtils.isOnline(mContext)) && !isCancelled()
                     && getAttachedImageView() != null) {
                 // Now define what the artist name, album name, and url are.
                 //mUrl = processImageUrl();
