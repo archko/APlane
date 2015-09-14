@@ -6,7 +6,7 @@ import com.me.microblog.bean.SStatusData;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.WeiboParser;
 import com.me.microblog.core.abs.ICommentApi;
-import org.apache.http.message.BasicNameValuePair;
+import com.me.microblog.http.PostParameter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,32 +45,32 @@ public class SinaCommentApi extends AbsApiImpl implements ICommentApi {
     public SStatusData<Comment> getComments(long id, int count, int page, long sinceId, long maxId,
         int filter_by_author) throws WeiboException {
         String urlString = getBaseUrl() + "comments/show.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("id", String.valueOf(id));
+        PostParameter pair;
+        pair = new PostParameter("id", String.valueOf(id));
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("count", String.valueOf(count));
+        pair = new PostParameter("count", String.valueOf(count));
         nvps.add(pair);
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
         if (sinceId > 0) {
-            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            pair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
         if (0 < maxId) {
-            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            pair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
         if (filter_by_author > 0) {
-            pair = new BasicNameValuePair("filter_by_author", String.valueOf(filter_by_author));
+            pair = new PostParameter("filter_by_author", String.valueOf(filter_by_author));
             nvps.add(pair);
         }
 
@@ -95,29 +95,29 @@ public class SinaCommentApi extends AbsApiImpl implements ICommentApi {
     public SStatusData<Comment> getCommentsByMe(long sinceId, long maxId, int count, int page,
         int filter_by_source) throws WeiboException {
         String urlString = getBaseUrl() + "comments/by_me.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("count", String.valueOf(count));
+        PostParameter pair;
+        pair = new PostParameter("count", String.valueOf(count));
         nvps.add(pair);
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
         if (sinceId > 0) {
-            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            pair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
         if (0 < maxId) {
-            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            pair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
         if (filter_by_source > 0) {
-            pair = new BasicNameValuePair("filter_by_source", String.valueOf(filter_by_source));
+            pair = new PostParameter("filter_by_source", String.valueOf(filter_by_source));
             nvps.add(pair);
         }
 
@@ -143,34 +143,34 @@ public class SinaCommentApi extends AbsApiImpl implements ICommentApi {
     public SStatusData<Comment> getCommentsToMe(long sinceId, long maxId, int count, int page,
         int filter_by_author, int filter_by_source) throws WeiboException {
         String urlString = getBaseUrl() + "comments/to_me.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("count", String.valueOf(count));
+        PostParameter pair;
+        pair = new PostParameter("count", String.valueOf(count));
         nvps.add(pair);
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
         if (sinceId > 0) {
-            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            pair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
         if (0 < maxId) {
-            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            pair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
         if (filter_by_author > 0) {
-            pair = new BasicNameValuePair("filter_by_author", String.valueOf(filter_by_author));
+            pair = new PostParameter("filter_by_author", String.valueOf(filter_by_author));
             nvps.add(pair);
         }
 
         if (filter_by_source > 0) {
-            pair = new BasicNameValuePair("filter_by_source", String.valueOf(filter_by_source));
+            pair = new PostParameter("filter_by_source", String.valueOf(filter_by_source));
             nvps.add(pair);
         }
 
@@ -195,24 +195,24 @@ public class SinaCommentApi extends AbsApiImpl implements ICommentApi {
     public SStatusData<Comment> getCommentsTimeline(long sinceId, long maxId, int count, int page)
         throws WeiboException {
         String urlString = getBaseUrl() + "comments/timeline.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("count", String.valueOf(count));
+        pair = new PostParameter("count", String.valueOf(count));
         nvps.add(pair);
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
         if (sinceId > 0) {
-            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            pair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
         if (0 < maxId) {
-            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            pair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
@@ -238,34 +238,34 @@ public class SinaCommentApi extends AbsApiImpl implements ICommentApi {
     public SStatusData<Comment> getAtMeComments(long sinceId, long maxId, int count, int page,
         int filter_by_author, int filter_by_source) throws WeiboException {
         String urlString = getBaseUrl() + "comments/mentions.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("count", String.valueOf(count));
+        PostParameter pair;
+        pair = new PostParameter("count", String.valueOf(count));
         nvps.add(pair);
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
         if (sinceId > 0) {
-            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            pair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
         if (0 < maxId) {
-            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            pair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
         if (filter_by_author > 0) {
-            pair = new BasicNameValuePair("filter_by_author", String.valueOf(filter_by_author));
+            pair = new PostParameter("filter_by_author", String.valueOf(filter_by_author));
             nvps.add(pair);
         }
 
         if (filter_by_source > 0) {
-            pair = new BasicNameValuePair("filter_by_source", String.valueOf(filter_by_source));
+            pair = new PostParameter("filter_by_source", String.valueOf(filter_by_source));
             nvps.add(pair);
         }
 
@@ -286,15 +286,15 @@ public class SinaCommentApi extends AbsApiImpl implements ICommentApi {
     public Comment commentStatus(long id, String comment, String comment_ori)
         throws WeiboException {
         String urlString = getBaseUrl() + "comments/create.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("id", String.valueOf(id));
+        PostParameter pair;
+        pair = new PostParameter("id", String.valueOf(id));
         nvps.add(pair);
-        pair = new BasicNameValuePair("comment", comment);
+        pair = new PostParameter("comment", comment);
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("comment_ori", comment_ori);
+        pair = new PostParameter("comment_ori", comment_ori);
         nvps.add(pair);
 
         String rs = post(urlString, true, nvps);
@@ -315,17 +315,17 @@ public class SinaCommentApi extends AbsApiImpl implements ICommentApi {
      */
     public Comment commentReply(long cid, long id, String comment, String comment_ori) throws WeiboException {
         String urlString = getBaseUrl() + "comments/reply.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("cid", String.valueOf(cid));
+        PostParameter pair;
+        pair = new PostParameter("cid", String.valueOf(cid));
         nvps.add(pair);
-        pair = new BasicNameValuePair("id", String.valueOf(id));
+        pair = new PostParameter("id", String.valueOf(id));
         nvps.add(pair);
-        pair = new BasicNameValuePair("comment", comment);
+        pair = new PostParameter("comment", comment);
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("without_mention", "1");
+        pair = new PostParameter("without_mention", "1");
         nvps.add(pair);
 
         String rs = post(urlString, true, nvps);

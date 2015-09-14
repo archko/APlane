@@ -12,16 +12,7 @@ import com.me.microblog.core.TwitterOAuth2;
 import com.me.microblog.core.WeiboParser;
 import com.me.microblog.core.abs.IStatusApi;
 import com.me.microblog.http.PostParameter;
-import com.me.microblog.util.WeiboLog;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.message.BasicNameValuePair;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
@@ -55,11 +46,11 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
      */
     public SStatusData<Status> getPublicTimeline(int count) throws WeiboException {
         String urlString = getBaseUrl() + "statuses/public_timeline.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
@@ -87,35 +78,36 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
     public SStatusData<Status> getHomeTimeline(long sinceId, long maxId, int count, int page, int feature)
         throws WeiboException {
         String urlString = getBaseUrl() + "statuses/home_timeline.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
         if (sinceId > 0) {
-            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            pair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
         if (maxId > 0) {
-            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            pair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
         if (feature > 0) {
-            pair = new BasicNameValuePair("feature", String.valueOf(feature));
+            pair = new PostParameter("feature", String.valueOf(feature));
             nvps.add(pair);
         }
 
         String rs = get(urlString, true, nvps);
+        WeiboUtils.printResult(TAG, "getHomeTimeline:" + rs);
         return getStatuses2(rs);
     }
 
@@ -141,31 +133,31 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
     public SStatusData<Status> getFriendsTimeline(long sinceId, long maxId, int count, int page, int feature)
         throws WeiboException {
         String urlString = getBaseUrl() + "statuses/friends_timeline.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
         if (sinceId > 0) {
-            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            pair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
         if (maxId > 0) {
-            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            pair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
         if (feature > 0) {
-            pair = new BasicNameValuePair("feature", String.valueOf(feature));
+            pair = new PostParameter("feature", String.valueOf(feature));
             nvps.add(pair);
         }
 
@@ -191,31 +183,31 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
     public void getFriendsTimelineIDS(long sinceId, long maxId, int count, int page, int feature)
         throws WeiboException {
         String urlString = getBaseUrl() + "statuses/friends_timeline/ids.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
         if (sinceId > 0) {
-            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            pair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
         if (maxId > 0) {
-            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            pair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
         if (feature > 0) {
-            pair = new BasicNameValuePair("feature", String.valueOf(feature));
+            pair = new PostParameter("feature", String.valueOf(feature));
             nvps.add(pair);
         }
 
@@ -245,33 +237,33 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
     public SStatusData<Status> getUserTimeLine(long uid, long sinceId, long maxId, int count,
         int page, int feature) throws WeiboException {
         String urlString = getBaseUrl() + "statuses/user_timeline.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("count", String.valueOf(count));
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
+        pair = new PostParameter("count", String.valueOf(count));
         nvps.add(pair);
 
         if (uid > 0) {
-            pair = new BasicNameValuePair("uid", String.valueOf(uid));
+            pair = new PostParameter("uid", String.valueOf(uid));
             nvps.add(pair);
         }
 
         if (0 < sinceId) {
-            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            pair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
         if (0 < maxId) {
-            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            pair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
         if (0 < page) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
         if (0 < feature) {
-            pair = new BasicNameValuePair("feature", String.valueOf(feature));
+            pair = new PostParameter("feature", String.valueOf(feature));
             nvps.add(pair);
         }
 
@@ -301,33 +293,33 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
     public SStatusData<Status> getUserTimeLine(String screenName, long sinceId, long maxId, int count,
         int page, int feature) throws WeiboException {
         String urlString = getBaseUrl() + "statuses/user_timeline.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("count", String.valueOf(count));
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
+        pair = new PostParameter("count", String.valueOf(count));
         nvps.add(pair);
 
         if (! TextUtils.isEmpty(screenName)) {
-            pair = new BasicNameValuePair("screenName", screenName);
+            pair = new PostParameter("screenName", screenName);
             nvps.add(pair);
         }
 
         if (0 < sinceId) {
-            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            pair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
         if (0 < maxId) {
-            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            pair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
         if (0 < page) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
         if (0 < feature) {
-            pair = new BasicNameValuePair("feature", String.valueOf(feature));
+            pair = new PostParameter("feature", String.valueOf(feature));
             nvps.add(pair);
         }
 
@@ -350,23 +342,23 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
     public SStatusData<Status> getRepostByMe(long sinceId, long maxId, int count, int page)
         throws WeiboException {
         String urlString = getBaseUrl() + "statuses/repost_by_me.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("count", String.valueOf(count));
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
+        pair = new PostParameter("count", String.valueOf(count));
         nvps.add(pair);
 
         if (0 < sinceId) {
-            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            pair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
         if (0 < maxId) {
-            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            pair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
         if (0 < page) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
@@ -398,38 +390,38 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
     public SStatusData<Status> getMentions(long sinceId, long maxId, int count, int page,
         int filter_by_author, int filter_by_source, int filter_by_type) throws WeiboException {
         String urlString = getBaseUrl() + "statuses/mentions.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("count", String.valueOf(count));
+        PostParameter pair;
+        pair = new PostParameter("count", String.valueOf(count));
         nvps.add(pair);
         if (sinceId > 0) {
-            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            pair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
         if (0 < maxId) {
-            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            pair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
         if (filter_by_author > 0) {
-            pair = new BasicNameValuePair("filter_by_author", String.valueOf(filter_by_author));
+            pair = new PostParameter("filter_by_author", String.valueOf(filter_by_author));
             nvps.add(pair);
         }
 
         if (filter_by_source >= 0) {
-            pair = new BasicNameValuePair("filter_by_source", String.valueOf(filter_by_source));
+            pair = new PostParameter("filter_by_source", String.valueOf(filter_by_source));
             nvps.add(pair);
         }
 
         if (filter_by_type >= 0) {
-            pair = new BasicNameValuePair("filter_by_type", String.valueOf(filter_by_type));
+            pair = new PostParameter("filter_by_type", String.valueOf(filter_by_type));
             nvps.add(pair);
         }
 
@@ -449,11 +441,11 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
     @Deprecated
     public ArrayList<Status> getHotRepost(int count, String repost_type) throws WeiboException {
         String urlString = getBaseUrl() + "statuses/hot/" + repost_type + ".json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
@@ -479,15 +471,15 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
     public ArrayList<Status> getHotComment(int count, int page, String repost_type)
         throws WeiboException {
         String urlString = getBaseUrl() + "statuses/hot/" + repost_type + ".json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("count", String.valueOf(count));
+        pair = new PostParameter("count", String.valueOf(count));
         nvps.add(pair);
 
         /*if (page>0) {
-            pair=new BasicNameValuePair("page", String.valueOf(page));
+            pair=new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }*/
 
@@ -506,9 +498,9 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
      */
     public ArrayList<Count> getCounts(long al[]) throws WeiboException {
         String urlString = getBaseUrl() + "statuses/count.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
         int i = 0;
         int len = al.length;
@@ -517,7 +509,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
             ids.append(al[ i ]).append(",");
         }
 
-        pair = new BasicNameValuePair("ids", ids.toString());
+        pair = new PostParameter("ids", ids.toString());
         nvps.add(pair);
 
         String rs = get(urlString, true, nvps);
@@ -538,21 +530,22 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
      */
     public Status repostStatus(long id, String status, String is_comment) throws WeiboException {
         String urlString = getBaseUrl() + "statuses/repost.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("id", String.valueOf(id));
+        pair = new PostParameter("id", String.valueOf(id));
         nvps.add(pair);
 
         if (! TextUtils.isEmpty(status)) {
-            pair = new BasicNameValuePair("status", status);
+            pair = new PostParameter("status", status);
             nvps.add(pair);
         }
 
-        pair = new BasicNameValuePair("is_comment", is_comment);
+        pair = new PostParameter("is_comment", is_comment);
         nvps.add(pair);
 
         String rs = post(urlString, true, nvps);
+        WeiboUtils.printResult(TAG, "repostStatus:" + rs);
 
         return WeiboParser.parseStatus(rs);
     }
@@ -584,6 +577,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
             new PostParameter("visible", String.valueOf(visible))};
 
         String rs = post(urlString, parameter);
+        WeiboUtils.printResult(TAG, "updateStatus:" + rs);
 
         return WeiboParser.parseStatus(rs);
     }
@@ -603,7 +597,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
      */
     public Status upload(String filePath, String contentString, double lat, double llong, int visible) throws WeiboException {
         String url = getBaseUrl() + "statuses/upload.json";
-        HttpPost httppost = new HttpPost(url);
+        /*HttpPost httppost = new HttpPost(url);
         MultipartEntity multipartentity = new MultipartEntity();
         File file = new File(filePath);
 
@@ -630,9 +624,32 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        httppost.setEntity(multipartentity);
+        httppost.setEntity(multipartentity);*/
+        List<PostParameter> nvps=new ArrayList<PostParameter>();
+        try {
+            nvps.add(new PostParameter("access_token", mAccessToken));
+            nvps.add(new PostParameter("status", contentString));
+            if (0.0d != lat) {
+                nvps.add(new PostParameter("lat", String.valueOf(lat)));
+            }
+            if (0.0d != llong) {
+                nvps.add(new PostParameter("long", String.valueOf(llong)));
+            }
+            nvps.add(new PostParameter("visible", String.valueOf(visible)));
+        } catch (IllegalCharsetNameException e) {
+            e.printStackTrace();
+        } catch (UnsupportedCharsetException e) {
+            e.printStackTrace();
+        }
 
-        String rs = TwitterOAuth2.execute(httppost);
+        //String rs = TwitterOAuth2.execute(httppost);
+        String rs =null;
+        try {
+            rs=TwitterOAuth2.postFile(url, filePath, nvps);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        WeiboUtils.printResult(TAG, "upload:" + rs);
         return WeiboParser.parseStatus(rs);
     }
 
@@ -654,22 +671,22 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
     public Status uploadUrlText(String status, double lat, double llong, int visible, String pic_id, String url) throws WeiboException {
         String urlString = getBaseUrl() + "statuses/upload_url_text.json";
 
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("status", status);
+        pair = new PostParameter("status", status);
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("lat", String.valueOf(lat));
+        pair = new PostParameter("lat", String.valueOf(lat));
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("long", String.valueOf(llong));
+        pair = new PostParameter("long", String.valueOf(llong));
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("visible", String.valueOf(visible));
+        pair = new PostParameter("visible", String.valueOf(visible));
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("pic_id", pic_id);
+        pair = new PostParameter("pic_id", pic_id);
         nvps.add(pair);
 
         String rs = post(urlString, false, nvps);
@@ -686,7 +703,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
      * return
      * throws WeiboException
      */
-    public void uploadPic(String filePath) throws WeiboException {
+    /*public void uploadPic(String filePath) throws WeiboException {
         String url = getBaseUrl() + "statuses/upload_pic.json";
         HttpPost httppost = new HttpPost(url);
         MultipartEntity multipartentity = new MultipartEntity();
@@ -711,7 +728,7 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
         String rs = TwitterOAuth2.execute(httppost);
         WeiboUtils.printResult(TAG, "uploadPic:" + rs);
         //return WeiboParser.parseStatus(rs);
-    }
+    }*/
 
     /**
      * 是否需要登录 true
@@ -723,10 +740,10 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
     public Status deleteStatus(long id) throws WeiboException {
         String urlString = getBaseUrl() + "statuses/destroy.json";
 
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("id", String.valueOf(id));
+        pair = new PostParameter("id", String.valueOf(id));
         nvps.add(pair);
 
         String rs = post(urlString, true, nvps);
@@ -745,11 +762,11 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
      */
     public Status getStatusShow(long id) throws WeiboException {
         String urlString = getBaseUrl() + "statuses/show.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("id", String.valueOf(id));
+        pair = new PostParameter("id", String.valueOf(id));
         nvps.add(pair);
 
         String rs = get(urlString, true, nvps);
@@ -770,23 +787,23 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
      */
     public SStatusData<Status> getToMeStatus(long sinceId, long maxId, int count, int page) throws WeiboException {
         String urlString = getBaseUrl() + "statuses/to_me.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("count", String.valueOf(count));
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
+        pair = new PostParameter("count", String.valueOf(count));
         nvps.add(pair);
 
         if (0 < sinceId) {
-            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            pair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
         if (0 < maxId) {
-            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            pair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
         if (0 < page) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
@@ -803,9 +820,9 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
      */
     public Status filterCreate(long id) throws WeiboException {
         String urlString = getBaseUrl() + "statuses/filter/create.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("id", String.valueOf(id));
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
+        pair = new PostParameter("id", String.valueOf(id));
         nvps.add(pair);
 
         String rs = post(urlString, true, nvps);
@@ -823,13 +840,13 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
      */
     public boolean mentionsShield(long id, int follow_up) throws WeiboException {
         String urlString = getBaseUrl() + "statuses/mentions/shield.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("id", String.valueOf(id));
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
+        pair = new PostParameter("id", String.valueOf(id));
         nvps.add(pair);
 
         if (0 < follow_up) {
-            pair = new BasicNameValuePair("follow_up", String.valueOf(follow_up));
+            pair = new PostParameter("follow_up", String.valueOf(follow_up));
             nvps.add(pair);
         }
 
@@ -849,10 +866,10 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
      */
     public Favorite createFavorite(long id) throws WeiboException {
         String urlString = getBaseUrl() + "favorites/create.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("id", String.valueOf(id));
+        PostParameter pair;
+        pair = new PostParameter("id", String.valueOf(id));
         nvps.add(pair);
 
         String rs = post(urlString, true, nvps);
@@ -870,10 +887,10 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
      */
     public Favorite destroyFavorite(long id) throws WeiboException {
         String urlString = getBaseUrl() + "favorites/destroy.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("id", String.valueOf(id));
+        PostParameter pair;
+        pair = new PostParameter("id", String.valueOf(id));
         nvps.add(pair);
 
         String rs = post(urlString, true, nvps);
@@ -891,10 +908,10 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
      */
     public boolean destroyFavorites(String ids) throws WeiboException {
         String urlString = getBaseUrl() + "favorites/destroy_batch.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("ids", ids);
+        PostParameter pair;
+        pair = new PostParameter("ids", ids);
         nvps.add(pair);
 
         String rs = post(urlString, true, nvps);
@@ -913,16 +930,16 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
      */
     public SStatusData<Favorite> myFavorites(int count, int page) throws WeiboException {
         String urlString = getBaseUrl() + "favorites.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
@@ -941,10 +958,10 @@ public class SinaStatusApi extends AbsApiImpl implements IStatusApi {
      */
     public Favorite showFavorite(long id) throws WeiboException {
         String urlString = getBaseUrl() + "favorites/show.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("id", String.valueOf(id));
+        PostParameter pair;
+        pair = new PostParameter("id", String.valueOf(id));
         nvps.add(pair);
 
         String rs = get(urlString, true, nvps);

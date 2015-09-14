@@ -178,7 +178,8 @@ public class NewStatusActivity extends SkinFragmentActivity implements ActionBar
                 break;
             }
 
-            case R.id.search_close_btn: {
+            case R.id.search_close_btn:
+            case R.id.location :{
                 clearLocation();
                 break;
             }

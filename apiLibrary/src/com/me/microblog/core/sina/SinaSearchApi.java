@@ -7,8 +7,8 @@ import com.me.microblog.bean.User;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.WeiboParser;
 import com.me.microblog.core.abs.ISearchApi;
+import com.me.microblog.http.PostParameter;
 import com.me.microblog.util.WeiboLog;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -34,14 +34,14 @@ public class SinaSearchApi extends AbsApiImpl implements ISearchApi {
      */
     public ArrayList<User> getSuggestionsSchools(String q, int count) throws WeiboException {
         String urlString = getBaseUrl() + "search/suggestions/schools.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("q", q);
+        PostParameter pair;
+        pair = new PostParameter("q", q);
         nvps.add(pair);
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
@@ -75,14 +75,14 @@ public class SinaSearchApi extends AbsApiImpl implements ISearchApi {
         }
 
         String urlString = getBaseUrl() + searchUrl;
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("q", q);
+        PostParameter pair;
+        pair = new PostParameter("q", q);
         nvps.add(pair);
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
@@ -107,18 +107,18 @@ public class SinaSearchApi extends AbsApiImpl implements ISearchApi {
      */
     public SStatusData<Status> searchTopics(String q, int count, int page) throws WeiboException {
         String urlString = getBaseUrl() + "search/topics.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("q", q);
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
+        pair = new PostParameter("q", q);
         nvps.add(pair);
 
         if (0 < count) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (0 < page) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
@@ -150,18 +150,18 @@ public class SinaSearchApi extends AbsApiImpl implements ISearchApi {
      */
     public SStatusData<Status> searchStatuses(String q, int count, int page) throws WeiboException {
         String urlString = getBaseUrl() + "search/statuses.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("q", URLEncoder.encode(q));
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
+        pair = new PostParameter("q", URLEncoder.encode(q));
         nvps.add(pair);
 
         if (0 < count) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (0 < page) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 

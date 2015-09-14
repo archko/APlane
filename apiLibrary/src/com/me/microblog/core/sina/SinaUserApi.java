@@ -7,8 +7,8 @@ import com.me.microblog.bean.User;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.WeiboParser;
 import com.me.microblog.core.abs.IUserApi;
+import com.me.microblog.http.PostParameter;
 import com.me.microblog.util.WeiboLog;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,10 +61,10 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi {
     public User getUser(long id) throws WeiboException {
         String urlString = getBaseUrl() + "users/show.json";
 
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("uid", String.valueOf(id));
+        PostParameter pair;
+        pair = new PostParameter("uid", String.valueOf(id));
         nvps.add(pair);
 
         String rs = get(urlString, true, nvps);
@@ -83,10 +83,10 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi {
     public User getUser(String screenName) throws WeiboException {
         String urlString = getBaseUrl() + "users/show.json";
 
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("screen_name", screenName);
+        PostParameter pair;
+        pair = new PostParameter("screen_name", screenName);
         nvps.add(pair);
 
         String rs = get(urlString, true, nvps);
@@ -114,22 +114,22 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi {
      */
     public SStatusData<User> getFriends(long userId, long cur, int count, int trim_status) throws WeiboException {
         String urlString = getBaseUrl() + "friendships/friends.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("count", String.valueOf(count));
+        pair = new PostParameter("count", String.valueOf(count));
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("uid", String.valueOf(userId));
+        pair = new PostParameter("uid", String.valueOf(userId));
         nvps.add(pair);
 
         if (cur > - 1) {
-            pair = new BasicNameValuePair("cursor", String.valueOf(cur));
+            pair = new PostParameter("cursor", String.valueOf(cur));
             nvps.add(pair);
         }
 
-        pair = new BasicNameValuePair("trim_status", String.valueOf(trim_status));
+        pair = new PostParameter("trim_status", String.valueOf(trim_status));
         nvps.add(pair);
 
         String rs = get(urlString, true, nvps);
@@ -138,21 +138,21 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi {
 
     public SStatusData<User> getFriends(String screenName, long cur, int count, int trim_status) throws WeiboException {
         String urlString = getBaseUrl() + "friendships/friends.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("count", String.valueOf(count));
+        pair = new PostParameter("count", String.valueOf(count));
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("screen_name", screenName);
+        pair = new PostParameter("screen_name", screenName);
         nvps.add(pair);
 
         if (cur > - 1) {
-            pair = new BasicNameValuePair("cursor", String.valueOf(cur));
+            pair = new PostParameter("cursor", String.valueOf(cur));
             nvps.add(pair);
         }
-        pair = new BasicNameValuePair("trim_status", String.valueOf(trim_status));
+        pair = new PostParameter("trim_status", String.valueOf(trim_status));
 
         String rs = get(urlString, true, nvps);
         return WeiboParser.getUserObjs2(rs);
@@ -173,24 +173,24 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi {
      */
     public SStatusData<User> getMyFollowers(long userId, long cur, int count) throws WeiboException {
         String urlString = getBaseUrl() + "friendships/followers.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("uid", String.valueOf(userId));
+        pair = new PostParameter("uid", String.valueOf(userId));
         nvps.add(pair);
 
         if (cur > - 1) {
-            pair = new BasicNameValuePair("cursor", String.valueOf(cur));
+            pair = new PostParameter("cursor", String.valueOf(cur));
             nvps.add(pair);
         }
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
-        pair = new BasicNameValuePair("trim_status", "0");
+        pair = new PostParameter("trim_status", "0");
         nvps.add(pair);
 
         String rs = get(urlString, true, nvps);
@@ -199,18 +199,18 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi {
 
     public SStatusData<User> getMyFollowers(String screenName, long cur, int count) throws WeiboException {
         String urlString = getBaseUrl() + "friendships/followers.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("count", String.valueOf(count));
+        pair = new PostParameter("count", String.valueOf(count));
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("screen_name", screenName);
+        pair = new PostParameter("screen_name", screenName);
         nvps.add(pair);
 
         if (cur > - 1) {
-            pair = new BasicNameValuePair("cursor", String.valueOf(cur));
+            pair = new PostParameter("cursor", String.valueOf(cur));
             nvps.add(pair);
         }
         String rs = get(urlString, true, nvps);
@@ -228,17 +228,17 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi {
      */
     public SStatusData<User> getMyActiveFollowers(long userId, int count) throws WeiboException {
         String urlString = getBaseUrl() + "friendships/followers.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
         if (userId > 0) {
-            pair = new BasicNameValuePair("uid", String.valueOf(userId));
+            pair = new PostParameter("uid", String.valueOf(userId));
             nvps.add(pair);
         }
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
         String rs = get(urlString, true, nvps);
@@ -257,10 +257,10 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi {
      */
     public User createFriendships(long uid) throws WeiboException {
         String urlString = getBaseUrl() + "friendships/create.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("uid", String.valueOf(uid));
+        PostParameter pair;
+        pair = new PostParameter("uid", String.valueOf(uid));
         nvps.add(pair);
 
         String rs = post(urlString, true, nvps);
@@ -269,10 +269,10 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi {
 
     public User createFriendships(String s) throws WeiboException {
         String urlString = getBaseUrl() + "friendships/create.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("screen_name", s);
+        PostParameter pair;
+        pair = new PostParameter("screen_name", s);
         nvps.add(pair);
 
         String rs = post(urlString, true, nvps);
@@ -291,10 +291,10 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi {
      */
     public User deleteFriendships(long uid) throws WeiboException {
         String urlString = getBaseUrl() + "friendships/destroy.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("uid", String.valueOf(uid));
+        PostParameter pair;
+        pair = new PostParameter("uid", String.valueOf(uid));
         nvps.add(pair);
 
         String rs = post(urlString, true, nvps);
@@ -303,10 +303,10 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi {
 
     public User deleteFriendships(String s) throws WeiboException {
         String urlString = getBaseUrl() + "friendships/destroy.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("screen_name", s);
+        PostParameter pair;
+        pair = new PostParameter("screen_name", s);
         nvps.add(pair);
 
         String rs = post(urlString, true, nvps);
@@ -331,23 +331,23 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi {
         String target_screen_name) throws WeiboException {
 
         String urlString = getBaseUrl() + "friendships/show.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
         if (sourceId != null) {
-            pair = new BasicNameValuePair("source_id", String.valueOf(sourceId));
+            pair = new PostParameter("source_id", String.valueOf(sourceId));
             nvps.add(pair);
         }
         if (source_screen_name != null && ! "".equals(source_screen_name)) {
-            pair = new BasicNameValuePair("source_screen_name", source_screen_name);
+            pair = new PostParameter("source_screen_name", source_screen_name);
             nvps.add(pair);
         }
         if (targetId != null) {
-            pair = new BasicNameValuePair("target_id", String.valueOf(targetId));
+            pair = new PostParameter("target_id", String.valueOf(targetId));
             nvps.add(pair);
         }
         if (target_screen_name != null && ! "".equals(target_screen_name)) {
-            pair = new BasicNameValuePair("target_screen_name", target_screen_name);
+            pair = new PostParameter("target_screen_name", target_screen_name);
             nvps.add(pair);
         }
         String rs = get(urlString, true, nvps);
@@ -370,13 +370,13 @@ public class SinaUserApi extends AbsApiImpl implements IUserApi {
      */
     public Relationship getFriendship(Long sourceId, Long targetId) throws WeiboException {
         String urlString = getBaseUrl() + "friendships/show.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("source_id", String.valueOf(sourceId));
+        PostParameter pair;
+        pair = new PostParameter("source_id", String.valueOf(sourceId));
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("target_id", String.valueOf(targetId));
+        pair = new PostParameter("target_id", String.valueOf(targetId));
         nvps.add(pair);
 
         String rs = get(urlString, true, nvps);

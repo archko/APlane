@@ -15,34 +15,18 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.me.microblog.core.BaseApi;
 import com.me.microblog.core.WeiboParser;
-import com.me.microblog.http.SSLSocketFactoryEx;
 import com.me.microblog.util.WeiboLog;
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.ProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.RedirectHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.params.CookiePolicy;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.protocol.HttpContext;
-import org.apache.http.util.EntityUtils;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 //import com.me.microblog.util.Base64;
@@ -75,7 +59,7 @@ public class SOauth2 extends BaseOauth2 {
             + "&redirect_uri=" + callback_url;
     }
 
-    @Deprecated
+    /*@Deprecated
     public OauthBean login(Object... params) {
         mOauthBean = null;
         mAccessToken = null;
@@ -166,8 +150,8 @@ public class SOauth2 extends BaseOauth2 {
 
             HttpContext context = new BasicHttpContext();
             HttpResponse httpResponse = client.execute(post);
-            /*String res = EntityUtils.toString(httpResponse.getEntity());
-            WeiboLog.d("rs:" + res);*/
+            *//*String res = EntityUtils.toString(httpResponse.getEntity());
+            WeiboLog.d("rs:" + res);*//*
 
             Header[] headers = httpResponse.getAllHeaders();
             for (Header header : headers) {
@@ -195,7 +179,7 @@ public class SOauth2 extends BaseOauth2 {
         }
 
         return null;
-    }
+    }*/
 
     @Override
     void saveAccessToken(Context ctx) {
@@ -438,13 +422,13 @@ public class SOauth2 extends BaseOauth2 {
      */
     public OauthBean fetchAccessTokenByPass(String username, String password, String key, String secret) {
         OauthBean oauthBean = null;
-        DefaultHttpClient client = (DefaultHttpClient) SSLSocketFactoryEx.getNewHttpClient();
+        /*DefaultHttpClient client = (DefaultHttpClient) SSLSocketFactoryEx.getNewHttpClient();
         client.getParams().setParameter("http.protocol.cookie-policy", CookiePolicy.BROWSER_COMPATIBILITY);
-        client.getParams().setParameter(HttpConnectionParams.CONNECTION_TIMEOUT, 9000);
+        client.getParams().setParameter(HttpConnectionParams.CONNECTION_TIMEOUT, 9000);*/
         try {
-            HttpPost post = new HttpPost("https://api.weibo.com/oauth2/access_token");
+            //HttpPost post = new HttpPost("https://api.weibo.com/oauth2/access_token");
 
-            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            /*List<NameValuePair> nvps = new ArrayList<NameValuePair>();
             nvps.add(new BasicNameValuePair("client_id", key));
             nvps.add(new BasicNameValuePair("client_secret", secret));
             nvps.add(new BasicNameValuePair("grant_type", "password"));
@@ -456,7 +440,30 @@ public class SOauth2 extends BaseOauth2 {
 
             HttpResponse response = client.execute(post);
             String entity = EntityUtils.toString(response.getEntity());
-            WeiboLog.d("entity:" + entity);
+            WeiboLog.d("entity:" + entity);*/
+            OkHttpClient client=new OkHttpClient();
+            String url="https://api.weibo.com/oauth2/access_token";
+            FormEncodingBuilder formEncodingBuilder=new FormEncodingBuilder();
+            formEncodingBuilder.add("client_id", key);
+            formEncodingBuilder.add("client_secret", secret);
+            formEncodingBuilder.add("grant_type", "password");
+            formEncodingBuilder.add("username", username);
+            formEncodingBuilder.add("password", password);
+
+            RequestBody formBody=formEncodingBuilder.build();
+            Request request=new Request.Builder()
+                .url(url)
+                .post(formBody)
+                .addHeader("User-Agent", BaseApi.USERAGENT)
+                .build();
+
+            Response response=client.newCall(request).execute();
+            String entity =null;
+            if (response.isSuccessful()) {
+                entity = response.body().string();
+            } else {
+                throw new IOException("Unexpected code "+response);
+            }
 
             JSONObject jsonObject = WeiboParser.contructJSONObject(entity);
             if (null != jsonObject) {

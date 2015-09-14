@@ -4,19 +4,12 @@ import com.me.microblog.App;
 import com.me.microblog.WeiboException;
 import com.me.microblog.http.PostParameter;
 import com.me.microblog.oauth.OauthBean;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.HTTP;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.RequestBody;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,13 +26,13 @@ public abstract class AbsApiImpl {
     //设置http参数
     public static final int CONNECT_TIMEOUT = 6000;
     public static final int READ_TIMEOUT = 10000;
-    public static HttpParams httpParameters;
+    /*public static HttpParams httpParameters;
 
     {
         httpParameters = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParameters, CONNECT_TIMEOUT);// Set the default socket timeout (SO_TIMEOUT) // in milliseconds which is the timeout for waiting for data.
         HttpConnectionParams.setSoTimeout(httpParameters, READ_TIMEOUT);
-    }
+    }*/
 
     public AbsApiImpl() {
         updateToken();
@@ -68,63 +61,81 @@ public abstract class AbsApiImpl {
         } else {
             urlString += "&access_token=" + mAccessToken;
         }
-        HttpGet httpGet = new HttpGet(urlString);
+        //HttpGet httpGet = new HttpGet(urlString);
         String rs = null;
         try {
-            rs = TwitterOAuth2.execute(httpGet, gzip);
+            //rs = TwitterOAuth2.get(httpGet, gzip);
+            rs=TwitterOAuth2.get(urlString);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rs;
     }
 
-    public String get(String urlString, boolean gzip, List<BasicNameValuePair> nvps) throws WeiboException {
-        if (urlString.indexOf("?") == - 1) {
+    public String get(String urlString, boolean gzip, List<PostParameter> nvps) throws WeiboException {
+        if (!urlString.contains("?")) {
             urlString += "?access_token=" + mAccessToken;
         } else {
             urlString += "&access_token=" + mAccessToken;
         }
 
-        for (NameValuePair nvp : nvps) {
+        for (PostParameter nvp : nvps) {
             try {
                 urlString += "&" + nvp.getName() + "=" + URLEncoder.encode(nvp.getValue().trim(), "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
-        HttpGet httpGet = new HttpGet(urlString);
+        //HttpGet httpGet = new HttpGet(urlString);
         String rs = null;
-        rs = TwitterOAuth2.execute(httpGet, gzip);
+        //rs = TwitterOAuth2.execute(httpGet, gzip);
+        try {
+            rs=TwitterOAuth2.get(urlString);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return rs;
     }
 
     public String post(String urlString, boolean gzip) throws WeiboException {
-        HttpPost httpPost = new HttpPost(urlString);
+        /*HttpPost httpPost = new HttpPost(urlString);
         List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         nvps.add(new BasicNameValuePair("access_token", mAccessToken));
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
         } catch (UnsupportedEncodingException ex) {
             ex.printStackTrace();
-        }
+        }*/
 
         String rs = null;
-        rs = TwitterOAuth2.execute(httpPost, gzip);
+        //rs = TwitterOAuth2.execute(httpPost, gzip);
+        RequestBody formBody=new FormEncodingBuilder()
+            .add("access_token", mAccessToken)
+            .build();
+        try {
+            rs=TwitterOAuth2.postForm(urlString, formBody);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return rs;
     }
 
-    public String post(String urlString, boolean gzip, List<BasicNameValuePair> nvps) throws WeiboException {
-        HttpPost httpPost = new HttpPost(urlString);
-        nvps.add(new BasicNameValuePair("access_token", mAccessToken));
-        try {
-            httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-        } catch (UnsupportedEncodingException ex) {
-            ex.printStackTrace();
-        }
-
+    public String post(String urlString, boolean gzip, List<PostParameter> nvps) throws WeiboException {
         String rs = null;
-        rs = TwitterOAuth2.execute(httpPost, gzip);
+        FormEncodingBuilder formEncodingBuilder=new FormEncodingBuilder()
+            .add("access_token", mAccessToken);
+        if (null!=nvps) {
+            for (PostParameter parameter : nvps) {
+                formEncodingBuilder.add(parameter.getName(), parameter.getValue());
+            }
+        }
+        try {
+            RequestBody formBody=formEncodingBuilder.build();
+            rs=TwitterOAuth2.postForm(urlString, formBody);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return rs;
     }
@@ -137,7 +148,7 @@ public abstract class AbsApiImpl {
      * @return
      */
     public String post(String urlString, PostParameter[] parameters) throws WeiboException {
-        HttpPost post = new HttpPost(urlString);
+        /*HttpPost post = new HttpPost(urlString);
         if (null != parameters) {
             List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
             nvps.add(new BasicNameValuePair("access_token", mAccessToken));
@@ -150,9 +161,25 @@ public abstract class AbsApiImpl {
             } catch (UnsupportedEncodingException ex) {
                 ex.printStackTrace();
             }
+        }*/
+
+        //String rs = TwitterOAuth2.execute(post, false);
+        String rs = null;
+        //rs = TwitterOAuth2.execute(httpPost, gzip);
+        FormEncodingBuilder formEncodingBuilder=new FormEncodingBuilder()
+            .add("access_token", mAccessToken);
+        if (null!=parameters) {
+            for (PostParameter parameter : parameters) {
+                formEncodingBuilder.add(parameter.getName(), parameter.getValue());
+            }
         }
 
-        String rs = TwitterOAuth2.execute(post, false);
+        try {
+            RequestBody formBody=formEncodingBuilder.build();
+            rs=TwitterOAuth2.postForm(urlString, formBody);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return rs;
     }

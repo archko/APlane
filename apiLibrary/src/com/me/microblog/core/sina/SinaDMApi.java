@@ -7,7 +7,7 @@ import com.me.microblog.bean.SStatusData;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.WeiboParser;
 import com.me.microblog.core.abs.IDMApi;
-import org.apache.http.message.BasicNameValuePair;
+import com.me.microblog.http.PostParameter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,20 +34,20 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi {
         String urlString = getBaseUrl() + "direct_messages/sent.json";
         urlString += "?access_token=" + mAccessToken;
 
-        ArrayList<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        ArrayList<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair basicNameValuePair;
-        basicNameValuePair = new BasicNameValuePair("count", String.valueOf(count));
+        PostParameter basicNameValuePair;
+        basicNameValuePair = new PostParameter("count", String.valueOf(count));
         nvps.add(basicNameValuePair);
-        basicNameValuePair = new BasicNameValuePair("page", String.valueOf(page));
+        basicNameValuePair = new PostParameter("page", String.valueOf(page));
         nvps.add(basicNameValuePair);
 
         if (sinnceId > 0) {
-            basicNameValuePair = new BasicNameValuePair("since_id", String.valueOf(sinnceId));
+            basicNameValuePair = new PostParameter("since_id", String.valueOf(sinnceId));
             nvps.add(basicNameValuePair);
         }
         if (0 < maxId) {
-            basicNameValuePair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            basicNameValuePair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(basicNameValuePair);
         }
 
@@ -75,20 +75,20 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi {
         throws WeiboException {
         String urlString = getBaseUrl() + "direct_messages.json";
         urlString += "?access_token=" + mAccessToken;
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair basicNameValuePair;
-        basicNameValuePair = new BasicNameValuePair("count", String.valueOf(count));
+        PostParameter basicNameValuePair;
+        basicNameValuePair = new PostParameter("count", String.valueOf(count));
         nvps.add(basicNameValuePair);
-        basicNameValuePair = new BasicNameValuePair("page", String.valueOf(page));
+        basicNameValuePair = new PostParameter("page", String.valueOf(page));
         nvps.add(basicNameValuePair);
 
         if (sinceId > - 1) {
-            basicNameValuePair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            basicNameValuePair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(basicNameValuePair);
         }
         if (0 < maxId) {
-            basicNameValuePair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            basicNameValuePair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(basicNameValuePair);
         }
 
@@ -127,13 +127,13 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi {
      */
     public DirectMessage sendDirectMessage(long uid, String text) throws WeiboException {
         String urlString = getBaseUrl() + "direct_messages/new.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
-        nvps.add(new BasicNameValuePair("access_token", mAccessToken));
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
+        nvps.add(new PostParameter("access_token", mAccessToken));
 
-        pair = new BasicNameValuePair("uid", String.valueOf(uid));
+        pair = new PostParameter("uid", String.valueOf(uid));
         nvps.add(pair);
-        pair = new BasicNameValuePair("text", text);
+        pair = new PostParameter("text", text);
         nvps.add(pair);
 
         String rs = post(urlString, false, nvps);
@@ -151,13 +151,13 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi {
      */
     public DirectMessage sendDirectMessage(String screen_name, String text) throws WeiboException {
         String urlString = getBaseUrl() + "direct_messages/new.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
-        nvps.add(new BasicNameValuePair("access_token", mAccessToken));
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
+        nvps.add(new PostParameter("access_token", mAccessToken));
 
-        pair = new BasicNameValuePair("screen_name", screen_name);
+        pair = new PostParameter("screen_name", screen_name);
         nvps.add(pair);
-        pair = new BasicNameValuePair("text", text);
+        pair = new PostParameter("text", text);
         nvps.add(pair);
 
         String rs = post(urlString, false, nvps);
@@ -174,10 +174,10 @@ public class SinaDMApi extends AbsApiImpl implements IDMApi {
      */
     public final DirectMessage destroyDirectMessage(long id) throws WeiboException {
         String urlString = getBaseUrl() + "direct_messages/destroy.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
-        nvps.add(new BasicNameValuePair("access_token", mAccessToken));
-        pair = new BasicNameValuePair("id", String.valueOf(id));
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
+        nvps.add(new PostParameter("access_token", mAccessToken));
+        pair = new PostParameter("id", String.valueOf(id));
         nvps.add(pair);
 
         String rs = post(urlString, false, nvps);

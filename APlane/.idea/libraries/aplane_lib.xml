@@ -8,6 +8,8 @@
       <root url="jar://$PROJECT_DIR$/libs/umeng-analytics-v5.2.4.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/umeng-update-v2.4.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/android-support-v7-recyclerview.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/okhttp-2.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/okio-1.6.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

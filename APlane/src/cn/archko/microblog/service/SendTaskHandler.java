@@ -124,9 +124,13 @@ public class SendTaskHandler extends Handler {
             String imgUrl=task.imgUrl;
             String content=task.content;
             String data=task.data;
-            String[] datas=data.split("-");
-            double latitude=Double.valueOf(datas[0]);
-            double longitude=Double.valueOf(datas[1]);
+            double latitude=0;
+            double longitude=0;
+            if (null!=data&&data.contains("-")) {
+                String[] datas=data.split("-");
+                latitude=Double.valueOf(datas[0]);
+                longitude=Double.valueOf(datas[1]);
+            }
             String txt=task.text;
             int visible=0;
             if (!TextUtils.isEmpty(txt)||!"null".equals(txt)) {

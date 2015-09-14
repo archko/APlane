@@ -3,7 +3,6 @@ package com.me.microblog.core;
 import com.me.microblog.WeiboException;
 import com.me.microblog.bean.ResultToken;
 import com.me.microblog.http.PostParameter;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -57,13 +56,13 @@ public abstract class BaseApi {
      */
     public abstract String post(String urlString, PostParameter[] parameters) throws WeiboException;
 
-    public abstract String post(String urlString, List<BasicNameValuePair> nvps)
+    public abstract String post(String urlString, List<PostParameter> nvps)
         throws WeiboException;
 
-    public abstract String get(String urlString, List<BasicNameValuePair> nvps)
+    public abstract String get(String urlString, List<PostParameter> nvps)
         throws WeiboException;
 
-    public abstract String getNotGZIP(String urlString, List<BasicNameValuePair> nvps)
+    public abstract String getNotGZIP(String urlString, List<PostParameter> nvps)
         throws WeiboException;
 
     //public abstract String delete(String urlString) throws WeiboException;

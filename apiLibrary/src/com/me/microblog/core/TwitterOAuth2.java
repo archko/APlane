@@ -1,26 +1,19 @@
 package com.me.microblog.core;
 
-import android.text.TextUtils;
-import com.me.microblog.WeiboException;
-import com.me.microblog.http.SSLSocketFactoryEx;
-import com.me.microblog.util.StreamUtils;
-import com.me.microblog.util.WeiboLog;
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
+import com.me.microblog.http.PostParameter;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.MultipartBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.zip.GZIPInputStream;
+import java.util.List;
 
 /**
  * 获得Oauth2认证签名.
@@ -33,6 +26,45 @@ public class TwitterOAuth2 {
     String authenticationUrl = null;
     String callbackUrl = null;
     private String username, password;
+    public static final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+
+    public static String get(String url) throws IOException {
+        OkHttpClient client=new OkHttpClient();
+        Request request=new Request.Builder()
+            .url(url)
+            .build();
+
+        Response response=client.newCall(request).execute();
+        return response.body().string();
+    }
+
+
+    public static String postJson(String url, String json) throws IOException {
+        OkHttpClient client=new OkHttpClient();
+        RequestBody body=RequestBody.create(JSON, json);
+        Request request=new Request.Builder()
+            .url(url)
+            .post(body)
+            .build();
+        Response response=client.newCall(request).execute();
+        return response.body().string();
+    }
+
+    public static String postForm(String url, RequestBody formBody) throws IOException {
+        OkHttpClient client=new OkHttpClient();
+
+        Request request=new Request.Builder()
+            .url(url)
+            .post(formBody)
+            .build();
+
+        Response response=client.newCall(request).execute();
+        if (response.isSuccessful()) {
+            return response.body().string();
+        } else {
+            throw new IOException("Unexpected code "+response);
+        }
+    }
 
     public TwitterOAuth2(String username, String password, String authenticationUrl, String callbackUrl) {
         this.username = username;
@@ -48,7 +80,7 @@ public class TwitterOAuth2 {
      * @return
      * @throws java.io.IOException
      */
-    public static String execute(HttpUriRequest request) throws WeiboException {
+    /*public static String execute(HttpUriRequest request) throws WeiboException {
         HttpResponse response = null;
         String string = "";
 
@@ -76,6 +108,31 @@ public class TwitterOAuth2 {
             throw new WeiboException("获取数据失败.请确定网络是否正常.", statusCode);
         }
         return string;
+    }*/
+
+    public static String postFile(String url, String filepath, List<PostParameter> nvps) throws Exception {
+        OkHttpClient client = new OkHttpClient();
+        File file = new File(filepath);
+        MultipartBuilder multipartBuilder=new MultipartBuilder().type(MultipartBuilder.FORM);
+        if (null!=nvps&&nvps.size()>0) {
+            for (PostParameter postParameter : nvps) {
+                multipartBuilder.addFormDataPart(postParameter.getName(), postParameter.getValue());
+            }
+        }
+        multipartBuilder.addFormDataPart("pic", file.getName(), RequestBody.create(MediaType.parse("image/png"), file));
+        RequestBody requestBody=multipartBuilder.build();
+
+        Request request=new Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .build();
+
+        Response response = client.newCall(request).execute();
+        if (response.isSuccessful()) {
+            return response.body().string();
+        } else {
+            throw new IOException("Unexpected code "+response);
+        }
     }
 
     /**
@@ -85,7 +142,7 @@ public class TwitterOAuth2 {
      * @param gzip
      * @return
      */
-    public static String execute(HttpUriRequest request, boolean gzip) throws WeiboException {
+    /*public static String execute(HttpUriRequest request, boolean gzip) throws WeiboException {
         HttpResponse response = null;
         String string = "";
 
@@ -143,17 +200,17 @@ public class TwitterOAuth2 {
         }
 
         return string;
-    }
+    }*/
 
-    public static HttpResponse execute2(HttpUriRequest request) throws IOException {
+    /*public static HttpResponse execute2(HttpUriRequest request) throws IOException {
         HttpResponse response = null;
         HttpClient client = SSLSocketFactoryEx.getNewHttpClient();
         response = client.execute(request);
 
         return response;
-    }
+    }*/
 
-    public static byte[] getImageByte(String urlString) throws IOException {
+    /*public static byte[] getImageByte(String urlString) throws IOException {
         try {
             HttpParams httpParameters = new BasicHttpParams();
             HttpConnectionParams.setConnectionTimeout(httpParameters, BaseApi.CONNECT_TIMEOUT);
@@ -170,7 +227,7 @@ public class TwitterOAuth2 {
         } catch (Exception e) {
         }
         return null;
-    }
+    }*/
 
     public static InputStream getImageStream(String urlString) throws IOException {
         URL url = null;

@@ -9,8 +9,8 @@ import com.me.microblog.bean.User;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.WeiboParser;
 import com.me.microblog.core.abs.IPlaceApi;
+import com.me.microblog.http.PostParameter;
 import com.me.microblog.util.WeiboLog;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,31 +42,31 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
     public SStatusData<Status> getPlaceFriendTimeline(long sinceId, long maxId, int count, int page, int type)
         throws WeiboException {
         String urlString = getBaseUrl() + "place/friends_timeline.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
         if (sinceId > 0) {
-            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            pair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
         if (maxId > 0) {
-            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            pair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
         if (type > 0) {
-            pair = new BasicNameValuePair("type", String.valueOf(type));
+            pair = new PostParameter("type", String.valueOf(type));
             nvps.add(pair);
         }
 
@@ -93,26 +93,26 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
     public SStatusData<Status> getPlaceUserFriendTimeline(long sinceId, long maxId, int count, int page)
         throws WeiboException {
         String urlString = getBaseUrl() + "place/user_timeline.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
         if (sinceId > 0) {
-            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            pair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
         if (maxId > 0) {
-            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            pair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
@@ -139,29 +139,29 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
     public SStatusData<Status> getPlacePoiFriendTimeline(String poiid, long sinceId, long maxId, int count,
         int page) throws WeiboException {
         String urlString = getBaseUrl() + "place/poi_timeline.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("poiid", poiid);
+        PostParameter pair;
+        pair = new PostParameter("poiid", poiid);
         nvps.add(pair);
 
         if (sinceId > 0) {
-            pair = new BasicNameValuePair("since_id", String.valueOf(sinceId));
+            pair = new PostParameter("since_id", String.valueOf(sinceId));
             nvps.add(pair);
         }
 
         if (maxId > 0) {
-            pair = new BasicNameValuePair("max_id", String.valueOf(maxId));
+            pair = new PostParameter("max_id", String.valueOf(maxId));
             nvps.add(pair);
         }
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
@@ -192,23 +192,23 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
     public SStatusData<Status> getPlaceNearbyFriendTimeline(double lat, double llong, int count, int page)
         throws WeiboException {
         String urlString = getBaseUrl() + "place/nearby_timeline.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("lat", String.valueOf(lat));
+        pair = new PostParameter("lat", String.valueOf(lat));
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("long", String.valueOf(llong));
+        pair = new PostParameter("long", String.valueOf(llong));
         nvps.add(pair);
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
@@ -229,11 +229,11 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
      */
     public Status getPlaceStatusShow(long id) throws WeiboException {
         String urlString = getBaseUrl() + "place/statuses/show.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("id", String.valueOf(id));
+        pair = new PostParameter("id", String.valueOf(id));
         nvps.add(pair);
 
         String rs = get(urlString, false, nvps);
@@ -253,10 +253,10 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
     public void getPlaceUser(long id) throws WeiboException {
         String urlString = getBaseUrl() + "place/users/show.json";
 
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("uid", String.valueOf(id));
+        PostParameter pair;
+        pair = new PostParameter("uid", String.valueOf(id));
         nvps.add(pair);
 
         String rs = get(urlString, true, nvps);
@@ -276,19 +276,19 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
     public SStatusData<Status> getUserPhotos(long uid, int count, int page, int base_app)
         throws WeiboException {
         String urlString = getBaseUrl() + "place/users/photos.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("uid", String.valueOf(uid));
+        pair = new PostParameter("uid", String.valueOf(uid));
         nvps.add(pair);
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
@@ -312,20 +312,20 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
      */
     public SStatusData<Status> getUserPhotos(long uid, int count, int page) throws WeiboException {
         String urlString = getBaseUrl() + "place/users/photos.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("uid", String.valueOf(uid));
+        pair = new PostParameter("uid", String.valueOf(uid));
         nvps.add(pair);
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
@@ -349,20 +349,20 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
      */
     public SStatusData<Status> getPlaceUserTips(long uid, int count, int page) throws WeiboException {
         String urlString = getBaseUrl() + "place/users/tips.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("uid", String.valueOf(uid));
+        pair = new PostParameter("uid", String.valueOf(uid));
         nvps.add(pair);
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
@@ -384,11 +384,11 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
      */
     public PlacePoi getPlacePoi(String poiid) throws WeiboException {
         String urlString = getBaseUrl() + "place/pois/show.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("poiid", (poiid));
+        pair = new PostParameter("poiid", (poiid));
         nvps.add(pair);
 
         String rs = get(urlString, false, nvps);
@@ -409,20 +409,20 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
      */
     public SStatusData<User> getPlacesUsers(String poiid, int count, int page) throws WeiboException {
         String urlString = getBaseUrl() + "place/pois/users.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("poiid", (poiid));
+        pair = new PostParameter("poiid", (poiid));
         nvps.add(pair);
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
@@ -447,20 +447,20 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
      */
     public SStatusData<Status> getPoiTips(String poiid, int count, int page) throws WeiboException {
         String urlString = getBaseUrl() + "place/pois/tips.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("poiid", (poiid));
+        pair = new PostParameter("poiid", (poiid));
         nvps.add(pair);
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
@@ -485,20 +485,20 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
      */
     public SStatusData<Status> getPlacePhotos(String poiid, int count, int page) throws WeiboException {
         String urlString = getBaseUrl() + "place/pois/photos.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("poiid", (poiid));
+        pair = new PostParameter("poiid", (poiid));
         nvps.add(pair);
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
@@ -523,30 +523,30 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
      */
     public SStatusData<PlacePoi> getPlaceSearch(String keyword, String city, String category, int count, int page) throws WeiboException {
         String urlString = getBaseUrl() + "place/pois/search.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("keyword", keyword);
+        pair = new PostParameter("keyword", keyword);
         nvps.add(pair);
 
         if (! TextUtils.isEmpty(city)) {
-            pair = new BasicNameValuePair("city", city);
+            pair = new PostParameter("city", city);
             nvps.add(pair);
         }
 
         if (! TextUtils.isEmpty(city)) {
-            pair = new BasicNameValuePair("category", category);
+            pair = new PostParameter("category", category);
             nvps.add(pair);
         }
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
@@ -568,17 +568,17 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
      */
     public SStatusData<PlacePoi> getPlaceCategory(int pid, int flag) throws WeiboException {
         String urlString = getBaseUrl() + "place/pois/category.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
         if (pid > 0) {
-            pair = new BasicNameValuePair("pid", String.valueOf(pid));
+            pair = new PostParameter("pid", String.valueOf(pid));
             nvps.add(pair);
         }
 
         if (flag > 0) {
-            pair = new BasicNameValuePair("flag", String.valueOf(flag));
+            pair = new PostParameter("flag", String.valueOf(flag));
             nvps.add(pair);
         }
 
@@ -605,13 +605,13 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
     public SStatusData<PlacePoi> getPlaceNearbyPoi(double lat, double llong, int range, int count, int page)
         throws WeiboException {
         String urlString = getBaseUrl() + "place/nearby/pois.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("lat", String.valueOf(lat));
+        pair = new PostParameter("lat", String.valueOf(lat));
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("long", String.valueOf(llong));
+        pair = new PostParameter("long", String.valueOf(llong));
         nvps.add(pair);
 
         String rs = get(urlString, false, nvps);
@@ -637,27 +637,27 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
      */
     public SStatusData<User> getPlacesNearbyUsers(double lat, double llong, int range, int count, int page) throws WeiboException {
         String urlString = getBaseUrl() + "place/nearby/users.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("lat", String.valueOf(lat));
+        pair = new PostParameter("lat", String.valueOf(lat));
         nvps.add(pair);
-        pair = new BasicNameValuePair("long", String.valueOf(llong));
+        pair = new PostParameter("long", String.valueOf(llong));
         nvps.add(pair);
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
         if (range > 0) {
-            pair = new BasicNameValuePair("range", String.valueOf(range));
+            pair = new PostParameter("range", String.valueOf(range));
             nvps.add(pair);
         }
 
@@ -684,27 +684,27 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
     public SStatusData<Status> getNearbyPhotos(double lat, double llong, int range, int count, int page)
         throws WeiboException {
         String urlString = getBaseUrl() + "place/nearby/photos.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("lat", String.valueOf(lat));
+        pair = new PostParameter("lat", String.valueOf(lat));
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("long", String.valueOf(llong));
+        pair = new PostParameter("long", String.valueOf(llong));
         nvps.add(pair);
 
         if (count > 0) {
-            pair = new BasicNameValuePair("count", String.valueOf(count));
+            pair = new PostParameter("count", String.valueOf(count));
             nvps.add(pair);
         }
 
         if (page > 0) {
-            pair = new BasicNameValuePair("page", String.valueOf(page));
+            pair = new PostParameter("page", String.valueOf(page));
             nvps.add(pair);
         }
 
         if (range > 0) {
-            pair = new BasicNameValuePair("range", String.valueOf(range));
+            pair = new PostParameter("range", String.valueOf(range));
             nvps.add(pair);
         }
 
@@ -725,13 +725,13 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
      */
     public Status addCheckin(String poiid, String status) throws WeiboException {
         String urlString = getBaseUrl() + "place/pois/add_checkin.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("poiid", poiid);
+        pair = new PostParameter("poiid", poiid);
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("status", status);
+        pair = new PostParameter("status", status);
         nvps.add(pair);
 
         String rs = post(urlString, true, nvps);
@@ -753,17 +753,17 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
     public void addPhotos(String poiid, String status, String pic_path, int public_to)
         throws WeiboException {
         String urlString = getBaseUrl() + "place/pois/add_photo.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("poiid", poiid);
+        pair = new PostParameter("poiid", poiid);
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("status", status);
+        pair = new PostParameter("status", status);
         nvps.add(pair);
 
         if (public_to > 0) {
-            pair = new BasicNameValuePair("public", String.valueOf(public_to));
+            pair = new PostParameter("public", String.valueOf(public_to));
             nvps.add(pair);
         }
 
@@ -782,17 +782,17 @@ public class SinaPlaceApi extends AbsApiImpl implements IPlaceApi {
      */
     public Status addPlaceTip(String poiid, String status, int public_to) throws WeiboException {
         String urlString = getBaseUrl() + "place/pois/add_tip.json";
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair pair;
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
+        PostParameter pair;
 
-        pair = new BasicNameValuePair("poiid", poiid);
+        pair = new PostParameter("poiid", poiid);
         nvps.add(pair);
 
-        pair = new BasicNameValuePair("status", status);
+        pair = new PostParameter("status", status);
         nvps.add(pair);
 
         if (public_to > 0) {
-            pair = new BasicNameValuePair("public", String.valueOf(public_to));
+            pair = new PostParameter("public", String.valueOf(public_to));
             nvps.add(pair);
         }
 

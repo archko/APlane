@@ -7,9 +7,9 @@ import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.Trends;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.WeiboParser;
+import com.me.microblog.http.PostParameter;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +36,10 @@ public class SinaTrendApi extends AbsApiImpl {
         String urlString = getBaseUrl() + "trends/" + type + ".json";
         WeiboLog.i("urlString:" + urlString);
 
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("base_app", String.valueOf(0));
+        PostParameter pair;
+        pair = new PostParameter("base_app", String.valueOf(0));
         nvps.add(pair);
 
         String rs = get(urlString, false, nvps);
@@ -61,10 +61,10 @@ public class SinaTrendApi extends AbsApiImpl {
     public Trends followTrend(String trend_name) throws WeiboException {
         String urlString = getBaseUrl() + "trends/follow.json";
 
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("trend_name", trend_name);
+        PostParameter pair;
+        pair = new PostParameter("trend_name", trend_name);
         nvps.add(pair);
 
         String rs = get(urlString, true, nvps);
@@ -82,10 +82,10 @@ public class SinaTrendApi extends AbsApiImpl {
     public boolean unfollowTrend(String trend_name) throws WeiboException {
         String urlString = getBaseUrl() + "trends/follow.json";
 
-        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        List<PostParameter> nvps = new ArrayList<PostParameter>();
 
-        BasicNameValuePair pair;
-        pair = new BasicNameValuePair("trend_name", trend_name);
+        PostParameter pair;
+        pair = new PostParameter("trend_name", trend_name);
         nvps.add(pair);
 
         String rs = get(urlString, true, nvps);
