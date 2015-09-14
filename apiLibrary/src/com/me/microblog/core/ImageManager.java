@@ -9,13 +9,9 @@ import com.me.microblog.WeiboException;
 import com.me.microblog.WeiboUtils;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.util.WeiboLog;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -26,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 管理图片,缓存,
@@ -241,18 +238,17 @@ public class ImageManager {
 
     public static byte[] getImageByte(String urlString) throws IOException {
         try {
-            HttpParams httpParameters = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParameters, BaseApi.CONNECT_TIMEOUT);
-            HttpConnectionParams.setSoTimeout(httpParameters, BaseApi.READ_TIMEOUT);
-            DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
-            HttpGet httpGet = new HttpGet(urlString);
-            HttpResponse localHttpResponse = httpClient.execute(httpGet);
-            int code = localHttpResponse.getStatusLine().getStatusCode();
-            if (code != 200) {
-                throw new WeiboException("" + localHttpResponse.getStatusLine().getReasonPhrase());
+            OkHttpClient client=new OkHttpClient();
+            Request.Builder builder=new Request.Builder();
+            builder.url(urlString);
+            client.setConnectTimeout(AbsApiImpl.CONNECT_TIMEOUT, TimeUnit.SECONDS); // connect timeout
+            client.setReadTimeout(AbsApiImpl.READ_TIMEOUT, TimeUnit.SECONDS);    // socket timeout
+
+            Request request=builder.build();
+            Response response=client.newCall(request).execute();
+            if (response.isSuccessful()){
+                return response.body().bytes();
             }
-            byte[] arrayOfByte = EntityUtils.toByteArray(localHttpResponse.getEntity());
-            return arrayOfByte;
         } catch (Exception e) {
         }
         return null;
@@ -297,10 +293,10 @@ public class ImageManager {
 
         url = new URL(urlString);
         conn = (HttpURLConnection) url.openConnection();
-        conn.setConnectTimeout(BaseApi.CONNECT_TIMEOUT);
-        conn.setReadTimeout(BaseApi.READ_TIMEOUT);
+        conn.setConnectTimeout(AbsApiImpl.CONNECT_TIMEOUT);
+        conn.setReadTimeout(AbsApiImpl.READ_TIMEOUT);
         conn.setRequestMethod("GET");
-        conn.setRequestProperty("User-Agent", BaseApi.USERAGENT);
+        conn.setRequestProperty("User-Agent", AbsApiImpl.USERAGENT);
         conn.connect();
         inputStrem = conn.getInputStream();
 

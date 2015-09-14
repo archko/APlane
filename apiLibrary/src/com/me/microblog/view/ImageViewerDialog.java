@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.me.microblog.R;
 import com.me.microblog.WeiboUtils;
 import com.me.microblog.cache.ImageCache2;
-import com.me.microblog.core.BaseApi;
+import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.StreamUtils;
 import com.me.microblog.util.WeiboLog;
@@ -38,6 +38,7 @@ import java.net.URL;
  * @description:
  * @author: archko 11-9-22
  */
+@Deprecated
 public class ImageViewerDialog extends AlertDialog {
 
     public static final String TAG = "ImageViewerDialog";
@@ -432,7 +433,7 @@ public class ImageViewerDialog extends AlertDialog {
                 conn.setConnectTimeout(6000);
                 conn.setRequestMethod("GET");
                 conn.setRequestProperty("Connection", "Keep-Alive");
-                conn.setRequestProperty("User-Agent", BaseApi.USERAGENT);
+                conn.setRequestProperty("User-Agent", AbsApiImpl.USERAGENT);
                 conn.setDoInput(true);
                 conn.connect();
                 if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {

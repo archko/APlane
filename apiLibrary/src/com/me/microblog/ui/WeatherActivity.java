@@ -25,7 +25,7 @@ import com.me.microblog.R;
 import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.City;
 import com.me.microblog.bean.Province;
-import com.me.microblog.core.BaseApi;
+import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.ImageManager;
 import com.me.microblog.core.WeiboParser;
 import com.me.microblog.http.ForecastCondition;
@@ -420,7 +420,7 @@ public class WeatherActivity extends Activity {
         try {
             url = new URL(urlString);
             uc = (HttpURLConnection) url.openConnection();
-            uc.setRequestProperty("User-Agent", BaseApi.USERAGENT);
+            uc.setRequestProperty("User-Agent", AbsApiImpl.USERAGENT);
             //Map<String, List<String>> headers=uc.getHeaderFields();
             String encode = "UTF-8";
             if ("UTF-8".equalsIgnoreCase(encode)) {

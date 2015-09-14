@@ -58,27 +58,28 @@ public class ImageViewerActivity extends Activity {
             return;
         }
 
-        String[] mUrls;
-        mUrls=getIntent().getStringArrayExtra("thumbs");
+        String[] urls;
+        urls=getIntent().getStringArrayExtra("thumbs");
 
-        if (null==mUrls) {
+        if (null==urls||urls.length==0) {
             WeiboLog.e("null==url");
             mImageBeans=getIntent().getParcelableArrayListExtra("thumb_list");
-            if (null==mImageBeans) {
-                NotifyUtils.showToast("no urls.");
-                return;
+        } else {
+            mTotal=urls.length;
+            mImageBeans=new ArrayList<ImageBean>();
+            ImageBean tmp;
+            for (int i=0; i<mTotal; i++) {
+                tmp=new ImageBean();
+                tmp.thumb=urls[i];
+                mImageBeans.add(tmp);
             }
         }
         mSelectedIdx=getIntent().getIntExtra("pos", 0);
         WeiboLog.d("mSelectedIdx:"+mSelectedIdx);
 
-        mTotal=mUrls.length;
-        mImageBeans=new ArrayList<ImageBean>();
-        ImageBean tmp;
-        for (int i=0; i<mTotal; i++) {
-            tmp=new ImageBean();
-            tmp.thumb=mUrls[i];
-            mImageBeans.add(tmp);
+        if (null==mImageBeans) {
+            NotifyUtils.showToast("no urls.");
+            return;
         }
 
         setContentView(R.layout.imageviewer);

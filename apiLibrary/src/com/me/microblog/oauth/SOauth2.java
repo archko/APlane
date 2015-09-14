@@ -13,7 +13,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import com.me.microblog.core.BaseApi;
+import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.WeiboParser;
 import com.me.microblog.util.WeiboLog;
 import com.squareup.okhttp.FormEncodingBuilder;
@@ -454,7 +454,7 @@ public class SOauth2 extends BaseOauth2 {
             Request request=new Request.Builder()
                 .url(url)
                 .post(formBody)
-                .addHeader("User-Agent", BaseApi.USERAGENT)
+                .addHeader("User-Agent", AbsApiImpl.USERAGENT)
                 .build();
 
             Response response=client.newCall(request).execute();

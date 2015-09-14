@@ -1,22 +1,6 @@
 package com.me.microblog.http;
 
-import com.me.microblog.core.BaseApi;
-import org.apache.http.HttpVersion;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.params.ClientPNames;
-import org.apache.http.client.params.CookiePolicy;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.protocol.HTTP;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -78,7 +62,7 @@ public class SSLSocketFactoryEx extends SSLSocketFactory {
     }
 
     //-------------------
-    public static HttpClient getNewHttpClient() {
+    /*public static HttpClient getNewHttpClient() {
         try {
             KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
             trustStore.load(null, null);
@@ -96,8 +80,8 @@ public class SSLSocketFactoryEx extends SSLSocketFactory {
             params.setBooleanParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
             params.setIntParameter(ClientPNames.MAX_REDIRECTS, 100);
 
-            HttpConnectionParams.setConnectionTimeout(params, BaseApi.CONNECT_TIMEOUT);
-            HttpConnectionParams.setSoTimeout(params, BaseApi.READ_TIMEOUT);
+            HttpConnectionParams.setConnectionTimeout(params, AbsApiImpl.CONNECT_TIMEOUT);
+            HttpConnectionParams.setSoTimeout(params, AbsApiImpl.READ_TIMEOUT);
 
             SchemeRegistry registry = new SchemeRegistry();
             registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
@@ -109,5 +93,5 @@ public class SSLSocketFactoryEx extends SSLSocketFactory {
         } catch (Exception e) {
             return new DefaultHttpClient();
         }
-    }
+    }*/
 }

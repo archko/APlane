@@ -39,14 +39,13 @@ import com.me.microblog.bean.AKSpannableStringBuilder;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
 import com.me.microblog.cache.ImageCache2;
-import com.me.microblog.core.BaseApi;
+import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.core.sina.SinaStatusApi;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.view.ImageViewerDialog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -404,7 +403,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         private void clickMethod(View view) {
             WeiboLog.d(TAG, "click view:"+view);
             int id=view.getId();
-            if (id==R.id.status_picture) {
+            /*if (id==R.id.status_picture) {
                 String dir=mCacheDir;
                 String name=mBmiddlePic;
                 if (name.endsWith("gif")) {
@@ -415,9 +414,12 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                     File gif=new File(path);
                     if (gif.exists()) {
                         //TODO 重复计算了文件的路径。
-                        ImageViewerDialog imageViewerDialog=new ImageViewerDialog(getActivity(), mBmiddlePic, mCacheDir, null, null);
-                        imageViewerDialog.setCanceledOnTouchOutside(true);
-                        imageViewerDialog.show();
+                        Intent intent=new Intent(StatusDetailFragment.this.getActivity(), ImageViewerActivity.class);
+
+                        intent.putExtra("thumbs", new String[]{path});
+                        intent.putExtra("pos", 0);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        StatusDetailFragment.this.startActivity(intent);
                     } else {
                         NotifyUtils.showToast("请等待图片下载完成才可查看gif动画。");
                     }
@@ -428,7 +430,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                         new Thread(pictureRunnable).start();
                     }
                 }
-            }/* else if (id==R.id.repost_label) {
+            } else if (id==R.id.repost_label) {
                 repostStatus();
             } else if (id==R.id.comment_label) {
                 commentStatus();
@@ -495,7 +497,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
 
         //mTitleBar=(RelativeLayout) view.findViewById(R.id.title_bar);
         mViewComment=(LinearLayout) view.findViewById(R.id.ly_view_comment);
-        mViewComment.setOnClickListener(clickListener);
+        //mViewComment.setOnClickListener(clickListener);
         mTagsViewGroup=(TagsViewGroup) view.findViewById(R.id.tags);
         mLeftSlider=(TextView) view.findViewById(R.id.left_slider);
 
@@ -889,7 +891,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             conn.setConnectTimeout(6000);
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Connection", "Keep-Alive");
-            conn.setRequestProperty("User-Agent", BaseApi.USERAGENT);
+            conn.setRequestProperty("User-Agent", AbsApiImpl.USERAGENT);
             conn.setDoInput(true);
             conn.connect();
             if (conn.getResponseCode()==HttpURLConnection.HTTP_OK) {

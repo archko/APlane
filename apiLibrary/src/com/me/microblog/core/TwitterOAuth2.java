@@ -10,9 +10,6 @@ import com.squareup.okhttp.Response;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 
 /**
@@ -228,21 +225,4 @@ public class TwitterOAuth2 {
         }
         return null;
     }*/
-
-    public static InputStream getImageStream(String urlString) throws IOException {
-        URL url = null;
-        HttpURLConnection conn = null;
-        InputStream inputStrem = null;
-
-        url = new URL(urlString);
-        conn = (HttpURLConnection) url.openConnection();
-        conn.setConnectTimeout(BaseApi.CONNECT_TIMEOUT);
-        conn.setReadTimeout(BaseApi.READ_TIMEOUT);
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("User-Agent", BaseApi.USERAGENT);
-        conn.connect();
-        inputStrem = conn.getInputStream();
-
-        return inputStrem;
-    }
 }

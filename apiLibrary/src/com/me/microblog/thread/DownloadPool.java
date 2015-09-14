@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 import com.me.microblog.App;
 import com.me.microblog.cache.ImageCache2;
-import com.me.microblog.core.BaseApi;
+import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.util.WeiboLog;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.methods.HttpGet;
@@ -357,7 +357,7 @@ public class DownloadPool extends Thread {
         mApp.mDownloadPool.ActiveThread_Push();
         String str3 = Uri.encode(uri, ":/");
         HttpGet httpGet = new HttpGet(str3);
-        httpGet.setHeader("User-Agent", BaseApi.USERAGENT);
+        httpGet.setHeader("User-Agent", AbsApiImpl.USERAGENT);
         DefaultHttpClient httpClient = new DefaultHttpClient(connectionManager, params);
         FetchImage fetchImage = new FetchImage(mApp, httpClient, httpGet, piece);
         fetchImage.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
