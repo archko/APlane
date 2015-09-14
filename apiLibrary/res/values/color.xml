@@ -31,7 +31,7 @@
 
     <color name="progress_start">#ff79ff00</color>
     <color name="progress_end">#ff3cff9a</color>
-    <color name="progress_center">#086608cc</color>
+    <color name="progress_center">#ff2380ff</color>
 
     <color name="pull_to_refresh_end">#ffffe6c6</color>
 

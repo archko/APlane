@@ -18,8 +18,8 @@
             android:startColor="#ffcae9fd" android:endColor="#ff74bee8" android:useLevel="false"
             android:type="sweep" android:centerY="0.5" android:centerColor="#ffa0bede"/>-->
 
-        <stroke android:width="4dp" android:color="#ffff424e"
-            android:dashWidth="0dp" android:dashGap="0dp"/>
+        <!--<stroke android:width="4dp" android:color="#ffff424e"
+            android:dashWidth="0dp" android:dashGap="0dp"/>-->
 
         <gradient
             android:startColor="@color/progress_start"
