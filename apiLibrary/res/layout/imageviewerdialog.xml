@@ -6,7 +6,7 @@
     android:gravity="center" android:layout_gravity="center"
     android:orientation="vertical"
     android:layout_width="wrap_content" android:layout_height="wrap_content"
-    android:background="@drawable/pic_bg_scaleable">
+    android:background="@drawable/image_loading_light">
 
     <RelativeLayout
         android:layout_height="wrap_content" android:layout_width="wrap_content">

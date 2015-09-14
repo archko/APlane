@@ -29,8 +29,8 @@
     <color name="actionbar_background_item_pressed_start">#FF7F00</color>
     <color name="actionbar_background_item_pressed_end">#EE7600</color>
 
-    <color name="progress_start">#ff00BFFF</color>
-    <color name="progress_end">#ff3399FF</color>
+    <color name="progress_start">#ff79ff00</color>
+    <color name="progress_end">#ff3cff9a</color>
     <color name="progress_center">#086608cc</color>
 
     <color name="pull_to_refresh_end">#ffffe6c6</color>

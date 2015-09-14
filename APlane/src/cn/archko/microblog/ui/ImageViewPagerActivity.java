@@ -48,7 +48,7 @@ public class ImageViewPagerActivity extends Activity {
 
     void loadData() {
         if (null==getIntent()||null==getIntent().getParcelableArrayListExtra("items")) {
-            NotifyUtils.showToast("参数不对.");
+            NotifyUtils.showToast("鍙傛暟涓嶅.");
             return;
         }
 

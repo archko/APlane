@@ -319,7 +319,7 @@ public class ImageViewerDialog extends AlertDialog {
                     //gifView.setVisibility(View.GONE);
                     mImage.setVisibility(View.VISIBLE);
                     mSave.setVisibility(View.VISIBLE);
-                    ImageViewerDialog.this.mLayout.setBackgroundResource(R.drawable.pic_bg_scaleable);
+                    ImageViewerDialog.this.mLayout.setBackgroundResource(R.drawable.image_loading_light);
                     Bitmap bitmap = null;
                     try {
                         bitmap = ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(file.getAbsolutePath(), - 1);
