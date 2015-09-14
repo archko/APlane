@@ -16,8 +16,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.ImageView;
-
 import com.andrew.apollo.utils.ApolloUtils;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -27,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A subclass of {@link ImageWorker} that fetches images from a URL.
@@ -106,7 +110,7 @@ public class ImageFetcher extends ImageWorker {
         Scheme scheme=Scheme.ofUri(url);
         //Log.d("", "scheme:"+scheme+" url:"+url);
         if (scheme==Scheme.HTTP||scheme==Scheme.HTTPS) {
-            final File file = downloadBitmapToFile(mContext, url, DEFAULT_HTTP_CACHE_DIR);
+            final File file = downloadBitmapToFileByOKHttp(mContext, url, DEFAULT_HTTP_CACHE_DIR);
             if (file != null) {
                 // Return a sampled down version
                 final Bitmap bitmap = decodeSampledBitmapFromFile(file.toString(), option.getMaxWidth(),
@@ -237,6 +241,56 @@ public class ImageFetcher extends ImageWorker {
                 urlConnection.disconnect();
             }
             if (out != null) {
+                try {
+                    out.close();
+                } catch (final IOException ignored) {
+                }
+            }
+        }
+        return null;
+    }
+
+    public static final File downloadBitmapToFileByOKHttp(final Context context, final String urlString,
+        final String uniqueName) {
+        final File cacheDir=ImageCache.getDiskCacheDir(context, uniqueName);
+
+        if (!cacheDir.exists()) {
+            cacheDir.mkdir();
+        }
+
+        //disableConnectionReuseIfNecessary();
+        BufferedOutputStream out=null;
+
+        try {
+            final File tempFile=File.createTempFile("bitmap", null, cacheDir); //$NON-NLS-1$
+
+            OkHttpClient client=new OkHttpClient();
+            Request.Builder builder=new Request.Builder();
+            builder.url(urlString);
+            client.setConnectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS); // connect timeout
+            client.setReadTimeout(READ_TIMEOUT, TimeUnit.SECONDS);    // socket timeout
+
+            Request request=builder.build();
+            Response response=client.newCall(request).execute();
+
+            if (!response.isSuccessful()) {
+                //System.out.println("downloadFailed:"+urlString);
+                return null;
+            }
+            //System.out.println("downloadSuc:"+urlString);
+
+            ResponseBody body=response.body();
+            final InputStream in=new BufferedInputStream(body.byteStream(), IO_BUFFER_SIZE_BYTES);
+            out=new BufferedOutputStream(new FileOutputStream(tempFile), IO_BUFFER_SIZE_BYTES);
+
+            int oneByte;
+            while ((oneByte=in.read())!=-1) {
+                out.write(oneByte);
+            }
+            return tempFile;
+        } catch (final IOException ignored) {
+        } finally {
+            if (out!=null) {
                 try {
                     out.close();
                 } catch (final IOException ignored) {

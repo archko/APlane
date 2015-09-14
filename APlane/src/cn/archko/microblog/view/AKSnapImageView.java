@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -26,10 +25,13 @@ import com.me.microblog.App;
 import com.me.microblog.WeiboUtils;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.util.Constants;
-import com.me.microblog.util.DisplayUtils;
 import com.me.microblog.util.WeiboLog;
 import com.me.microblog.view.MyWebView;
 import com.me.microblog.view.TextProgressBar;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
 import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
 import uk.co.senab.photoview.PhotoView;
@@ -43,6 +45,7 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 查看图片的View没有缓存的View
@@ -499,7 +502,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
 
             //download image and save
             //return result true or false.
-            boolean result=downloadFile(url, file);
+            boolean result=downloadFileByOKHttp(url, file);
             if (result) {
                 downloadSuccess(file);
             } else {
@@ -638,6 +641,90 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
             } catch (Exception e) {
                 result=false;
                 WeiboLog.e(TAG, "downloadFile catch Exception:", e);
+            }
+            return result;
+        }
+
+        public boolean downloadFileByOKHttp(String downloadUrl, File saveFilePath) {
+            //WeiboLog.v(TAG, "downloadFileByOKHttp");
+            long fileSize=-1;
+            int downFileSize=0;
+            boolean result=false;
+            int progress=0;
+
+            try {
+                //URL url=new URL(downloadUrl);
+                //HttpURLConnection conn=(HttpURLConnection) url.openConnection();
+                OkHttpClient client=new OkHttpClient();
+                Request.Builder builder=new Request.Builder();
+                builder.url(url);
+                client.setConnectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS); // connect timeout
+                client.setReadTimeout(READ_TIMEOUT, TimeUnit.SECONDS);    // socket timeout
+
+                Request request=builder.build();
+                Response response=client.newCall(request).execute();
+
+                if (!response.isSuccessful()) {
+                    //System.out.println("downloadFailed:"+urlString);
+                    try {
+                        saveFilePath.delete();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    WeiboLog.v(TAG, "no connection.");
+                    return false;
+                }
+
+                // 读取超时时间 毫秒级
+                try {
+                    ResponseBody body=response.body();
+                    fileSize=body.contentLength();
+                    InputStream is=new BufferedInputStream(body.byteStream());//conn.getInputStream();
+                    FileOutputStream fos=new FileOutputStream(saveFilePath);
+                    byte[] buffer=new byte[2048];
+                    int i=0;
+                    Message msg;
+
+                    msg=Message.obtain();
+                    msg.what=MSG_MAX_PROGESS;
+                    msg.obj=fileSize;
+
+                    while ((i=is.read(buffer))!=-1) {
+                        if (!mShouldDownloadImage) {
+                            try {
+                                saveFilePath.delete();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            WeiboLog.v(TAG, "stop download.");
+                            return false;
+                        }
+
+                        downFileSize=downFileSize+i;
+                        // 下载进度
+                        progress=(int) (downFileSize*50.0/fileSize);
+                        fos.write(buffer, 0, i);
+
+                        msg=Message.obtain();
+                        msg.what=MSG_PROGRESS;
+                        msg.obj=progress*2;
+                        sendProgressMessage(msg);
+                    }
+                    fos.flush();
+                    fos.close();
+                    is.close();
+
+                    WeiboLog.d(TAG, "下载完成."+fileSize);
+                    result=true;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    result=false;
+                } finally {
+                    //conn.disconnect();
+                }
+            } catch (Exception e) {
+                result=false;
+                WeiboLog.e(TAG, "downloadFileByOKHttp catch Exception:", e);
             }
             return result;
         }
