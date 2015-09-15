@@ -169,6 +169,7 @@ public class StaggeredLocalActivity extends SkinFragmentActivity {
                     NotifyUtils.showToast("没有图片.");
                     mAdapter.setDatas(new ArrayList<ImageBean>());
                 }
+                mRecyclerView.getLayoutManager().scrollToPosition(0);
                 mAdapter.notifyDataSetChanged();
             }
         });

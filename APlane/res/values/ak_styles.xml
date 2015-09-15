@@ -3,12 +3,6 @@
     <style name="Widget">
     </style>
 
-    <style name="Widget.AK.ActionButton" parent="android:TextAppearance.Holo.Widget.Button">
-    </style>
-    <style name="Widget.AK.Light.ActionButton" parent="Widget.AK.ActionButton">
-        <item name="android:background">@drawable/btn_default_holo_light</item>
-    </style>
-
     <!-- Top Action Bar msg Buttons -->
     <style name="TopActionBarMsgItem">
         <item name="android:textStyle">bold</item>
