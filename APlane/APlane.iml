@@ -38,7 +38,7 @@
       <excludeFolder url="file://$MODULE_DIR$/src/com/usabusi" />
       <excludeFolder url="file://$MODULE_DIR$/src/org" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="apiLibrary" />
     <orderEntry type="module" module-name="PhotoViewLibrary" />

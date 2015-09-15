@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/APlane.iml" filepath="$PROJECT_DIR$/APlane.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../Gallery3d-photos/GLPhotoViewer/GLPhotoViewer.iml" filepath="$PROJECT_DIR$/../../Gallery3d-photos/GLPhotoViewer/GLPhotoViewer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../GifView/GifView.iml" filepath="$PROJECT_DIR$/../../GifView/GifView.iml" />
       <module fileurl="file://$PROJECT_DIR$/../ImageFetcherLibrary/ImageFetcherLibrary.iml" filepath="$PROJECT_DIR$/../ImageFetcherLibrary/ImageFetcherLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/../PhotoViewLibrary/PhotoViewLibrary.iml" filepath="$PROJECT_DIR$/../PhotoViewLibrary/PhotoViewLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/../apiLibrary/apiLibrary.iml" filepath="$PROJECT_DIR$/../apiLibrary/apiLibrary.iml" />
