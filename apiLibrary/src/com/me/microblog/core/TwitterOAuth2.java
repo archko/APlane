@@ -26,7 +26,7 @@ public class TwitterOAuth2 {
     public static final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
 
     public static String get(String url) throws IOException {
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=OkHttpSingleton.getInstance().getOkHttpClient();
         Request request=new Request.Builder()
             .url(url)
             .build();
@@ -37,7 +37,7 @@ public class TwitterOAuth2 {
 
 
     public static String postJson(String url, String json) throws IOException {
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=OkHttpSingleton.getInstance().getOkHttpClient();
         RequestBody body=RequestBody.create(JSON, json);
         Request request=new Request.Builder()
             .url(url)
@@ -48,7 +48,7 @@ public class TwitterOAuth2 {
     }
 
     public static String postForm(String url, RequestBody formBody) throws IOException {
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=OkHttpSingleton.getInstance().getOkHttpClient();
 
         Request request=new Request.Builder()
             .url(url)
@@ -108,7 +108,7 @@ public class TwitterOAuth2 {
     }*/
 
     public static String postFile(String url, String filepath, List<PostParameter> nvps) throws Exception {
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client=OkHttpSingleton.getInstance().getOkHttpClient();
         File file = new File(filepath);
         MultipartBuilder multipartBuilder=new MultipartBuilder().type(MultipartBuilder.FORM);
         if (null!=nvps&&nvps.size()>0) {

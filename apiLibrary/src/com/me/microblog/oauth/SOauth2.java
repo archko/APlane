@@ -14,6 +14,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.OkHttpSingleton;
 import com.me.microblog.core.WeiboParser;
 import com.me.microblog.util.WeiboLog;
 import com.squareup.okhttp.FormEncodingBuilder;
@@ -441,7 +442,7 @@ public class SOauth2 extends BaseOauth2 {
             HttpResponse response = client.execute(post);
             String entity = EntityUtils.toString(response.getEntity());
             WeiboLog.d("entity:" + entity);*/
-            OkHttpClient client=new OkHttpClient();
+            OkHttpClient client=OkHttpSingleton.getInstance().getOkHttpClient();
             String url="https://api.weibo.com/oauth2/access_token";
             FormEncodingBuilder formEncodingBuilder=new FormEncodingBuilder();
             formEncodingBuilder.add("client_id", key);

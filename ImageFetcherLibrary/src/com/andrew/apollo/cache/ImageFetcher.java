@@ -54,6 +54,7 @@ public class ImageFetcher extends ImageWorker {
     private static ImageFetcher sInstance = null;
 
     ImageOption mImageOption;
+    private OkHttpClient okHttpClient;
 
     /**
      * Creates a new instance of {@link ImageFetcher}.
@@ -65,6 +66,10 @@ public class ImageFetcher extends ImageWorker {
         if (null==mImageOption) {
             mImageOption=new ImageOption();
         }
+        okHttpClient=new OkHttpClient();
+
+        okHttpClient.setConnectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS); // connect timeout
+        okHttpClient.setReadTimeout(READ_TIMEOUT, TimeUnit.SECONDS);    // socket timeout
     }
 
     public void setImageOption(ImageOption mImageOption) {
@@ -264,14 +269,11 @@ public class ImageFetcher extends ImageWorker {
         try {
             final File tempFile=File.createTempFile("bitmap", null, cacheDir); //$NON-NLS-1$
 
-            OkHttpClient client=new OkHttpClient();
             Request.Builder builder=new Request.Builder();
             builder.url(urlString);
-            client.setConnectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS); // connect timeout
-            client.setReadTimeout(READ_TIMEOUT, TimeUnit.SECONDS);    // socket timeout
 
             Request request=builder.build();
-            Response response=client.newCall(request).execute();
+            Response response=ImageFetcher.getInstance(context).okHttpClient.newCall(request).execute();
 
             if (!response.isSuccessful()) {
                 //System.out.println("downloadFailed:"+urlString);
