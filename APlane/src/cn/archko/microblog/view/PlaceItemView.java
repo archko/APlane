@@ -283,44 +283,5 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
 
     @Override
     public void updateBitmap(Message msg) {
-        /*int what=msg.what;
-        Bundle bundle=msg.getData();
-
-        String imgUrl=(String) msg.obj;
-        if (what!=Constants.TYPE_PORTRAIT) {
-            //WeiboLog.d(TAG, "imgUrl:"+imgUrl+" bundle:"+bundle);
-        }
-        Bitmap bitmap;//=BitmapFactory.decodeFile(bundle.getString("name"));
-        bitmap=bundle.getParcelable("name");
-        if (TextUtils.isEmpty(imgUrl)||"null".equals(imgUrl)||null==bitmap) {
-            WeiboLog.w(TAG, "图片url不对，"+imgUrl);
-            return;
-        }
-
-        if (bitmap!=null&&!bitmap.isRecycled()) {
-            if (!isShowLargeBitmap) {   //大图暂时不缓存内存，但是缓存小图
-                ImageCache2.getInstance().addBitmapToMemCache(imgUrl, bitmap);
-            } else {
-                LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
-                lruCache.put(imgUrl, bitmap);
-            }
-
-            WeakReference<View> viewWeakReference=DownloadPool.downloading.get(imgUrl);
-
-            if (null==viewWeakReference||viewWeakReference.get()==null) {
-                DownloadPool.downloading.remove(imgUrl);
-                WeiboLog.i(TAG, "listview is null:"+imgUrl);
-                return;
-            }
-            try {
-                ImageView imageView=(ImageView) viewWeakReference.get();
-                imageView.setImageBitmap(bitmap);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            WeiboLog.d(TAG, "bitmap is null:"+imgUrl);
-        }
-        DownloadPool.downloading.remove(imgUrl);*/
     }
 }

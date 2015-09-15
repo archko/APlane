@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * @description:
  * @author: archko 11-12-27
  */
+@Deprecated
 public class RssXMLPullHandler implements IXmlParser {
 
     WeatherBean mWeatherBean;

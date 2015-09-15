@@ -7,8 +7,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.widget.ImageView;
+import com.andrew.apollo.cache.ImageCache;
 import com.me.microblog.App;
-import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.AbsApiImpl;
 import com.me.microblog.util.WeiboLog;
 import org.apache.http.HttpVersion;
@@ -332,7 +332,7 @@ public class DownloadPool extends Thread {
             return;
         }
 
-        final Bitmap bitmap = ImageCache2.getInstance().getBitmapFromMemCache(uri);
+        final Bitmap bitmap = ImageCache.getInstance(App.getAppContext()).getBitmapFromMemCache(uri);
         if (null != bitmap) {
             if (! cancelWork(piece) && null != piece.handler) {
                 final WeakReference<ImageView> viewWeakReference = piece.mImageReference;

@@ -14,11 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
 import cn.archko.microblog.settings.AppSettings;
+import com.andrew.apollo.cache.ImageCache;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.me.microblog.App;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
-import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.sina.SinaUserApi;
 import com.me.microblog.oauth.Oauth2;
 import com.me.microblog.util.WeiboLog;
@@ -213,7 +213,7 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
 
         mPortraitUrl=user.profileImageUrl;
         //获取头像.
-        Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(mPortraitUrl);
+        Bitmap bitmap=ImageCache.getInstance(mContext).getBitmapFromMemCache(mPortraitUrl);
         if (null!=bitmap&&!bitmap.isRecycled()) {
             mPortrait.setImageBitmap(bitmap);
         } else {

@@ -23,7 +23,7 @@ import com.andrew.apollo.cache.ImageCache;
 import com.andrew.apollo.cache.Scheme;
 import com.me.microblog.App;
 import com.me.microblog.WeiboUtils;
-import com.me.microblog.cache.ImageCache2;
+import com.me.microblog.core.ImageManager;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 import com.me.microblog.view.MyWebView;
@@ -529,7 +529,7 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
             if (imgType==IMG_TYPE_PNG) {
                 bitmap=null;
                 try {
-                    bitmap=ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(file.getAbsolutePath());
+                    bitmap=new ImageManager().loadFullBitmapFromSys(file.getAbsolutePath());
                 } catch (OutOfMemoryError e) {
                     System.gc();
                     e.printStackTrace();

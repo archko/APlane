@@ -18,10 +18,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.andrew.apollo.cache.ImageCache;
+import com.me.microblog.App;
 import com.me.microblog.R;
 import com.me.microblog.WeiboUtils;
-import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.ImageManager;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.StreamUtils;
 import com.me.microblog.util.WeiboLog;
@@ -322,7 +324,7 @@ public class ImageViewerDialog extends AlertDialog {
                     ImageViewerDialog.this.mLayout.setBackgroundResource(R.drawable.image_loading_light);
                     Bitmap bitmap = null;
                     try {
-                        bitmap = ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(file.getAbsolutePath(), - 1);
+                        bitmap = new ImageManager().loadFullBitmapFromSys(file.getAbsolutePath(), - 1);
                     } catch (OutOfMemoryError e) {
                         System.gc();
                         e.printStackTrace();

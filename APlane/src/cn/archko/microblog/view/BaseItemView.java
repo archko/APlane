@@ -17,13 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.archko.microblog.R;
 import cn.archko.microblog.settings.AppSettings;
+import com.andrew.apollo.cache.ImageCache;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
 import com.me.microblog.bean.SAnnotation;
 import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
-import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.util.Constants;
 import com.me.microblog.util.WeiboLog;
 import com.me.microblog.view.IBaseItemView;
@@ -243,7 +243,7 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
 
             mPortraitUrl=profileImgUrl;
             //获取头像.
-            Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(mPortraitUrl);
+            Bitmap bitmap=ImageCache.getInstance(mContext).getBitmapFromMemCache(mPortraitUrl);
             if (null!=bitmap&&!bitmap.isRecycled()) {
                 mPortrait.setImageBitmap(bitmap);
             } else {

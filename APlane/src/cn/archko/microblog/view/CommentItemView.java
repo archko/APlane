@@ -18,6 +18,7 @@ import cn.archko.microblog.settings.AppSettings;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.utils.WeiboOperation;
+import com.andrew.apollo.cache.ImageCache;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
@@ -25,7 +26,6 @@ import com.me.microblog.WeiboUtils;
 import com.me.microblog.bean.AKSpannableStringBuilder;
 import com.me.microblog.bean.Comment;
 import com.me.microblog.bean.User;
-import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
 
@@ -202,7 +202,7 @@ public class CommentItemView extends BaseItemView implements View.OnClickListene
 
             mPortraitUrl=profileImgUrl;
             //获取头像.
-            Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(mPortraitUrl);
+            Bitmap bitmap=ImageCache.getInstance(mContext).getBitmapFromMemCache(mPortraitUrl);
             if (null!=bitmap&&!bitmap.isRecycled()) {
                 mPortrait.setImageBitmap(bitmap);
             } else {

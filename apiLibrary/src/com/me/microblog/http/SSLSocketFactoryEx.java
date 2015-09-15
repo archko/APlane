@@ -19,6 +19,7 @@ import java.security.UnrecoverableKeyException;
  * @description:
  * @author: archko 12-6-11
  */
+@Deprecated
 public class SSLSocketFactoryEx extends SSLSocketFactory {
 
     SSLContext sslContext = SSLContext.getInstance("TLS");

@@ -7,6 +7,7 @@ import java.util.ArrayList;
  * @description:
  * @author: archko 12-1-16
  */
+@Deprecated
 public class WeatherBean {
 
     public String city;

@@ -5,9 +5,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
-import com.me.microblog.WeiboException;
+import com.andrew.apollo.cache.ImageCache;
+import com.me.microblog.App;
 import com.me.microblog.WeiboUtils;
-import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.util.WeiboLog;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -48,17 +48,6 @@ public class ImageManager {
     public ImageManager() {
     }
 
-    /*private String getHashString(MessageDigest digest) {
-        StringBuilder builder=new StringBuilder();
-
-        for (byte b : digest.digest()) {
-            builder.append(Integer.toHexString((b>>4)&0xf));
-            builder.append(Integer.toHexString(b&0xf));
-        }
-
-        return builder.toString();
-    }*/
-
     /**
      * 从网络下载图片,并放到缓存中.
      *
@@ -83,7 +72,7 @@ public class ImageManager {
             //writeBitmapToFile(bitmap, file);
             //WeiboLog.d(TAG,"download image:"+url);
             if (len < 300 * 1000) {
-                ImageCache2.getInstance().addBitmapToMemCache(url, bitmap);
+                ImageCache.getInstance(App.getAppContext()).addBitmapToMemCache(url, bitmap);
             }
 
             return bitmap;
@@ -126,7 +115,7 @@ public class ImageManager {
 
             Bitmap bitmap = decodeBitmap(is, 1);
             if (cache) {
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(filepath));
+                bitmap.compress(Bitmap.CompressFormat.PNG, 90, new FileOutputStream(filepath));
             }
 
             return bitmap;
@@ -156,22 +145,14 @@ public class ImageManager {
     public Bitmap getBitmapFromDiskOrNet(String url, String dir, boolean cache) {
         Bitmap bitmap = loadBitmapFromSysByUrl(url, dir, - 1);
         if (null != bitmap) {
-            ImageCache2.getInstance().addBitmapToMemCache(url, bitmap);
+            ImageCache.getInstance(App.getAppContext()).addBitmapToMemCache(url, bitmap);
             return bitmap;
         }
 
         WeiboLog.d(TAG, "download image:" + url);
-        /*String filePath=downloadImages(url, dir);
-        if (!TextUtils.isEmpty(filePath)) {
-            bitmap=loadBitmapFromSysByPath(filePath, -1);
-            if (null!=bitmap) {
-                ImageCache2.getInstance().addBitmapToMemCache(url, bitmap);
-                return bitmap;
-            }
-        }*/
         bitmap = downloadImage2(url, dir, cache);
         if (null != bitmap) {
-            ImageCache2.getInstance().addBitmapToMemCache(url, bitmap);
+            ImageCache.getInstance(App.getAppContext()).addBitmapToMemCache(url, bitmap);
         }
         return bitmap;
     }
@@ -253,31 +234,6 @@ public class ImageManager {
         }
         return null;
     }
-
-    /**
-     * 从缓存中取出图片
-     *
-     * @param url
-     * @return
-     */
-    /*public Bitmap getBitmapFromCache(String url) {
-        //WeiboLog.i(TAG, "cache size:" + bitmapCache.getSize());
-        Bitmap bitmap=null;
-        LruCache<String, Bitmap> lruCache=App.getLruCache();
-        bitmap=lruCache.get(url);
-        return bitmap;
-    }*/
-
-    /**
-     * 将图片放入缓存中.key是图片对应的url.
-     *
-     * @param url
-     * @param bitmap
-     */
-    /*public void putBitmapIntoCache(String url, Bitmap bitmap) {
-        LruCache<String, Bitmap> lruCache=App.getLruCache();
-        lruCache.put(url, bitmap);
-    }*/
 
     /**
      * 下载图片

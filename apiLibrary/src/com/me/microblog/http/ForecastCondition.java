@@ -5,6 +5,7 @@ package com.me.microblog.http;
  * @description:
  * @author: archko 12-1-16
  */
+@Deprecated
 public class ForecastCondition {
 
     //forecast_conditions

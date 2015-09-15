@@ -10,10 +10,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.ImageView;
+import com.andrew.apollo.cache.ImageCache;
 import com.me.microblog.App;
 import com.me.microblog.R;
 import com.me.microblog.WeiboUtils;
-import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.cache.Md5Digest;
 import com.me.microblog.core.ImageManager;
 import com.me.microblog.util.Constants;
@@ -116,14 +116,14 @@ public class FetchImage extends Thread {
         App app = (App) this.mContext.getApplicationContext();
         HttpResponse response;
 
-        if (ImageCache2.getInstance().isScrolling() || DownloadPool.cancelWork(mPiece)) {
+        if (ImageCache.getInstance(mContext).isScrolling() || DownloadPool.cancelWork(mPiece)) {
             app.mDownloadPool.ActiveThread_Pop();
             mHttpGet.abort();
             return;
         }
 
         try {
-            Bitmap bitmap = ImageCache2.getInstance().getBitmapFromMemCache(mPiece.uri);
+            Bitmap bitmap = ImageCache.getInstance(mContext).getBitmapFromMemCache(mPiece.uri);
             if (null != bitmap) {
                 SendMessage(mPiece.handler, mPiece, bitmap);
                 return;
@@ -137,7 +137,7 @@ public class FetchImage extends Thread {
             }
             String imagepath = dir + name + ext;
 
-            bitmap = ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(imagepath, - 1);
+            bitmap = new ImageManager().loadFullBitmapFromSys(imagepath, - 1);
             if (null != bitmap) {
                 if (! DownloadPool.cancelWork(mPiece)) {
                     SendMessage(mPiece.handler, mPiece, bitmap);
@@ -156,7 +156,7 @@ public class FetchImage extends Thread {
                 if (cache) {
                     ImageManager.saveBytesAsFile(bytes, imagepath);
                     //WeiboLog.d(TAG, "需要缓存："+str2);
-                    bitmap = ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(imagepath, - 1);
+                    bitmap = new ImageManager().loadFullBitmapFromSys(imagepath, - 1);
                 } else {
                     bitmap = ImageManager.decodeBitmap(bytes, - 1);
                 }
@@ -188,7 +188,7 @@ public class FetchImage extends Thread {
         }
 
         //if (!mPiece.isShowLargeBitmap) {   //大图暂时不缓存内存，但是缓存小图
-        ImageCache2.getInstance().addBitmapToMemCache(piece.uri, bitmap);
+        ImageCache.getInstance(App.getAppContext()).addBitmapToMemCache(piece.uri, bitmap);
         /*} else {
             LruCache<String, Bitmap> lruCache=((App) App.getAppContext()).getLargeLruCache();
             lruCache.put(piece.uri, bitmap);

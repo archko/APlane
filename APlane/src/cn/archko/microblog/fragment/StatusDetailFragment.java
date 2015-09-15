@@ -31,6 +31,7 @@ import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.AKUtils;
 import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.TagsViewGroup;
+import com.andrew.apollo.cache.ImageCache;
 import com.andrew.apollo.utils.ApolloUtils;
 import com.andrew.apollo.utils.PreferenceUtils;
 import com.me.microblog.App;
@@ -40,6 +41,7 @@ import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.ImageManager;
 import com.me.microblog.core.sina.SinaStatusApi;
 import com.me.microblog.db.TwitterTable;
 import com.me.microblog.util.Constants;
@@ -766,7 +768,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         }
 
         private void loadPortrait() {
-            Bitmap bitmap=ImageCache2.getInstance().getBitmapFromMemCache(portraitUrl);
+            Bitmap bitmap=ImageCache.getInstance(getActivity()).getBitmapFromMemCache(portraitUrl);
             if (null!=bitmap) {
                 udpatePortrait(bitmap);
                 return;
@@ -775,7 +777,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             dir+=Constants.ICON_DIR;
 
             if (showBitmap) {
-                bitmap=ImageCache2.getInstance().getImageManager().getBitmapFromDiskOrNet(portraitUrl, dir, true);
+                bitmap=new ImageManager().getBitmapFromDiskOrNet(portraitUrl, dir, true);
                 if (null!=bitmap) {
                     udpatePortrait(bitmap);
                     return;
@@ -955,7 +957,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                 //StatusDetailFragment.this.mProgressBar.setVisibility(View.GONE);
                 if (mBmiddlePic.endsWith("gif")) {
                     Bitmap bitmap=null;
-                    bitmap=ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(file.getAbsolutePath(), -1);
+                    bitmap=new ImageManager().loadFullBitmapFromSys(file.getAbsolutePath(), -1);
                     if (null!=bitmap) {
                         WeiboLog.d(TAG, "width："+bitmap.getWidth()+" height:"+bitmap.getHeight());
                         /*mStatusPicture.setImageBitmap(bitmap);
@@ -965,7 +967,7 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                     }
                 } else {
                     Bitmap bitmap=null;
-                    bitmap=ImageCache2.getInstance().getImageManager().loadFullBitmapFromSys(file.getAbsolutePath(), -1);
+                    bitmap=new ImageManager().loadFullBitmapFromSys(file.getAbsolutePath(), -1);
                     if (null!=bitmap) {
                         WeiboLog.d(TAG, "width："+bitmap.getWidth()+" height:"+bitmap.getHeight());
                         /*mStatusPicture.setImageBitmap(bitmap);

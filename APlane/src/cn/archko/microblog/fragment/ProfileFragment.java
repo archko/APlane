@@ -25,6 +25,7 @@ import cn.archko.microblog.fragment.abs.AbsStatusAbstraction;
 import cn.archko.microblog.fragment.impl.SinaUserImpl;
 import cn.archko.microblog.settings.AppSettings;
 import cn.archko.microblog.utils.WeiboOperation;
+import com.andrew.apollo.cache.ImageCache;
 import com.andrew.apollo.utils.ThemeUtils;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
@@ -35,6 +36,7 @@ import com.me.microblog.bean.SStatusData;
 import com.me.microblog.bean.User;
 import com.me.microblog.cache.ImageCache2;
 import com.me.microblog.core.AbsApiImpl;
+import com.me.microblog.core.ImageManager;
 import com.me.microblog.core.factory.AbsApiFactory;
 import com.me.microblog.core.factory.ApiConfigFactory;
 import com.me.microblog.util.Constants;
@@ -350,13 +352,13 @@ public class ProfileFragment extends AbsStatusAbstraction<User> {
             Bitmap bitmap=null;
             try {
                 String url=(String) params[0];
-                bitmap=ImageCache2.getInstance().getBitmapFromMemCache(url);
+                bitmap=ImageCache.getInstance(App.getAppContext()).getBitmapFromMemCache(url);
                 Object[] resultObj=new Object[3];
                 if (null!=bitmap) {
                     resultObj[0]=bitmap;
                     return resultObj;
                 } else {
-                    bitmap=ImageCache2.getInstance().getImageManager().getBitmapFromDiskOrNet(url,
+                    bitmap=new ImageManager().getBitmapFromDiskOrNet(url,
                         AppSettings.current().mCacheDir+Constants.ICON_DIR, true);
 
                     WeiboLog.i(TAG, "profileImageurl:"+url);
