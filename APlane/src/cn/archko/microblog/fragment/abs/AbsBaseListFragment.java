@@ -20,10 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.archko.microblog.R;
-import cn.archko.microblog.recycler.RecyclerViewHolder;
 import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.settings.AppSettings;
-import cn.archko.microblog.ui.PrefsActivity;
 import com.andrew.apollo.cache.ImageCache;
 import com.me.microblog.App;
 import com.me.microblog.WeiboException;
@@ -123,10 +121,8 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
 
         if (null==mDataList) {
             mDataList=new ArrayList<T>();
-            mAdapter=new LayoutAdapter(getActivity());
-        } else {
-            mAdapter=new LayoutAdapter(getActivity());
         }
+        initLayoutAdapter();
 
         mStatusData=new SStatusData<T>();
         mStatusData.mStatusData=mDataList;
@@ -138,10 +134,15 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
         };
     }
 
+    protected void initLayoutAdapter() {
+        if (null==mAdapter) {
+            mAdapter=new LayoutAdapter(getActivity());
+        }
+    }
+
     @Override
     public void onPause() {
         super.onPause();
-        WeiboLog.v(TAG, "onPause:"+this);
     }
 
     @Override
@@ -313,7 +314,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
         //final Drawable divider = getResources().getDrawable(R.drawable.divider);
         //mRecyclerView.addItemDecoration(new DividerItemDecoration(divider));
 
-        mAdapter=new LayoutAdapter(getActivity());
+        initLayoutAdapter();
         //showMoreView();
         mAdapter.addFooterView(footerView);
         mRecyclerView.setAdapter(mAdapter);

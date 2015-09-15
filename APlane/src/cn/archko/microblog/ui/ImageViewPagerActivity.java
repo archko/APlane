@@ -41,7 +41,6 @@ public class ImageViewPagerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ak_glview_pager);
         mViewPager=(HackyViewPager) findViewById(R.id.view_pager);
-        setContentView(mViewPager);
 
         loadData();
     }

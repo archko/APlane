@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     android:paddingLeft="1dp"
     android:paddingRight="1dp">
-    <cn.archko.microblog.view.HackyViewPager
+    <android.support.v4.view.HackyViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent" android:layout_height="match_parent">
 
-    </cn.archko.microblog.view.HackyViewPager>
+    </android.support.v4.view.HackyViewPager>
 
 </RelativeLayout>
