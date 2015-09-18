@@ -459,24 +459,28 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
 
         private void initImageParams() {
             ImageBean bean=mImageBean;
-            SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(mContext);
-            boolean showOriginal=mPrefs.getBoolean(PrefsActivity.PREF_IMAGEVIEWER, true);
-            String bmiddlePic;
-            if (!showOriginal) {
-                bmiddlePic=bean.thumb.replace("thumbnail", "bmiddle");
+            if (bean.thumb.startsWith("/")||bean.thumb.startsWith("file")) {
+                path=url=bean.thumb;
             } else {
-                bmiddlePic=bean.thumb.replace("thumbnail", "large");
-            }
+                SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(mContext);
+                boolean showOriginal=mPrefs.getBoolean(PrefsActivity.PREF_IMAGEVIEWER, true);
+                String bmiddlePic;
+                if (!showOriginal) {
+                    bmiddlePic=bean.thumb.replace("thumbnail", "bmiddle");
+                } else {
+                    bmiddlePic=bean.thumb.replace("thumbnail", "large");
+                }
 
-            String dir=App.mCacheDir+Constants.PICTURE_DIR;
-            if (bean.thumb.endsWith("gif")) {
-                dir=App.mCacheDir+Constants.GIF;
-            }
+                String dir=App.mCacheDir+Constants.PICTURE_DIR;
+                if (bean.thumb.endsWith("gif")) {
+                    dir=App.mCacheDir+Constants.GIF;
+                }
 
-            String name=WeiboUtils.getWeiboUtil().getMd5(bean.thumb)+WeiboUtils.getExt(bean.thumb);
-            name=WeiboUtils.getWeiboUtil().getMd5(bmiddlePic)+WeiboUtils.getExt(bmiddlePic);
-            path=dir+name;
-            url=bmiddlePic;
+                String name=WeiboUtils.getWeiboUtil().getMd5(bean.thumb)+WeiboUtils.getExt(bean.thumb);
+                name=WeiboUtils.getWeiboUtil().getMd5(bmiddlePic)+WeiboUtils.getExt(bmiddlePic);
+                path=dir+name;
+                url=bmiddlePic;
+            }
         }
 
         public UploadHandler(final Looper looper, WeakReference<AKSnapImageView> akSnapImageView, String url, String path) {
