@@ -255,27 +255,39 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
                     ImageCache.getInstance(getActivity()).setPauseDiskCache(true);
                 } else if (scrollState==RecyclerView.SCROLL_STATE_IDLE) {
                     ImageCache.getInstance(getActivity()).setPauseDiskCache(false);
-                    isEndOfList();
+                    /*isEndOfList();
                     if (mLastItemVisible) {
                         showMoreView();
                         //scrollToFooter();
                     } else {
-                    }
+                    }*/
                     mAdapter.notifyDataSetChanged();
                 } else {
                     ImageCache.getInstance(getActivity()).setPauseDiskCache(true);
-                    isEndOfList();
+                    /*isEndOfList();
                     if (mLastItemVisible) {
                         showMoreView();
                         //scrollToFooter();
                     } else {
-                    }
+                    }*/
                 }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
+                int lastVisibleItem = ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                int totalItemCount = mRecyclerView.getLayoutManager().getItemCount();
+                //lastVisibleItem >= totalItemCount - 4 表示剩下4个item自动加载，各位自由选择
+                // dy>0 表示向下滑动
+                //WeiboLog.d(TAG, "lastVisibleItem:"+lastVisibleItem+" total:"+totalItemCount);
+                if (lastVisibleItem >= totalItemCount - 2 && dy > 0) {
+                    if(mLastItemVisible){
+                        WeiboLog.d(TAG,"ignore manually update!");
+                    } else{
+                        showMoreView();
+                        mLastItemVisible=true;
+                    }
+                }
             }
         };
     }
@@ -658,6 +670,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      */
     public void refreshAdapter(boolean load, boolean isRefresh) {
         isLoading=false;
+        mLastItemVisible=false;
         WeiboLog.d(TAG, "refreshAdapter.load:"+load+" isRefresh:"+isRefresh);
         if (load) {
             mAdapter.notifyDataSetChanged();
