@@ -41,7 +41,7 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
     private static WeiboCrashHandler customException = null;
 
     /**
-     * Debug Log tag
+     * isDEBUG() Log tag
      */
     public static final String TAG = "WeiboCrashHandler";
     /**
@@ -88,7 +88,7 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread thread, Throwable exception) {
-        if (WeiboLog.DEBUG) {// TODO 正式发布时需要屏蔽此处代码
+        if (WeiboLog.isDEBUG()) {// TODO 正式发布时需要屏蔽此处代码
             exception.printStackTrace();
         }
 
@@ -99,7 +99,7 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
-                if (WeiboLog.DEBUG) {
+                if (WeiboLog.isDEBUG()) {
                     e.printStackTrace();
                 }
             }
@@ -127,7 +127,7 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
             return true;
         }
         final String msg = ex.getLocalizedMessage();
-        if (WeiboLog.DEBUG) {
+        if (WeiboLog.isDEBUG()) {
             WeiboLog.e("exception >>>>>>>" + msg);
         }
 
@@ -178,7 +178,7 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
             sortedFiles.addAll(Arrays.asList(crFiles));
 
             for (String fileName : sortedFiles) {
-                if (WeiboLog.DEBUG) {
+                if (WeiboLog.isDEBUG()) {
                     WeiboLog.e("log日志文件名称：" + fileName);
                 }
                 final File cr = new File(ctx.getFilesDir(), fileName);
@@ -229,7 +229,7 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
      */
     private String[] getCrashReportFiles(Context ctx) {
         final File filesDir = ctx.getFilesDir();
-        if (WeiboLog.DEBUG) {
+        if (WeiboLog.isDEBUG()) {
             WeiboLog.e("异常报告保存路径：" + filesDir);
         }
         FilenameFilter filter = new FilenameFilter() {
@@ -259,7 +259,7 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
         }
 
         final String result = info.toString();
-        if (WeiboLog.DEBUG) {
+        if (WeiboLog.isDEBUG()) {
             FileHelper.WriteStringToFile(result + "\r\n", App.mCacheDir + System.currentTimeMillis() + ".txt", true);
         }
         printWriter.close();
@@ -274,7 +274,7 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
             trace.close();
             return fileName;
         } catch (Exception e) {
-            if (WeiboLog.DEBUG) {
+            if (WeiboLog.isDEBUG()) {
                 e.printStackTrace();
             }
         }
@@ -295,7 +295,7 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
                 mDeviceCrashInfo.put(VERSION_CODE, "" + pi.versionCode);
             }
         } catch (PackageManager.NameNotFoundException e) {
-            if (WeiboLog.DEBUG) {
+            if (WeiboLog.isDEBUG()) {
                 e.printStackTrace();
             }
         }
@@ -308,11 +308,11 @@ public class WeiboCrashHandler implements UncaughtExceptionHandler {
             try {
                 field.setAccessible(true);
                 mDeviceCrashInfo.put(field.getName(), "" + field.get(null));
-                if (WeiboLog.DEBUG) {
+                if (WeiboLog.isDEBUG()) {
                     WeiboLog.e(TAG, field.getName() + " : " + field.get(null));
                 }
             } catch (Exception e) {
-                if (WeiboLog.DEBUG) {
+                if (WeiboLog.isDEBUG()) {
                     e.printStackTrace();
                 }
             }

@@ -66,7 +66,7 @@ public class FileHelper {
                     sDest.append(data);
                 }
             } catch (IOException ioex) {
-                if (WeiboLog.DEBUG) {
+                if (WeiboLog.isDEBUG()) {
                     ioex.printStackTrace();
                 }
             } finally {
@@ -76,7 +76,7 @@ public class FileHelper {
                 br = null;
             }
         } catch (Exception ex) {
-            if (WeiboLog.DEBUG) {
+            if (WeiboLog.isDEBUG()) {
                 ex.printStackTrace();
             }
         }
@@ -104,7 +104,7 @@ public class FileHelper {
                 final int notificationEndIndex = content.indexOf("}", notificationStartIndex);
                 final String str = content.substring(notificationStartIndex + flag.length(), notificationEndIndex);
                 content = content.replace(str, "");
-                if (WeiboLog.DEBUG) {
+                if (WeiboLog.isDEBUG()) {
                     WeiboLog.e("去掉notification后的json:" + content);
                 }
             }
@@ -133,7 +133,7 @@ public class FileHelper {
                     fos.flush();
                     bFlag = true;
                 } catch (IOException ioex) {
-                    if (WeiboLog.DEBUG) {
+                    if (WeiboLog.isDEBUG()) {
                         ioex.printStackTrace();
                     }
                 } finally {
@@ -141,7 +141,7 @@ public class FileHelper {
                     buffer = null;
                 }
             } catch (Exception ex) {
-                if (WeiboLog.DEBUG) {
+                if (WeiboLog.isDEBUG()) {
                     ex.printStackTrace();
                 }
             }
@@ -177,7 +177,7 @@ public class FileHelper {
                 fos.flush();
                 bFlag = true;
             } catch (IOException ioex) {
-                if (WeiboLog.DEBUG) {
+                if (WeiboLog.isDEBUG()) {
                     ioex.printStackTrace();
                 }
             } finally {
@@ -185,7 +185,7 @@ public class FileHelper {
                 buffer = null;
             }
         } catch (Exception ex) {
-            if (WeiboLog.DEBUG) {
+            if (WeiboLog.isDEBUG()) {
                 ex.printStackTrace();
             }
         }
@@ -221,7 +221,7 @@ public class FileHelper {
         }
 
         if (! rslt) {
-            if (WeiboLog.DEBUG) {
+            if (WeiboLog.isDEBUG()) {
                 WeiboLog.e("无法删除:" + file.getName());
             }
             return;
@@ -278,7 +278,7 @@ public class FileHelper {
 
             }
         } catch (Exception ex) {
-            if (WeiboLog.DEBUG) {
+            if (WeiboLog.isDEBUG()) {
                 ex.printStackTrace();
             }
             return false;
@@ -317,7 +317,7 @@ public class FileHelper {
                 file.delete();
             }
         } catch (Exception ex) {
-            if (WeiboLog.DEBUG) {
+            if (WeiboLog.isDEBUG()) {
                 ex.printStackTrace();
             }
             return false;
