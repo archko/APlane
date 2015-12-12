@@ -40,7 +40,9 @@ public final class SqliteWrapper {
      * @throws com.me.microblog.WeiboException
      */
     public static ArrayList<Status> queryStatuses(ContentResolver resolver, long currentUserId) {
-        WeiboLog.d(TAG, TAG + " queryStatuses." + resolver);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, TAG + " queryStatuses." + resolver);
+        }
         ArrayList<Status> list = null;
 
         Cursor cursor = null;
@@ -795,7 +797,9 @@ public final class SqliteWrapper {
                     cv.put(TwitterTable.UserTbl.TYPE, type);
 
                     int count = resolver.update(Uri.withAppendedPath(TwitterTable.UserTbl.CONTENT_URI, String.valueOf(user.userId)), cv, null, null);
-                    WeiboLog.d(TAG, "更新的用户：" + user + " count:" + count);
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d(TAG, "更新的用户：" + user + " count:" + count);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -828,7 +832,9 @@ public final class SqliteWrapper {
                 atUsers.add(atUser);
             }
         }
-        WeiboLog.d(TAG, "待处理的用户数为：" + atUsers.size());
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "待处理的用户数为：" + atUsers.size());
+        }
 
         if (atUsers.size() > 0) {
             saveFriendUsers(context, atUsers, currentUserId, type);
@@ -869,7 +875,9 @@ public final class SqliteWrapper {
                         //cv.put(TwitterTable.UserTbl.UID, currentUserId);
 
                         int count = resolver.update(Uri.withAppendedPath(TwitterTable.UserTbl.CONTENT_URI, String.valueOf(user.userId)), cv, null, null);
-                        WeiboLog.d(TAG, "更新的用户：" + user + " count:" + count);
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d(TAG, "更新的用户：" + user + " count:" + count);
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -882,7 +890,9 @@ public final class SqliteWrapper {
         }
 
         int len = newUsers.size();
-        WeiboLog.d(TAG, "需要新插入的用户：" + len);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "需要新插入的用户：" + len);
+        }
         int i = 0;
 
         if (len > 0) {
@@ -940,11 +950,17 @@ public final class SqliteWrapper {
                     append("%')");
             }
 
-            WeiboLog.d(TAG, "at user.:" + sb.toString());
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "at user.:" + sb.toString());
+            }
             cursor = resolver.query(TwitterTable.UserTbl.CONTENT_URI, null, sb.toString(), null, null);
-            WeiboLog.d(TAG, "cursor:" + cursor);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "cursor:" + cursor);
+            }
             if (null != cursor && cursor.getCount() > 0) {
-                WeiboLog.d(TAG, "cursor:" + cursor.getCount());
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "cursor:" + cursor.getCount());
+                }
                 cursor.moveToFirst();
 
                 do {
@@ -985,7 +1001,9 @@ public final class SqliteWrapper {
      * @throws com.me.microblog.WeiboException
      */
     public static ArrayList<Status> queryAtStatuses(ContentResolver resolver, long currentUserId) {
-        WeiboLog.d(TAG, TAG + " queryAtStatuses.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, TAG + " queryAtStatuses.");
+        }
         ArrayList<Status> list = null;
 
         Cursor cursor = null;
@@ -1158,7 +1176,9 @@ public final class SqliteWrapper {
             }
 
             len = resolver.bulkInsert(TwitterTable.SStatusTbl.CONTENT_URI, contentValueses);
-            WeiboLog.d(TAG, "insert at status." + len);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "insert at status." + len);
+            }
         }
     }
 
@@ -1169,7 +1189,9 @@ public final class SqliteWrapper {
      * @throws com.me.microblog.WeiboException
      */
     public static ArrayList<Comment> queryAtComments(ContentResolver resolver, long currentUserId, int type) {
-        WeiboLog.d(TAG, TAG + " queryAtComments.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, TAG + " queryAtComments.");
+        }
         ArrayList<Comment> list = null;
 
         Cursor cursor = null;
@@ -1285,7 +1307,9 @@ public final class SqliteWrapper {
      */
     public static ArrayList<DirectMessage> queryDirectMsgsByRecipient(ContentResolver resolver,
         long senderId, long receiverId) {
-        WeiboLog.d(TAG, TAG + " queryDirectMsgsByRecipient.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, TAG + " queryDirectMsgsByRecipient.");
+        }
         ArrayList<DirectMessage> list = null;
 
         Cursor cursor = null;
@@ -1318,7 +1342,9 @@ public final class SqliteWrapper {
      * @throws com.me.microblog.WeiboException
      */
     public static ArrayList<DirectMessage> queryDirectMsgs(ContentResolver resolver, long currentUserId) {
-        WeiboLog.d(TAG, TAG + " queryDirectMsgsByRecipient.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, TAG + " queryDirectMsgsByRecipient.");
+        }
         ArrayList<DirectMessage> list = null;
 
         Cursor cursor = null;
@@ -1457,7 +1483,9 @@ public final class SqliteWrapper {
         }
 
         int len = newDirectMsgs.size();
-        WeiboLog.d(TAG, "需要新插入的私信：" + len);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "需要新插入的私信：" + len);
+        }
         int i = 0;
 
         if (len > 0) {
@@ -1514,7 +1542,9 @@ public final class SqliteWrapper {
                 cv.put(TwitterTable.DirectMsgTbl.SOURCE, message.source);
                 cv.put(TwitterTable.DirectMsgTbl.UID, currentUserId);
                 Uri uri = resolver.insert(TwitterTable.DirectMsgTbl.CONTENT_URI, cv);
-                WeiboLog.d(TAG, "保存一条私信:" + uri);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "保存一条私信:" + uri);
+                }
             } else {
                 cursor.moveToFirst();
                 long _id = cursor.getLong(cursor.getColumnIndexOrThrow(TwitterTable.DirectMsgTbl._ID));

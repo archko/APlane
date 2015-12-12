@@ -3,7 +3,6 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView android:id="@+id/left_slider" android:visibility="invisible"
-        android:background="@color/holo_blue_dark"
         android:layout_marginLeft="0dp" android:layout_marginRight="6dp"
         android:layout_width="8dp" android:layout_height="match_parent"/>
 

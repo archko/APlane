@@ -35,7 +35,9 @@ public class SinaPlaceUserImpl extends AbsStatusImpl<User> {
                 Long maxId=(Long) params[2];
                 Integer c=(Integer) params[3];
                 Integer p=(Integer) params[4];
-                WeiboLog.d(TAG, "loadData."+c);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "loadData."+c);
+                }
 
                 AKLocation akLocation=((App) App.getAppContext()).getLocation();
                 sStatusData=sWeiboApi2.getPlacesNearbyUsers(akLocation.latitude,

@@ -73,7 +73,9 @@ public class CommentsFragment extends AtMeCommentsFragment {
         } else {*/
         //page=1;
         int status=mPrefs.getInt(Constants.PREF_SERVICE_COMMENT, 0);
-        WeiboLog.d(TAG, "新提及我的评论数:"+status);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "新提及我的评论数:"+status);
+        }
         if (status>0) {
             if (status>Constants.WEIBO_COUNT*8) {
                 status=Constants.WEIBO_COUNT*8;

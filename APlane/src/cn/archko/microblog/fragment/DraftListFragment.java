@@ -75,7 +75,9 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
      */
     @Override
     public void addNewData() {
-        WeiboLog.d(TAG, "pull up to refresh.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "pull up to refresh.");
+        }
         mSwipeLayout.setRefreshing(true);
     }
 
@@ -90,13 +92,14 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
     /**
      * 需要注意,在主页时,需要缓存图片数据.所以cache为true,其它的不缓存,比如随便看看.
      *
-     * @param position
      * @param convertView
      * @param parent
+     * @param position
+     * @param itemType
      * @return
      */
     @Override
-    public View getView(SimpleViewHolder holder, final int position) {
+    public View getView(SimpleViewHolder holder, final int position, int itemType) {
         View convertView=holder.baseItemView;
         DraftItemView itemView=null;
         Draft draft=mDataList.get(position);
@@ -206,9 +209,13 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
      * @param achor 用于显示QuickAction
      */
     protected void itemClick(View achor) {
-        WeiboLog.d(TAG, "mDataList.size():"+mDataList.size());
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "mDataList.size():"+mDataList.size());
+        }
         if (selectedPos>=mDataList.size()) {
-            WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            }
             return;
         }
 
@@ -235,7 +242,9 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
      */
     public void quickRepostStatus() {
         if (selectedPos>=mDataList.size()) {
-            WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            }
             return;
         }
 
@@ -256,7 +265,9 @@ public class DraftListFragment extends AbstractLocalListFragment<Draft> {
      */
     public void commentStatus() {
         if (selectedPos>=mDataList.size()) {
-            WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            }
             return;
         }
 

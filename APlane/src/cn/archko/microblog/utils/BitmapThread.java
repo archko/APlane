@@ -125,7 +125,9 @@ public class BitmapThread {
                         options.inJustDecodeBounds=true;
                         BitmapFactory.decodeFile(image.path, options);
                         options.inSampleSize=BitmapUtils.computeSampleSizeLarger(options.outWidth, options.outHeight, 120);
-                        WeiboLog.d("inSampleSize:"+options.inSampleSize+" width:"+options.outWidth+" height:"+options.outHeight);
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d("inSampleSize:"+options.inSampleSize+" width:"+options.outWidth+" height:"+options.outHeight);
+                        }
                         options.inPreferredConfig=Bitmap.Config.RGB_565;
                         options.inJustDecodeBounds=false;
                         bitmap=BitmapFactory.decodeFile(image.path, options);

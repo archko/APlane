@@ -42,7 +42,9 @@ public class GroupAction implements Action {
         ActionResult actionResult=new ActionResult();
 
         File file=new File(filepath);
-        WeiboLog.d(TAG, "loadGroup:"+filepath);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "loadGroup:"+filepath);
+        }
         if (file.exists()&&!forceLoad) {
             ArrayList<Group> groups=WeiboOperation.readLocalData(filepath);
             if (null!=groups) {
@@ -54,7 +56,9 @@ public class GroupAction implements Action {
         } else {
             App app=(App) App.getAppContext();
             if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
-                WeiboLog.d(TAG, "不下载分组，token过期了。");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "不下载分组，token过期了。");
+                }
                 actionResult.reslutMsg="不下载分组，token过期了。";
             } else {
                 loadGroup(actionResult, filepath, context);
@@ -87,7 +91,9 @@ public class GroupAction implements Action {
                 sStatusData=sWeiboApi2.getGroups();
             }
 
-            WeiboLog.d(TAG, "下载分组："+sStatusData);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "下载分组："+sStatusData);
+            }
             ArrayList<Group> groups=sStatusData.mStatusData;
             if (null!=groups&&groups.size()>0) {
                 WeiboOperation.writeLocalData(groups, filepath);

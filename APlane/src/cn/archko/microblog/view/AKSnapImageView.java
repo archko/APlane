@@ -139,7 +139,9 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
     public void update(ImageBean bean) {
         WeiboLog.v(TAG, "update:"+bean);
         if (null==bean||TextUtils.isEmpty(bean.thumb)) {
-            WeiboLog.d(TAG, "TextUtils.isEmpty(bean)."+bean);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "TextUtils.isEmpty(bean)."+bean);
+            }
             return;
         }
 
@@ -290,7 +292,9 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
             imageView.setImageBitmap(bitmap);
         }
 
-        WeiboLog.d(TAG, "loadImageView:"+" bmid:"+url+" bitmap:"+bitmap);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "loadImageView:"+" bmid:"+url+" bitmap:"+bitmap);
+        }
         if (!TextUtils.isEmpty(url)) {
             downloadImage();
         }
@@ -382,7 +386,9 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
         mImageDownloaded=true;
         textProgressBar.setVisibility(View.GONE);
         if (mImageShowType==IMG_SHOW_TYPE_THUMB) {
-            WeiboLog.d(TAG, "only show thumbs.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "only show thumbs.");
+            }
             return;
         }
         int imgType=msg.arg1;
@@ -394,7 +400,9 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
     }
 
     void showPNG(Bitmap bitmap) {
-        WeiboLog.d(TAG, "loadImageview:"+mImageBean);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "loadImageview:"+mImageBean);
+        }
         mWebViewParent.setVisibility(GONE);
         if (null!=imageView) {
             if (null!=bitmap) {
@@ -416,7 +424,9 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
     }
 
     void showGif(String path) {
-        WeiboLog.d(TAG, "showGif:"+mImageBean);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "showGif:"+mImageBean);
+        }
         /*File file=new File(path);
         if (null!=myWebView&&null!=file&&file.exists()) {
             try {
@@ -630,10 +640,14 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                         fos.close();
                         is.close();
 
-                        WeiboLog.d(TAG, "下载完成."+fileSize);
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d(TAG, "下载完成."+fileSize);
+                        }
                         result=true;
                     } else {
-                        WeiboLog.d(TAG, "code:"+conn.getResponseCode()+" message:"+conn.getResponseMessage());
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d(TAG, "code:"+conn.getResponseCode()+" message:"+conn.getResponseMessage());
+                        }
                         result=false;
                     }
                 } catch (IOException e) {
@@ -718,7 +732,9 @@ public class AKSnapImageView extends LinearLayout implements View.OnClickListene
                     fos.close();
                     is.close();
 
-                    WeiboLog.d(TAG, "下载完成."+fileSize);
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d(TAG, "下载完成."+fileSize);
+                    }
                     result=true;
                 } catch (IOException e) {
                     e.printStackTrace();

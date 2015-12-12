@@ -47,7 +47,9 @@ public class AppWidgetLarge extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        WeiboLog.d(TAG, "onReceive."+intent);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onReceive."+intent);
+        }
         /*intent=new Intent(context, AKWidgetService.class);
         context.startService(intent);*/
         final Intent updateIntent=new Intent(AKWidgetService.SERVICECMD);

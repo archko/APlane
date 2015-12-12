@@ -49,7 +49,9 @@ public class SinaToMeCommentImpl extends AbsStatusImpl<Comment> {
             Long maxId=(Long) params[2];
             Integer c=(Integer) params[3];
             Integer p=(Integer) params[4];
-            WeiboLog.d(TAG, "更新发给我的评论："+c);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "更新发给我的评论："+c);
+            }
             sStatusData=sWeiboApi2.getCommentsToMe(sinceId, maxId, c, p, 0, 0);
         }
 
@@ -86,13 +88,17 @@ public class SinaToMeCommentImpl extends AbsStatusImpl<Comment> {
             len=newList.size();
             int oldSize=oldList.size();
             int delta=50-len;
-            WeiboLog.d(TAG, "新数据长度："+len+" oldSize:"+oldSize+" delta:"+delta);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "新数据长度："+len+" oldSize:"+oldSize+" delta:"+delta);
+            }
             if (delta>0) {
                 delta=oldSize-delta;
                 if (delta>0) {
                     oldList=oldList.subList(delta, oldSize);
                 }
-                WeiboLog.d(TAG, "去除旧数据中多余的："+oldList.size()+" delta:"+delta);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "去除旧数据中多余的："+oldList.size()+" delta:"+delta);
+                }
             }
 
             oldList.addAll(newList);
@@ -102,7 +108,9 @@ public class SinaToMeCommentImpl extends AbsStatusImpl<Comment> {
             WeiboLog.i(TAG, "删除微博记录:"+len);
 
             len=oldList.size();
-            WeiboLog.d(TAG, "当前所有数据长度："+len);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "当前所有数据长度："+len);
+            }
 
             ContentValues[] contentValueses=new ContentValues[len];
             ContentValues cv;

@@ -25,7 +25,9 @@ public class OauthWebView extends WebView {
 
     @Override
     public void destroy() {
-        WeiboLog.d(TAG, "destroy.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "destroy.");
+        }
         if (! isOauthed && null != mHandler) {
             Message message = Message.obtain();
             message.what = 0;

@@ -64,7 +64,9 @@ public class StatusAction implements Action {
                 actionResult.resoultCode=ActionResult.ACTION_FALL;
                 actionResult.reslutMsg=context.getString(R.string.err_api_error);
             } else {
-                WeiboLog.d(TAG, "destroy status:"+id);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "destroy status:"+id);
+                }
                 Status status=sWeiboApi2.deleteStatus(id);
                 if (null!=status) {
                     actionResult.resoultCode=ActionResult.ACTION_SUCESS;

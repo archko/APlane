@@ -67,7 +67,9 @@ public class PlaceUserListFragment extends UserListFragment {
      * 启动定位
      */
     protected void startMap() {
-        WeiboLog.d(TAG, "startMap.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "startMap.");
+        }
 
         mSwipeLayout.setRefreshing(true);
         if (mRefreshListener!=null) {
@@ -146,7 +148,9 @@ public class PlaceUserListFragment extends UserListFragment {
     @Override
     public void fetchMore() {
         super.fetchMore();
-        WeiboLog.d(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
+        }
         if (mAdapter.getCount()>0) {
             User st;
             st=(User) mAdapter.getItem(mAdapter.getCount()-1);
@@ -190,7 +194,7 @@ public class PlaceUserListFragment extends UserListFragment {
     }
 
     @Override
-    public View getView(SimpleViewHolder holder, final int position) {
+    public View getView(SimpleViewHolder holder, final int position, int itemType) {
         View convertView=holder.baseItemView;
         UserItemView itemView=null;
         User user=mDataList.get(position);

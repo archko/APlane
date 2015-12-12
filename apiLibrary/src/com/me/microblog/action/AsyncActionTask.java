@@ -36,7 +36,9 @@ public class AsyncActionTask extends ActionTask {
     protected void onPostExecute(ActionResult result) {
         try {
             int rescode = result.resoultCode;
-            WeiboLog.d(TAG, "onPostExecute.rescode:" + rescode);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "onPostExecute.rescode:" + rescode);
+            }
 
             Message msg = handler.obtainMessage(rescode, result);
 

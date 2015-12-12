@@ -176,7 +176,9 @@ public abstract class AbstractBaseFragment<T> extends Fragment implements Fragme
      * @param msg    线程已经在运行中的提示信息
      */
     protected void newTask(Object[] params, String msg) {
-        WeiboLog.d(TAG, "newTask:");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "newTask:");
+        }
         if (!App.hasInternetConnection(getActivity())) {
             NotifyUtils.showToast(R.string.network_error, Toast.LENGTH_LONG);
             if (mRefreshListener!=null) {
@@ -205,7 +207,9 @@ public abstract class AbstractBaseFragment<T> extends Fragment implements Fragme
                 //oauth2(params);
                 mOauth2Handler.oauth2(params);
             } else {
-                WeiboLog.d(TAG, "web认证，但token有效。");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "web认证，但token有效。");
+                }
                 mCommonTask=new CommonTask();
                 mCommonTask.execute(params);
             }
@@ -219,7 +223,9 @@ public abstract class AbstractBaseFragment<T> extends Fragment implements Fragme
      * @param msg    线程已经在运行中的提示信息
      */
     protected void newTaskNoNet(Object[] params, String msg) {
-        WeiboLog.d(TAG, "newTaskNoNet:");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "newTaskNoNet:");
+        }
 
         if (mThreadStatus==THREAD_RUNNING||(mQueryTask!=null&&mQueryTask.getStatus()==AsyncTask.Status.RUNNING)) {
             if (!TextUtils.isEmpty(msg)) {
@@ -367,7 +373,9 @@ public abstract class AbstractBaseFragment<T> extends Fragment implements Fragme
      * @param msg    线程已经在运行中的提示信息
      */
     protected void newOperationTask(Object[] params, String msg) {
-        WeiboLog.d(TAG, "newTask:");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "newTask:");
+        }
         if (!App.hasInternetConnection(getActivity())) {
             NotifyUtils.showToast(R.string.network_error, Toast.LENGTH_LONG);
             /*if (mRefreshListener!=null) {
@@ -391,7 +399,9 @@ public abstract class AbstractBaseFragment<T> extends Fragment implements Fragme
                 WeiboLog.i(TAG, "web认证，token过期了.");
                 //mOauth2Handler.oauth2(params);
             } else {
-                WeiboLog.d(TAG, "web认证，但token有效。");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "web认证，但token有效。");
+                }
                 mOperationTask=new OperationTask();
                 mOperationTask.execute(params);
             }

@@ -95,7 +95,9 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         display.getMetrics(dm);
         int width=dm.widthPixels;
         int height=dm.heightPixels;
-        WeiboLog.d(TAG, "setImageD.width:"+width+" height:"+height+" dm.wp:"+dm.widthPixels+" dm.hp:"+dm.heightPixels+" density:"+dm.density);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "setImageD.width:"+width+" height:"+height+" dm.wp:"+dm.widthPixels+" dm.hp:"+dm.heightPixels+" density:"+dm.density);
+        }
         if (width>height) {
             ImageManager.IMAGE_MAX_WIDTH=height;
             ImageManager.IMAGE_MAX_HEIGHT=width;
@@ -129,8 +131,9 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         mActionBar.setDisplayHomeAsUpEnabled(true);
 
         mActionBar.setDisplayShowTitleEnabled(true);  //隐藏主面的标题
-        mActionBar.setDisplayShowHomeEnabled(true);   //整个标题栏
+        mActionBar.setDisplayShowHomeEnabled(false);   //整个标题栏
         mActionBar.setTitle(R.string.tab_label_home);
+        mActionBar.setHomeButtonEnabled(false);
 
         mDrawerLayout=(DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawer=(ListView) findViewById(R.id.start_drawer);
@@ -477,7 +480,9 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
         } else {
             try {
                 ComponentName componentName=WeiboUtils.getTaskComponent(this);
-                WeiboLog.d(TAG, "启动桌面:"+componentName);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "启动桌面:"+componentName);
+                }
                 if (null!=componentName) {
                     Intent home=new Intent();
                     home.setComponent(componentName);
@@ -581,20 +586,26 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
 
     private void refresh() {
         AbstractBaseFragment current=(AbstractBaseFragment) getFragmentManager().findFragmentById(R.id.fragment_placeholder);
-        WeiboLog.d(TAG, "refresh.current:"+current);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "refresh.current:"+current);
+        }
         current.refresh();
     }
 
     private void clear() {
         AbstractBaseFragment current=(AbstractBaseFragment) getFragmentManager().findFragmentById(R.id.fragment_placeholder);
-        WeiboLog.d(TAG, "clear.current:"+current);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "clear.current:"+current);
+        }
         current.clear();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        WeiboLog.d(TAG, "onConfigurationChanged.o:"+newConfig.orientation);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onConfigurationChanged.o:"+newConfig.orientation);
+        }
     }
 
     private void reloadPreferences() {
@@ -608,7 +619,9 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
             WeiboLog.i("update.time:"+time+" now:"+now);
 
             if (delta<0&&time!=-1) {
-                WeiboLog.d(TAG, "不需要检查更新，近一天刚检查过，delta:"+delta+" time:"+time);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "不需要检查更新，近一天刚检查过，delta:"+delta+" time:"+time);
+                }
             } else {
                 SharedPreferences.Editor editor=mPrefs.edit();
                 editor.putLong(Constants.UPDATE_TIMESTAMP, now);
@@ -622,7 +635,9 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Unread unread=(Unread) intent.getSerializableExtra("unread");
-        WeiboLog.d(TAG, "onNewIntent.intent:"+unread);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onNewIntent.intent:"+unread);
+        }
     }
 
     int mode=PrefsFragment.MODE_EXIT;
@@ -672,7 +687,9 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
 
     @Override
     public void onRefreshFailed() {
-        WeiboLog.d(TAG, "onRefreshFailed.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onRefreshFailed.");
+        }
         //setProgressBarIndeterminateVisibility(false);
     }
 
@@ -868,7 +885,9 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
             mGroupList.add(homeGroup);
         }
 
-        WeiboLog.d(TAG, "mGroupList.size()"+mGroupList.size());
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "mGroupList.size()"+mGroupList.size());
+        }
         if (mGroupList.size()==1) {
             loadGroup();
         }
@@ -928,7 +947,9 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
                     }
 
                     case ActionResult.ACTION_FALL:
-                        WeiboLog.d(TAG, "load group failed.");
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d(TAG, "load group failed.");
+                        }
                         break;
 
                     default:
@@ -945,7 +966,9 @@ public class HomeActivity extends SkinFragmentActivity implements OnRefreshListe
     }
 
     private void updateGroup(final ArrayList<Group> mStatusData) {
-        WeiboLog.d(TAG, "updateGroup:"+mStatusData.size());
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "updateGroup:"+mStatusData.size());
+        }
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -47,7 +47,9 @@ public class AtMeAction implements Action {
                 actionResult.resoultCode=ActionResult.ACTION_FALL;
                 actionResult.reslutMsg=context.getString(R.string.err_api_error);
             } else {
-                WeiboLog.d(TAG, "Shield:"+id);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "Shield:"+id);
+                }
                 boolean rs=sWeiboApi2.mentionsShield(id, follow_up);
                 if (rs) {
                     actionResult.resoultCode=ActionResult.ACTION_SUCESS;

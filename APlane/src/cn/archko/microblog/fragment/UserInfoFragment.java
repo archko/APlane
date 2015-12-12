@@ -100,7 +100,9 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        WeiboLog.d(TAG, "onCreate:"+this);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onCreate:"+this);
+        }
         mLayoutInflater=(LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         //mStatusImpl=new SinaUserImpl();
@@ -272,7 +274,9 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        WeiboLog.d(TAG, "onActivityCreated");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onActivityCreated");
+        }
 
         // Give some text to display if there is no data.  In a real
         // application this would come from a resource.
@@ -336,7 +340,9 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
             @Override
             public void run() {
-                WeiboLog.d(TAG, "setContent.user:"+user.screenName);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "setContent.user:"+user.screenName);
+                }
                 if (user!=null) {
                     try {
                         mUser=user;
@@ -497,7 +503,9 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
             follwingTask.execute(new Integer[]{followingType});
         } else {
             if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
-                WeiboLog.d(TAG, "web认证，token过期了.");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "web认证，token过期了.");
+                }
                 mOauth2Handler.oauth2(null);
             } else {
                 FollwingTask follwingTask=new FollwingTask();
@@ -674,7 +682,9 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
         @Override
         public void onClick(View view) {
-            WeiboLog.d("AtClicker:"+name);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("AtClicker:"+name);
+            }
             if (TextUtils.isEmpty(name)) {
                 WeiboLog.e(TAG, "nick name is null.");
                 return;
@@ -743,7 +753,9 @@ public class UserInfoFragment extends AbsStatusAbstraction<User> {
 
         @Override
         public void onClick(View view) {
-            WeiboLog.d("UrlClicker:"+name);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("UrlClicker:"+name);
+            }
             if (TextUtils.isEmpty(name)) {
                 WeiboLog.e(TAG, "url is null.");
                 return;

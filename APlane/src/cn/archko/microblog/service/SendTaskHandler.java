@@ -92,31 +92,47 @@ public class SendTaskHandler extends Handler {
         if (app.getOauthBean().oauthType==Oauth2.OAUTH_TYPE_WEB) {
         } else {
             if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
-                WeiboLog.w(TAG, "web认证，token过期了.不能执行任务。");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.w(TAG, "web认证，token过期了.不能执行任务。");
+                }
                 return;
             } else {
-                WeiboLog.d(TAG, "web认证，但token有效，开始任务。");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "web认证，但token有效，开始任务。");
+                }
             }
         }
 
-        WeiboLog.d(TAG, "执行一个任务。"+task);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "执行一个任务。"+task);
+        }
 
         int type=task.type;
         if (type==TwitterTable.SendQueueTbl.SEND_TYPE_STATUS) {
-            WeiboLog.d(TAG, "发布的微博 task."+task);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "发布的微博 task."+task);
+            }
             sendStatus(task);
         } else if (type==TwitterTable.SendQueueTbl.SEND_TYPE_REPOST_STATUS) {
-            WeiboLog.d(TAG, "转发的微博 task."+task);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "转发的微博 task."+task);
+            }
             sendRepostStatus(task);
         } else if (type==TwitterTable.SendQueueTbl.SEND_TYPE_COMMENT) {
-            WeiboLog.d(TAG, "发布的评论 task."+task);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "发布的评论 task."+task);
+            }
             sendComment(task);
         } else if (type==TwitterTable.SendQueueTbl.SEND_TYPE_ADD_FAV) {
-            WeiboLog.d(TAG, "添加收藏 task."+task);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "添加收藏 task."+task);
+            }
             addFavorite(task);
         }
 
-        WeiboLog.d(TAG, "任务完成。");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "任务完成。");
+        }
     }
 
     private void sendStatus(SendTask task) {
@@ -158,10 +174,14 @@ public class SendTaskHandler extends Handler {
                 }
             }
 
-            WeiboLog.d(TAG, "发送微博."+status);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "发送微博."+status);
+            }
             if (null!=status) {
                 int res=SqliteWrapper.deleteSendTask(App.getAppContext(), task);
-                WeiboLog.d(TAG, "删除完成的任务："+res);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "删除完成的任务："+res);
+                }
                 notifyTaskResult(R.string.new_status_suc);
             } else {
                 notifyTaskResult(R.string.new_status_failed);
@@ -192,10 +212,14 @@ public class SendTaskHandler extends Handler {
                 msg=e.toString();
             }
 
-            WeiboLog.i(TAG, "转发."+status);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.i(TAG, "转发."+status);
+            }
             if (null!=status) {
                 int res=SqliteWrapper.deleteSendTask(App.getAppContext(), task);
-                WeiboLog.d(TAG, "删除完成的任务："+res);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "删除完成的任务："+res);
+                }
                 notifyTaskResult(R.string.repost_suc);
             } else {
                 notifyTaskResult(R.string.repost_failed);
@@ -225,11 +249,15 @@ public class SendTaskHandler extends Handler {
                 code=e.getStatusCode();
                 msg=e.toString();
             }
-            WeiboLog.i(TAG, "发送评论."+comment);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.i(TAG, "发送评论."+comment);
+            }
 
             if (null!=comment) {
                 int res=SqliteWrapper.deleteSendTask(App.getAppContext(), task);
-                WeiboLog.d(TAG, "删除完成的任务："+res);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "删除完成的任务："+res);
+                }
                 notifyTaskResult(R.string.comment_suc);
                 task.uid=comment.id;    //在评论成功后，可能值为评论的id。
             } else {
@@ -259,11 +287,15 @@ public class SendTaskHandler extends Handler {
                 code=e.getStatusCode();
                 msg=e.toString();
             }
-            WeiboLog.i(TAG, "添加收藏."+favorite);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.i(TAG, "添加收藏."+favorite);
+            }
 
             if (null!=favorite) {
                 int res=SqliteWrapper.deleteSendTask(App.getAppContext(), task);
-                WeiboLog.d(TAG, "删除完成的收藏任务："+res);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "删除完成的收藏任务："+res);
+                }
                 notifyTaskResult(R.string.favorite_add_suc);
             } else {
                 notifyTaskResult(R.string.favorite_add_failed);
@@ -303,7 +335,9 @@ public class SendTaskHandler extends Handler {
         settings=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
         long aUserId=settings.getLong(Constants.PREF_CURRENT_USER_ID, -1);
         ArrayList<SendTask> sendTasks=SqliteWrapper.queryAllTasks(App.getAppContext(), String.valueOf(aUserId), SendTask.CODE_INIT);
-        WeiboLog.d(TAG, "queryAllTask:"+aUserId+" task count:"+sendTasks.size());
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "queryAllTask:"+aUserId+" task count:"+sendTasks.size());
+        }
         ArrayList<SendTask> mQuery=new ArrayList<SendTask>();
         for (SendTask task : sendTasks) {
             mQuery.add(task);
@@ -327,7 +361,9 @@ public class SendTaskHandler extends Handler {
 
             Uri uri=App.getAppContext().getContentResolver().insert(TwitterTable.SendQueueTbl.CONTENT_URI, cv);
             task.id=Long.valueOf(uri.getLastPathSegment());
-            WeiboLog.d(TAG, "插入新的任务:"+uri);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "插入新的任务:"+uri);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -3,6 +3,7 @@
 <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/background_actionbar"
     android:scrollbars="none">
 
     <LinearLayout android:orientation="horizontal" android:divider="?android:listDivider"
@@ -23,16 +24,16 @@
 
         <ImageButton android:id="@+id/action_new_status"
             android:src="@drawable/content_edit_light" android:contentDescription="@string/action_new_status"
-            android:background="@drawable/holo_selector"
+            android:background="@drawable/ak_background_item"
             style="@style/TopActionBarItem"/>
 
         <ImageButton android:id="@+id/action_refresh"
-            android:background="@drawable/holo_selector" android:contentDescription="@string/opb_refresh"
+            android:background="@drawable/ak_background_item" android:contentDescription="@string/opb_refresh"
             android:src="@drawable/navigation_refresh_dark"
             style="@style/TopActionBarItem"/>
 
         <ImageButton android:id="@+id/action_clear"
-            android:background="@drawable/holo_selector" android:contentDescription=""
+            android:background="@drawable/ak_background_item" android:contentDescription=""
             android:src="@drawable/content_discard_light"
             style="@style/TopActionBarItem"/>
 

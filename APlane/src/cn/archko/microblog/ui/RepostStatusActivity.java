@@ -134,7 +134,9 @@ public class RepostStatusActivity extends CommentStatusActivity {
     }
 
     private void comment(String comment_ori) {
-        WeiboLog.d("comment.comment_ori:"+comment_ori);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("comment.comment_ori:"+comment_ori);
+        }
         imm.hideSoftInputFromWindow(commentET.getWindowToken(), 0);
         if (isPostingComment) {
             NotifyUtils.showToast(R.string.in_progress);

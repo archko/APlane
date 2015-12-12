@@ -114,9 +114,13 @@ public class UserFriendListFragment extends DialogFragment implements AdapterVie
      * 显示更多
      */
     protected void showMoreView() {
-        WeiboLog.d("showMoreView");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("showMoreView");
+        }
         if (null==mRelativeLoadingLayout) {
-            WeiboLog.d("null==mLoadingLayout.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("null==mLoadingLayout.");
+            }
             mRelativeLoadingLayout=(RelativeLayout) LayoutInflater.from(getActivity().getApplicationContext())
                 .inflate(R.layout.ak_more_progressbar, null);
             mMoreProgressBar=(ProgressBar) mRelativeLoadingLayout.findViewById(R.id.progress_bar);
@@ -311,7 +315,9 @@ public class UserFriendListFragment extends DialogFragment implements AdapterVie
                 return;
             }
 
-            WeiboLog.d("list.size:"+list.size());
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("list.size:"+list.size());
+            }
 
             mSimpleAdapter.setAtUserList(list);
             mSimpleAdapter.notifyDataSetChanged();

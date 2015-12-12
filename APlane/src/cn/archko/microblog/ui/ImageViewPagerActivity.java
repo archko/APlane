@@ -53,7 +53,9 @@ public class ImageViewPagerActivity extends Activity {
 
         ArrayList<ImageBean> imageBeans=getIntent().getParcelableArrayListExtra("items");
         int pos=getIntent().getIntExtra("pos", 0);
-        WeiboLog.d(TAG, "pos:"+pos+" size:"+imageBeans.size());
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "pos:"+pos+" size:"+imageBeans.size());
+        }
         mViewPager.setAdapter(new SamplePagerAdapter(this, imageBeans));
         mViewPager.setCurrentItem(pos);
         //loadFromFile();

@@ -99,10 +99,14 @@ public abstract class BaseOauth2 implements Oauth2 {
     public Map<String, String> parseAccessToken(String queryString) {
         String str1 = "#";
         int index = queryString.indexOf(str1);
-        WeiboLog.d("index:" + index);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("index:" + index);
+        }
         if (index != - 1) {
             String newUrl = queryString.substring(index + 1);
-            WeiboLog.d("parseAccessToken:" + newUrl);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("parseAccessToken:" + newUrl);
+            }
 
             String[] querys = newUrl.split("&");
             HashMap<String, String> map = new HashMap<String, String>();
@@ -118,7 +122,9 @@ public abstract class BaseOauth2 implements Oauth2 {
                 String[] str2 = querys[ idx ].split("=");
                 key = str2[ 0 ];
                 val = str2[ 1 ];
-                WeiboLog.d("key:" + key + " val:" + val);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("key:" + key + " val:" + val);
+                }
                 map.put(key, val);
                 ++ idx;
             }

@@ -118,7 +118,9 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
             if (isUpdateIncrement&&(null==mGroup||mGroup.id.equals(Constants.TAB_ID_HOME))) {
                 //page=1;
                 int status=mPrefs.getInt(Constants.PREF_SERVICE_STATUS, 0);
-                WeiboLog.d(TAG, "新消息数:"+status);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "新消息数:"+status);
+                }
                 if (status>0) {
                     if (status>Constants.WEIBO_COUNT*8) {
                         status=Constants.WEIBO_COUNT*8;
@@ -139,7 +141,9 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
      */
     @Override
     protected void loadData() {
-        WeiboLog.d(TAG, "home.loaddata:"+mDataList);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "home.loaddata:"+mDataList);
+        }
         if (mDataList!=null&&mDataList.size()>0) {
             mAdapter.notifyDataSetChanged();
         } else {
@@ -154,7 +158,9 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
 
     @Override
     protected void notifyChanged() {
-        WeiboLog.d(TAG, "prefs changed.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "prefs changed.");
+        }
         mAdapter.notifyDataSetChanged();
     }
 
@@ -203,7 +209,9 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
      */
     @Override
     public void refreshAdapter(boolean load, boolean isRefresh) {
-        WeiboLog.d(TAG, "refreshAdapter isGroupUpdated:"+isGroupUpdated);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "refreshAdapter isGroupUpdated:"+isGroupUpdated);
+        }
         super.refreshAdapter(load, isRefresh);
         isGroupUpdated=false;
         if (isRefresh&&load) {
@@ -243,7 +251,9 @@ public class HomeRecyclerViewFragment extends RecyclerViewFragment {
 
     //--------------------- 分组操作 ---------------------
     public void updateGroupTimeline(Group group) {
-        WeiboLog.d(TAG, "updateGroupTimeline:"+group+" old:"+mGroup);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "updateGroupTimeline:"+group+" old:"+mGroup);
+        }
         if (null!=group) {
             if (null==mGroup||!mGroup.id.equals(group.id)) {
                 if (null!=mGroup) {

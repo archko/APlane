@@ -14,7 +14,6 @@ import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
 import cn.archko.microblog.fragment.impl.SinaCommentImpl;
 import cn.archko.microblog.listeners.CommentListener;
 import cn.archko.microblog.recycler.SimpleViewHolder;
-import cn.archko.microblog.ui.PrefsActivity;
 import cn.archko.microblog.ui.UserFragmentActivity;
 import cn.archko.microblog.utils.WeiboOperation;
 import cn.archko.microblog.view.CommentDialog;
@@ -122,13 +121,14 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
     /**
      * 需要注意,在主页时,需要缓存图片数据.所以cache为false,其它的不缓存,比如随便看看.
      *
-     * @param position
      * @param convertView
      * @param parent
+     * @param position
+     * @param itemType
      * @return
      */
     @Override
-    public View getView(SimpleViewHolder holder, final int position) {
+    public View getView(SimpleViewHolder holder, final int position, int itemType) {
         //WeiboLog.d(TAG, "getView.pos:" + position + " holder:" + holder);
 
         View convertView=holder.baseItemView;
@@ -223,7 +223,9 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
 
     @Override
     public void refreshAdapter(boolean load, boolean isRefresh) {
-        WeiboLog.d(TAG, "refreshAdapter.load:"+load+" isRefresh:"+isRefresh);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "refreshAdapter.load:"+load+" isRefresh:"+isRefresh);
+        }
         try {
             mSwipeLayout.setRefreshing(true);
         } catch (Exception e) {
@@ -256,7 +258,9 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
      * 刷新数据，因为不是自动加载评论，所以在选中时，需要处理
      */
     public void refresh() {
-        WeiboLog.d(TAG, "refresh:"+hasInitialed);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "refresh:"+hasInitialed);
+        }
         if (!hasInitialed) {
             hasInitialed=true;
             mSwipeLayout.setRefreshing(true);
@@ -340,12 +344,16 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
 
                 @Override
                 public void cancel() {
-                    WeiboLog.d("mCommentListener.cancel");
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d("mCommentListener.cancel");
+                    }
                 }
 
                 @Override
                 public void finish(Object receiver, final String content) {
-                    WeiboLog.d("mCommentListener!");
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d("mCommentListener!");
+                    }
                     try {
                         new Thread(new Runnable() {
 
@@ -419,7 +427,9 @@ public class StatusCommentsFragment extends AbsBaseListFragment<Comment> {
      * @param task
      */
     public void addComment(SendTask task) {
-        WeiboLog.d(TAG, "addComment:"+task);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "addComment:"+task);
+        }
         try {
             if (task.uid>0) {
                 Comment comment=new Comment();

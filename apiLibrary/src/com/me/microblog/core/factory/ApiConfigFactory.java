@@ -24,14 +24,18 @@ public class ApiConfigFactory {
         ServiceProvider sp = auth.getServiceProvider();
         //packageName+=".impl."+sp.toString().toLowerCase();
         packageName += "." + sp.toString() + "ApiFactory";
-        WeiboLog.d("packageName:" + packageName);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("packageName:" + packageName);
+        }
 
         AbsApiFactory apiFactory = null;
         try {
             Class<?> apiConfigInstanceClass = Class.forName(packageName);
             Constructor<?> constructor = apiConfigInstanceClass.getConstructor();
             apiFactory = (AbsApiFactory) constructor.newInstance();
-            WeiboLog.d("construct api factory:" + apiFactory);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("construct api factory:" + apiFactory);
+            }
         } catch (Exception e) {
             WeiboLog.e("ApiConfigFactory:{}" + sp + e);
         }

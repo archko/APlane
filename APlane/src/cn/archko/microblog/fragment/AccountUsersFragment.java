@@ -107,7 +107,9 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
      */
     @Override
     public void addNewData() {
-        WeiboLog.d(TAG, "add new account.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "add new account.");
+        }
         mSwipeLayout.setRefreshing(true);
         FragmentTransaction ft=getActivity().getFragmentManager().beginTransaction();
         Fragment prev=getActivity().getFragmentManager().findFragmentByTag("dialog");
@@ -124,13 +126,14 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
     /**
      * 需要注意,在主页时,需要缓存图片数据.所以cache为true,其它的不缓存,比如随便看看.
      *
-     * @param position
      * @param convertView
      * @param parent
+     * @param position
+     * @param itemType
      * @return
      */
     @Override
-    public View getView(SimpleViewHolder holder, final int position) {
+    public View getView(SimpleViewHolder holder, final int position, int itemType) {
         View convertView=holder.baseItemView;
         AUItemView itemView=null;
         OauthBean oauthBean=mDataList.get(position);
@@ -249,13 +252,17 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
      */
     public void quickRepostStatus() {
         if (selectedPos>=mDataList.size()) {
-            WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            }
             return;
         }
 
         try {
             OauthBean oauthBean=mDataList.get(selectedPos);
-            WeiboLog.d(TAG, "changeAccount:"+oauthBean);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "changeAccount:"+oauthBean);
+            }
             changeAccount(oauthBean);
         } catch (Exception e) {
             e.printStackTrace();
@@ -267,7 +274,9 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
      */
     public void commentStatus() {
         if (selectedPos>=mDataList.size()) {
-            WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            }
             return;
         }
 
@@ -279,7 +288,9 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
             }
 
             deleteAccount(oauthBean);
-            WeiboLog.d(TAG, "deleteAccount.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "deleteAccount.");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -341,14 +352,18 @@ public class AccountUsersFragment extends AbstractLocalListFragment<OauthBean> i
                 TwitterTable.AUTbl.ACCOUNT_TYPE+"="+TwitterTable.AUTbl.WEIBO_SINA;
             ContentValues cv=new ContentValues();
             cv.put(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT, TwitterTable.AUTbl.ACCOUNT_IS_NOT_DEFAULT);
-            WeiboLog.d(TAG, "unset default account sql:"+where);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "unset default account sql:"+where);
+            }
             db.update(TwitterTable.AUTbl.ACCOUNT_TBNAME, cv, where, null);
 
             where=TwitterTable.AUTbl.ACCOUNT_USERID+"="+newUserId+" and "+
                 TwitterTable.AUTbl.ACCOUNT_TYPE+"="+TwitterTable.AUTbl.WEIBO_SINA;
             cv=new ContentValues();
             cv.put(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT, TwitterTable.AUTbl.ACCOUNT_IS_DEFAULT);
-            WeiboLog.d(TAG, "set new default account sql:"+where);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "set new default account sql:"+where);
+            }
             db.update(TwitterTable.AUTbl.ACCOUNT_TBNAME, cv, where, null);
             dbFlag=true;
             db.setTransactionSuccessful();

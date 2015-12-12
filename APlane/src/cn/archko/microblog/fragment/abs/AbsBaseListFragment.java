@@ -150,7 +150,9 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
         super.onResume();
 
         AppSettings appSettings=AppSettings.current();
-        WeiboLog.d(TAG, "onResume:"+appSettings.showBitmap+" showLargeBitmap:"+appSettings.showLargeBitmap);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onResume:"+appSettings.showBitmap+" showLargeBitmap:"+appSettings.showLargeBitmap);
+        }
 
         if (null!=zoomLayout) {
             if (appSettings.showNavBtn) {
@@ -185,7 +187,9 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        WeiboLog.d(TAG, "onCreateView.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onCreateView.");
+        }
         View view=_onCreateView(inflater, container, savedInstanceState);
         mRoot=view;
         themeBackground();
@@ -282,7 +286,9 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
                 //WeiboLog.d(TAG, "lastVisibleItem:"+lastVisibleItem+" total:"+totalItemCount);
                 if (lastVisibleItem >= totalItemCount - 2 && dy > 0) {
                     if(mLastItemVisible){
-                        WeiboLog.d(TAG,"ignore manually update!");
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d(TAG,"ignore manually update!");
+                        }
                     } else{
                         showMoreView();
                         mLastItemVisible=true;
@@ -463,7 +469,9 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
     protected void showMoreView() {
         WeiboLog.v(TAG, "showMoreView");
         if (null==mLoadingLayout) {
-            WeiboLog.d(TAG, "null==mLoadingLayout.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "null==mLoadingLayout.");
+            }
             mLoadingLayout=(RelativeLayout) LayoutInflater.from(getActivity().getApplicationContext())
                 .inflate(R.layout.ak_more_progressbar, null);
             mMoreProgressBar=(ProgressBar) mLoadingLayout.findViewById(R.id.progress_bar);
@@ -543,7 +551,9 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
      */
     public Object[] baseBackgroundOperation(Object... objects) {
         try {
-            WeiboLog.d(TAG, "baseBackgroundOperation:"+objects);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "baseBackgroundOperation:"+objects);
+            }
             SStatusData<T> sStatusData=(SStatusData<T>) getData(objects);
 
             saveData(sStatusData);
@@ -562,7 +572,9 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
     public void basePostOperation(Object[] result) {
         isRefreshing=false;
         //page++;
-        WeiboLog.d(TAG, "basePostOperation");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "basePostOperation");
+        }
         if (mRefreshListener!=null) {
             mRefreshListener.onRefreshFinished();
         }
@@ -671,7 +683,9 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
     public void refreshAdapter(boolean load, boolean isRefresh) {
         isLoading=false;
         mLastItemVisible=false;
-        WeiboLog.d(TAG, "refreshAdapter.load:"+load+" isRefresh:"+isRefresh);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "refreshAdapter.load:"+load+" isRefresh:"+isRefresh);
+        }
         if (load) {
             mAdapter.notifyDataSetChanged();
         }
@@ -749,20 +763,41 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
     /**
      * 这个方法由Adapter中取出，子类如果是列表，需要覆盖此方法
      *
-     * @param position
      * @param convertView
      * @param parent
+     * @param position
+     * @param itemType
      * @return
      */
-    public abstract View getView(SimpleViewHolder holder, final int position);
+    public abstract View getView(SimpleViewHolder holder, final int position, int itemType);
 
     public abstract View newView(ViewGroup parent, int viewType);
+
+    public int getItemViewType(int position) {
+        return -1;
+    }
 
     //--------------------- adapter ---------------------
     public class LayoutAdapter extends RecyclerView.Adapter<SimpleViewHolder> {
 
-        protected static final int TYPE_HEADERVIEW=0x001;
-        protected static final int TYPE_FOOTERVIEW=0x002;
+        /**
+         * 页眉
+         */
+        public static final int TYPE_HEADERVIEW=0x001;
+        /**
+         * 页脚
+         */
+        public static final int TYPE_FOOTERVIEW=0x002;
+        /**
+         * 基础的,没有包含图片的项
+         */
+        public static final int TYPE_BASE=0x003;
+        /**
+         * 包含图片的列表项.
+         */
+        public static final int TYPE_PICTURE=0x004;
+        public static final int TYPE_NORET=0x005;
+        public static final int TYPE_LOCATION=0x006;
         private final Context mContext;
         protected View footerView;
 
@@ -808,7 +843,7 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
             if (itemType==TYPE_FOOTERVIEW) {
 
             } else {
-                AbsBaseListFragment.this.getView(holder, position);
+                AbsBaseListFragment.this.getView(holder, position, itemType);
             }
         }
 
@@ -837,6 +872,10 @@ public abstract class AbsBaseListFragment<T> extends AbsStatusAbstraction<T> imp
             if (isFooterView(position, count)) {
                 return TYPE_FOOTERVIEW;
             } else {
+                int viewType=AbsBaseListFragment.this.getItemViewType(position);
+                if (-1!=viewType) {
+                    return viewType;
+                }
                 return super.getItemViewType(position);
             }
         }

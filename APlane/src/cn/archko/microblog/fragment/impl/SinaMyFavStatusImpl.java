@@ -50,7 +50,9 @@ public class SinaMyFavStatusImpl extends AbsStatusImpl<Favorite> {
             Long maxId=(Long) params[3];*/
             Integer c=(Integer) params[4];
             Integer p=(Integer) params[5];
-            WeiboLog.d(/*"userId:"+userId+" sinceId:"+sinceId+", maxId:"+maxId+*/", count:"+c+", page:"+p);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(/*"userId:"+userId+" sinceId:"+sinceId+", maxId:"+maxId+*/", count:"+c+", page:"+p);
+            }
             sStatusData=sWeiboApi2.myFavorites(c, p);
         }
 

@@ -124,7 +124,9 @@ public class AKUtils {
         Intent intent=new Intent(activity, SendTaskService.class);
         activity.stopService(intent);
 
-        WeiboLog.d("logout.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("logout.");
+        }
         /*Intent loginIntent=new Intent(activity, LoginActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         loginIntent.putExtra("mode", "1");
@@ -192,7 +194,9 @@ public class AKUtils {
 
         @Override
         public void onClick(View view) {
-            WeiboLog.d("AtClicker:"+name);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("AtClicker:"+name);
+            }
             if (TextUtils.isEmpty(name)) {
                 WeiboLog.e("nick name is null.");
                 return;
@@ -225,7 +229,9 @@ public class AKUtils {
 
         @Override
         public void onClick(View view) {
-            WeiboLog.d("UrlClicker:"+name);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("UrlClicker:"+name);
+            }
             if (TextUtils.isEmpty(name)) {
                 WeiboLog.e("url is null.");
                 return;

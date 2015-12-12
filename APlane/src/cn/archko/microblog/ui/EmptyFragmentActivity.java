@@ -44,9 +44,13 @@ public class EmptyFragmentActivity extends SkinFragmentActivity implements OnRef
         String className=intent.getStringExtra("fragment_class");
 
         try {
-            WeiboLog.d("start a fragment:"+title+" fragment Class:"+className);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("start a fragment:"+title+" fragment Class:"+className);
+            }
             Fragment old=getFragmentManager().findFragmentById(android.R.id.content);
-            WeiboLog.d("initFragment."+className+" old:"+old);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("initFragment."+className+" old:"+old);
+            }
             if (null==old) {
                 Fragment newFragment=Fragment.instantiate(this, className);
                 Bundle args=intent.getExtras();

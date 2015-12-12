@@ -96,7 +96,9 @@ public class LoginActivity extends NavModeActivity {
             }
 
             if (isFinishing()) {
-                WeiboLog.d("isFinishing()");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("isFinishing()");
+                }
                 return;
             }
 

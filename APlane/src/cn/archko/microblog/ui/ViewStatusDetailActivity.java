@@ -118,8 +118,9 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
         mActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         mActionBar.setDisplayShowTitleEnabled(true);
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setDisplayShowHomeEnabled(true);
-        mActionBar.setHomeButtonEnabled(true);
+        mActionBar.setDisplayShowHomeEnabled(false);
+        mActionBar.setHomeButtonEnabled(false);
+        mActionBar.setDisplayUseLogoEnabled(false);
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         mActionBar.setTitle(R.string.text_title_content);
 
@@ -406,7 +407,9 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
      */
     public void onPrepareCustomMenu(PopupMenu menuBuilder) {
         menuBuilder.getMenu().clear();
-        WeiboLog.d(TAG, "onPrepareCustomMenu:"+hasInitMoreAction+" size:"+menuBuilder.getMenu().size());
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onPrepareCustomMenu:"+hasInitMoreAction+" size:"+menuBuilder.getMenu().size());
+        }
         if (!hasInitMoreAction) {
             hasInitMoreAction=true;
             initMoreAction(menuBuilder);
@@ -418,7 +421,9 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        WeiboLog.d(TAG, "onMenuItemSelected:"+" itemId:"+item.getItemId()+" item:"+item);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onMenuItemSelected:"+" itemId:"+item.getItemId()+" item:"+item);
+        }
         int actionId=item.getItemId();
         switch (actionId) {
             case Constants.OP_ID_MORE_CONTENT_COPY_STATUS: {    //原内容复制
@@ -516,7 +521,9 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId=item.getItemId();
-        WeiboLog.d(TAG, "super.item:"+item);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "super.item:"+item);
+        }
         if (itemId==android.R.id.home) {
             finish();
         } else {
@@ -629,7 +636,9 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            WeiboLog.d(TAG, "onCreateActionMode");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "onCreateActionMode");
+            }
             return true;
         }
 
@@ -640,13 +649,17 @@ public class ViewStatusDetailActivity extends SkinFragmentActivity implements La
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            WeiboLog.d(TAG, "onActionItemClicked:"+item);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "onActionItemClicked:"+item);
+            }
             return false;
         }
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            WeiboLog.d(TAG, "onDestroyActionMode");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "onDestroyActionMode");
+            }
         }
     }
 

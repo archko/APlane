@@ -312,7 +312,7 @@ public class NewStatusActivity extends SkinFragmentActivity implements ActionBar
 
         mActionBar.setHomeButtonEnabled(true);
         mActionBar.setDisplayShowTitleEnabled(true);  //隐藏主面的标题
-        mActionBar.setDisplayShowHomeEnabled(true);   //整个标题栏
+        mActionBar.setDisplayShowHomeEnabled(false);   //整个标题栏
         mActionBar.setTitle(R.string.text_new_status);
         setContentView(R.layout.status_new);
 
@@ -337,12 +337,16 @@ public class NewStatusActivity extends SkinFragmentActivity implements ActionBar
      */
     private void initData() {
         Intent intent=getIntent();
-        WeiboLog.d(TAG, "initData:"+intent);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "initData:"+intent);
+        }
         if (null!=intent) {
             String action=intent.getAction();
             if (Intent.ACTION_SEND.equals(action)) {
                 Uri uri=(Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-                WeiboLog.d(TAG, "uri: ->"+uri);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "uri: ->"+uri);
+                }
                 if (null!=uri) {
                     processGalleryData(uri);
                     imm.hideSoftInputFromWindow(content.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
@@ -351,7 +355,9 @@ public class NewStatusActivity extends SkinFragmentActivity implements ActionBar
                 String type=intent.getType();
                 if (type.startsWith("text/")) {
                     String txt=intent.getExtras().getString("android.intent.extra.TEXT");
-                    WeiboLog.d(TAG, "txt: ->"+txt);
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d(TAG, "txt: ->"+txt);
+                    }
                     if (!TextUtils.isEmpty(txt)) {
                         content.setText(txt);
                         Selection.setSelection(content.getText(), txt.length());
@@ -360,14 +366,18 @@ public class NewStatusActivity extends SkinFragmentActivity implements ActionBar
                 }
             } else if (Constants.INTENT_NEW_BLOG.equals(action)) {
                 String at_some=intent.getStringExtra("at_some");
-                WeiboLog.d("处理@："+at_some);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("处理@："+at_some);
+                }
                 if (!TextUtils.isEmpty(at_some)) {
                     at_some+=" ";
                     content.setText(at_some);
                     content.setSelection(at_some.length());
                 } else {
                     at_some=intent.getStringExtra("trend");
-                    WeiboLog.d("处理话题："+at_some);
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d("处理话题："+at_some);
+                    }
                     if (!TextUtils.isEmpty(at_some)) {
                         at_some+=" ";
                         content.setText(at_some);
@@ -431,7 +441,9 @@ public class NewStatusActivity extends SkinFragmentActivity implements ActionBar
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        WeiboLog.d(TAG, "onNavigationItemSelected:"+itemPosition);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onNavigationItemSelected:"+itemPosition);
+        }
         selectedPos=itemPosition;
         return true;
     }
@@ -465,7 +477,9 @@ public class NewStatusActivity extends SkinFragmentActivity implements ActionBar
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId=item.getItemId();
         if (itemId==android.R.id.home) {
-            WeiboLog.d(TAG, "onOptionsItemSelected:"+mode);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "onOptionsItemSelected:"+mode);
+            }
             if (mode==MODE_NORMAL) {
             } else {
                 getFragmentManager().popBackStack(getFragmentManager().getBackStackEntryAt(0).getId(),
@@ -690,7 +704,9 @@ public class NewStatusActivity extends SkinFragmentActivity implements ActionBar
 
     @Override
     public void onBackPressed() {
-        WeiboLog.d(TAG, "onBackPressed:"+mode);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onBackPressed:"+mode);
+        }
         if (mode==MODE_NORMAL) {
             if (!isDone) {
                 showExistDialog();
@@ -821,7 +837,9 @@ public class NewStatusActivity extends SkinFragmentActivity implements ActionBar
     }
 
     private void startMap() {
-        WeiboLog.d(TAG, "startMap.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "startMap.");
+        }
 
         final BaiduLocation location=new BaiduLocation();
         //下面这个应该放在EmployeeBaiduLocation里面处理的.

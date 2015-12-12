@@ -49,7 +49,9 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        WeiboLog.d(TAG, "onCreate:"+this);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onCreate:"+this);
+        }
     }
 
     @Override
@@ -66,7 +68,9 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
      */
     void viewUserStatuses() {
         if (selectedPos>=mAdapter.getCount()) {
-            WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            }
             return;
         }
     }
@@ -105,7 +109,9 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
     @Override
     public Object[] baseBackgroundOperation(Object... objects) {
         try {
-            WeiboLog.d(TAG, "baseBackgroundOperation:"+objects);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "baseBackgroundOperation:"+objects);
+            }
             Object[] params=objects;
             SinaTrendApi sinaTrendApi=new SinaTrendApi();
             sinaTrendApi.updateToken();
@@ -124,7 +130,9 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
      * @param resultObj
      */
     public void basePostOperation(Object[] result) {
-        WeiboLog.d(TAG, "basePostOperation");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "basePostOperation");
+        }
         if (mRefreshListener!=null) {
             mRefreshListener.onRefreshFinished();
         }
@@ -132,7 +140,9 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
         isLoading=false;
 
         if (null==result) {
-            WeiboLog.d(TAG, "加载数据异常。");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "加载数据异常。");
+            }
             if (null!=mMoreTxt&&null!=mMoreProgressBar) {
                 mMoreTxt.setText(R.string.more_loaded_failed);
                 mMoreProgressBar.setVisibility(View.GONE);
@@ -143,7 +153,9 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
 
         Trends sStatusData=(Trends) result[1];
         if (null==sStatusData||null==sStatusData.trends) {
-            WeiboLog.d(TAG, "加载数据为空。");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "加载数据为空。");
+            }
             if (null!=mMoreTxt&&null!=mMoreProgressBar) {
                 mMoreTxt.setText(R.string.more_loaded_failed);
                 mMoreProgressBar.setVisibility(View.GONE);
@@ -166,7 +178,7 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
     }
 
     @Override
-    public View getView(SimpleViewHolder holder, int position) {
+    public View getView(SimpleViewHolder holder, int position, int itemType) {
         return null;
     }
 
@@ -176,7 +188,9 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
     }
 
     private List<Trend> addValue(Trends trends) {
-        WeiboLog.d("addValue:"+trends);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("addValue:"+trends);
+        }
         List<Trend> trendList=Arrays.asList(trends.trends);
         return trendList;
     }
@@ -189,7 +203,9 @@ public class TrendsFragment extends AbsBaseListFragment<Trend> {
      */
     //@Override
     public SStatusData<Trend> getStatuses(Long sinceId, Long maxId, int c, int p) {
-        WeiboLog.d(TAG, " TrendsFragment.getStatuses."+sinceId+" maxId:"+maxId+" count:"+c+" page:"+p);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, " TrendsFragment.getStatuses."+sinceId+" maxId:"+maxId+" count:"+c+" page:"+p);
+        }
         //Trends tmp=((SWeiboApi2) App.getMicroBlog(getActivity())).getTrends((String) params[0]);
         return null;
     }

@@ -1,5 +1,6 @@
 package cn.archko.microblog.fragment;
 
+import android.os.SystemClock;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,6 +10,8 @@ import cn.archko.microblog.R;
 import cn.archko.microblog.fragment.abs.AbsBaseListFragment;
 import cn.archko.microblog.recycler.SimpleViewHolder;
 import cn.archko.microblog.ui.UserFragmentActivity;
+import cn.archko.microblog.view.BaseItemView;
+import cn.archko.microblog.view.BaseThreadBeanItemView;
 import cn.archko.microblog.view.ThreadBeanItemView;
 import com.me.microblog.bean.Status;
 import com.me.microblog.db.TwitterTable;
@@ -53,7 +56,9 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         int menuId=item.getItemId();
-        WeiboLog.d(TAG, "onMenuItemClick:"+menuId);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onMenuItemClick:"+menuId);
+        }
         switch (menuId) {
             case Constants.OP_ID_QUICK_REPOST: {
                 quickRepostStatus();
@@ -100,7 +105,9 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
      */
     public void viewOriginalStatus(View achor) {
         if (selectedPos>=mDataList.size()) {
-            WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            }
             return;
         }
 
@@ -113,7 +120,9 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
      * 创建收藏.
      */
     public void createFavorite() {
-        WeiboLog.d(TAG, "selectedPos:"+selectedPos);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "selectedPos:"+selectedPos);
+        }
         if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
             return;
@@ -133,7 +142,9 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
      * 查看用户信息
      */
     public void viewStatusUser() {
-        WeiboLog.d(TAG, "not implemented.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "not implemented.");
+        }
         if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
             return;
@@ -147,7 +158,9 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
      * 快速转发
      */
     public void quickRepostStatus() {
-        WeiboLog.d(TAG, "quickRepostStatus.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "quickRepostStatus.");
+        }
         if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
             return;
@@ -157,11 +170,12 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
         mWeiboController.quickRepostStatus(status, currentUserId, getActivity());
     }
 
-    public View getView(SimpleViewHolder holder, final int position) {
+    public View getView(SimpleViewHolder holder, final int position, int viewType) {
         //WeiboLog.d(TAG, "getView.pos:" + position + " holder:" + holder);
 
+        long start=SystemClock.uptimeMillis();
         View convertView=holder.baseItemView;
-        ThreadBeanItemView itemView=null;
+        BaseItemView itemView=null;
         Status status=mDataList.get(position);
 
         boolean updateFlag=true;
@@ -170,9 +184,13 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
         }
 
         if (convertView==null) {
-            itemView=new ThreadBeanItemView(getActivity(), updateFlag, true);
+            if (LayoutAdapter.TYPE_PICTURE==viewType) {
+                itemView=new ThreadBeanItemView(getActivity(), updateFlag, true);
+            } else {
+                itemView=new BaseThreadBeanItemView(getActivity(), updateFlag, true);
+            }
         } else {
-            itemView=(ThreadBeanItemView) convertView;
+            itemView=(BaseItemView) convertView;
         }
         itemView.update(status, updateFlag, true);
         itemView.setOnClickListener(new View.OnClickListener() {
@@ -190,20 +208,35 @@ public abstract class RecyclerViewFragment extends AbsBaseListFragment<Status> {
             }
         });
 
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("time", "time:getView,bindview==>"+(SystemClock.uptimeMillis()-start));
+        }
         return itemView;
     }
 
     public View newView(ViewGroup parent, int viewType) {
         //WeiboLog.d(TAG, "newView:" + parent + " viewType:" + viewType);
-        ThreadBeanItemView itemView=null;
+        BaseItemView itemView=null;
         boolean updateFlag=true;
         if (mScrollState!=RecyclerView.SCROLL_STATE_IDLE) {
             updateFlag=false;
         }
-        itemView=new ThreadBeanItemView(getActivity(), updateFlag, true);
+        if (LayoutAdapter.TYPE_PICTURE==viewType) {
+            itemView=new ThreadBeanItemView(getActivity(), updateFlag, true);
+        } else {
+            itemView=new BaseThreadBeanItemView(getActivity(), updateFlag, true);
+        }
         return itemView;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        Status status=mDataList.get(position);
+        if (null==status.thumbs&&(null==status.retweetedStatus||null==status.retweetedStatus.thumbs)) {
+            return LayoutAdapter.TYPE_BASE;
+        }
+        return LayoutAdapter.TYPE_PICTURE;
+    }
     //------------------------------------------
 
 }

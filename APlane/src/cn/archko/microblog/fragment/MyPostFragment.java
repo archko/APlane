@@ -80,13 +80,14 @@ public class MyPostFragment extends RecyclerViewFragment {
     /**
      * 需要注意,在主页时,需要缓存图片数据.所以cache为true,其它的不缓存,比如随便看看.
      *
-     * @param position
      * @param convertView
      * @param parent
+     * @param position
+     * @param itemType
      * @return
      */
     @Override
-    public View getView(SimpleViewHolder holder, final int position) {
+    public View getView(SimpleViewHolder holder, final int position, int itemType) {
         //WeiboLog.d(TAG, "getView.pos:" + position + " holder:" + holder);
 
         View convertView=holder.baseItemView;
@@ -235,7 +236,9 @@ public class MyPostFragment extends RecyclerViewFragment {
                 case ActionResult.ACTION_FALL:
                     ActionResult actionResult=(ActionResult) msg.obj;
                     NotifyUtils.showToast(actionResult.reslutMsg, Toast.LENGTH_LONG);
-                    WeiboLog.d(TAG, "delete status failed."+actionResult.reslutMsg);
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d(TAG, "delete status failed."+actionResult.reslutMsg);
+                    }
 
                     ArrayList<Long> sucIds=(ArrayList<Long>) actionResult.obj;
                     ArrayList<Long> failedIds=(ArrayList<Long>) (actionResult.results)[0];
@@ -276,7 +279,9 @@ public class MyPostFragment extends RecyclerViewFragment {
                     }
                     find=false;
                 }
-                WeiboLog.d(TAG, "新的数据集合为："+dataList.size());
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "新的数据集合为："+dataList.size());
+                }
             }
         }
     };
@@ -316,7 +321,9 @@ public class MyPostFragment extends RecyclerViewFragment {
      * 快速转发,因为自己发布的微博不能转发,所以在这里用于删除.
      */
     public void quickRepostStatus() {
-        WeiboLog.d(TAG, "delete status.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "delete status.");
+        }
         if (selectedPos==-1) {
             return;
         }
@@ -345,7 +352,9 @@ public class MyPostFragment extends RecyclerViewFragment {
      * 批量删除用ActionMode来处理.
      */
     public void commentStatus() {
-        WeiboLog.d(TAG, "batch delete status.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "batch delete status.");
+        }
         turnOnActionMode();
         /*ListView listView=mListView;
         listView.setItemChecked(selectedPos, true);*/
@@ -354,7 +363,9 @@ public class MyPostFragment extends RecyclerViewFragment {
 
     //--------------------- action mode ---------------------
     private void turnOnActionMode() {
-        WeiboLog.d(TAG, "turnOnActionMode");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "turnOnActionMode");
+        }
         mMode=getActivity().startActionMode(new StatusActionMode());
         /*ListView lv = mListView;
         lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);*/
@@ -365,7 +376,9 @@ public class MyPostFragment extends RecyclerViewFragment {
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            WeiboLog.d(TAG, "onCreateActionMode");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "onCreateActionMode");
+            }
             getActivity().getMenuInflater().inflate(R.menu.status_mode_menu, menu);
 
             int selectId=R.drawable.ic_action_select_invert_light;
@@ -396,7 +409,9 @@ public class MyPostFragment extends RecyclerViewFragment {
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            WeiboLog.d(TAG, "onActionItemClicked:"+item);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "onActionItemClicked:"+item);
+            }
             int itemId=item.getItemId();
             if (itemId==R.id.delete) {
                 actionModeDelete();
@@ -411,7 +426,9 @@ public class MyPostFragment extends RecyclerViewFragment {
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            WeiboLog.d(TAG, "onDestroyActionMode");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "onDestroyActionMode");
+            }
 
             mMode=null;
             clearSelection();

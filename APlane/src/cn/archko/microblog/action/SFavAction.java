@@ -56,7 +56,9 @@ public class SFavAction implements Action {
                 actionResult.resoultCode=ActionResult.ACTION_FALL;
                 actionResult.reslutMsg=context.getString(R.string.err_api_error);
             } else {
-                WeiboLog.d(TAG, "destroy status:"+id);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "destroy status:"+id);
+                }
                 Favorite favorite=sWeiboApi2.destroyFavorite(id);
                 if (null!=favorite) {
                     actionResult.resoultCode=ActionResult.ACTION_SUCESS;

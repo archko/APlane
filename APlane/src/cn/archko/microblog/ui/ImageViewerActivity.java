@@ -75,7 +75,9 @@ public class ImageViewerActivity extends Activity {
             }
         }
         mSelectedIdx=getIntent().getIntExtra("pos", 0);
-        WeiboLog.d("mSelectedIdx:"+mSelectedIdx);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("mSelectedIdx:"+mSelectedIdx);
+        }
 
         if (null==mImageBeans) {
             NotifyUtils.showToast("no urls.");
@@ -105,7 +107,9 @@ public class ImageViewerActivity extends Activity {
         mViewPager.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
-                WeiboLog.d("onPreDraw:"+mSelectedIdx);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("onPreDraw:"+mSelectedIdx);
+                }
                 mViewPager.getViewTreeObserver().removeOnPreDrawListener(this);
                 //if (mSelectedIdx==0) {
                 mPagerAdapter.onPageSelected(mSelectedIdx);
@@ -131,7 +135,9 @@ public class ImageViewerActivity extends Activity {
         AKSnapImageView imageView=mPagerAdapter.getAKSnapImageView(mViewPager.getCurrentItem());
         if (null!=imageView) {
             if (!imageView.isImageDownloaded()) {
-                WeiboLog.d("正在下载中...");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("正在下载中...");
+                }
                 NotifyUtils.showToast("正在下载中...");
                 return;
             }
@@ -141,19 +147,27 @@ public class ImageViewerActivity extends Activity {
                 if (!TextUtils.isEmpty(path)) {
                     File file=new File(path);
                     if (file.exists()) {
-                        WeiboLog.d("保存文件:"+path);
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d("保存文件:"+path);
+                        }
                         new SaveImageTask().execute(path);
                     } else {
-                        WeiboLog.d("保存失败."+path);
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d("保存失败."+path);
+                        }
                         NotifyUtils.showToast("保存失败.");
                     }
                 }
             } else {
-                WeiboLog.d("保存失败,路径为空.");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("保存失败,路径为空.");
+                }
                 NotifyUtils.showToast("保存失败.");
             }
         } else {
-            WeiboLog.d("当前的view是空的,无法 保存.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("当前的view是空的,无法 保存.");
+            }
         }
     }
 
@@ -220,7 +234,9 @@ public class ImageViewerActivity extends Activity {
 
         @Override
         public void onPageSelected(int i) {
-            WeiboLog.d("onPageSelected."+i);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("onPageSelected."+i);
+            }
             mSelectedIdx=i;
             updatePager();
 
@@ -229,7 +245,9 @@ public class ImageViewerActivity extends Activity {
                 int key=mFragmentArray.keyAt(k);
                 WeakReference<AKSnapImageView> viewWeakReference=mFragmentArray.get(key);
                 if (null!=viewWeakReference&&null!=viewWeakReference.get()) {
-                    WeiboLog.d("size:"+size+" key:"+key+" view:"+viewWeakReference.get());
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d("size:"+size+" key:"+key+" view:"+viewWeakReference.get());
+                    }
                     final AKSnapImageView imagePageView=(AKSnapImageView) viewWeakReference.get();
                     if (key==i) {
                         mHandler.postDelayed(new Runnable() {
@@ -242,7 +260,9 @@ public class ImageViewerActivity extends Activity {
                         imagePageView.loadThumb();
                     }
                 } else {
-                    WeiboLog.d("key:"+key);
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d("key:"+key);
+                    }
                 }
             }
         }

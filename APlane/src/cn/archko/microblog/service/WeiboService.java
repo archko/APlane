@@ -58,21 +58,27 @@ public class WeiboService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        WeiboLog.d(TAG, "WeiboService.onBind");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "WeiboService.onBind");
+        }
         return myBinder;
     }
 
     //  重新绑定时调用该方法
     @Override
     public void onRebind(Intent intent) {
-        WeiboLog.d(TAG, "WeiboService.onRebind");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "WeiboService.onRebind");
+        }
         super.onRebind(intent);
     }
 
     //  解除绑定时调用该方法
     @Override
     public boolean onUnbind(Intent intent) {
-        WeiboLog.d(TAG, "WeiboService.onUnbind");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "WeiboService.onUnbind");
+        }
         return super.onUnbind(intent);
     }
 
@@ -120,7 +126,9 @@ public class WeiboService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        WeiboLog.d(TAG, "WeiboService.onCreate");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "WeiboService.onCreate");
+        }
         final PowerManager powerManager=(PowerManager) getSystemService(Context.POWER_SERVICE);
         if (powerManager!=null&&mWakeLock==null) {
             mWakeLock=powerManager.newWakeLock(PowerManager.ON_AFTER_RELEASE
@@ -156,7 +164,9 @@ public class WeiboService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        WeiboLog.d(TAG, "WeiboService.onDestroy");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "WeiboService.onDestroy");
+        }
 
         try {
             mNM.cancel(R.string.local_service_started);
@@ -172,7 +182,9 @@ public class WeiboService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        WeiboLog.d(TAG, "onStartCommand,flags:"+flags+" startId:"+startId);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onStartCommand,flags:"+flags+" startId:"+startId);
+        }
 
         /*if (intent!=null) {
             final String action=intent.getAction();
@@ -192,7 +204,9 @@ public class WeiboService extends Service {
      */
     private void doTask() {
         if (!App.hasInternetConnection(this)) {
-            WeiboLog.d(TAG, "no internet connection.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "no internet connection.");
+            }
             return;
         }
 
@@ -205,7 +219,9 @@ public class WeiboService extends Service {
 
         try {
             long currentUserId=settings.getLong(Constants.PREF_CURRENT_USER_ID, -1);
-            WeiboLog.d(TAG, "currentUserId:"+currentUserId);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "currentUserId:"+currentUserId);
+            }
             if (currentUserId!=-1) {
                 SinaUnreadApi unreadApi=new SinaUnreadApi();
                 unreadApi.updateToken();
@@ -231,7 +247,9 @@ public class WeiboService extends Service {
 
                     //showNotification(unread, null);
                 } else {
-                    WeiboLog.d(TAG, "没有新微博:");
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d(TAG, "没有新微博:");
+                    }
                 }
             }
         } catch (Exception ex) {
@@ -249,10 +267,14 @@ public class WeiboService extends Service {
      * @param startId
      */
     private void fetchNewStatuses(Intent intent, int startId) {
-        WeiboLog.d(TAG, "fetchNewStatuses.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "fetchNewStatuses.");
+        }
         boolean chk_new_status=settings.getBoolean(PrefsActivity.PREF_AUTO_CHK_NEW_STATUS, true);
         if (!chk_new_status) {
-            WeiboLog.d(TAG, "no chk_new_status.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "no chk_new_status.");
+            }
             mServiceHandler.removeCallbacksAndMessages(null);
             return;
         }
@@ -266,7 +288,9 @@ public class WeiboService extends Service {
         }
 
         try {
-            WeiboLog.d(TAG, "WeiboService.onStartCommand.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "WeiboService.onStartCommand.");
+            }
             Message msg=mServiceHandler.obtainMessage();
             msg.arg1=startId;
             mServiceHandler.sendMessage(msg);
@@ -278,17 +302,23 @@ public class WeiboService extends Service {
     //--------------------- 帐户认证操作 ---------------------
     void oauth2(Intent intent) {
         if (isOauthing) {
-            WeiboLog.d(TAG, "isOauthing.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "isOauthing.");
+            }
             //return;
         }
 
         if (intent==null||null==intent.getSerializableExtra("oauth_bean")) {
-            WeiboLog.d(TAG, "oauth2,intent =null.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "oauth2,intent =null.");
+            }
             return;
         }
 
         OauthBean oauthBean=(OauthBean) intent.getSerializableExtra("oauth_bean");
-        WeiboLog.d(TAG, "添加任务:"+oauthBean);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "添加任务:"+oauthBean);
+        }
         if (null!=oauthBean) {
         }
     }

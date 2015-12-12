@@ -93,7 +93,9 @@ public class HotPickFragment extends RecyclerViewFragment {
 
     public SStatusData<Status> getStatuses(Long sinceId, Long maxId, int c, int p)
         throws WeiboException {
-        WeiboLog.d(TAG, " HotPickFragment.getStatuses."+sinceId+" maxId:"+maxId+" count:"+c+" page:"+p+" category:"+category);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, " HotPickFragment.getStatuses."+sinceId+" maxId:"+maxId+" count:"+c+" page:"+p+" category:"+category);
+        }
         isNewCategory=false;
         SStatusData<Status> sStatusData=null;
         /*SWeiboApi2 sWeiboApi2=((SWeiboApi2) App.getMicroBlog(App.getAppContext()));

@@ -57,21 +57,27 @@ public class SendTaskService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        WeiboLog.d(TAG, "onBind");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onBind");
+        }
         return myBinder;
     }
 
     //  重新绑定时调用该方法
     @Override
     public void onRebind(Intent intent) {
-        WeiboLog.d(TAG, "onRebind");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onRebind");
+        }
         super.onRebind(intent);
     }
 
     //  解除绑定时调用该方法
     @Override
     public boolean onUnbind(Intent intent) {
-        WeiboLog.d(TAG, "onUnbind");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onUnbind");
+        }
         return super.onUnbind(intent);
     }
 
@@ -105,13 +111,17 @@ public class SendTaskService extends Service {
         public void handleMessage(final Message msg) {
             final SendTaskService service=mService.get();
             if (service==null) {
-                WeiboLog.d(TAG, "service == null");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "service == null");
+                }
                 return;
             }
 
             switch (msg.what) {
                 case MSG_STOP_TASK: {
-                    WeiboLog.d(TAG, "handle stop");
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d(TAG, "handle stop");
+                    }
                     service.stopTask();
                 }
 
@@ -128,7 +138,9 @@ public class SendTaskService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        WeiboLog.d(TAG, "onCreate");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onCreate");
+        }
         mNM=(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         settings=PreferenceManager.getDefaultSharedPreferences(this);
@@ -150,7 +162,9 @@ public class SendTaskService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        WeiboLog.d(TAG, "onDestroy");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onDestroy");
+        }
 
         try {
             mNM.cancel(R.string.local_service_started);
@@ -190,13 +204,17 @@ public class SendTaskService extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
-        WeiboLog.d(TAG, "onStart:"+" startId:"+startId);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onStart:"+" startId:"+startId);
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        WeiboLog.d(TAG, "onStartCommand,flags:"+flags+" startId:"+startId);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onStartCommand,flags:"+flags+" startId:"+startId);
+        }
 
         addTaskToQueue(intent, startId);
         // We want this service to continue running until it is explicitly
@@ -248,7 +266,9 @@ public class SendTaskService extends Service {
         }
         SendTask task=(SendTask) intent.getSerializableExtra("send_task");
         int type=intent.getIntExtra("type", TYPE_ORI_TASK);
-        WeiboLog.d(TAG, "添加任务:"+task);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "添加任务:"+task);
+        }
         if (type==TYPE_ORI_TASK) {
             SendTaskHandler.addTask(task);
         } else {
@@ -261,7 +281,9 @@ public class SendTaskService extends Service {
     }
 
     public void stopTask() {
-        WeiboLog.d(TAG, "stopTask");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "stopTask");
+        }
         stopTaskHandler();
     }
 
@@ -346,11 +368,15 @@ public class SendTaskService extends Service {
                 if (App.hasInternetConnection(App.getAppContext())) {
                     addTaskToQueue(null, 0);
                 } else {
-                    WeiboLog.d(TAG, "receiv network changed");
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d(TAG, "receiv network changed");
+                    }
                     stopTask();
                 }
             } else if (ACTION_STOP_TASK.equals(action)) {
-                WeiboLog.d(TAG, "receiv stop action");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "receiv stop action");
+                }
                 stopTask();
             }
         }

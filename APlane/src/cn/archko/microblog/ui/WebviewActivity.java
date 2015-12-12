@@ -57,7 +57,8 @@ public class WebviewActivity extends SkinFragmentActivity {
         mActionBar.setDisplayShowTitleEnabled(true);
         mActionBar.setDisplayHomeAsUpEnabled(true);
         //mActionBar.setDisplayShowHomeEnabled(false);
-        mActionBar.setHomeButtonEnabled(true);
+        mActionBar.setHomeButtonEnabled(false);
+        mActionBar.setDisplayUseLogoEnabled(false);
 
         setProgressBarVisibility(true);
         setProgressBarIndeterminateVisibility(false);
@@ -177,7 +178,9 @@ public class WebviewActivity extends SkinFragmentActivity {
     }
 
     private void setCustomActionBar() {
-        WeiboLog.d("setCustomActionBar");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("setCustomActionBar");
+        }
         View cusActionBar=getLayoutInflater().inflate(R.layout.ak_webview_nav, null);
         mActionBar.setCustomView(cusActionBar);
         mActionBar.setDisplayShowCustomEnabled(true);
@@ -264,7 +267,9 @@ public class WebviewActivity extends SkinFragmentActivity {
     }
 
     private void changeOriention(int orientation) {
-        WeiboLog.d("changeOriention:"+orientation);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("changeOriention:"+orientation);
+        }
         if (orientation==Configuration.ORIENTATION_PORTRAIT) {
             mActionBar.show();
             DisplayUtils.setFullscreen(getWindow(), false);

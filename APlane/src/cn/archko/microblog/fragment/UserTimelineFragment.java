@@ -91,7 +91,9 @@ public class UserTimelineFragment extends RecyclerViewFragment {
                 userId=intent.getLongExtra("user_id", -1);
                 userScreenName=intent.getStringExtra("screen_name");
                 if (userId==-1) {
-                    WeiboLog.d(TAG, "用户的id错误，无法查看其微博信息。");
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d(TAG, "用户的id错误，无法查看其微博信息。");
+                    }
                     NotifyUtils.showToast("用户的id错误，无法查看其微博信息。");
 
                     return;

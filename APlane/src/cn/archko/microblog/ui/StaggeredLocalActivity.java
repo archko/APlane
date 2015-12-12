@@ -66,7 +66,7 @@ public class StaggeredLocalActivity extends SkinFragmentActivity {
         mActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         mActionBar.setDisplayShowTitleEnabled(true);
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setDisplayShowHomeEnabled(true);
+        mActionBar.setDisplayShowHomeEnabled(false);
         //mActionBar.setHomeButtonEnabled(true);
         mActionBar.setTitle("查看缓存图片");
 
@@ -128,7 +128,9 @@ public class StaggeredLocalActivity extends SkinFragmentActivity {
         ApolloUtils.execute(false, new AsyncTask<Object, Object, ArrayList<ImageBean>>() {
             @Override
             protected ArrayList<ImageBean> doInBackground(Object... params) {
-                WeiboLog.d("", "file path:"+filepath);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("", "file path:"+filepath);
+                }
                 File dir=new File(filepath);
                 if (dir.exists()) {
                     File[] files=dir.listFiles(new FileFilter() {
@@ -146,7 +148,9 @@ public class StaggeredLocalActivity extends SkinFragmentActivity {
                             return true;
                         }
                     });
-                    WeiboLog.d("", "file length:"+files.length);
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d("", "file length:"+files.length);
+                    }
                     /*List<File> fileList=Arrays.asList(files);
                     Collections.sort(fileList, new Comparator<File>() {
                         @Override
@@ -283,7 +287,9 @@ public class StaggeredLocalActivity extends SkinFragmentActivity {
             ImageBean ImageBean=(ImageBean) mAdapter.mItems.get(pos);
             File file=new File(ImageBean.path);
             boolean flag=file.delete();
-            WeiboLog.d("doDelete", "pos:"+pos+" flag:"+flag+" delete file:"+file);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("doDelete", "pos:"+pos+" flag:"+flag+" delete file:"+file);
+            }
             return file;
         }
         return null;

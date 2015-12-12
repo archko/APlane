@@ -82,7 +82,9 @@ public class SplashActivity extends NavModeActivity {
     public void createShortCut() {
         SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(this);
         int hasShortcuts=preferences.getInt(Constants.SHORTCUTS, -1);
-        WeiboLog.d(TAG, "hasShortcuts:"+hasShortcuts);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "hasShortcuts:"+hasShortcuts);
+        }
         if (hasShortcuts>0) {
             return;
         }
@@ -110,7 +112,9 @@ public class SplashActivity extends NavModeActivity {
      * 检查更新，这里一天检查一次
      */
     private void checkUpdate() {
-        WeiboLog.d("checkUpdate");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("checkUpdate");
+        }
 
         if (!App.hasInternetConnection(SplashActivity.this)) {
             WeiboLog.w(TAG, "没有网络，不检查更新。");
@@ -123,7 +127,9 @@ public class SplashActivity extends NavModeActivity {
         SharedPreferences options=PreferenceManager.getDefaultSharedPreferences(SplashActivity.this);
         boolean autoChkUpdate=options.getBoolean(PrefsActivity.PREF_AUTO_CHK_UPDATE, true);
         if (!autoChkUpdate) {
-            WeiboLog.d("不自动检查更新。");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("不自动检查更新。");
+            }
             init();
             return;
         }
@@ -146,7 +152,9 @@ public class SplashActivity extends NavModeActivity {
         WeiboLog.i("update.time:"+time+" now:"+now+" currVersionCode:"+currVersionCode);
 
         if (delta<0&&time!=-1) {
-            WeiboLog.d(TAG, "不需要检查更新，近一天刚检查过，delta:"+delta+" time:"+time);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "不需要检查更新，近一天刚检查过，delta:"+delta+" time:"+time);
+            }
             init();
             return;
         }
@@ -171,15 +179,21 @@ public class SplashActivity extends NavModeActivity {
                     updateInfo=WeiboParser.parseUpdateInfo(xml);
                     String m="";
                     if ("-1".equals(updateInfo.hasNewVer)) {
-                        WeiboLog.d("没有新版本，或者检查更新出错，直接进入。");
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d("没有新版本，或者检查更新出错，直接进入。");
+                        }
                         init();
                     } else {
                         if (Integer.valueOf(updateInfo.newVer)>cvd) {
-                            WeiboLog.d("有新版本.");
+                            if (WeiboLog.isDEBUG()) {
+                                WeiboLog.d("有新版本.");
+                            }
                             updateFlag=true;
                         }
 
-                        WeiboLog.d(TAG, "updateInfo:"+updateInfo+" updateFlag:"+updateFlag);
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d(TAG, "updateInfo:"+updateInfo+" updateFlag:"+updateFlag);
+                        }
 
                         if (updateFlag) {   //show update dialog
                             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -241,7 +255,9 @@ public class SplashActivity extends NavModeActivity {
                     loginIntent.putExtra("mode", "1");
                     startActivity(loginIntent);*/
                     WeiboOperation.startAccountActivity(SplashActivity.this);
-                    WeiboLog.d(TAG, "not logined.");
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d(TAG, "not logined.");
+                    }
                     finish();
                 }
             });

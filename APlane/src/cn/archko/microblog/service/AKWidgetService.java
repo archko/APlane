@@ -62,21 +62,27 @@ public class AKWidgetService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        WeiboLog.d(TAG, "onBind");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onBind");
+        }
         return myBinder;
     }
 
     //  重新绑定时调用该方法
     @Override
     public void onRebind(Intent intent) {
-        WeiboLog.d(TAG, "onRebind");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onRebind");
+        }
         super.onRebind(intent);
     }
 
     //  解除绑定时调用该方法
     @Override
     public boolean onUnbind(Intent intent) {
-        WeiboLog.d(TAG, "onUnbind");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onUnbind");
+        }
         return super.onUnbind(intent);
     }
 
@@ -91,7 +97,9 @@ public class AKWidgetService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        WeiboLog.d(TAG, "onCreate");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onCreate");
+        }
         mPrefs=PreferenceManager.getDefaultSharedPreferences(this);
         final IntentFilter filter=new IntentFilter();
         filter.addAction(SERVICECMD);
@@ -124,7 +132,9 @@ public class AKWidgetService extends Service {
             initData(false);
             final String action=intent.getAction();
             final String command=intent.getStringExtra("command");
-            WeiboLog.d(TAG, "action:"+action+" command:"+command);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "action:"+action+" command:"+command);
+            }
             if (NEXT_ACTION.equals(action)) {
                 mCurrPos++;
                 final int[] large=intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
@@ -145,13 +155,17 @@ public class AKWidgetService extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
-        WeiboLog.d(TAG, "onStart:"+" startId:"+startId);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onStart:"+" startId:"+startId);
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        WeiboLog.d(TAG, "onStartCommand,flags:"+flags+" startId:"+startId);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onStartCommand,flags:"+flags+" startId:"+startId);
+        }
 
         // We want this service to continue running until it is explicitly
         // stopped, so return sticky.

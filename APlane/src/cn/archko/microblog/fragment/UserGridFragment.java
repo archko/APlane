@@ -69,7 +69,9 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
         if (null!=bundle) {
             type=bundle.getInt("type", 0);
         }
-        WeiboLog.d(TAG, "onCreate:"+bundle+" type:"+type);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onCreate:"+bundle+" type:"+type);
+        }
 
         long aUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
         mUserId=aUserId;
@@ -83,10 +85,10 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         if (!hasAttach) {   //不在onAttach中处理,因为refresh可能先调用,以保证数据初始化.
             hasAttach=true;
         }
+        super.onActivityCreated(savedInstanceState);
     }
 
     public void _onActivityCreated(Bundle savedInstanceState) {
@@ -132,13 +134,17 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
     @Override
     public void refresh() {
         WeiboLog.i(TAG, "isLoading:"+isLoading+" status:"+(null==mDataList ? "null" : mDataList.size()));
-        loadData();
+        isRefreshing=true;
+        //page=1;
+        fetchData(-1, -1, true, true);
     }
 
     protected void showMoreView() {
         WeiboLog.v(TAG, "showMoreView");
         if (null==mLoadingLayout) {
-            WeiboLog.d(TAG, "null==mLoadingLayout.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "null==mLoadingLayout.");
+            }
             mLoadingLayout=(RelativeLayout) LayoutInflater.from(getActivity().getApplicationContext())
                 .inflate(R.layout.ak_grid_more_item, null);
             mMoreProgressBar=(ProgressBar) mLoadingLayout.findViewById(R.id.progress_bar);
@@ -156,7 +162,7 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
     }
 
     @Override
-    public View getView(SimpleViewHolder holder, final int position) {
+    public View getView(SimpleViewHolder holder, final int position, int itemType) {
         //WeiboLog.d(TAG, "getView.pos:" + position + " holder:" + holder);
 
         View convertView=holder.baseItemView;
@@ -215,7 +221,9 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
 
     @Override
     public void fetchMore() {
-        WeiboLog.d(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos+" footView:");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos+" footView:");
+        }
         if (mAdapter.getCount()>0) {
             User st;
             st=(User) mAdapter.getItem(mAdapter.getCount()-1);
@@ -370,7 +378,9 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
     protected void itemClick(int pos, View achor) {
         selectedPos=pos;
         if (selectedPos>=mDataList.size()) {
-            WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            }
             return;
         }
 
@@ -401,12 +411,16 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
     protected void viewUserStatuses() {
         try {
             if (selectedPos>=mAdapter.getCount()) {
-                WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+                }
                 return;
             }
 
             User user=mDataList.get(selectedPos);
-            WeiboLog.d(TAG, "viewUserStatuses."+user.screenName);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "viewUserStatuses."+user.screenName);
+            }
             //getActivity().finish(); //这里结束当前的Activity,因为可能造成内存不足.
             mWeiboController.viewUser(user, getActivity(), UserFragmentActivity.TYPE_USER_TIMELINE);
         } catch (Exception e) {
@@ -461,7 +475,9 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
      * 查看用户信息
      */
     public void viewStatusUser() {
-        WeiboLog.d(TAG, "viewStatusUser.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "viewStatusUser.");
+        }
         if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
             return;
@@ -482,7 +498,9 @@ public abstract class UserGridFragment extends AbsBaseListFragment<User> {   //T
      */
     protected void followUser() {
         if (isFollowing) {
-            WeiboLog.d("正在处理关系.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("正在处理关系.");
+            }
             return;
         }
         FollwingTask follwingTask=new FollwingTask();

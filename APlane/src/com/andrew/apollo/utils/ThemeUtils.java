@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import cn.archko.microblog.R;
 import com.me.microblog.App;
@@ -43,9 +44,9 @@ public final class ThemeUtils {
             bgSplit.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
             actionBar.setSplitBackgroundDrawable(bgSplit);
         } else if ("2".equals(themeId)){
-            //Drawable bg=(Drawable) context.getResources().getDrawable(R.drawable.abs__ab_solid_light_holo);
+            Drawable bg=(Drawable) context.getResources().getDrawable(R.color.orange500);
             //bg.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-            actionBar.setBackgroundDrawable(null);
+            actionBar.setBackgroundDrawable(bg);
 
             //Drawable bgSplit=(Drawable) context.getResources().getDrawable(R.drawable.abs__ab_bottom_solid_light_holo);
             //bgSplit.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);

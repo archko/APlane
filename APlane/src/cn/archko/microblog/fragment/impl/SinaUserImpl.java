@@ -29,7 +29,9 @@ public class SinaUserImpl extends AbsStatusImpl<User> {
             Intent intent=(Intent) params[0];
             String nickName=intent.getStringExtra("nickName");
 
-            WeiboLog.d(TAG, "nickName:"+nickName);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "nickName:"+nickName);
+            }
             if (!TextUtils.isEmpty(nickName)) {
                 return loadUserByName(nickName);
             } else {
@@ -53,7 +55,9 @@ public class SinaUserImpl extends AbsStatusImpl<User> {
         if (-1!=userid) {
             try {
                 User mUser=sinaUserApi.getUser(userid);
-                WeiboLog.d(TAG, "要查询的userid为:"+userid+" ..."+mUser);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "要查询的userid为:"+userid+" ..."+mUser);
+                }
                 sStatusData.mData=mUser;
                 sStatusData.errorCode=0;
             } catch (Exception e) {
@@ -65,7 +69,9 @@ public class SinaUserImpl extends AbsStatusImpl<User> {
             if (null!=screeName&&!"".equals(screeName)) {
                 try {
                     User mUser=sinaUserApi.getUser(screeName);
-                    WeiboLog.d(TAG, "要查询的scree_name为:"+screeName+" ..."+mUser);
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d(TAG, "要查询的scree_name为:"+screeName+" ..."+mUser);
+                    }
                     sStatusData.errorCode=0;
                     sStatusData.mData=mUser;
                 } catch (Exception e) {
@@ -97,7 +103,9 @@ public class SinaUserImpl extends AbsStatusImpl<User> {
             }
             nickName.trim();
             User mUser=sinaUserApi.getUser(nickName);
-            WeiboLog.d(TAG, "要查询的nickName为:"+nickName+" ..."+mUser);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "要查询的nickName为:"+nickName+" ..."+mUser);
+            }
             sStatusData.errorCode=0;
             sStatusData.mData=mUser;
         } catch (Exception e) {

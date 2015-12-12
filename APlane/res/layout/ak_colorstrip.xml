@@ -4,5 +4,5 @@
     android:id="@+id/colorstrip"
     android:layout_width="match_parent"
     android:layout_height="@dimen/colorstrip_height"
-    android:background="@color/DeepSkyBlue"
+    android:background="@color/orange400"
     tools:ignore="Overdraw"/>

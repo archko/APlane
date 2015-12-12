@@ -23,7 +23,9 @@ public class PlaceFriendsFragment extends PlaceStatusListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WeiboLog.d(TAG, "onCreate:");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onCreate:");
+        }
     }
 
     ///////////////////-----------------
@@ -81,7 +83,9 @@ public class PlaceFriendsFragment extends PlaceStatusListFragment {
     protected void itemClick(View achor) {
         NotifyUtils.showToast("not implemented!");
         if (selectedPos>=mDataList.size()) {
-            WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            }
             return;
         }
 

@@ -85,10 +85,14 @@ public class AutoCompleteView extends android.widget.AutoCompleteTextView implem
         String txt=editable.toString();
         int index=getSelectionStart();
         int end=getSelectionEnd();
-        WeiboLog.d(TAG, "index:"+index+" txt:"+txt+" end:"+end);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "index:"+index+" txt:"+txt+" end:"+end);
+        }
         String startTxt=txt.substring(0, index);
         String endTxt=txt.substring(end);
-        WeiboLog.d(TAG, "startTxt:"+startTxt+" endTxt:"+endTxt);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "startTxt:"+startTxt+" endTxt:"+endTxt);
+        }
 
         /*08-03 15:59:32.714: D/AutoCompleteView(6606): index:11 txt:ygfsbnhgv @@ end:11
         08-03 15:59:32.714: D/AutoCompleteView(6606): startTxt:ygfsbnhgv @ endTxt:@*/

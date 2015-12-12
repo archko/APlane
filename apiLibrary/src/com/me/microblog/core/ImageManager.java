@@ -149,7 +149,9 @@ public class ImageManager {
             return bitmap;
         }
 
-        WeiboLog.d(TAG, "download image:" + url);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "download image:" + url);
+        }
         bitmap = downloadImage2(url, dir, cache);
         if (null != bitmap) {
             ImageCache.getInstance(App.getAppContext()).addBitmapToMemCache(url, bitmap);
@@ -299,8 +301,10 @@ public class ImageManager {
             bitmap = Bitmap.createBitmap(bitmap, 0, half_diff, newWidth, newHeight);
         }
 
-        WeiboLog.d(TAG, newWidth + " width");
-        WeiboLog.d(TAG, newHeight + " height");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, newWidth + " width");
+            WeiboLog.d(TAG, newHeight + " height");
+        }
 
         return bitmap;
     }
@@ -316,7 +320,9 @@ public class ImageManager {
      */
     public Bitmap loadBitmapFromSysByUrl(String url, String dir) {
         String path = dir + WeiboUtils.getWeiboUtil().getMd5(url) + WeiboUtils.getExt(url);
-        WeiboLog.d(TAG, "loadBitmapFromSysByUrl.path:" + path);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "loadBitmapFromSysByUrl.path:" + path);
+        }
         return loadBitmapFromSysByPath(path);
     }
 
@@ -330,7 +336,9 @@ public class ImageManager {
      */
     public Bitmap loadBitmapFromSysByUrl(String url, String dir, int ratio) {
         String path = dir + WeiboUtils.getWeiboUtil().getMd5(url) + WeiboUtils.getExt(url);
-        WeiboLog.d(TAG, "loadBitmapFromSysByUrl.path:" + path + " ratio:" + ratio);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "loadBitmapFromSysByUrl.path:" + path + " ratio:" + ratio);
+        }
         return loadBitmapFromSysByPath(path, ratio);
     }
 
@@ -485,8 +493,10 @@ public class ImageManager {
                 int heightRatio = (int) Math.ceil(options.outHeight / (float) dh);
                 int widthRatio = (int) Math.ceil(options.outWidth / (float) dw);
 
-                WeiboLog.d(TAG, "widthRatio:" + widthRatio + " width:" + options.outWidth +
-                    " height:" + options.outHeight + " dw:" + dw + " dh:" + dh + " heightRatio:" + heightRatio);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "widthRatio:"+widthRatio+" width:"+options.outWidth+
+                        " height:"+options.outHeight+" dw:"+dw+" dh:"+dh+" heightRatio:"+heightRatio);
+                }
 
                 if (widthRatio > 1 || heightRatio > 1) {
                     if (heightRatio > widthRatio) {
@@ -506,7 +516,9 @@ public class ImageManager {
                 options.inSampleSize = ratio;
             }
 
-            WeiboLog.d(TAG, "inSampleSize:" + options.inSampleSize + " w:" + dw + " h:" + dh);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "inSampleSize:" + options.inSampleSize + " w:" + dw + " h:" + dh);
+            }
 
             // Decode it for real
             options.inPreferredConfig = Bitmap.Config.RGB_565;
@@ -596,8 +608,10 @@ public class ImageManager {
             int heightRatio = (int) Math.ceil(options.outHeight / (float) dh);
             int widthRatio = (int) Math.ceil(options.outWidth / (float) dw);
 
-            WeiboLog.d(TAG, "widthRatio:" + widthRatio + " width:" + options.outWidth +
-                " height:" + options.outHeight + " dw:" + dw + " dh:" + dh + " heightRatio:" + heightRatio);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "widthRatio:"+widthRatio+" width:"+options.outWidth+
+                    " height:"+options.outHeight+" dw:"+dw+" dh:"+dh+" heightRatio:"+heightRatio);
+            }
             int fullSize = options.outHeight * options.outWidth;
             if (fullSize > BITMAP_SIZE) {
                 if (fullSize >= BITMAP_SIZE * 4) {
@@ -615,7 +629,9 @@ public class ImageManager {
             options.inPreferredConfig = Bitmap.Config.RGB_565;
             options.inJustDecodeBounds = false;
             bitmap = BitmapFactory.decodeFile(filename, options);
-            WeiboLog.d(TAG, "size:" + options.inSampleSize + " bmsize:" + bitmap.getWidth() + " h:" + bitmap.getHeight());
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "size:" + options.inSampleSize + " bmsize:" + bitmap.getWidth() + " h:" + bitmap.getHeight());
+            }
         }
 
         return bitmap;
@@ -671,7 +687,9 @@ public class ImageManager {
                     // Width ratio is larger, scale according to it
                     m = widthRatio;
                 }
-                WeiboLog.d(TAG, "高宽都超过了高分辨率..");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "高宽都超过了高分辨率..");
+                }
             }
 
             options.inDither = true;

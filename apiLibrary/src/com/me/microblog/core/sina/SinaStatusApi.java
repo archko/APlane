@@ -1,5 +1,6 @@
 package com.me.microblog.core.sina;
 
+import android.os.Environment;
 import android.text.TextUtils;
 import com.me.microblog.WeiboException;
 import com.me.microblog.WeiboUtils;

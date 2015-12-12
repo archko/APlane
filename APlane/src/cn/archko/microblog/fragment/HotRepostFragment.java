@@ -41,7 +41,9 @@ public class HotRepostFragment extends RecyclerViewFragment {
     //--------------------- 数据加载 ---------------------
     public SStatusData<Status> getStatuses(Long sinceId, Long maxId, int c, int p)
         throws WeiboException {
-        WeiboLog.d(TAG, " HotRepostFragment.getStatuses."+sinceId+" maxId:"+maxId+" count:"+c+" page:"+p);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, " HotRepostFragment.getStatuses."+sinceId+" maxId:"+maxId+" count:"+c+" page:"+p);
+        }
         SStatusData<Status> sStatusData=null;
         /*SWeiboApi2 sWeiboApi2=((SWeiboApi2) App.getMicroBlog(App.getAppContext()));
         if (null==sWeiboApi2) {
@@ -74,7 +76,9 @@ public class HotRepostFragment extends RecyclerViewFragment {
         } else {*/
         //page=1;
         int status=mPrefs.getInt(Constants.PREF_SERVICE_AT, 0);
-        WeiboLog.d(TAG, "新提及我的微博数:"+status);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "新提及我的微博数:"+status);
+        }
         if (status>0) {
             if (status>Constants.WEIBO_COUNT*8) {
                 status=Constants.WEIBO_COUNT*8;

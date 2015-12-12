@@ -42,7 +42,9 @@ public class HotPickCategoryFragment extends AbstractBaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        WeiboLog.d("onAttach:"+this);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("onAttach:"+this);
+        }
         try {
             mFragmentCallback=(FragmentCallback) activity;
         } catch (ClassCastException e) {
@@ -88,7 +90,9 @@ public class HotPickCategoryFragment extends AbstractBaseFragment {
             pos--;
         }
         String name=keys[pos];
-        WeiboLog.d("选中的分类："+pos+" type："+name);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("选中的分类："+pos+" type："+name);
+        }
         //mFragmentCallback.switchTab(name, HotFragmentActivity.TYPE_HOT_STATUS_PICK);
     }
 

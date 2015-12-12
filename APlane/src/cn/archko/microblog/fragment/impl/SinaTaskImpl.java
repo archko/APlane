@@ -25,7 +25,9 @@ public class SinaTaskImpl extends AbsStatusImpl<SendTask> {
 
     @Override
     public SStatusData<SendTask> loadData(Object... params) throws WeiboException {
-        WeiboLog.d(TAG, "loadData.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "loadData.");
+        }
         /*try {
             SharedPreferences mPrefs=PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
             long currentUserId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);

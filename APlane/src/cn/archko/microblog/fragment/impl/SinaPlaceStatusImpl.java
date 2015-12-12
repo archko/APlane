@@ -36,7 +36,9 @@ public class SinaPlaceStatusImpl extends AbsStatusImpl<Status> {
                 Integer c=(Integer) params[3];
                 Integer p=(Integer) params[4];
                 String type=(String) params[6];
-                WeiboLog.d(TAG, "loadData."+type);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "loadData."+type);
+                }
 
                 if ("nearby_photos".equals(type)) {
                     AKLocation akLocation=((App) App.getAppContext()).getLocation();

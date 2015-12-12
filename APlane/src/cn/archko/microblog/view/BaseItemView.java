@@ -62,8 +62,6 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
     protected LinearLayout mLoctationlayout;    //位置布局
     protected TextView mLocation;   //位置信息
     protected SAnnotation sAnnotation;
-    public final int[] sliderColors;
-    public static int mIndex=1;
     int mResId;
     //protected DisplayImageOptions options;
 
@@ -71,15 +69,6 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
         super(context);
         mCacheDir=AppSettings.current().mCacheDir;
         mContext=context;
-        sliderColors=new int[8];
-        sliderColors[0]=R.color.holo_blue_dark;
-        sliderColors[1]=R.color.holo_blue_light;
-        sliderColors[2]=R.color.holo_blue_light_transparent;
-        sliderColors[3]=R.color.holo_green_light;
-        sliderColors[4]=R.color.holo_red_light;
-        sliderColors[5]=R.color.holo_purple;
-        sliderColors[6]=R.color.holo_orange_light;
-        sliderColors[7]=R.color.holo_orange_dark;
 
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
         if ("1".equals(themeId)) {
@@ -381,7 +370,9 @@ public abstract class BaseItemView extends LinearLayout implements IBaseItemView
                 }
             }*/
         } else {
-            WeiboLog.d(TAG, "bitmap is null:"+imgUrl);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "bitmap is null:"+imgUrl);
+            }
         }
         //DownloadPool.downloading.remove(imgUrl);
     }

@@ -188,7 +188,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             }).start();
         } else {
             NotifyUtils.showToast("刷新未完成，请稍候！");
-            WeiboLog.d(TAG, "刷新未完成，请稍候！");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "刷新未完成，请稍候！");
+            }
         }
     }
 
@@ -252,7 +254,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         }
 
         String path=dir+WeiboUtils.getWeiboUtil().getMd5(name)+WeiboUtils.getExt(name);
-        WeiboLog.d(TAG, "viewLargeBitmap:"+path);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "viewLargeBitmap:"+path);
+        }
 
         File file=new File(path);
         showBitmapBySys(file);
@@ -263,7 +267,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
      */
     private void downOriImage() {
         if (isDownloadingOri) {
-            WeiboLog.d("正在下载原图。");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("正在下载原图。");
+            }
             return;
         }
 
@@ -283,12 +289,16 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         }
 
         if (originalPic.endsWith("gif")) {
-            WeiboLog.d("gif的图片不下载原图。");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("gif的图片不下载原图。");
+            }
             //return;
         }
 
         String path=dir+WeiboUtils.getWeiboUtil().getMd5(originalPic)+WeiboUtils.getExt(originalPic);
-        WeiboLog.d(TAG, "原图.path:"+path);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "原图.path:"+path);
+        }
         final File file=new File(path);
         if (file.exists()) {
             showBitmapBySys(file);
@@ -403,7 +413,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
         }
 
         private void clickMethod(View view) {
-            WeiboLog.d(TAG, "click view:"+view);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "click view:"+view);
+            }
             int id=view.getId();
             /*if (id==R.id.status_picture) {
                 String dir=mCacheDir;
@@ -532,7 +544,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        WeiboLog.d("onStop");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("onStop");
+        }
     }
 
     @Override
@@ -546,7 +560,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
      */
     private void setStatusContent() {
         if (null==mStatus) {
-            WeiboLog.d(TAG, "Fragment结束了,或者微博内容为空.不更新内容");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "Fragment结束了,或者微博内容为空.不更新内容");
+            }
             return;
         }
 
@@ -629,7 +645,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             try {
                 mRetRepostNum.setText(getString(R.string.text_repost_num, retweetStatus.r_num));
                 mRetCommentNum.setText(getString(R.string.text_comment_num, retweetStatus.c_num));
-                WeiboLog.d(TAG, "r_num:"+retweetStatus.r_num+" c_num:"+retweetStatus.c_num);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "r_num:"+retweetStatus.r_num+" c_num:"+retweetStatus.c_num);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -722,7 +740,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId=item.getItemId();
-        WeiboLog.d(TAG, "item:"+item);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "item:"+item);
+        }
         processMenuItemSelected(itemId);
 
         return super.onOptionsItemSelected(item);
@@ -800,13 +820,17 @@ public class StatusDetailFragment extends AbstractBaseFragment {
             }
 
             String path=dir+WeiboUtils.getWeiboUtil().getMd5(mBmiddlePic)+WeiboUtils.getExt(mBmiddlePic);
-            WeiboLog.d(TAG, "DownloadThread.path:"+path);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "DownloadThread.path:"+path);
+            }
             final File file=new File(path);
             if (file.exists()) {
                 showImage(file);
                 return;
             }
-            WeiboLog.d(TAG, "需要下载图片！");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "需要下载图片！");
+            }
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -816,7 +840,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
 
             boolean result=downloadFile(mBmiddlePic, file);
             if (!isResumed()) {
-                WeiboLog.d(TAG, "Fragment结束了,图片下载失败.");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "Fragment结束了,图片下载失败.");
+                }
                 return;
             }
 
@@ -937,7 +963,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                 mHandler.sendMessage(msg);*/
                 result=true;
             } else {
-                WeiboLog.d(TAG, "code:"+conn.getResponseCode()+" message:"+conn.getResponseMessage());
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "code:"+conn.getResponseCode()+" message:"+conn.getResponseMessage());
+                }
                 result=false;
             }
         } catch (Exception e) {
@@ -959,7 +987,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                     Bitmap bitmap=null;
                     bitmap=new ImageManager().loadFullBitmapFromSys(file.getAbsolutePath(), -1);
                     if (null!=bitmap) {
-                        WeiboLog.d(TAG, "width："+bitmap.getWidth()+" height:"+bitmap.getHeight());
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d(TAG, "width："+bitmap.getWidth()+" height:"+bitmap.getHeight());
+                        }
                         /*mStatusPicture.setImageBitmap(bitmap);
                         mStatusPicture.setVisibility(View.VISIBLE);*/
                     } else {
@@ -969,7 +999,9 @@ public class StatusDetailFragment extends AbstractBaseFragment {
                     Bitmap bitmap=null;
                     bitmap=new ImageManager().loadFullBitmapFromSys(file.getAbsolutePath(), -1);
                     if (null!=bitmap) {
-                        WeiboLog.d(TAG, "width："+bitmap.getWidth()+" height:"+bitmap.getHeight());
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d(TAG, "width："+bitmap.getWidth()+" height:"+bitmap.getHeight());
+                        }
                         /*mStatusPicture.setImageBitmap(bitmap);
                         mStatusPicture.setVisibility(View.VISIBLE);*/
                     } else {

@@ -356,7 +356,9 @@ public class WeiboOperation {
         }
 
         Object[] pre(Object... params) {
-            WeiboLog.d("pre,repost.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("pre,repost.");
+            }
             com.me.microblog.bean.Status status=null;
             try {
                 String content=String.valueOf(params[0]);
@@ -375,14 +377,18 @@ public class WeiboOperation {
         }
 
         void post(Object[] resultObj) {
-            WeiboLog.d("转发结束.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("转发结束.");
+            }
             if (resultObj==null) {
                 Toast.makeText(App.getAppContext(), R.string.repost_failed, Toast.LENGTH_SHORT).show();
                 return;
             }
 
             com.me.microblog.bean.Status status=(com.me.microblog.bean.Status) resultObj[0];
-            WeiboLog.d("转发结束.status:"+status);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("转发结束.status:"+status);
+            }
             if (status!=null) {
                 Toast.makeText(App.getAppContext(), R.string.repost_suc, Toast.LENGTH_LONG).show();
             } else {

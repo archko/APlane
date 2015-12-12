@@ -37,6 +37,10 @@ public class WeiboLog {
         return logLevel;
     }
 
+    public boolean isDebug(){
+        return logLevel>=4;
+    }
+
     public static void d(String msg) {
         /*if (DEBUG) {
             Log.d(TAG, msg);
@@ -214,6 +218,9 @@ public class WeiboLog {
     }
 
     public static void printResult(String TAG, String tempData) {
+        if (!WeiboLog.isDEBUG()) {
+            return;
+        }
         if (TextUtils.isEmpty(tempData)) {
             WeiboLog.d(TAG, "result is null.");
             return;

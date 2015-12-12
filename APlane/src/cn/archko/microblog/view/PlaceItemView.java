@@ -85,11 +85,7 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
         mContentFirst.setOnTouchListener(this);
         mContentSencond.setOnTouchListener(this);
 
-        mLeftSlider.setBackgroundResource(sliderColors[mIndex]);
-        mIndex++;
-        if (mIndex>=8) {
-            mIndex=0;
-        }
+        mLeftSlider.setBackgroundResource(R.color.orange500);
     }
 
     @Override
@@ -215,7 +211,9 @@ public class PlaceItemView extends BaseItemView implements IBaseItemView {
     @Override
     public void onClick(View view) {
         if (mPortrait==view) {
-            WeiboLog.d(TAG, "onClick:");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "onClick:");
+            }
             WeiboOperation.toViewStatusUser(mContext, mStatus.user, UserFragmentActivity.TYPE_USER_INFO);
             return;
         }

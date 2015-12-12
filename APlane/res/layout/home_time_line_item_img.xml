@@ -10,7 +10,7 @@
         android:minWidth="@dimen/home_timeline_img_width"
         android:minHeight="@dimen/home_timeline_img_height"
         android:scaleType="centerCrop"
-        android:padding="2dip" android:background="@drawable/bg_profile"
+        android:padding="1px" android:background="@drawable/bg_profile"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:visibility="visible"/>
 

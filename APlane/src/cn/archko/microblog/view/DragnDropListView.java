@@ -71,7 +71,9 @@ public class DragnDropListView extends ListView {
             if (itemnum!=AdapterView.INVALID_POSITION) {
 
                 ViewGroup item=(ViewGroup) getChildAt(itemnum-getFirstVisiblePosition());
-                WeiboLog.d("DnD view", "Start dragging at "+(itemnum-getFirstVisiblePosition())+" for "+itemnum+" # "+getFirstVisiblePosition());
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("DnD view", "Start dragging at "+(itemnum-getFirstVisiblePosition())+" for "+itemnum+" # "+getFirstVisiblePosition());
+                }
                 mDragPoint=y-item.getTop();
                 mCoordOffset=((int) ev.getRawY())-y;
                 View dragger=item.findViewById(grabberId);

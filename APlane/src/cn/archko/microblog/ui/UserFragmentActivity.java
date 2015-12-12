@@ -145,49 +145,51 @@ public class UserFragmentActivity extends SkinFragmentActivity {
 
     protected void addTab() {
         int user_type=getIntent().getIntExtra("user_type", -1);
-        WeiboLog.d("user_type:"+user_type);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("user_type:"+user_type);
+        }
         Bundle bundle;
         String title;
         if (user_type==-1) {
             bundle=new Bundle();
             bundle.putInt("type", 1);
             title=getString(R.string.user_info);
-            mTabs.add(new SamplePagerItem(UserInfoFragment.class, bundle, title, Color.BLUE, Color.GRAY));
+            mTabs.add(new SamplePagerItem(UserInfoFragment.class, bundle, title, getResources().getColor(R.color.orange500), Color.GRAY));
 
             bundle=new Bundle();
             bundle.putInt("type", 1);
             title=getString(R.string.friends);
-            mTabs.add(new SamplePagerItem(UserFriendsGridFragment.class, bundle, title, Color.RED, Color.GRAY));
+            mTabs.add(new SamplePagerItem(UserFriendsGridFragment.class, bundle, title, getResources().getColor(R.color.orange500), Color.GRAY));
 
             bundle=new Bundle();
             bundle.putInt("type", 1);
             title=getString(R.string.followers);
-            mTabs.add(new SamplePagerItem(UserFollowersGridFragment.class, bundle, title, Color.YELLOW, Color.GRAY));
+            mTabs.add(new SamplePagerItem(UserFollowersGridFragment.class, bundle, title, getResources().getColor(R.color.orange500), Color.GRAY));
 
             bundle=new Bundle();
             bundle.putInt("type", 1);
             title=getString(R.string.statuses);
-            mTabs.add(new SamplePagerItem(UserTimelineFragment.class, bundle, title, Color.GREEN, Color.GRAY));
+            mTabs.add(new SamplePagerItem(UserTimelineFragment.class, bundle, title, getResources().getColor(R.color.orange500), Color.GRAY));
         } else if (user_type==TYPE_USER_SELF) {
             bundle=new Bundle();
             bundle.putInt("type", 1);
             title=getString(R.string.user_info);
-            mTabs.add(new SamplePagerItem(UserInfoFragment.class, bundle, title, Color.BLUE, Color.GRAY));
+            mTabs.add(new SamplePagerItem(UserInfoFragment.class, bundle, title, getResources().getColor(R.color.orange500), Color.GRAY));
 
             bundle=new Bundle();
             bundle.putInt("type", 1);
             title=getString(R.string.friends);
-            mTabs.add(new SamplePagerItem(UserFriendsGridFragment.class, bundle, title, Color.RED, Color.GRAY));
+            mTabs.add(new SamplePagerItem(UserFriendsGridFragment.class, bundle, title, getResources().getColor(R.color.orange500), Color.GRAY));
 
             bundle=new Bundle();
             bundle.putInt("type", 1);
             title=getString(R.string.followers);
-            mTabs.add(new SamplePagerItem(UserFollowersGridFragment.class, bundle, title, Color.YELLOW, Color.GRAY));
+            mTabs.add(new SamplePagerItem(UserFollowersGridFragment.class, bundle, title, getResources().getColor(R.color.orange500), Color.GRAY));
 
             bundle=new Bundle();
             bundle.putInt("type", 1);
             title=getString(R.string.statuses);
-            mTabs.add(new SamplePagerItem(UserTimelineFragment.class, bundle, title, Color.GREEN, Color.GRAY));
+            mTabs.add(new SamplePagerItem(UserTimelineFragment.class, bundle, title, getResources().getColor(R.color.orange500), Color.GRAY));
         }
     }
 
@@ -308,7 +310,7 @@ public class UserFragmentActivity extends SkinFragmentActivity {
         mActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         mActionBar.setDisplayShowTitleEnabled(true);
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setDisplayShowHomeEnabled(true);
+        mActionBar.setDisplayShowHomeEnabled(false);
         //mActionBar.setHomeButtonEnabled(true);
         mActionBar.setTitle(R.string.user_info);
 
@@ -399,7 +401,9 @@ public class UserFragmentActivity extends SkinFragmentActivity {
     private void refresh() {
         int index=mViewPager.getCurrentItem();
         AbstractBaseFragment current=(AbstractBaseFragment) getFragmentManager().findFragmentByTag("android:switcher:"+R.id.pager+":"+index);
-        WeiboLog.d(TAG, "refresh.current:"+current);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "refresh.current:"+current);
+        }
         current.refresh();
     }
 
@@ -413,7 +417,9 @@ public class UserFragmentActivity extends SkinFragmentActivity {
      * @param index tab索引，与上面的四个静态常量同。
      */
     public void switchTab(int index) {
-        WeiboLog.d("switchTab,"+index);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("switchTab,"+index);
+        }
         mViewPager.setCurrentItem(index);
 
     }
@@ -421,7 +427,9 @@ public class UserFragmentActivity extends SkinFragmentActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        WeiboLog.d("onNewIntent:"+intent);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("onNewIntent:"+intent);
+        }
     }
 
     //-----------------------

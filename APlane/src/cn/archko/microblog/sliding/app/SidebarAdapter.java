@@ -140,7 +140,6 @@ public class SidebarAdapter extends BaseAdapter {
         private TextView mTitle;
         private TextView mMsg;    //
         private ImageView mIcon;    //
-        private TextView mLeftSlider;
 
         private SidebarItemView(Context context) {
             super(context);
@@ -150,7 +149,6 @@ public class SidebarAdapter extends BaseAdapter {
             mIcon=(ImageView) findViewById(R.id.image);
             int pref_sidebar_color=PreferenceUtils.getInstace(App.getAppContext()).getDefaultSidebarThemeColor(App.getAppContext());
             mTitle.setTextColor(pref_sidebar_color);
-            mLeftSlider=(TextView) findViewById(R.id.left_slider);
         }
 
         public void update(final SidebarEntry entry) {
@@ -181,8 +179,7 @@ public class SidebarAdapter extends BaseAdapter {
         }
 
         public void setIndicatorVisible(boolean checked) {
-            setBackgroundResource(checked ? R.drawable.abs__list_focused_holo : android.R.color.transparent);
-            mLeftSlider.setVisibility(checked ? VISIBLE : INVISIBLE);
+            setBackgroundResource(checked ? R.color.orange400 : android.R.color.transparent);
         }
 
         @Override
@@ -205,7 +202,9 @@ public class SidebarAdapter extends BaseAdapter {
             }
             index++;
         }
-        WeiboLog.d(TAG, "index:"+index+" id:"+id);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "index:"+index+" id:"+id);
+        }
         return index;
     }
 
@@ -225,7 +224,9 @@ public class SidebarAdapter extends BaseAdapter {
      */
     public Fragment getFragment(SidebarEntry entry, int position, FragmentTransaction ft) {
         final WeakReference<Fragment> mWeakFragment=mFragmentArray.get(position);
-        WeiboLog.d(TAG, "getFragment:"+position+" weakFragment:"+mWeakFragment);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "getFragment:"+position+" weakFragment:"+mWeakFragment);
+        }
         if (mWeakFragment!=null&&mWeakFragment.get()!=null) {
             ft.attach(mWeakFragment.get());
             return mWeakFragment.get();

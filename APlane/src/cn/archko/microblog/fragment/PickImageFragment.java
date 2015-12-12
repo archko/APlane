@@ -116,7 +116,9 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         //WeiboLog.d(TAG, "args:"+getArguments());
         if (null!=getArguments()&&null!=getArguments().getString(KEY_PHOTO)) {
             String url=getArguments().getString(KEY_PHOTO);
-            WeiboLog.d(TAG, "url:"+url);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "url:"+url);
+            }
             if (null==mDataList) {
                 mDataList=new ArrayList<UploadImage>();
             }
@@ -146,7 +148,9 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                WeiboLog.d(TAG, "itemClick:"+pos);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "itemClick:"+pos);
+                }
                 selectedPos=pos;
 
                 itemClick(pos, view);
@@ -156,7 +160,9 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
 
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                WeiboLog.d(TAG, "itemLongClick:"+pos);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "itemLongClick:"+pos);
+                }
                 selectedPos=pos;
                 //showButtonBar(view);
                 itemLongClick(pos, view);
@@ -232,7 +238,7 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         return itemView;
     }
 
-    public View getView(SimpleViewHolder holder, final int position) {
+    public View getView(SimpleViewHolder holder, final int position, int itemType) {
         return null;
     }
 
@@ -397,7 +403,9 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         int menuId=item.getItemId();
-        WeiboLog.d(TAG, "onMenuItemClick:"+menuId);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onMenuItemClick:"+menuId);
+        }
         switch (menuId) {
             case Constants.OP_ID_QUICK_REPOST: {
                 quickRepostStatus();
@@ -420,7 +428,9 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
      */
     public void quickRepostStatus() {
         UploadImage image=mDataList.get(selectedPos);
-        WeiboLog.d("修改:"+image);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("修改:"+image);
+        }
         if (null==takePictureUtil) {
             takePictureUtil=new TakePictureUtil();
             //takePictureUtil.setActivity(getActivity());
@@ -435,7 +445,9 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
      */
     public void commentStatus() {
         UploadImage image=mDataList.get(selectedPos);
-        WeiboLog.d("删除:"+image);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("删除:"+image);
+        }
         mDataList.remove(selectedPos);
         mAdapter.notifyDataSetChanged();
     }
@@ -449,7 +461,9 @@ public class PickImageFragment extends AbsBaseListFragment<UploadImage> {
         Intent intent=new Intent(getActivity(), ImageViewerActivity.class);
         UploadImage image=mDataList.get(selectedPos);
         String[] imageUrls=new String[]{image.path};
-        WeiboLog.d(TAG, "view :"+image);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "view :"+image);
+        }
         intent.putExtra("thumbs", imageUrls);
         intent.putExtra("pos", 0);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

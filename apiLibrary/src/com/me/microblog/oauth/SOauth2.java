@@ -226,6 +226,7 @@ public class SOauth2 extends BaseOauth2 {
         final String key, final String callback_url, final String secret, final Object[] objects) {
         WeiboLog.v("binds:" + username + " p:" + password);
         final OauthWebView webView = new OauthWebView(context, handler);
+        webView.clearHistory();
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setSupportZoom(true);
@@ -328,7 +329,9 @@ public class SOauth2 extends BaseOauth2 {
                         oauthBean.customSecret = secret;
                         oauthBean.callbackUrl = callback_url;
                         oauthBean.authenticationUrl = AUTHENTICATIONURL;
-                        WeiboLog.d("认证成功 oauthbean:" + oauthBean);
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d("认证成功 oauthbean:" + oauthBean);
+                        }
                         Message message = Message.obtain();
                         message.what = 0;
                         message.obj = new Object[]{oauthBean, objects};
@@ -367,7 +370,9 @@ public class SOauth2 extends BaseOauth2 {
                 try {
                     //rs=super.onJsAlert(view, url, message, result);
                     if ("oauth_failed".equals(message)) {
-                        WeiboLog.d("二次，认证失败");
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d("二次，认证失败");
+                        }
                         Message msg = Message.obtain();
                         msg.what = 0;
                         msg.obj = null;

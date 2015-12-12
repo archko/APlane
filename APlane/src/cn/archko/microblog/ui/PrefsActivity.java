@@ -277,11 +277,15 @@ public class PrefsActivity extends PreferenceActivity implements
                     boolean auto_chk_new_status=prefs.getBoolean(PREF_AUTO_CHK_NEW_STATUS, true);
                     Intent intent=new Intent(PrefsActivity.this, WeiboService.class);
                     if (auto_chk_new_status) {
-                        WeiboLog.d(PREF_TAG, "sp changed,startservice.");
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d(PREF_TAG, "sp changed,startservice.");
+                        }
                         intent.setAction(WeiboService.REFRESH);
                         startService(intent);
                     } else {
-                        WeiboLog.d(PREF_TAG, "sp changed,stopservice.");
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d(PREF_TAG, "sp changed,stopservice.");
+                        }
                         stopService(intent);
                     }
                 } else if (PREF_CHK_NEW_STATUS_TIME.equals(key)) {
@@ -301,18 +305,24 @@ public class PrefsActivity extends PreferenceActivity implements
                         //((App) App.getAppContext()).clearLargeLruCache();
                     } else {
                         final int memClass=((ActivityManager) PrefsActivity.this.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
-                        WeiboLog.d("memClass:"+memClass);
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d("memClass:"+memClass);
+                        }
                         if (memClass<48) {
                             Toast.makeText(PrefsActivity.this, "您当前使用的是大图浏览模式,但内存过小,有可能会内存溢出!", Toast.LENGTH_LONG).show();
                         }
                     }
                 } else if (PREF_WEIBO_COUNT.equals(key)) {
                     int weiboCount=prefs.getInt(PREF_WEIBO_COUNT, Constants.WEIBO_COUNT);
-                    WeiboLog.d(PREF_TAG, "wc:"+weiboCount);
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d(PREF_TAG, "wc:"+weiboCount);
+                    }
                     ((App) App.getAppContext()).loadAccount(prefs);
                 } else if (Constants.PREF_THREAD_COUNT.equals(key)) {
                     int threadCount=prefs.getInt(Constants.PREF_THREAD_COUNT, Constants.THREAD_COUNT);
-                    WeiboLog.d(PREF_TAG, "tc:"+threadCount);
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d(PREF_TAG, "tc:"+threadCount);
+                    }
                     //((App) App.getAppContext()).mDownloadPool.setThreadCount(threadCount);
                 }
                 AppSettings.init();
@@ -346,7 +356,9 @@ public class PrefsActivity extends PreferenceActivity implements
             public boolean onPreferenceClick(Preference preference) {
                 Toast.makeText(PrefsActivity.this, R.string.prefs_reset_toast, Toast.LENGTH_SHORT).show();
                 //PrefsActivity.this.finish();
-                WeiboLog.d("onPreferenceClick:"+preference);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("onPreferenceClick:"+preference);
+                }
                 ApolloUtils.execute(false, new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected Void doInBackground(final Void... unused) {

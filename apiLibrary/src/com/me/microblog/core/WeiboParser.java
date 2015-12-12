@@ -1,6 +1,7 @@
 package com.me.microblog.core;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import com.me.microblog.R;
 import com.me.microblog.WeiboException;
@@ -742,6 +743,7 @@ public class WeiboParser {
      * @throws WeiboException
      */
     public static SStatusData<Status> parseStatuses2(String js) throws WeiboException {
+        long start=SystemClock.uptimeMillis();
         SStatusData<Status> sStatusData = new SStatusData<Status>();
         if ("[]".equals(js)) {
             return sStatusData;
@@ -783,6 +785,9 @@ public class WeiboParser {
 
             if (jo.has("total_number")) {
                 sStatusData.total_number = jo.optInt("total_number");
+            }
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("time", "time:parse==>" + (SystemClock.uptimeMillis() - start));
             }
         } catch (JSONException e) {
             throw new WeiboException(e.getMessage() + ":" + jo, e);
@@ -1538,7 +1543,9 @@ public class WeiboParser {
             String name = jo.optString("name");
             province.name = name;
             if ("11".equals(id) || "12".equals(id) || "31".equals(id) || "50".equals(id)) {
-                WeiboLog.d("是直辖市，不解析区。" + id);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("是直辖市，不解析区。" + id);
+                }
                 ArrayList<City> cities = new ArrayList<City>();
                 City city = new City();
                 city.id = id;
@@ -1580,7 +1587,9 @@ public class WeiboParser {
                 if (it.hasNext()) {
                     String keyString = it.next();
                     if ("90".equals(keyString)) {
-                        WeiboLog.d("其它城市不作处理。");
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d("其它城市不作处理。");
+                        }
                         continue;
                     }
                     city = new City();

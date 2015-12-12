@@ -26,7 +26,9 @@ public class PlaceNearbyPhotosFragment extends PlaceStatusListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WeiboLog.d(TAG, "onCreate:");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onCreate:");
+        }
     }
 
     @Override

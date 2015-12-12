@@ -49,7 +49,9 @@ public class SinaUserFollowersImpl extends AbsStatusImpl<User> {
 
             if (mUserId==currentUserId) {
                 int status=mPrefs.getInt(Constants.PREF_SERVICE_FOLLOWER, 0);
-                WeiboLog.d(TAG, "新粉丝数:"+status);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "新粉丝数:"+status);
+                }
                 if (status>0) {
                     if (status<weibo_count) {
                         count=status;

@@ -78,7 +78,9 @@ public class SearchActivity extends SkinFragmentActivity implements OnRefreshLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_view);
 
-        WeiboLog.d(TAG, "onCreate");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onCreate");
+        }
         imm=(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         doInit();
@@ -105,7 +107,9 @@ public class SearchActivity extends SkinFragmentActivity implements OnRefreshLis
         mSearchBtn=(ImageView) findViewById(R.id.search_btn);
         //TODO需要处理搜索按钮的切换，黑色时看不清楚。
         String themeId=PreferenceUtils.getInstace(App.getAppContext()).getDefaultTheme();
-        WeiboLog.d(TAG, "themeid;"+themeId);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "themeid;"+themeId);
+        }
         /*if ("0".equals(themeId)) {
             mSearchBtn.setImageResource(R.drawable.action_search_dark);
         } else if ("1".equals(themeId)) {
@@ -137,7 +141,9 @@ public class SearchActivity extends SkinFragmentActivity implements OnRefreshLis
         mStatusRb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                WeiboLog.d(TAG, "微博按钮选择状态改变了。"+isChecked);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "微博按钮选择状态改变了。"+isChecked);
+                }
                 if (null==mTopicStatus) {
                     mTopicStatus=new ArrayList<Status>();
                 } else {
@@ -171,8 +177,8 @@ public class SearchActivity extends SkinFragmentActivity implements OnRefreshLis
         bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         bar.setDisplayShowTitleEnabled(true);
         bar.setDisplayHomeAsUpEnabled(true);
-        bar.setDisplayShowHomeEnabled(true);
-        bar.setHomeButtonEnabled(true);
+        bar.setDisplayShowHomeEnabled(false);
+        bar.setHomeButtonEnabled(false);
         bar.setTitle(R.string.action_search);
 
         ThemeUtils.getsInstance().themeActionBar(getActionBar(), this);
@@ -221,7 +227,9 @@ public class SearchActivity extends SkinFragmentActivity implements OnRefreshLis
      * @param q
      */
     private void doSearchTopic(final String q) {
-        WeiboLog.d(TAG, "doSearchTopic");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "doSearchTopic");
+        }
         imm.hideSoftInputFromWindow(mSearchText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
         isSearching=true;
         new Thread(new Runnable() {
@@ -267,7 +275,9 @@ public class SearchActivity extends SkinFragmentActivity implements OnRefreshLis
             NotifyUtils.showToast("搜索失败：");
             return;
         }
-        WeiboLog.d(TAG, "finishSearchTopic:");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "finishSearchTopic:");
+        }
         if (data.errorCode>0&&!TextUtils.isEmpty(data.errorMsg)) {
             NotifyUtils.showToast("搜索失败："+data.errorMsg);
             WeiboLog.i(TAG, "搜索失败："+data.errorCode+" msg:"+data.errorMsg);
@@ -328,7 +338,9 @@ public class SearchActivity extends SkinFragmentActivity implements OnRefreshLis
     }
 
     void finishSearch(ArrayList<Map<String, String>> data) {
-        WeiboLog.d(TAG, "data:"+data.size());
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "data:"+data.size());
+        }
         mDataList.clear();
         if (null==data||data.size()<1) {
             NotifyUtils.showToast("搜索结果为空！");
@@ -342,7 +354,9 @@ public class SearchActivity extends SkinFragmentActivity implements OnRefreshLis
     }
 
     private void doItemClick(AdapterView<?> parent, View view, int position, long id) {
-        WeiboLog.d(TAG, "pos:"+position+" mode:"+mode);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "pos:"+position+" mode:"+mode);
+        }
         try {
             if (mode==0) {
                 doStatusClick(position);
@@ -362,7 +376,9 @@ public class SearchActivity extends SkinFragmentActivity implements OnRefreshLis
     private void doUserClick(Map<String, String> map) {
         String screenName=map.get("screen_name");
         String uid=map.get("uid");
-        WeiboLog.d(TAG, "screen_name:"+screenName+" followers_count:"+map.get("followers_count")+" uid:"+uid);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "screen_name:"+screenName+" followers_count:"+map.get("followers_count")+" uid:"+uid);
+        }
         Intent intent=new Intent(SearchActivity.this, UserFragmentActivity.class);
         intent.putExtra("nickName", screenName);
         intent.putExtra("user_id", uid);
@@ -385,14 +401,18 @@ public class SearchActivity extends SkinFragmentActivity implements OnRefreshLis
 
     @Override
     public void onRefreshFailed() {
-        WeiboLog.d(TAG, "onRefreshFailed.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onRefreshFailed.");
+        }
         //setSupportProgressBarIndeterminateVisibility(false);
     }
 
     public class TimeLineAdapter extends BaseAdapter {
 
         public TimeLineAdapter() {
-            WeiboLog.d(TAG, "CommentsFragment.TimeLineAdapter:");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "CommentsFragment.TimeLineAdapter:");
+            }
         }
 
         @Override
@@ -434,7 +454,9 @@ public class SearchActivity extends SkinFragmentActivity implements OnRefreshLis
     public class TopicLineAdapter extends BaseAdapter {
 
         public TopicLineAdapter() {
-            WeiboLog.d(TAG, "TopicLineAdapter");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "TopicLineAdapter");
+            }
         }
 
         @Override

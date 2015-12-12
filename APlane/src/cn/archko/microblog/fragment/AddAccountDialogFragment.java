@@ -138,11 +138,15 @@ public class AddAccountDialogFragment extends DialogFragment {
         mSpinner.setOnItemSelectedListener(
             new AdapterView.OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    WeiboLog.d("Spinner1: position="+position+" id="+id);
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d("Spinner1: position="+position+" id="+id);
+                    }
                 }
 
                 public void onNothingSelected(AdapterView<?> parent) {
-                    WeiboLog.d("Spinner1: unselected");
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d("Spinner1: unselected");
+                    }
                 }
             });
     }
@@ -239,7 +243,9 @@ public class AddAccountDialogFragment extends DialogFragment {
             }
 
             if (!isResumed()) {
-                WeiboLog.d("!isResumed()");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("!isResumed()");
+                }
                 return;
             }
 
@@ -257,7 +263,9 @@ public class AddAccountDialogFragment extends DialogFragment {
      */
     void oauthResult(Message msg) {
         final Object[] objects=(Object[]) msg.obj;
-        WeiboLog.d(TAG, "objects:"+objects);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "objects:"+objects);
+        }
 
         if (null==objects||objects[0]==null) {
             NotifyUtils.showToast(R.string.login2_error);
@@ -268,9 +276,13 @@ public class AddAccountDialogFragment extends DialogFragment {
         try {
             OauthBean oauthBean=(OauthBean) objects[0];
             Object[] params=(Object[]) objects[1];
-            WeiboLog.d("bean:"+oauthBean+" params:"+params);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("bean:"+oauthBean+" params:"+params);
+            }
             if (oauthBean!=null) {
-                WeiboLog.d(TAG, "认证成功。");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "认证成功。");
+                }
                 if (null!=params) {
                     String username=(String) params[0];
                     String password=(String) params[1];
@@ -282,7 +294,9 @@ public class AddAccountDialogFragment extends DialogFragment {
                 }
 
                 Uri uri=SqliteWrapper.addAccount(App.getAppContext(), oauthBean, "-1");
-                WeiboLog.d(TAG, "保存新用户："+uri+" bean:"+oauthBean);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "保存新用户："+uri+" bean:"+oauthBean);
+                }
                 if (null!=uri) {
                     NotifyUtils.showToast(R.string.account_add_suc);
                     //newTaskNoNet(new Object[]{true, -1l, -1l, 1, page, false}, null);

@@ -21,6 +21,7 @@ import com.me.microblog.bean.Status;
 import com.me.microblog.bean.User;
 import com.me.microblog.core.sina.SinaUserApi;
 import com.me.microblog.oauth.Oauth2;
+import com.me.microblog.util.NotifyUtils;
 import com.me.microblog.util.WeiboLog;
 /*import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -78,7 +79,9 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         int id=view.getId();
-        WeiboLog.d(TAG, "id:"+id);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "id:"+id);
+        }
         String imgUrl;
         /*if (mPortrait==view) {
             WeiboLog.d(TAG, "onClick:"+id);
@@ -108,8 +111,10 @@ public class UserItemView extends LinearLayout implements View.OnClickListener {
             follwingTask.execute(new Integer[]{followingType});
         } else {
             if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
-                WeiboLog.d(TAG, "web认证，token过期了.");
-                Toast.makeText(mContext, "token过期了,处理失败,可以刷新列表重新获取token.", Toast.LENGTH_LONG).show();
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "web认证，token过期了.");
+                }
+                NotifyUtils.showToast("token过期了,处理失败,可以刷新列表重新获取token.", Toast.LENGTH_LONG);
             } else {
                 FollwingTask follwingTask=new FollwingTask();
                 follwingTask.execute(new Integer[]{followingType});

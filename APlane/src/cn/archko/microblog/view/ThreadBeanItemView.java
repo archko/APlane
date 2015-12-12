@@ -21,7 +21,6 @@ import com.me.microblog.bean.AKSpannableStringBuilder;
 import com.me.microblog.bean.Status;
 import com.me.microblog.util.DateUtils;
 import com.me.microblog.util.WeiboLog;
-import com.me.microblog.view.IBaseItemView;
 
 import java.util.regex.Matcher;
 
@@ -30,16 +29,18 @@ import java.util.regex.Matcher;
  *
  * @author: archko 11-8-24
  */
-public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
+public class ThreadBeanItemView extends BaseItemView {
 
     private static final String TAG="ThreadBeanItemView";
     public TagsViewGroup mTagsViewGroup;
     public ImageAdapter mAdapter;
 
-    public ThreadBeanItemView(Context context, boolean updateFlag,
-        boolean cache) {
+    public ThreadBeanItemView(Context context, boolean updateFlag, boolean cache) {
         super(context, updateFlag);
+        initView(context);
+    }
 
+    public void initView(Context context) {
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.home_time_line_item, this);
 
         mPortrait=(ImageView) findViewById(R.id.iv_portrait);
@@ -48,9 +49,6 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
         mRepostNum=(TextView) findViewById(R.id.repost_num);
         mCommentNum=(TextView) findViewById(R.id.comment_num);
         mContentFirst=(TextView) findViewById(R.id.tv_content_first);
-        /*mStatusPicture=(ImageView) findViewById(R.id.status_picture);
-        mStatusPicture.setOnClickListener(this);
-        mStatusPictureLay=(ImageView) findViewById(R.id.status_picture_lay);*/
         mTagsViewGroup=(TagsViewGroup) findViewById(R.id.tags);
         mContentSencond=(TextView) findViewById(R.id.tv_content_sencond);
         mContentSecondLayout=(LinearLayout) findViewById(R.id.tv_content_sencond_layout);
@@ -84,11 +82,7 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
         mContentSencond.setOnTouchListener(this);
 
         //update(status, updateFlag, cache, showLargeBitmap, showBitmap);
-        mLeftSlider.setBackgroundResource(sliderColors[mIndex]);
-        mIndex++;
-        if (mIndex>=8) {
-            mIndex=0;
-        }
+        mLeftSlider.setBackgroundResource(R.color.orange500);
     }
 
     /**
@@ -142,14 +136,18 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
                 mCreateAt.setText(null);
                 mRepostNum.setText(null);
                 mCommentNum.setText(null);
-                mContentSencond.setText(null);
+                if (null!=mContentSecondLayout) {
+                    mContentSencond.setText(null);
+                }
                 mLocation.setText(null);
                 if (null!=mStatusPicture&&mStatusPictureLay!=null) {
                     mStatusPicture.setVisibility(View.GONE);
                     mStatusPictureLay.setVisibility(GONE);
                 }
-                if (mContentSencond.getVisibility()==VISIBLE) {
-                    mContentSencond.setVisibility(GONE);
+                if (null!=mContentSecondLayout) {
+                    if (mContentSencond.getVisibility()==VISIBLE) {
+                        mContentSencond.setVisibility(GONE);
+                    }
                 }
                 if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==VISIBLE) {
                     mContentSecondLayout.setVisibility(GONE);
@@ -175,51 +173,8 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
             mRepostNum.setText(getResources().getString(R.string.text_repost_num, mStatus.r_num));
             mCommentNum.setText(getResources().getString(R.string.text_comment_num, mStatus.c_num));
 
-            //处理转发的微博
-            if (mRetweetedStatus!=null) {
-                if (mContentSencond.getVisibility()==GONE) {
-                    mContentSencond.setVisibility(View.VISIBLE);
-                }
-                if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==GONE) {
-                    mContentSecondLayout.setVisibility(VISIBLE);
-                }
-
-                try {
-                    String title="@"+mRetweetedStatus.user.screenName+":"+mRetweetedStatus.text+" ";
-                    spannableString=(AKSpannableStringBuilder) mStatus.mRetweetedSpannable;
-                    if (null==spannableString) {
-                        spannableString=new AKSpannableStringBuilder(title);
-                        //WeiboUtil.highlightContent(mContext, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
-                        AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtils.ATPATTERN);
-                        AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtils.getWebPattern());
-                        mStatus.mRetweetedSpannable=spannableString;
-                    }
-                    mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
-                    //mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                if (mContentSencond.getVisibility()==VISIBLE) {
-                    mContentSencond.setVisibility(View.GONE);
-                }
-                if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==VISIBLE) {
-                    mContentSecondLayout.setVisibility(GONE);
-                }
-            }
-
-            //location
-            sAnnotation=mStatus.annotations;
-            if (null==sAnnotation||sAnnotation.place==null) {
-                if (mLoctationlayout.getVisibility()==VISIBLE) {
-                    mLoctationlayout.setVisibility(GONE);
-                }
-            } else {
-                if (mLoctationlayout.getVisibility()==GONE) {
-                    mLoctationlayout.setVisibility(VISIBLE);
-                }
-                mLocation.setText(sAnnotation.place.title);
-            }
+            setRetweetedStatus();
+            setLocation();
 
             //WeiboLog.d("update,updateFlag:"+updateFlag);
             loadPicture(updateFlag, cache);
@@ -227,6 +182,56 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
             loadPortrait(updateFlag, cache);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void setRetweetedStatus() {
+        AKSpannableStringBuilder spannableString;//处理转发的微博
+        if (mRetweetedStatus!=null) {
+            if (mContentSencond.getVisibility()==GONE) {
+                mContentSencond.setVisibility(View.VISIBLE);
+            }
+            if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==GONE) {
+                mContentSecondLayout.setVisibility(VISIBLE);
+            }
+
+            try {
+                String title="@"+mRetweetedStatus.user.screenName+":"+mRetweetedStatus.text+" ";
+                spannableString=(AKSpannableStringBuilder) mStatus.mRetweetedSpannable;
+                if (null==spannableString) {
+                    spannableString=new AKSpannableStringBuilder(title);
+                    //WeiboUtil.highlightContent(mContext, spannableString, getResources().getColor(R.color.holo_light_item_highliht_link));
+                    AKUtils.highlightAtClickable(mContext, spannableString, WeiboUtils.ATPATTERN);
+                    AKUtils.highlightUrlClickable(mContext, spannableString, WeiboUtils.getWebPattern());
+                    mStatus.mRetweetedSpannable=spannableString;
+                }
+                mContentSencond.setText(spannableString, TextView.BufferType.SPANNABLE);
+                //mContentSencond.setMovementMethod(LinkMovementMethod.getInstance());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            if (mContentSencond.getVisibility()==VISIBLE) {
+                mContentSencond.setVisibility(View.GONE);
+            }
+            if (null!=mContentSecondLayout&&mContentSecondLayout.getVisibility()==VISIBLE) {
+                mContentSecondLayout.setVisibility(GONE);
+            }
+        }
+    }
+
+    public void setLocation() {
+        //location
+        sAnnotation=mStatus.annotations;
+        if (null==sAnnotation||sAnnotation.place==null) {
+            if (mLoctationlayout.getVisibility()==VISIBLE) {
+                mLoctationlayout.setVisibility(GONE);
+            }
+        } else {
+            if (mLoctationlayout.getVisibility()==GONE) {
+                mLoctationlayout.setVisibility(VISIBLE);
+            }
+            mLocation.setText(sAnnotation.place.title);
         }
     }
 
@@ -251,7 +256,7 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
         } else {
         }
 
-        AppSettings appSettings=AppSettings.current();
+        /*AppSettings appSettings=AppSettings.current();
         if (!appSettings.showBitmap||null==thumbs||thumbs.length==0) {
             //mTagsViewGroup.setAdapter(null);
             if (mTagsViewGroup.getVisibility()==VISIBLE) {
@@ -259,12 +264,12 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
             }
             //WeiboLog.v(TAG, "setAdapter.没有图片需要显示。"+mStatus.text);
             return;
-        }
+        }*/
         //WeiboLog.v(TAG, "setAdapter.有图片显示。"+mStatus.thumbs[0]);
 
-        if (mTagsViewGroup.getVisibility()==GONE) {
+        /*if (mTagsViewGroup.getVisibility()==GONE) {
             mTagsViewGroup.setVisibility(VISIBLE);
-        }
+        }*/
         mAdapter.setUpdateFlag(updateFlag);
         mAdapter.setCache(cache);
         mAdapter.setImageUrls(thumbs);
@@ -273,7 +278,9 @@ public class ThreadBeanItemView extends BaseItemView implements IBaseItemView {
 
     @Override
     public void onClick(View view) {
-        WeiboLog.d(TAG, "onClick:"+view);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onClick:"+view);
+        }
         if (mPortrait==view) {
             /*Intent intent=new Intent(mContext, UserFragmentActivity.class);
             intent.putExtra("nickName", mStatus.user.screenName);

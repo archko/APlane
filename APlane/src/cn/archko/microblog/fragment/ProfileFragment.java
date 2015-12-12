@@ -184,13 +184,17 @@ public class ProfileFragment extends AbsStatusAbstraction<User> {
         }
 
         if (!TextUtils.isEmpty(url)) {
-            WeiboLog.d(TAG, "profileImageUrl:"+url);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "profileImageUrl:"+url);
+            }
             LoadImageTask loadImageTask=new LoadImageTask();
             loadImageTask.execute(new Object[]{url});
         }
 
         if (isUserLoaded&&user!=null) {
-            WeiboLog.d("用户已经加载过一次，不再重复加载。");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("用户已经加载过一次，不再重复加载。");
+            }
             setUserInfo(user);
             LoadImageTask loadImageTask=new LoadImageTask();
             loadImageTask.execute();
@@ -201,7 +205,9 @@ public class ProfileFragment extends AbsStatusAbstraction<User> {
         long userId=mPrefs.getLong(Constants.PREF_CURRENT_USER_ID, -1);
         String filename=App.getAppContext().getFilesDir().getAbsolutePath()+"/"+String.valueOf(userId)+Constants.USER_SELF_FILE;
         File file=new File(filename);
-        WeiboLog.d(TAG, "filename:"+filename+" file:"+file.exists());
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "filename:"+filename+" file:"+file.exists());
+        }
         if (file.exists()) {
             FileInputStream fis=null;
             try {
@@ -408,7 +414,9 @@ public class ProfileFragment extends AbsStatusAbstraction<User> {
                 case ActionResult.ACTION_FALL:
                     ActionResult actionResult=(ActionResult) msg.obj;
                     NotifyUtils.showToast(actionResult.reslutMsg, Toast.LENGTH_LONG);
-                    WeiboLog.d(TAG, "load group failed."+actionResult.reslutMsg);
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d(TAG, "load group failed."+actionResult.reslutMsg);
+                    }
 
                     break;
 
@@ -452,7 +460,9 @@ public class ProfileFragment extends AbsStatusAbstraction<User> {
             groups=data;
         }
 
-        WeiboLog.d(TAG, "updateGroup:"+data+" groups:"+groups);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "updateGroup:"+data+" groups:"+groups);
+        }
         if (null!=groups&&groups.size()>0) {
             mGroupList.clear();
             mGroupList.addAll(groups);

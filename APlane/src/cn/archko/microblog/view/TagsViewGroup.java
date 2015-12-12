@@ -6,6 +6,7 @@ package cn.archko.microblog.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
+import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -469,16 +470,15 @@ public class TagsViewGroup extends ViewGroup {
     }
 
     private void handleDataChanged() {
-        removeAllViewsInLayout();
-        tvs.clear();
-        requestLayout();
-        invalidate();
+        //long start=SystemClock.uptimeMillis();
 
         // Cache any pre-existing children, from being recycled.
         int ccount=this.getChildCount();
         for (int i=0; i<ccount; i++) {
             tvs.push(this.getChildAt(i));
         }
+
+        removeAllViewsInLayout();
         int items=mAdapter.getCount();
         // Log.d(TAG, "Adapter count: " + String.valueOf(items));
         for (int i=0; i<items; ++i) {
@@ -489,5 +489,9 @@ public class TagsViewGroup extends ViewGroup {
             }*/
             this.addView(tv, i, params);
         }
+        requestLayout();
+        //invalidate();
+        //System.out.println("time:"+ this+" time:"+(SystemClock.uptimeMillis()-start));
+        tvs.clear();
     }
 }

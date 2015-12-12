@@ -24,7 +24,7 @@ public class TaskQueueActivity extends SkinFragmentActivity implements OnRefresh
         mActionBar.setDisplayShowTitleEnabled(true);
         mActionBar.setDisplayHomeAsUpEnabled(true);
         //mActionBar.setDisplayShowHomeEnabled(false);
-        mActionBar.setHomeButtonEnabled(true);
+        mActionBar.setHomeButtonEnabled(false);
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 
         mActionBar.setTitle(R.string.tab_label_send_task);

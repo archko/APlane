@@ -47,7 +47,9 @@ public class Oauth2Handler {
                 try {
                     Activity activity = (Activity) mContext;
                     if (activity.isFinishing()) {
-                        WeiboLog.d("isFinishing()");
+                        if (WeiboLog.isDEBUG()) {
+                            WeiboLog.d("isFinishing()");
+                        }
                         return;
                     }
                 } catch (Exception e) {
@@ -75,7 +77,9 @@ public class Oauth2Handler {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
         long userId = preferences.getLong(Constants.PREF_CURRENT_USER_ID, - 1);
         OauthBean bean = SqliteWrapper.queryAccount(mContext, TwitterTable.AUTbl.WEIBO_SINA, TwitterTable.AUTbl.ACCOUNT_IS_DEFAULT, userId);
-        WeiboLog.d("oauth2:" + bean);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("oauth2:" + bean);
+        }
 
         if (null != bean && ! TextUtils.isEmpty(bean.name)) {//if (!TextUtils.isEmpty(username)&&!TextUtils.isEmpty(password)) {
             username = RC4.RunRC4(bean.name, App.KEY);
@@ -85,7 +89,9 @@ public class Oauth2Handler {
                 ouath2.oauthByWebView(new Object[]{username, password, mContext, mHandler, params});
             } else {
                 int res = SqliteWrapper.deleteAccount(App.getAppContext(), TwitterTable.AUTbl.WEIBO_SINA, TwitterTable.AUTbl.ACCOUNT_IS_DEFAULT, userId);
-                WeiboLog.d("res:" + res);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("res:" + res);
+                }
                 Message message = new Message();
                 message.arg2 = Constants.USER_PASS_IS_NULL;
                 oauthResult(message);
@@ -99,7 +105,9 @@ public class Oauth2Handler {
      * @param oauthBean
      */
     public void oauthResult(final Message msg) {
-        WeiboLog.d("bean:" + msg);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("bean:" + msg);
+        }
         Object[] objects = (Object[]) msg.obj;
         if (null == objects || objects[ 0 ] == null) {
             Toast.makeText(App.getAppContext(), App.getAppContext().getString(R.string.login2_run_error), Toast.LENGTH_LONG).show();
@@ -111,7 +119,9 @@ public class Oauth2Handler {
             OauthBean oauthBean = (OauthBean) objects[ 0 ];
             Object[] params = (Object[]) objects[ 1 ];
             if (oauthBean != null) {
-                WeiboLog.d("认证成功。" + oauthBean);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("认证成功。" + oauthBean);
+                }
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString(Constants.PREF_SOAUTH_TYPE, String.valueOf(Oauth2.OAUTH_TYPE_WEB));
@@ -138,7 +148,9 @@ public class Oauth2Handler {
         OauthBean bean = ((OauthBean) resultObj[ 1 ]);
 
         saveWeiboApi(resultObj, mContext, true);
-        WeiboLog.d("bean+" + bean);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("bean+" + bean);
+        }
         //postOauth(params);
         if (null != mOauthCallback) {
             mOauthCallback.postOauthSuc(params);
@@ -161,7 +173,9 @@ public class Oauth2Handler {
         if (null == bean) {
             bean = SqliteWrapper.queryAccount(mContext, TwitterTable.AUTbl.WEIBO_SINA, TwitterTable.AUTbl.ACCOUNT_IS_DEFAULT, userId);
         }
-        WeiboLog.d("advancedOauth2:" + bean);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("advancedOauth2:" + bean);
+        }
 
         if (null != bean && ! TextUtils.isEmpty(bean.name)) {
             username = RC4.RunRC4(bean.name, App.KEY);
@@ -210,7 +224,9 @@ public class Oauth2Handler {
         bean.expireTime = bean.time;
         App app = (App) App.getAppContext();
         app.setOauthBean(bean);
-        WeiboLog.d("new bean+" + bean);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("new bean+" + bean);
+        }
 
         Cursor cursor = null;
         try {
@@ -229,7 +245,9 @@ public class Oauth2Handler {
                     cv.put(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT, TwitterTable.AUTbl.ACCOUNT_IS_DEFAULT);
                 }
                 int res = resolver.update(uri, cv, null, null);
-                WeiboLog.d("更新token:" + res);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("更新token:" + res);
+                }
                 return true;
             } else {
                 String username = (String) resultObj[ 0 ];
@@ -254,7 +272,9 @@ public class Oauth2Handler {
                     cv.put(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT, TwitterTable.AUTbl.ACCOUNT_IS_NOT_DEFAULT);
                 }
                 Uri uri = resolver.insert(TwitterTable.AUTbl.CONTENT_URI, cv);
-                WeiboLog.d("插入新的token:" + uri);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("插入新的token:" + uri);
+                }
                 return true;
             }
         } catch (Exception e) {
@@ -281,7 +301,9 @@ public class Oauth2Handler {
         bean.time = bean.expireTime * 1000 + System.currentTimeMillis() - 100l;
         bean.expireTime = bean.time;
         App app = (App) App.getAppContext();
-        WeiboLog.d("bean+" + bean);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("bean+" + bean);
+        }
 
         Cursor cursor = null;
         try {
@@ -298,7 +320,9 @@ public class Oauth2Handler {
                 cv.put(TwitterTable.AUTbl.ACCOUNT_TIME, bean.time);
 
                 int res = resolver.update(uri, cv, null, null);
-                WeiboLog.d("更新高级token:" + res);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("更新高级token:" + res);
+                }
                 return true;
             } else {
                 String username = (String) resultObj[ 1 ];
@@ -319,7 +343,9 @@ public class Oauth2Handler {
                 cv.put(TwitterTable.AUTbl.ACCOUNT_AS_DEFAULT, TwitterTable.AUTbl.ACCOUNT_IS_NOT_DEFAULT);   //私信不能是默认的帐户
 
                 Uri uri = resolver.insert(TwitterTable.AUTbl.CONTENT_URI, cv);
-                WeiboLog.d("插入新的高级token:" + uri);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d("插入新的高级token:" + uri);
+                }
                 return true;
             }
         } catch (Exception e) {

@@ -34,7 +34,9 @@ public class SinaAtMeStatusImpl extends AbsStatusImpl<Status> {
 
     @Override
     public SStatusData<Status> loadData(Object... params) throws WeiboException {
-        WeiboLog.d(TAG, "loadData.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "loadData.");
+        }
         SStatusData<Status> sStatusData=null;
         //SWeiboApi2 sWeiboApi2=((SWeiboApi2) App.getMicroBlog(App.getAppContext()));
         SinaStatusApi sWeiboApi2=(SinaStatusApi) mAbsApi;
@@ -92,13 +94,17 @@ public class SinaAtMeStatusImpl extends AbsStatusImpl<Status> {
                 len=newList.size();
                 int oldSize=oldList.size();
                 int delta=50-len;
-                WeiboLog.d(TAG, "新数据长度："+len+" oldSize:"+oldSize+" delta:"+delta);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "新数据长度："+len+" oldSize:"+oldSize+" delta:"+delta);
+                }
                 if (delta>0) {
                     delta=oldSize-delta;
                     if (delta>0) {
                         oldList=oldList.subList(delta, oldSize);
                     }
-                    WeiboLog.d(TAG, "去除旧数据中多余的："+oldList.size()+" delta:"+delta);
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d(TAG, "去除旧数据中多余的："+oldList.size()+" delta:"+delta);
+                    }
                 }
 
                 oldList.addAll(newList);
@@ -111,11 +117,15 @@ public class SinaAtMeStatusImpl extends AbsStatusImpl<Status> {
                 mResolver.delete(TwitterTable.SStatusCommentTbl.CONTENT_URI,
                     TwitterTable.SStatusCommentTbl.UID+"="+currentUserId+" and "+
                         TwitterTable.SStatusCommentTbl.TYPE+"="+TwitterTable.SStatusCommentTbl.TYPE_STATUT, null);
-                WeiboLog.d(TAG, "新数据足够多，删除微博记录:"+len);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "新数据足够多，删除微博记录:"+len);
+                }
                 oldList=newList;
             }
             len=oldList.size();
-            WeiboLog.d(TAG, "当前所有数据长度："+len);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "当前所有数据长度："+len);
+            }
 
             ContentValues[] contentValueses=new ContentValues[len];
             ContentValues cv;

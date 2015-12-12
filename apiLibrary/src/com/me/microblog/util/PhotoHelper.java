@@ -91,10 +91,14 @@ public class PhotoHelper {
         if (null!=savedInstanceState) {
             if (null==mCurrentPhotoFile&&null!=savedInstanceState) {
                 String path=(String) savedInstanceState.get("key_photo_file");
-                WeiboLog.d(TAG, "mCurrentPhotoFile:"+path);
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "mCurrentPhotoFile:"+path);
+                }
                 if (null!=path&&null==mCurrentPhotoFile) {
                     mCurrentPhotoFile=new File(path);
-                    WeiboLog.d(TAG, "restoreImageList,file:"+path);
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d(TAG, "restoreImageList,file:"+path);
+                    }
                 }
             }
         }
@@ -104,13 +108,17 @@ public class PhotoHelper {
         if (null!=mCurrentPhotoFile) {
             outState.putString("key_photo_file", mCurrentPhotoFile.getAbsolutePath());
         }
-        WeiboLog.d(TAG, "onSaveInstanceState");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onSaveInstanceState");
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        WeiboLog.d(TAG, "onActivityResult requestCode = "+requestCode);
-        WeiboLog.d(TAG, "onActivityResult resultCode = "+resultCode);
-        WeiboLog.d(TAG, "onActivityResult data = "+data);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onActivityResult requestCode = "+requestCode);
+            WeiboLog.d(TAG, "onActivityResult resultCode = "+resultCode);
+            WeiboLog.d(TAG, "onActivityResult data = "+data);
+        }
         if (resultCode!=Activity.RESULT_OK) {// result is not correct
             return;
         } else {
@@ -149,7 +157,9 @@ public class PhotoHelper {
                     }
                 }
             } else if (requestCode==CHOOSE_LOCAL_PICTURE) {
-                WeiboLog.d(TAG, "CHOOSE_BIG_PICTURE:");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "CHOOSE_BIG_PICTURE:");
+                }
                 if (shouldCrop) {
                     doCropPhoto(data.getData());
                 } else {

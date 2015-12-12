@@ -85,14 +85,18 @@ public class AccountUserActivity extends AbstractFragmentTabsPager {
      * @param index tab索引，与上面的四个静态常量同。
      */
     void switchTab(int index) {
-        WeiboLog.d("switchTab,"+index);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("switchTab,"+index);
+        }
         mViewPager.setCurrentItem(index);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        WeiboLog.d("onNewIntent:"+intent);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("onNewIntent:"+intent);
+        }
     }
 
     //-----------------------

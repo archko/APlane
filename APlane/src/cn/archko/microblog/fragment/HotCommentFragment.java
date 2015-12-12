@@ -18,7 +18,9 @@ public class HotCommentFragment extends RecyclerViewFragment {
     //--------------------- 数据加载 ---------------------
     public SStatusData<Status> getStatuses(Long sinceId, Long maxId, int c, int p)
         throws WeiboException {
-        WeiboLog.d(TAG, " HotCommentFragment.getStatuses."+sinceId+" maxId:"+maxId+" count:"+c+" page:"+p);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, " HotCommentFragment.getStatuses."+sinceId+" maxId:"+maxId+" count:"+c+" page:"+p);
+        }
         SStatusData<Status> sStatusData=null;
         /*SWeiboApi2 sWeiboApi2=((SWeiboApi2) App.getMicroBlog(App.getAppContext()));
         if (null==sWeiboApi2) {

@@ -456,8 +456,13 @@ public class WeiboUtils {
     }
 
     public static void printResult(String TAG, String tempData) {
+        if (WeiboLog.getLogLevel()<4) {
+            return;
+        }
         if (TextUtils.isEmpty(tempData)) {
-            WeiboLog.d(TAG, "result is null.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "result is null.");
+            }
             return;
         }
         final int len = tempData.length();
@@ -465,14 +470,20 @@ public class WeiboUtils {
         int count = len / div;
         if (count > 0) {
             for (int i = 0; i < count; i++) {
-                WeiboLog.d(TAG, "result:" + tempData.substring(i * div, (i + 1) * div));
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "result:" + tempData.substring(i * div, (i + 1) * div));
+                }
             }
             int mode = len % div;
             if (mode > 0) {
-                WeiboLog.d(TAG, "result:" + tempData.substring(div * count, len));
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "result:" + tempData.substring(div * count, len));
+                }
             }
         } else {
-            WeiboLog.d(TAG, "result:" + tempData);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "result:" + tempData);
+            }
         }
     }
 
@@ -489,7 +500,9 @@ public class WeiboUtils {
         //以getRunningTasks()取得进程TaskInfo
         List<ActivityManager.RunningTaskInfo> mRunningTasks = mActivityManager.getRunningTasks(intGetTaskCounter);
         intTaskNum = mRunningTasks.size();
-        WeiboLog.d("task", "task任务数量：" + intTaskNum);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("task", "task任务数量：" + intTaskNum);
+        }
         //SLLog.d("task", "task可用内存："+fileSize(getAvailableRAM()));
         return listTask(mRunningTasks);
     }

@@ -186,7 +186,9 @@ public class CommentStatusActivity extends SkinFragmentActivity {
         String txt=editable.toString();
         int start=commentET.getSelectionStart();
         int end=commentET.getSelectionEnd();
-        WeiboLog.d(TAG, "start:"+start+" txt:"+txt+" end:"+end);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "start:"+start+" txt:"+txt+" end:"+end);
+        }
 
         String startTxt=txt.substring(0, start);
         String endTxt=txt.substring(end);
@@ -266,10 +268,11 @@ public class CommentStatusActivity extends SkinFragmentActivity {
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         mActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setHomeButtonEnabled(true);
+        mActionBar.setHomeButtonEnabled(false);
 
         mActionBar.setDisplayShowTitleEnabled(true);  //隐藏主面的标题
-        mActionBar.setDisplayShowHomeEnabled(true);   //整个标题栏
+        mActionBar.setDisplayShowHomeEnabled(false);   //整个标题栏
+        mActionBar.setDisplayUseLogoEnabled(false);
         mActionBar.setTitle(R.string.send_comment);
         _onCreate();
 

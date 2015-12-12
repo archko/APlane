@@ -46,7 +46,7 @@ public abstract class UserListFragment extends AbsBaseListFragment<User> {   //T
     }
 
     @Override
-    public View getView(SimpleViewHolder holder, final int position) {
+    public View getView(SimpleViewHolder holder, final int position, int itemType) {
         //WeiboLog.d(TAG, "getView.pos:" + position + " holder:" + holder);
 
         View convertView=holder.baseItemView;
@@ -177,12 +177,16 @@ public abstract class UserListFragment extends AbsBaseListFragment<User> {   //T
     protected void viewUserStatuses() {
         try {
             if (selectedPos>=mAdapter.getCount()) {
-                WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+                }
                 return;
             }
 
             User user=mDataList.get(selectedPos);
-            WeiboLog.d(TAG, "viewUserStatuses."+user.screenName);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "viewUserStatuses."+user.screenName);
+            }
             mWeiboController.viewUser(user, getActivity(), UserFragmentActivity.TYPE_USER_TIMELINE);
             //getActivity().finish(); //这里结束当前的Activity,因为可能造成内存不足.
         } catch (Exception e) {
@@ -245,7 +249,9 @@ public abstract class UserListFragment extends AbsBaseListFragment<User> {   //T
      * 查看用户信息
      */
     public void viewStatusUser() {
-        WeiboLog.d(TAG, "viewStatusUser.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "viewStatusUser.");
+        }
         if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
             return;

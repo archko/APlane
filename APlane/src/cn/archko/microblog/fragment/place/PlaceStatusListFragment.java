@@ -63,7 +63,9 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
      * 启动定位
      */
     protected void startMap() {
-        WeiboLog.d(TAG, "startMap.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "startMap.");
+        }
 
         mSwipeLayout.setRefreshing(true);
         if (mRefreshListener!=null) {
@@ -96,13 +98,17 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
     @Override
     public void onPause() {
         super.onPause();
-        WeiboLog.d(TAG, "onPause:"+this);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onPause:"+this);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        WeiboLog.d(TAG, "onResume:"+this);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "onResume:"+this);
+        }
     }
 
     @Override
@@ -157,7 +163,9 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
     @Override
     public void fetchMore() {
         super.fetchMore();
-        WeiboLog.d(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
+        }
         if (mAdapter.getCount()>0) {
             Status st;
             st=(Status) mAdapter.getItem(mAdapter.getCount()-1);
@@ -166,7 +174,7 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
     }
 
     @Override
-    public View getView(SimpleViewHolder holder, final int position) {
+    public View getView(SimpleViewHolder holder, final int position, int itemType) {
         //WeiboLog.d(TAG, "getView.pos:" + position + " holder:" + holder);
 
         View convertView=holder.baseItemView;
@@ -219,7 +227,9 @@ public class PlaceStatusListFragment extends RecyclerViewFragment {
      * 删除，需要根据不同的类型的列表处理。不是所有的微博都可以删除
      */
     protected void deleteStatus() {
-        WeiboLog.d(TAG, "not implemented.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "not implemented.");
+        }
         if (selectedPos==-1) {
             NotifyUtils.showToast("您需要先选中一个项!");
             return;

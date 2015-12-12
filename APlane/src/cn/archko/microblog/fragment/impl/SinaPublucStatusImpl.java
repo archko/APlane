@@ -23,7 +23,9 @@ public class SinaPublucStatusImpl extends AbsStatusImpl<Status> {
 
     @Override
     public SStatusData<Status> loadData(Object... params) throws WeiboException {
-        WeiboLog.d(TAG, "loadData.");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "loadData.");
+        }
         SinaStatusApi sWeiboApi2=(SinaStatusApi) mAbsApi;
         SStatusData<Status> sStatusData=null;
         //SWeiboApi2 sWeiboApi2=((SWeiboApi2) App.getMicroBlog(App.getAppContext()));

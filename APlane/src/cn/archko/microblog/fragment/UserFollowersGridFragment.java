@@ -100,7 +100,9 @@ public class UserFollowersGridFragment extends UserFriendsGridFragment {
      */
     private void clearHomeNotify() {
         if (mUserId!=currentUserId) {
-            WeiboLog.d(TAG, "查看的用户不是当前用户,不刷新粉丝数.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "查看的用户不是当前用户,不刷新粉丝数.");
+            }
             return;
         }
         //int newFollower=mPrefs.getInt(Constants.PREF_SERVICE_FOLLOWER, 0);

@@ -90,7 +90,9 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
         } else {*/
         //page=1;
         int status=mPrefs.getInt(Constants.PREF_SERVICE_AT_COMMENT, 0);
-        WeiboLog.d(TAG, "新提及我的评论数:"+status);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "新提及我的评论数:"+status);
+        }
         if (status>0) {
             if (status>Constants.WEIBO_COUNT*8) {
                 status=Constants.WEIBO_COUNT*8;
@@ -173,7 +175,9 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
     @Override
     public void fetchMore() {
         super.fetchMore();
-        WeiboLog.d(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "fetchMore.lastItem:"+lastItem+" selectedPos:"+selectedPos);
+        }
         if (mAdapter.getCount()>0) {
             Comment st;
             st=(Comment) mAdapter.getItem(mAdapter.getCount()-1);
@@ -182,7 +186,7 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
     }
 
     @Override
-    public View getView(SimpleViewHolder holder, final int position) {
+    public View getView(SimpleViewHolder holder, final int position, int itemType) {
         View convertView=holder.baseItemView;
         CommentItemView itemView=null;
         Comment status=mDataList.get(position);
@@ -239,12 +243,16 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
 
                 @Override
                 public void cancel() {
-                    WeiboLog.d("mCommentListener.cancel");
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d("mCommentListener.cancel");
+                    }
                 }
 
                 @Override
                 public void finish(Object receiver, final String content) {
-                    WeiboLog.d("mCommentListener!");
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d("mCommentListener!");
+                    }
                     try {
                         new Thread(new Runnable() {
 
@@ -407,7 +415,9 @@ public class AtMeCommentsFragment extends AbsBaseListFragment<Comment> {
      * 回复评论
      */
     protected void replyComment() {
-        WeiboLog.d(TAG, "replyComment:"+selectedPos);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "replyComment:"+selectedPos);
+        }
         try {
             Comment comment=mDataList.get(selectedPos);
             initDialog();

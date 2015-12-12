@@ -25,12 +25,16 @@ public class MyHelper extends SQLiteOpenHelper {
     MyHelper(Context context) {
         super(context, TwitterTable.DB_NAME, null, TwitterTable.VERSION);
         //super(context, databaseName, factory, v);
-        WeiboLog.d(TAG, "MyHelper.databaseName:");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "MyHelper.databaseName:");
+        }
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        WeiboLog.d(TAG, "MyHelper.onCreate:");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "MyHelper.onCreate:");
+        }
         updateDBToVer9(db);
         updateDBToVer10(db);
         updateDBToVer11(db);
@@ -45,7 +49,9 @@ public class MyHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        WeiboLog.d(TAG, "MyHelper onUpgrade.oldVersion:" + oldVersion + " newVersion:" + newVersion);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "MyHelper onUpgrade.oldVersion:" + oldVersion + " newVersion:" + newVersion);
+        }
         if (oldVersion < 4) {
             deleteDataBase(db);
             oldVersion = 4;

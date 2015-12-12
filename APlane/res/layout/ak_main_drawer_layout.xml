@@ -24,7 +24,7 @@
         android:scrollbars="none" android:footerDividersEnabled="false"
         android:fadingEdge="none" android:fastScrollEnabled="false"
         android:cacheColorHint="#0000" android:background="@color/holo_light_bg_view"
-        android:listSelector="@drawable/list_selector_holo_light"/>
+        android:listSelector="@drawable/ak_background_item"/>
     <!--<ListView android:id="@+id/right_drawer"
         android:layout_height="match_parent"
         android:layout_gravity="right"

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import com.me.microblog.bean.AKLocation;
@@ -71,9 +72,17 @@ public class App extends Application {
         editor.remove(Constants.PREF_SERVICE_AT);
         editor.remove(Constants.PREF_SERVICE_AT_COMMENT);
         editor.remove(Constants.PREF_SERVICE_DM);
-        editor.commit();
+        editor.apply();
 
         loadAccount(pref);
+
+        if (WeiboLog.isDEBUG()) {
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                .detectLeakedSqlLiteObjects()
+                .penaltyLog()
+                .penaltyDeath()
+                .build());
+        }
     }
 
     /**
@@ -112,12 +121,16 @@ public class App extends Application {
      */
     public void initOauth2(boolean force) {
         if (mOauthBean != null && ! TextUtils.isEmpty(mOauthBean.accessToken)) {
-            WeiboLog.i(TAG, "initOauth2已经初始化过了！" + mOauthBean);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.i(TAG, "initOauth2已经初始化过了！" + mOauthBean);
+            }
             return;
         }
 
         OauthBean bean = SqliteWrapper.queryAccount(this, TwitterTable.AUTbl.WEIBO_SINA, TwitterTable.AUTbl.ACCOUNT_IS_DEFAULT, - 1);
-        WeiboLog.d(TAG, "initOauth2:" + bean);
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "initOauth2:" + bean);
+        }
         if (null != bean) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = preferences.edit();
@@ -128,7 +141,9 @@ public class App extends Application {
             setOauthBean(bean);
         } else {
             //TODO 查询为空，有可能是没有帐户，有可能是默认的帐户注销了!当前不作处理，默认帐户如果注销，需要修改其它帐户为默认的帐户
-            WeiboLog.d("查询为空，有可能是没有帐户，有可能是默认的帐户注销了!");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("查询为空，有可能是没有帐户，有可能是默认的帐户注销了!");
+            }
         }
     }
 
@@ -137,19 +152,25 @@ public class App extends Application {
         File file = new File(mCacheDir + Constants.ICON_DIR);
         if (! file.exists()) {
             file.mkdirs();
-            WeiboLog.i(TAG, "创建头像存储目录." + file.getAbsolutePath());
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.i(TAG, "创建头像存储目录." + file.getAbsolutePath());
+            }
         }
 
         file = new File(mCacheDir + Constants.PICTURE_DIR);
         if (! file.exists()) {
             file.mkdirs();
-            WeiboLog.i(TAG, "创建图片存储目录." + file.getAbsolutePath());
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.i(TAG, "创建图片存储目录." + file.getAbsolutePath());
+            }
         }
 
         file = new File(mCacheDir + Constants.GIF);
         if (! file.exists()) {
             file.mkdirs();
-            WeiboLog.i(TAG, "创建gif图片存储目录." + file.getAbsolutePath());
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.i(TAG, "创建gif图片存储目录." + file.getAbsolutePath());
+            }
         }
     }
 

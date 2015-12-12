@@ -95,7 +95,9 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
      * 显示更多
      */
     protected void showMoreView() {
-        WeiboLog.d(TAG, "showMoreView");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d(TAG, "showMoreView");
+        }
 
         //super.showMoreView();
         //mMoreProgressBar.setVisibility(View.GONE);
@@ -105,13 +107,14 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
     /**
      * 需要注意,在主页时,需要缓存图片数据.所以cache为true,其它的不缓存,比如随便看看.
      *
-     * @param position
      * @param convertView
      * @param parent
+     * @param position
+     * @param itemType
      * @return
      */
     @Override
-    public View getView(SimpleViewHolder holder, final int position) {
+    public View getView(SimpleViewHolder holder, final int position, int itemType) {
         View convertView=holder.baseItemView;
         DraftItemView itemView=null;
         SendTask draft=mDataList.get(position);
@@ -240,7 +243,9 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
     public void onPrepareCustomMenu(PopupMenu menuBuilder) {
         if (mode!=GET_DRAFT) {  //在获取数据时，不能再有编辑操作。
             if (selectedPos>=mDataList.size()) {
-                WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+                }
                 return;
             }
             SendTask task=mDataList.get(selectedPos);
@@ -283,14 +288,18 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
      */
     public void quickRepostStatus() {
         if (selectedPos>=mDataList.size()) {
-            WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            }
             return;
         }
 
         try {
             //SendTask data=mDataList.get(selectedPos);
 
-            WeiboLog.d(TAG, "编辑任务，未实现。");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "编辑任务，未实现。");
+            }
             NotifyUtils.showToast("not implemented!");
         } catch (Exception e) {
             e.printStackTrace();
@@ -302,7 +311,9 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
      */
     public void commentStatus() {
         if (selectedPos>=mDataList.size()) {
-            WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            }
             return;
         }
 
@@ -341,7 +352,9 @@ public class TaskListFragment extends AbstractLocalListFragment<SendTask> {
      */
     public void repostStatus() {
         if (selectedPos>=mDataList.size()) {
-            WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "超出了Adapter数量.可能是FooterView.");
+            }
             return;
         }
 

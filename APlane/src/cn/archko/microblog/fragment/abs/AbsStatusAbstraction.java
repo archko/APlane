@@ -59,7 +59,9 @@ public abstract class AbsStatusAbstraction<T> extends AbstractBaseFragment {
      */
     public Object[] baseBackgroundOperation(Object... objects) {
         try {
-            WeiboLog.d(TAG, "baseBackgroundOperation:"+objects);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(TAG, "baseBackgroundOperation:"+objects);
+            }
             SStatusData<T> sStatusData=(SStatusData<T>) getData(objects);
 
             saveData(sStatusData);

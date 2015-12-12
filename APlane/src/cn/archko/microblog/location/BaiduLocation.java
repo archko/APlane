@@ -75,7 +75,9 @@ public class BaiduLocation extends AbsReceiver {
         }
 
         if (location==null) {
-            WeiboLog.d("", "location is null.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("", "location is null.");
+            }
             return;
         }
 
@@ -88,6 +90,8 @@ public class BaiduLocation extends AbsReceiver {
             .append(" street:").append(location.getStreet())
             .append(" time:").append(location.getTime())
             .append(" addr:").append(location.getAddrStr());
-        WeiboLog.d("location", sb.toString());
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("location", sb.toString());
+        }
     }
 }

@@ -66,6 +66,7 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
         //bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         bar.setDisplayShowTitleEnabled(false);  //隐藏主面的标题
         bar.setDisplayShowHomeEnabled(false);   //隐藏整个标题栏
+        bar.setDisplayUseLogoEnabled(false);
 
         mViewPager=(LazyViewPager) findViewById(R.id.pager);
         mTabsAdapter=new ActionTabsAdapter(this, bar, mViewPager);
@@ -184,7 +185,9 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
             for (int i=0; i<mTabs.size(); i++) {
                 tabInfo=mTabs.get(i);
                 if (tabInfo.clss==clazz) {
-                    WeiboLog.d("找到对应的Fragment为："+clazz+" 位置:"+i);
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d("找到对应的Fragment为："+clazz+" 位置:"+i);
+                    }
                     index=i;
                     break;
                 }
@@ -262,7 +265,9 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
             widget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
             mTabHost.setCurrentTab(position);
             widget.setDescendantFocusability(oldFocusability);*/
-            WeiboLog.d("onPageSelected:"+position);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("onPageSelected:"+position);
+            }
             mTabHost.selectTab(mTabHost.getTabAt(position));
             updateTitle(position);
             selectPage(position);
@@ -282,7 +287,9 @@ public abstract class AbstractFragmentTabsPager extends SkinFragmentActivity imp
 
         public void onTabItemChanged(int index) {
             mViewPager.setCurrentItem(index);
-            WeiboLog.d("onTabItemChanged.index:"+index);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("onTabItemChanged.index:"+index);
+            }
         }
 
         /**

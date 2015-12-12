@@ -80,7 +80,9 @@ public class UserGridItemView extends LinearLayout {
             follwingTask.execute(new Integer[]{followingType});
         } else {
             if (System.currentTimeMillis()>=app.getOauthBean().expireTime&&app.getOauthBean().expireTime!=0) {
-                WeiboLog.d(TAG, "web认证，token过期了.");
+                if (WeiboLog.isDEBUG()) {
+                    WeiboLog.d(TAG, "web认证，token过期了.");
+                }
                 Toast.makeText(mContext, "token过期了,处理失败,可以刷新列表重新获取token.", Toast.LENGTH_LONG).show();
             } else {
                 FollwingTask follwingTask=new FollwingTask();

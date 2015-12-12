@@ -123,7 +123,7 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
     }
 
     @Override
-    public View getView(SimpleViewHolder holder, final int position) {
+    public View getView(SimpleViewHolder holder, final int position, int itemType) {
         //WeiboLog.d(TAG, "getView.pos:" + position + " holder:" + holder);
 
         View convertView=holder.baseItemView;
@@ -182,12 +182,16 @@ public class DirectMessageFragment extends AbsBaseListFragment<DirectMessage> {
 
                 @Override
                 public void cancel() {
-                    WeiboLog.d("mCommentListener.cancel");
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d("mCommentListener.cancel");
+                    }
                 }
 
                 @Override
                 public void finish(Object receiver, final String content) {
-                    WeiboLog.d("mCommentListener!");
+                    if (WeiboLog.isDEBUG()) {
+                        WeiboLog.d("mCommentListener!");
+                    }
                     try {
                         new Thread(new Runnable() {
 

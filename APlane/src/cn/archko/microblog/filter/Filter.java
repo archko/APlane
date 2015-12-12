@@ -543,7 +543,9 @@ public class Filter {
         boolean canCall=true;
         List<Filter> filterList=getFiltersForAccount(ctxt, accountId);
         for (Filter f : filterList) {
-            WeiboLog.d(THIS_FILE, "Test filter "+f.matchPattern);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d(THIS_FILE, "Test filter "+f.matchPattern);
+            }
             canCall&=f.canCall(number);
 
             // Stop processing & rewrite

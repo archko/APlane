@@ -16,4 +16,23 @@
         <attr name="horizontalSpacing" format="dimension"/>
         <attr name="minRows" format="integer"/>
     </declare-styleable>
+
+    <!-- The primary branding color for the app. By default, this is the color applied to the
+             action bar background. -->
+    <attr name="colorPrimary" format="color" />
+
+    <!-- Dark variant of the primary branding color. By default, this is the color applied to
+         the status bar (via statusBarColor) and navigation bar (via navigationBarColor). -->
+    <attr name="colorPrimaryDark" format="color" />
+
+    <!-- Bright complement to the primary branding color. By default, this is the color applied
+         to framework controls (via colorControlActivated). -->
+    <attr name="colorAccent" format="color" />
+
+    <attr name="background_default" format="reference|color" />
+    <attr name="background_default_darker" format="reference|color" />
+    <attr name="background_actionbar" format="reference|color" />
+    <attr name="background_menu_divider" format="reference|color" />
+    <attr name="background_menu" format="reference|color" />
+    <attr name="background_menu_selected" format="reference|color" />
 </resources>

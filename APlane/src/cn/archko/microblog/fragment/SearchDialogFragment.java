@@ -167,9 +167,13 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
      * 显示更多
      */
     protected void showMoreView() {
-        WeiboLog.d("showMoreView");
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("showMoreView");
+        }
         if (null==mRelativeLoadingLayout) {
-            WeiboLog.d("null==mLoadingLayout.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("null==mLoadingLayout.");
+            }
             mRelativeLoadingLayout=(RelativeLayout) LayoutInflater.from(getActivity().getApplicationContext())
                 .inflate(R.layout.ak_more_progressbar, null);
             mMoreProgressBar=(ProgressBar) mRelativeLoadingLayout.findViewById(R.id.progress_bar);
@@ -178,7 +182,9 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
 
         mMoreTxt.setText(R.string.search_user_friends);
 
-        WeiboLog.d("mListView.getFooterViewsCount():"+mListView.getFooterViewsCount());
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("mListView.getFooterViewsCount():"+mListView.getFooterViewsCount());
+        }
 
         mFooterLayout.removeAllViews();
         RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(
@@ -376,7 +382,9 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
     private void fetchMore() {
         String keyword=mSearch.getEditableText().toString();
         if (TextUtils.isEmpty(keyword)) {
-            WeiboLog.d("can't find friends.");
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("can't find friends.");
+            }
             Toast.makeText(App.getAppContext(), "请输入人名。", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -482,10 +490,14 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
     private Object[] searchTrends(String keyWord, Integer searchMode) {
         String filename=App.getAppContext().getFilesDir().getAbsolutePath()+"/"+Constants.TREND_FILE;
         File file=new File(filename);
-        WeiboLog.d("filename:"+filename+" file:"+file.exists());
+        if (WeiboLog.isDEBUG()) {
+            WeiboLog.d("filename:"+filename+" file:"+file.exists());
+        }
         if (file.exists()) {
             long now=DateUtils.parseDateString(DateUtils.formatDate(new Date(), "yyyy-MM-dd"), "yyyy-MM-dd").getTime();
-            WeiboLog.d("lastModified:"+file.lastModified()+" now;"+now);
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("lastModified:"+file.lastModified()+" now;"+now);
+            }
             try {
                 String content=StreamUtils.parseInputStream(new FileInputStream(file));
                 Trends trends=WeiboParser.parseTrends(content);
@@ -616,7 +628,9 @@ public class SearchDialogFragment extends DialogFragment implements AdapterView.
                 return;
             }
 
-            WeiboLog.d("list.size:"+list.size());
+            if (WeiboLog.isDEBUG()) {
+                WeiboLog.d("list.size:"+list.size());
+            }
 
             mSimpleAdapter.setAtUserList(list);
             mSimpleAdapter.notifyDataSetChanged();
